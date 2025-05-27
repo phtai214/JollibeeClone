@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace JollibeeClone.Areas.Admin.Models
 {
-    public class Category
+    public class Categories
     {
         public int CategoryID { get; set; }
 
@@ -21,8 +21,8 @@ namespace JollibeeClone.Areas.Admin.Models
         public bool IsActive { get; set; } = true;
 
         // Navigation properties
-        public Category? ParentCategory { get; set; }
-        public ICollection<Category> SubCategories { get; set; } = new List<Category>();
+        public Categories? ParentCategory { get; set; }
+        public ICollection<Categories> SubCategories { get; set; } = new List<Categories>();
         public ICollection<Product> Products { get; set; } = new List<Product>();
         public virtual ICollection<PromotionCategoryScope> PromotionCategoryScopes { get; set; } = new List<PromotionCategoryScope>();
     }

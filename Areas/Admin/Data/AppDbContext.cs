@@ -14,7 +14,7 @@ namespace JollibeeClone.Areas.Admin.Data
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<UserAddress> UserAddresses { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Categories> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductConfigurationGroup> ProductConfigurationGroups { get; set; }
         public DbSet<ProductConfigurationOption> ProductConfigurationOptions { get; set; }
@@ -92,7 +92,7 @@ namespace JollibeeClone.Areas.Admin.Data
             });
 
             // Configure Category entity
-            modelBuilder.Entity<Category>(entity =>
+            modelBuilder.Entity<Categories>(entity =>
             {
                 entity.HasKey(e => e.CategoryID);
                 entity.Property(e => e.CategoryID).UseIdentityColumn(1, 1);

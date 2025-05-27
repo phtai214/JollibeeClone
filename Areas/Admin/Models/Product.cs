@@ -32,7 +32,7 @@ namespace JollibeeClone.Areas.Admin.Models
         public bool IsAvailable { get; set; } = true;
 
         // Navigation properties
-        public virtual Category Category { get; set; } = null!;
+        public virtual Categories Category { get; set; } = null!;
         public virtual ICollection<ProductConfigurationGroup> ProductConfigurationGroups { get; set; } = new List<ProductConfigurationGroup>();
         public virtual ICollection<ProductConfigurationOption> ProductConfigurationOptions { get; set; } = new List<ProductConfigurationOption>();
         public virtual ICollection<PromotionProductScope> PromotionProductScopes { get; set; } = new List<PromotionProductScope>();

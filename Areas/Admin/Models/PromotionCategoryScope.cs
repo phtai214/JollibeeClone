@@ -11,6 +11,6 @@ namespace JollibeeClone.Areas.Admin.Models
 
         // Navigation properties
         public virtual Promotion Promotion { get; set; } = null!;
-        public virtual Category Category { get; set; } = null!;
+        public virtual Categories Category { get; set; } = null!;
     }
 }
