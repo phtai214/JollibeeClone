@@ -10,6 +10,7 @@ D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\wwwroot\lib\bootstrap\dist\js\bo
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\wwwroot\lib\jquery-validation\dist\jquery.validate.js
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\wwwroot\css\adminpanel.css
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
@@ -170,6 +171,7 @@ wwwroot\assets\images\thuc_uong.png
 wwwroot\assets\images\Trachanh_khuyenmai.jpg
 wwwroot\assets\images\trachanh_menu.png
 wwwroot\assets\images\tropicalsundae_menu.png
+wwwroot\css\adminpanel.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\js\site.js

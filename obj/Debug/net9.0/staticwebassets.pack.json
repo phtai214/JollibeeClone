@@ -445,6 +445,10 @@
       "PackagePath": "staticwebassets\\assets\\images\\tuideocheo_mini.jpg"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\adminpanel.css",
+      "PackagePath": "staticwebassets\\css\\adminpanel.css"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
