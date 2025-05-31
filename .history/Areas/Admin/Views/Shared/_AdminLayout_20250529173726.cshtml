@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Jollibee Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/adminpanel.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                @* <img src="~/images/logo_jollibee.png" alt="Jollibee" class="logo" /> *@
+                <img src="~/assets/images/logo_jollibee.png" alt="Jollibee" class="logo" />
+                <h4>Admin Panel</h4>
+            </div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="~/Admin" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/Admin/Category" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Category" ? "active" : "")">
+                        <i class="fas fa-list"></i>
+                        <span>Danh mục</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/Admin/Product" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Product" ? "active" : "")">
+                        <i class="fas fa-hamburger"></i>
+                        <span>Sản phẩm</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/Admin/Order">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Đơn hàng</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/Admin/User">
+                        <i class="fas fa-users"></i>
+                        <span>Người dùng</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/Admin/Store">
+                        <i class="fas fa-store"></i>
+                        <span>Cửa hàng</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/Admin/Promotion">
+                        <i class="fas fa-tags"></i>
+                        <span>Khuyến mãi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/Admin/Promotion">
+                        <i class="fas fa-right-from-bracket"></i>
+                        <span>Đăng xuất</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="main-header">
+                <div class="header-left-option2 header-option" id="option2">
+                    <div class="quick-search">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Tìm kiếm sản phẩm, đơn hàng...">
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-btn notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </button>
+                        <button class="quick-btn messages">
+                            <i class="fas fa-envelope"></i>
+                            <span class="notification-badge">5</span>
+                        </button>
+                        @* <button class="quick-btn settings"> *@
+                        @*     <i class="fas fa-cog"></i> *@
+                        @* </button> *@
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="user-menu">
+                        <img src="~/assets/images/logo_jollibee.png" alt="Admin" class="user-avatar" />
+                        <span>Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <main class="content-area">
+                <!-- Breadcrumb -->
+                <nav class="breadcrumb-nav">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="~/Admin">Dashboard</a></li>
+                        @if (ViewData["Title"] != null && ViewData["Title"].ToString() != "Dashboard")
+                        {
+                            <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                        }
+                    </ol>
+                </nav>
+
+                <!-- Alert Messages -->
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>
+                        @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                <!-- Page Content -->
+                <div class="page-content">
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/admin.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+<script>
+
+
+    // Add some interactive features
+            document.addEventListener('DOMContentLoaded', function() {
+                // Search functionality
+                const searchInput = document.querySelector('.search-input');
+                if (searchInput) {
+                    searchInput.addEventListener('focus', function() {
+                        this.parentElement.style.transform = 'scale(1.02)';
+                    });
+
+                    searchInput.addEventListener('blur', function() {
+                        this.parentElement.style.transform = 'scale(1)';
+                    });
+                }
+
+    // Quick action buttons
+            const quickBtns = document.querySelectorAll('.quick-btn');
+            quickBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+</script>

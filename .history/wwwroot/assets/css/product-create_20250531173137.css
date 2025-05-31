@@ -1,0 +1,38 @@
+/* Product Create Styles */
+
+.preview-price-display {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--jollibee-gray) 0%, #fff 100%);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.preview-current-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--jollibee-red);
+    display: block;
+}
+
+.preview-original-price {
+    font-size: 1rem;
+    color: #6c757d;
+    text-decoration: line-through;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.preview-discount {
+    background: var(--jollibee-yellow);
+    color: var(--jollibee-dark);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.price-preview-note {
+    text-align: center;
+} 
