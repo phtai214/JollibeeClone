@@ -445,6 +445,10 @@
       "PackagePath": "staticwebassets\\assets\\images\\tuideocheo_mini.jpg"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\admin-login.css",
+      "PackagePath": "staticwebassets\\css\\admin-login.css"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\adminpanel.css",
       "PackagePath": "staticwebassets\\css\\adminpanel.css"
     },
@@ -459,6 +463,10 @@
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\store-admin.css",
+      "PackagePath": "staticwebassets\\css\\store-admin.css"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\favicon.ico",
@@ -707,6 +715,10 @@
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.min.map"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\test-image.html",
+      "PackagePath": "staticwebassets\\test-image.html"
     },
     {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.JollibeeClone.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

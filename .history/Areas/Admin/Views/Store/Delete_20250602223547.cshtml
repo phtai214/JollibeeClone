@@ -1,0 +1,446 @@
+@model JollibeeClone.Areas.Admin.Models.Store
+
+@{
+    ViewData["Title"] = "Xóa cửa hàng";
+}
+
+<div class="store-delete">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-trash text-danger me-2"></i>
+                Xóa cửa hàng
+            </h2>
+            <p class="text-muted">Xác nhận xóa cửa hàng khỏi hệ thống</p>
+        </div>
+        <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>
+            Quay lại danh sách
+        </a>
+    </div>
+
+    <!-- Warning Alert -->
+    <div class="alert alert-danger border-0" role="alert">
+        <div class="d-flex align-items-center">
+            <div class="alert-icon me-3">
+                <i class="fas fa-exclamation-triangle fa-2x"></i>
+            </div>
+            <div>
+                <h5 class="alert-heading mb-1">Cảnh báo!</h5>
+                <p class="mb-0">
+                    Bạn có chắc chắn muốn xóa cửa hàng này? Hành động này không thể hoàn tác.
+                    Tất cả dữ liệu liên quan đến cửa hàng sẽ bị mất vĩnh viễn.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Store Information -->
+        <div class="col-lg-8">
+            <!-- Store Details Preview -->
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-store me-2"></i>
+                        Thông tin cửa hàng sẽ bị xóa
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Tên cửa hàng:</label>
+                            <div class="info-display">
+                                <i class="fas fa-store text-primary me-2"></i>
+                                @Model.StoreName
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Trạng thái:</label>
+                            <div class="info-display">
+                                <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
+                                    <i class="fas @(Model.IsActive ? "fa-check-circle" : "fa-pause-circle") me-1"></i>
+                                    @(Model.IsActive ? "Đang hoạt động" : "Tạm dừng")
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold">Địa chỉ đầy đủ:</label>
+                            <div class="info-display">
+                                <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                                @Model.StreetAddress@(!string.IsNullOrEmpty(Model.Ward) ? ", " + Model.Ward : ""), @Model.District, @Model.City
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.PhoneNumber) || !string.IsNullOrEmpty(Model.OpeningHours))
+                    {
+                        <div class="row mb-3">
+                            @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                            {
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Số điện thoại:</label>
+                                    <div class="info-display">
+                                        <i class="fas fa-phone text-success me-2"></i>
+                                        @Model.PhoneNumber
+                                    </div>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.OpeningHours))
+                            {
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Giờ mở cửa:</label>
+                                    <div class="info-display">
+                                        <i class="fas fa-clock text-info me-2"></i>
+                                        @Model.OpeningHours
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Vĩ độ:</label>
+                                <div class="info-display">
+                                    <i class="fas fa-compass text-primary me-2"></i>
+                                    @Model.Latitude.Value.ToString("F6")
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Kinh độ:</label>
+                                <div class="info-display">
+                                    <i class="fas fa-compass text-primary me-2"></i>
+                                    @Model.Longitude.Value.ToString("F6")
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Impact Information -->
+            <div class="card mt-4 border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Tác động của việc xóa
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="impact-list">
+                        <div class="impact-item">
+                            <i class="fas fa-times-circle text-danger me-2"></i>
+                            <span>Thông tin cửa hàng sẽ bị xóa vĩnh viễn</span>
+                        </div>
+                        <div class="impact-item">
+                            <i class="fas fa-times-circle text-danger me-2"></i>
+                            <span>Không thể khôi phục dữ liệu sau khi xóa</span>
+                        </div>
+                        <div class="impact-item">
+                            <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                            <span>Các đơn hàng liên quan (nếu có) sẽ bị ảnh hưởng</span>
+                        </div>
+                        <div class="impact-item">
+                            <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                            <span>Khách hàng sẽ không thể tìm thấy cửa hàng này</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons mt-4">
+                <form asp-action="Delete" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <input asp-for="StoreID" type="hidden" />
+                    <button type="submit" class="btn btn-danger btn-lg me-3" onclick="return confirmDelete()">
+                        <i class="fas fa-trash me-2"></i>
+                        Xác nhận xóa cửa hàng
+                    </button>
+                </form>
+                <a href="@Url.Action("Details", new { id = Model.StoreID })" class="btn btn-outline-info btn-lg me-2">
+                    <i class="fas fa-eye me-2"></i>
+                    Xem chi tiết
+                </a>
+                <a href="@Url.Action("Index")" class="btn btn-outline-secondary btn-lg">
+                    <i class="fas fa-times me-2"></i>
+                    Hủy bỏ
+                </a>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="col-lg-4">
+            <!-- Store Image Preview -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-image me-2"></i>
+                        Hình ảnh cửa hàng
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="store-image-preview">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Model.ImageUrl" alt="@Model.StoreName" class="preview-image" 
+                                 onerror="this.onerror=null; this.src='/assets/images/bee.png';" />
+                            <div class="image-overlay">
+                                <span class="badge bg-danger">
+                                    <i class="fas fa-trash me-1"></i>
+                                    Sẽ bị xóa
+                                </span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="no-image-preview">
+                                <i class="fas fa-store fa-3x text-muted mb-2"></i>
+                                <p class="text-muted">Không có hình ảnh</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Preview -->
+            @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+            {
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-map-marked-alt me-2"></i>
+                            Vị trí trên bản đồ
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="mapPreview" style="height: 200px; width: 100%; position: relative;">
+                            <div class="map-overlay">
+                                <span class="badge bg-danger position-absolute" style="top: 10px; right: 10px; z-index: 1000;">
+                                    <i class="fas fa-trash me-1"></i>
+                                    Sẽ bị xóa
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Alternative Actions -->
+            <div class="card mt-3 border-info">
+                <div class="card-header bg-info text-white">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        Thay vào đó, bạn có thể:
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="alternative-actions">
+                        <a href="@Url.Action("Edit", new { id = Model.StoreID })" class="alternative-action">
+                            <i class="fas fa-edit text-warning me-2"></i>
+                            <span>Chỉnh sửa thông tin cửa hàng</span>
+                        </a>
+                        <div class="alternative-action" onclick="toggleStoreStatus()">
+                            <i class="fas @(Model.IsActive ? "fa-pause" : "fa-play") text-@(Model.IsActive ? "warning" : "success") me-2"></i>
+                            <span>@(Model.IsActive ? "Tạm dừng hoạt động" : "Kích hoạt lại cửa hàng")</span>
+                        </div>
+                        <a href="@Url.Action("Details", new { id = Model.StoreID })" class="alternative-action">
+                            <i class="fas fa-eye text-info me-2"></i>
+                            <span>Xem thông tin chi tiết</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Support -->
+            <div class="card mt-3 border-secondary">
+                <div class="card-body text-center">
+                    <i class="fas fa-question-circle fa-2x text-muted mb-2"></i>
+                    <h6>Cần hỗ trợ?</h6>
+                    <p class="text-muted small">
+                        Nếu bạn không chắc chắn về việc xóa cửa hàng này, 
+                        hãy liên hệ với bộ phận hỗ trợ kỹ thuật.
+                    </p>
+                    <button type="button" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-envelope me-1"></i>
+                        Liên hệ hỗ trợ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+            {
+                <text>
+                // Initialize map preview
+                if (typeof google !== 'undefined') {
+                    const mapPreview = new google.maps.Map(document.getElementById('mapPreview'), {
+                        zoom: 15,
+                        center: { lat: @Model.Latitude, lng: @Model.Longitude },
+                        disableDefaultUI: true,
+                        gestureHandling: 'none'
+                    });
+                    
+                    const marker = new google.maps.Marker({
+                        position: { lat: @Model.Latitude, lng: @Model.Longitude },
+                        map: mapPreview,
+                        title: '@Model.StoreName'
+                    });
+                }
+                </text>
+            }
+        });
+
+        function confirmDelete() {
+            return confirm('Bạn có chắc chắn muốn xóa cửa hàng "@Model.StoreName"? Hành động này không thể hoàn tác!');
+        }
+
+        function toggleStoreStatus() {
+            const action = @Model.IsActive.ToString().ToLower() ? 'tạm dừng' : 'kích hoạt lại';
+            if (confirm(`Bạn có muốn ${action} cửa hàng "@Model.StoreName" thay vì xóa?`)) {
+                // Redirect to edit page with a hint to change status
+                window.location.href = '@Url.Action("Edit", new { id = Model.StoreID })' + '#status-section';
+            }
+        }
+    </script>
+}
+
+@section Styles {
+    <style>
+        .alert-icon {
+            flex-shrink: 0;
+        }
+
+        .info-display {
+            padding: 8px 12px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            border-left: 3px solid #dc3545;
+            font-size: 1rem;
+        }
+
+        .impact-list {
+            margin: 0;
+        }
+
+        .impact-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+        }
+
+        .impact-item:last-child {
+            border-bottom: none;
+        }
+
+        .store-image-preview {
+            position: relative;
+            height: 250px;
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-overlay, .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(220, 38, 38, 0.1);
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            padding: 10px;
+        }
+
+        .no-image-preview {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            color: #6c757d;
+        }
+
+        .alternative-actions {
+            margin: 0;
+        }
+
+        .alternative-action {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .alternative-action:hover {
+            background-color: #f8f9fa;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .alternative-action:last-child {
+            border-bottom: none;
+        }
+
+        .action-buttons {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .border-danger {
+            border: 1px solid #dc3545 !important;
+        }
+
+        .border-warning {
+            border: 1px solid #ffc107 !important;
+        }
+
+        .border-info {
+            border: 1px solid #17a2b8 !important;
+        }
+
+        .border-secondary {
+            border: 1px solid #6c757d !important;
+        }
+    </style>
+} 

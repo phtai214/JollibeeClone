@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Images</title>
+</head>
+<body>
+    <h1>Debug Image Display</h1>
+    
+    <h2>Test SVG Placeholder</h2>
+    <img src="/images/no-image.svg" alt="SVG Placeholder" style="width: 200px; height: 200px; border: 1px solid #ccc;">
+    
+    <h2>Test Static Files</h2>
+    <p>Check if static files middleware is working:</p>
+    <ul>
+        <li><a href="/images/" target="_blank">Browse /images/ directory</a></li>
+        <li><a href="/images/products/" target="_blank">Browse /images/products/ directory</a></li>
+        <li><a href="/css/admin-login.css" target="_blank">CSS file test</a></li>
+    </ul>
+    
+    <h2>Sample Product URLs</h2>
+    <p>These would be example product image URLs:</p>
+    <ul>
+        <li>/images/products/guid_filename.jpg</li>
+        <li>/images/products/guid_filename.png</li>
+    </ul>
+    
+    <script>
+        console.log('Debug page loaded');
+        console.log('Base URL:', window.location.origin);
+    </script>
+</body>
+</html> 

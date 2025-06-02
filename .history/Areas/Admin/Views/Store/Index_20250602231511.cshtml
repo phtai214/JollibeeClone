@@ -1,0 +1,450 @@
+@model IEnumerable<JollibeeClone.Areas.Admin.Models.Store>
+
+@{
+    ViewData["Title"] = "Quản lý cửa hàng";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/store-admin.css" asp-append-version="true" />
+}
+
+<div class="store-index">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-store text-jollibee-red me-2"></i>
+                Quản lý cửa hàng
+            </h2>
+            <p class="text-muted">Danh sách tất cả các cửa hàng trong hệ thống</p>
+        </div>
+        <a href="@Url.Action("Create")" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>
+            Thêm cửa hàng mới
+        </a>
+    </div>
+
+    <!-- Filters and Controls -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row align-items-end">
+                <!-- Search -->
+                <div class="col-md-4 mb-3">
+                    <label for="searchInput" class="form-label">Tìm kiếm cửa hàng</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Tên cửa hàng, địa chỉ..." />
+                    </div>
+                </div>
+
+                <!-- City Filter -->
+                <div class="col-md-3 mb-3">
+                    <label for="cityFilter" class="form-label">Lọc theo thành phố</label>
+                    <select id="cityFilter" class="form-select">
+                        <option value="">Tất cả thành phố</option>
+                        <!-- Cities will be loaded from API -->
+                    </select>
+                </div>
+
+                <!-- Status Filter -->
+                <div class="col-md-2 mb-3">
+                    <label for="statusFilter" class="form-label">Trạng thái</label>
+                    <select id="statusFilter" class="form-select">
+                        <option value="">Tất cả</option>
+                        <option value="active">Hoạt động</option>
+                        <option value="inactive">Tạm dừng</option>
+                    </select>
+                </div>
+
+                <!-- Sort -->
+                <div class="col-md-2 mb-3">
+                    <label for="sortSelect" class="form-label">Sắp xếp</label>
+                    <select id="sortSelect" class="form-select">
+                        <option value="name">Tên A-Z</option>
+                        <option value="name-desc">Tên Z-A</option>
+                        <option value="city">Thành phố</option>
+                        <option value="newest">Mới nhất</option>
+                    </select>
+                </div>
+
+                <!-- View Toggle -->
+                <div class="col-md-1 mb-3">
+                    <label class="form-label d-block">&nbsp;</label>
+                    <div class="btn-group w-100" role="group">
+                        <button type="button" class="btn btn-outline-secondary view-toggle active" data-view="grid" title="Dạng lưới">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary view-toggle" data-view="list" title="Dạng danh sách">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Store Results -->
+    <div class="results-container">
+        <!-- Results Summary -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="results-summary">
+                <span class="badge bg-primary" id="storeCount">@Model.Count()</span>
+                <span>cửa hàng được tìm thấy</span>
+            </div>
+            <div class="view-info">
+                <span class="text-muted" id="viewInfo">Hiển thị dạng lưới</span>
+            </div>
+        </div>
+
+        <!-- Grid View -->
+        <div id="gridView" class="stores-grid">
+            <div class="row" id="storeGrid">
+                @foreach (var store in Model)
+                {
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4 store-item" 
+                         data-name="@store.StoreName.ToLower()" 
+                         data-city="@store.City.ToLower()" 
+                         data-status="@(store.IsActive ? "active" : "inactive")"
+                         data-address="@($"{store.StreetAddress} {store.Ward} {store.District} {store.City}".ToLower())">
+                        <div class="store-card">
+                            <div class="store-image">
+                                @if (!string.IsNullOrEmpty(store.ImageUrl))
+                                {
+                                    <img src="@store.ImageUrl" alt="@store.StoreName" 
+                                         onerror="this.onerror=null; this.src='/assets/images/bee.png';" />
+                                }
+                                else
+                                {
+                                    <div class="no-image">
+                                        <i class="fas fa-store fa-2x"></i>
+                                    </div>
+                                }
+                                <div class="status-badge">
+                                    <span class="badge @(store.IsActive ? "bg-success" : "bg-secondary")">
+                                        @(store.IsActive ? "Hoạt động" : "Tạm dừng")
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="store-content">
+                                <h5 class="store-name">@store.StoreName</h5>
+                                <div class="store-address">
+                                    <i class="fas fa-map-marker-alt text-jollibee-red me-1"></i>
+                                    <span>@store.StreetAddress@(!string.IsNullOrEmpty(store.Ward) ? ", " + store.Ward : ""), @store.District, @store.City</span>
+                                </div>
+                                @if (!string.IsNullOrEmpty(store.PhoneNumber))
+                                {
+                                    <div class="store-phone">
+                                        <i class="fas fa-phone text-success me-1"></i>
+                                        <span>@store.PhoneNumber</span>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(store.OpeningHours))
+                                {
+                                    <div class="store-hours">
+                                        <i class="fas fa-clock text-info me-1"></i>
+                                        <span>@store.OpeningHours</span>
+                                    </div>
+                                }
+                            </div>
+                            <div class="store-actions">
+                                <a href="@Url.Action("Details", new { id = store.StoreID })" class="btn btn-sm btn-outline-info">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="@Url.Action("Edit", new { id = store.StoreID })" class="btn btn-sm btn-outline-warning">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="@Url.Action("Delete", new { id = store.StoreID })" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- List View -->
+        <div id="listView" class="stores-list d-none">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Hình ảnh</th>
+                            <th>Tên cửa hàng</th>
+                            <th>Địa chỉ</th>
+                            <th>Thành phố</th>
+                            <th>Liên hệ</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="storeTable">
+                        @foreach (var store in Model)
+                        {
+                            <tr class="store-item" 
+                                data-name="@store.StoreName.ToLower()" 
+                                data-city="@store.City.ToLower()" 
+                                data-status="@(store.IsActive ? "active" : "inactive")"
+                                data-address="@($"{store.StreetAddress} {store.Ward} {store.District} {store.City}".ToLower())">
+                                <td>
+                                    <div class="table-image">
+                                        @if (!string.IsNullOrEmpty(store.ImageUrl))
+                                        {
+                                            <img src="@store.ImageUrl" alt="@store.StoreName" 
+                                                 onerror="this.onerror=null; this.src='/assets/images/bee.png';" />
+                                        }
+                                        else
+                                        {
+                                            <div class="no-image-small">
+                                                <i class="fas fa-store"></i>
+                                            </div>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong>@store.StoreName</strong>
+                                </td>
+                                <td>
+                                    <div class="address-info">
+                                        <div>@store.StreetAddress</div>
+                                        @if (!string.IsNullOrEmpty(store.Ward))
+                                        {
+                                            <small class="text-muted">@store.Ward, @store.District</small>
+                                        }
+                                        else
+                                        {
+                                            <small class="text-muted">@store.District</small>
+                                        }
+                                    </div>
+                                </td>
+                                <td>@store.City</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(store.PhoneNumber))
+                                    {
+                                        <div><i class="fas fa-phone text-success me-1"></i>@store.PhoneNumber</div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(store.OpeningHours))
+                                    {
+                                        <div><i class="fas fa-clock text-info me-1"></i>@store.OpeningHours</div>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="badge @(store.IsActive ? "bg-success" : "bg-secondary")">
+                                        @(store.IsActive ? "Hoạt động" : "Tạm dừng")
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="@Url.Action("Details", new { id = store.StoreID })" class="btn btn-sm btn-outline-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="@Url.Action("Edit", new { id = store.StoreID })" class="btn btn-sm btn-outline-warning">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id = store.StoreID })" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- No Results -->
+        <div id="noResults" class="text-center py-5 d-none">
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h5>Không tìm thấy cửa hàng nào</h5>
+            <p class="text-muted">Thử thay đổi từ khóa tìm kiếm hoặc bộ lọc</p>
+            <button type="button" class="btn btn-outline-secondary" onclick="clearFilters()">
+                <i class="fas fa-undo me-2"></i>
+                Xóa bộ lọc
+            </button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Load cities from API on page load
+            loadCitiesForFilter();
+
+            // View Toggle
+            $('.view-toggle').on('click', function() {
+                const view = $(this).data('view');
+                $('.view-toggle').removeClass('active');
+                $(this).addClass('active');
+                
+                if (view === 'grid') {
+                    $('#gridView').removeClass('d-none');
+                    $('#listView').addClass('d-none');
+                    $('#viewInfo').text('Hiển thị dạng lưới');
+                } else {
+                    $('#gridView').addClass('d-none');
+                    $('#listView').removeClass('d-none');
+                    $('#viewInfo').text('Hiển thị dạng danh sách');
+                }
+            });
+
+            // Load cities for filter
+            function loadCitiesForFilter() {
+                $.ajax({
+                    url: 'https://provinces.open-api.vn/api/',
+                    method: 'GET',
+                    success: function(data) {
+                        const $cityFilter = $('#cityFilter');
+                        // Keep the "Tất cả thành phố" option
+                        $cityFilter.find('option:not(:first)').remove();
+                        
+                        // Add provinces from API
+                        data.forEach(function(province) {
+                            $cityFilter.append(`<option value="${province.name.toLowerCase()}">${province.name}</option>`);
+                        });
+                        
+                        console.log('Loaded', data.length, 'cities for filter');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading cities for filter:', error);
+                        // Fallback to existing cities in database
+                        loadExistingCities();
+                    }
+                });
+            }
+
+            // Fallback: Load existing cities from stores in database
+            function loadExistingCities() {
+                const existingCities = [@Html.Raw(Json.Serialize(Model.Select(s => s.City).Distinct().OrderBy(c => c).ToList()))];
+                const $cityFilter = $('#cityFilter');
+                
+                existingCities.forEach(function(city) {
+                    $cityFilter.append(`<option value="${city.toLowerCase()}">${city}</option>`);
+                });
+                
+                console.log('Loaded', existingCities.length, 'existing cities from database');
+            }
+
+            // Search and Filter
+            function filterStores() {
+                const search = $('#searchInput').val().toLowerCase();
+                const city = $('#cityFilter').val().toLowerCase();
+                const status = $('#statusFilter').val();
+                
+                let visibleCount = 0;
+                
+                $('.store-item').each(function() {
+                    const $item = $(this);
+                    const name = $item.data('name');
+                    const address = $item.data('address');
+                    const itemCity = $item.data('city');
+                    const itemStatus = $item.data('status');
+                    
+                    let show = true;
+                    
+                    // Search filter
+                    if (search && !name.includes(search) && !address.includes(search)) {
+                        show = false;
+                    }
+                    
+                    // City filter - check both exact match and contains
+                    if (city) {
+                        // Try exact match first, then contains
+                        if (itemCity !== city && !itemCity.includes(city)) {
+                            show = false;
+                        }
+                    }
+                    
+                    // Status filter
+                    if (status && itemStatus !== status) {
+                        show = false;
+                    }
+                    
+                    if (show) {
+                        $item.show();
+                        visibleCount++;
+                    } else {
+                        $item.hide();
+                    }
+                });
+                
+                // Update count and show/hide no results
+                $('#storeCount').text(visibleCount);
+                if (visibleCount === 0) {
+                    $('#noResults').removeClass('d-none');
+                } else {
+                    $('#noResults').addClass('d-none');
+                }
+            }
+
+            // Sorting
+            function sortStores() {
+                const sortValue = $('#sortSelect').val();
+                const $grid = $('#storeGrid');
+                const $table = $('#storeTable');
+                
+                // Get all items
+                const $gridItems = $grid.children('.store-item').toArray();
+                const $tableItems = $table.children('.store-item').toArray();
+                
+                // Sort function
+                const sortFn = (a, b) => {
+                    const aName = $(a).data('name');
+                    const bName = $(b).data('name');
+                    const aCity = $(a).data('city');
+                    const bCity = $(b).data('city');
+                    
+                    switch (sortValue) {
+                        case 'name':
+                            return aName.localeCompare(bName);
+                        case 'name-desc':
+                            return bName.localeCompare(aName);
+                        case 'city':
+                            return aCity.localeCompare(bCity);
+                        case 'newest':
+                            return 0; // Keep original order for newest
+                        default:
+                            return 0;
+                    }
+                };
+                
+                // Sort and append
+                $gridItems.sort(sortFn);
+                $tableItems.sort(sortFn);
+                
+                $grid.empty().append($gridItems);
+                $table.empty().append($tableItems);
+                
+                // Reapply filters
+                filterStores();
+            }
+
+            // Event listeners
+            $('#searchInput').on('input', filterStores);
+            $('#cityFilter, #statusFilter').on('change', filterStores);
+            $('#sortSelect').on('change', sortStores);
+
+            // Clear filters
+            window.clearFilters = function() {
+                $('#searchInput').val('');
+                $('#cityFilter').val('');
+                $('#statusFilter').val('');
+                $('#sortSelect').val('name');
+                filterStores();
+            };
+
+            // Animation for store cards
+            $('.store-card').hover(
+                function() {
+                    $(this).addClass('hovered');
+                },
+                function() {
+                    $(this).removeClass('hovered');
+                }
+            );
+        });
+    </script>
+} 

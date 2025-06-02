@@ -1,0 +1,648 @@
+@model IEnumerable<JollibeeClone.Areas.Admin.Models.Store>
+
+@{
+    ViewData["Title"] = "Quản lý cửa hàng";
+}
+
+<div class="store-management">
+    <!-- Header với nút thêm mới -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-store text-jollibee-red me-2"></i>
+                Quản lý cửa hàng
+            </h2>
+            <p class="text-muted">Quản lý tất cả cửa hàng trong hệ thống</p>
+        </div>
+        <a href="@Url.Action("Create")" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus me-2"></i>
+            Thêm cửa hàng mới
+        </a>
+    </div>
+
+    <!-- Tìm kiếm và bộ lọc -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm cửa hàng...">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <select id="cityFilter" class="form-select">
+                        <option value="">Tất cả thành phố</option>
+                        @foreach (var city in Model.GroupBy(s => s.City).Select(g => g.Key).Distinct().OrderBy(c => c))
+                        {
+                            <option value="@city">@city</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select id="statusFilter" class="form-select">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="true">Hoạt động</option>
+                        <option value="false">Tạm dừng</option>
+                    </select>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="view-toggle-group">
+                        <button type="button" class="btn btn-outline-secondary view-btn active" data-view="grid" title="Dạng lưới">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary view-btn" data-view="list" title="Dạng danh sách">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-info ms-2" id="mapViewBtn" title="Xem bản đồ">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hiển thị kết quả -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <span class="result-count">Hiển thị <strong id="visibleCount">@Model.Count()</strong> trên tổng <strong>@Model.Count()</strong> cửa hàng</span>
+        <div class="sort-options">
+            <select id="sortBy" class="form-select form-select-sm">
+                <option value="name">Sắp xếp theo tên</option>
+                <option value="city">Sắp xếp theo thành phố</option>
+                <option value="newest">Mới nhất</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Danh sách cửa hàng - Grid View -->
+    @if (Model.Any())
+    {
+        <div id="gridView" class="row">
+            @foreach (var store in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4 store-item" 
+                     data-name="@store.StoreName.ToLower()"
+                     data-city="@store.City"
+                     data-status="@store.IsActive.ToString().ToLower()">
+                    <div class="store-card">
+                        <div class="store-image">
+                            @if (!string.IsNullOrEmpty(store.ImageUrl))
+                            {
+                                <img src="@store.ImageUrl" alt="@store.StoreName" 
+                                     onerror="this.onerror=null; this.src='/assets/images/bee.png';" />
+                            }
+                            else
+                            {
+                                <div class="no-image">
+                                    <i class="fas fa-store"></i>
+                                    <small class="text-muted">Chưa có ảnh</small>
+                                </div>
+                            }
+                            <div class="store-overlay">
+                                <span class="badge status-badge @(store.IsActive ? "status-active" : "status-inactive")">
+                                    @(store.IsActive ? "Hoạt động" : "Tạm dừng")
+                                </span>
+                                @if (store.Latitude.HasValue && store.Longitude.HasValue)
+                                {
+                                    <span class="badge bg-info location-badge">
+                                        <i class="fas fa-map-marker-alt me-1"></i>
+                                        GPS
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                        
+                        <div class="store-content">
+                            <h5 class="store-title">@store.StoreName</h5>
+                            
+                            <div class="store-address">
+                                <i class="fas fa-map-marker-alt text-jollibee-red me-2"></i>
+                                <div>
+                                    <div>@store.StreetAddress</div>
+                                    @if (!string.IsNullOrEmpty(store.Ward))
+                                    {
+                                        <small class="text-muted">@store.Ward, @store.District, @store.City</small>
+                                    }
+                                    else
+                                    {
+                                        <small class="text-muted">@store.District, @store.City</small>
+                                    }
+                                </div>
+                            </div>
+                            
+                            @if (!string.IsNullOrEmpty(store.PhoneNumber))
+                            {
+                                <div class="store-phone mt-2">
+                                    <i class="fas fa-phone text-success me-2"></i>
+                                    <span>@store.PhoneNumber</span>
+                                </div>
+                            }
+                            
+                            @if (!string.IsNullOrEmpty(store.OpeningHours))
+                            {
+                                <div class="store-hours mt-2">
+                                    <i class="fas fa-clock text-info me-2"></i>
+                                    <span>@store.OpeningHours</span>
+                                </div>
+                            }
+                        </div>
+                        
+                        <div class="store-actions">
+                            <a href="@Url.Action("Details", new { id = store.StoreID })" 
+                               class="btn btn-sm btn-outline-info" title="Xem chi tiết">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="@Url.Action("Edit", new { id = store.StoreID })" 
+                               class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            @if (store.Latitude.HasValue && store.Longitude.HasValue)
+                            {
+                                <button type="button" class="btn btn-sm btn-outline-primary" 
+                                        onclick="showStoreOnMap(@store.Latitude, @store.Longitude, '@store.StoreName')" 
+                                        title="Xem trên bản đồ">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                </button>
+                            }
+                            <a href="@Url.Action("Delete", new { id = store.StoreID })" 
+                               class="btn btn-sm btn-outline-danger" title="Xóa">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- List View -->
+        <div id="listView" class="table-responsive" style="display: none;">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Ảnh</th>
+                        <th>Tên cửa hàng</th>
+                        <th>Địa chỉ</th>
+                        <th>Thành phố</th>
+                        <th>Điện thoại</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var store in Model)
+                    {
+                        <tr class="store-row" 
+                            data-name="@store.StoreName.ToLower()"
+                            data-city="@store.City"
+                            data-status="@store.IsActive.ToString().ToLower()">
+                            <td>
+                                <div class="table-store-image">
+                                    @if (!string.IsNullOrEmpty(store.ImageUrl))
+                                    {
+                                        <img src="@store.ImageUrl" alt="@store.StoreName" 
+                                             onerror="this.onerror=null; this.src='/assets/images/bee.png';" />
+                                    }
+                                    else
+                                    {
+                                        <div class="no-image-small">
+                                            <i class="fas fa-store"></i>
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                <strong>@store.StoreName</strong>
+                                @if (store.Latitude.HasValue && store.Longitude.HasValue)
+                                {
+                                    <span class="badge bg-info ms-2" title="Có tọa độ GPS">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </span>
+                                }
+                            </td>
+                            <td>
+                                <div>@store.StreetAddress</div>
+                                @if (!string.IsNullOrEmpty(store.Ward))
+                                {
+                                    <small class="text-muted">@store.Ward, @store.District</small>
+                                }
+                                else
+                                {
+                                    <small class="text-muted">@store.District</small>
+                                }
+                            </td>
+                            <td>@store.City</td>
+                            <td>@store.PhoneNumber</td>
+                            <td>
+                                <span class="badge @(store.IsActive ? "bg-success" : "bg-secondary")">
+                                    @(store.IsActive ? "Hoạt động" : "Tạm dừng")
+                                </span>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="@Url.Action("Details", new { id = store.StoreID })" 
+                                       class="btn btn-sm btn-outline-info" title="Xem chi tiết">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="@Url.Action("Edit", new { id = store.StoreID })" 
+                                       class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    @if (store.Latitude.HasValue && store.Longitude.HasValue)
+                                    {
+                                        <button type="button" class="btn btn-sm btn-outline-primary" 
+                                                onclick="showStoreOnMap(@store.Latitude, @store.Longitude, '@store.StoreName')" 
+                                                title="Xem trên bản đồ">
+                                            <i class="fas fa-map-marked-alt"></i>
+                                        </button>
+                                    }
+                                    <a href="@Url.Action("Delete", new { id = store.StoreID })" 
+                                       class="btn btn-sm btn-outline-danger" title="Xóa">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <div class="empty-state">
+                <i class="fas fa-store fa-4x text-muted mb-3"></i>
+                <h4>Chưa có cửa hàng nào</h4>
+                <p class="text-muted">Bắt đầu bằng cách thêm cửa hàng đầu tiên của bạn</p>
+                <a href="@Url.Action("Create")" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>
+                    Thêm cửa hàng mới
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Map Modal -->
+<div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mapModalLabel">
+                    <i class="fas fa-map-marked-alt me-2"></i>
+                    Vị trí cửa hàng
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="storeMap" style="height: 400px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Search functionality
+            $('#searchInput').on('keyup', function() {
+                filterStores();
+            });
+
+            // Filter functionality
+            $('#cityFilter, #statusFilter').on('change', function() {
+                filterStores();
+            });
+
+            // View toggle
+            $('.view-btn').on('click', function() {
+                $('.view-btn').removeClass('active');
+                $(this).addClass('active');
+                
+                const view = $(this).data('view');
+                if (view === 'grid') {
+                    $('#gridView').show();
+                    $('#listView').hide();
+                } else {
+                    $('#gridView').hide();
+                    $('#listView').show();
+                }
+            });
+
+            // Sort functionality
+            $('#sortBy').on('change', function() {
+                sortStores($(this).val());
+            });
+
+            function filterStores() {
+                const searchText = $('#searchInput').val().toLowerCase();
+                const cityFilter = $('#cityFilter').val();
+                const statusFilter = $('#statusFilter').val();
+                
+                let visibleCount = 0;
+                
+                $('.store-item, .store-row').each(function() {
+                    const name = $(this).data('name');
+                    const city = $(this).data('city');
+                    const status = $(this).data('status').toString();
+                    
+                    let show = true;
+                    
+                    if (searchText && !name.includes(searchText)) {
+                        show = false;
+                    }
+                    
+                    if (cityFilter && city !== cityFilter) {
+                        show = false;
+                    }
+                    
+                    if (statusFilter && status !== statusFilter) {
+                        show = false;
+                    }
+                    
+                    if (show) {
+                        $(this).show();
+                        visibleCount++;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                
+                $('#visibleCount').text(visibleCount);
+            }
+
+            function sortStores(sortBy) {
+                const container = $('#gridView');
+                const rows = container.find('.store-item');
+                
+                rows.sort(function(a, b) {
+                    let aVal, bVal;
+                    
+                    switch(sortBy) {
+                        case 'name':
+                            aVal = $(a).data('name');
+                            bVal = $(b).data('name');
+                            break;
+                        case 'city':
+                            aVal = $(a).data('city');
+                            bVal = $(b).data('city');
+                            break;
+                        default:
+                            return 0;
+                    }
+                    
+                    return aVal.localeCompare(bVal);
+                });
+                
+                container.append(rows);
+                
+                // Sort table rows too
+                const tableBody = $('#listView tbody');
+                const tableRows = tableBody.find('.store-row');
+                
+                tableRows.sort(function(a, b) {
+                    let aVal, bVal;
+                    
+                    switch(sortBy) {
+                        case 'name':
+                            aVal = $(a).data('name');
+                            bVal = $(b).data('name');
+                            break;
+                        case 'city':
+                            aVal = $(a).data('city');
+                            bVal = $(b).data('city');
+                            break;
+                        default:
+                            return 0;
+                    }
+                    
+                    return aVal.localeCompare(bVal);
+                });
+                
+                tableBody.append(tableRows);
+            }
+        });
+
+        // Map functionality
+        function showStoreOnMap(lat, lng, storeName) {
+            $('#mapModal').modal('show');
+            
+            $('#mapModal').on('shown.bs.modal', function() {
+                if (typeof google !== 'undefined') {
+                    const map = new google.maps.Map(document.getElementById('storeMap'), {
+                        zoom: 15,
+                        center: { lat: lat, lng: lng }
+                    });
+                    
+                    new google.maps.Marker({
+                        position: { lat: lat, lng: lng },
+                        map: map,
+                        title: storeName
+                    });
+                } else {
+                    $('#storeMap').html('<div class="text-center p-4"><i class="fas fa-exclamation-triangle text-warning"></i><br>Không thể tải bản đồ</div>');
+                }
+            });
+        }
+
+        $('#mapViewBtn').on('click', function() {
+            // Show all stores on map
+            $('#mapModal').modal('show');
+            
+            $('#mapModal').on('shown.bs.modal', function() {
+                if (typeof google !== 'undefined') {
+                    const map = new google.maps.Map(document.getElementById('storeMap'), {
+                        zoom: 10,
+                        center: { lat: 10.8231, lng: 106.6297 } // Ho Chi Minh City
+                    });
+                    
+                    @foreach (var store in Model.Where(s => s.Latitude.HasValue && s.Longitude.HasValue))
+                    {
+                        <text>
+                        new google.maps.Marker({
+                            position: { lat: @store.Latitude, lng: @store.Longitude },
+                            map: map,
+                            title: '@store.StoreName'
+                        });
+                        </text>
+                    }
+                } else {
+                    $('#storeMap').html('<div class="text-center p-4"><i class="fas fa-exclamation-triangle text-warning"></i><br>Không thể tải bản đồ</div>');
+                }
+            });
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        .store-card {
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            background: white;
+        }
+
+        .store-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: #dc2626;
+        }
+
+        .store-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .store-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .store-card:hover .store-image img {
+            transform: scale(1.05);
+        }
+
+        .no-image {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            color: #6c757d;
+        }
+
+        .no-image i {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .store-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+        }
+
+        .status-active {
+            background-color: #28a745 !important;
+        }
+
+        .status-inactive {
+            background-color: #6c757d !important;
+        }
+
+        .location-badge {
+            font-size: 0.7rem;
+        }
+
+        .store-content {
+            padding: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .store-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #2d3748;
+        }
+
+        .store-address {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .store-phone, .store-hours {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .store-actions {
+            padding: 0.75rem 1.25rem;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .table-store-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table-store-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .no-image-small {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 8px;
+            color: #6c757d;
+        }
+
+        .view-toggle-group {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .empty-state {
+            padding: 3rem 0;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            z-index: 1;
+        }
+
+        .search-box input {
+            padding-left: 45px;
+        }
+
+        .text-jollibee-red {
+            color: #dc2626 !important;
+        }
+
+        .btn-primary {
+            background-color: #dc2626;
+            border-color: #dc2626;
+        }
+
+        .btn-primary:hover {
+            background-color: #b91c1c;
+            border-color: #b91c1c;
+        }
+    </style>
+} 
