@@ -717,6 +717,10 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.min.map"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\test-create-product.html",
+      "PackagePath": "staticwebassets\\test-create-product.html"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\test-image.html",
       "PackagePath": "staticwebassets\\test-image.html"
     },

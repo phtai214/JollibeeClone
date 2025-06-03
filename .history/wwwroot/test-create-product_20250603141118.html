@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Create Product</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea { width: 300px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #c82333; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 4px; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h2>Test Create Product</h2>
+    
+    <form id="testForm">
+        <div class="form-group">
+            <label for="productName">Product Name:</label>
+            <input type="text" id="productName" name="productName" value="Test Product" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="selectedImageUrl">Selected Image URL:</label>
+            <select id="selectedImageUrl" name="selectedImageUrl">
+                <option value="">-- No Image --</option>
+                <option value="/assets/images/1gacay_menu.jpg">1 Gà cay</option>
+                <option value="/assets/images/2gacay_menu.jpg">2 Gà cay</option>
+                <option value="/assets/images/hotdog_menu.png">Hot dog</option>
+                <option value="/assets/images/bee.png">Logo Bee</option>
+            </select>
+        </div>
+        
+        <button type="button" onclick="testImages()">Test Images First</button>
+        <button type="button" onclick="testCreate()">Test Create Product</button>
+    </form>
+    
+    <div id="result"></div>
+
+    <script>
+        async function testImages() {
+            try {
+                const response = await fetch('/Admin/Product/TestImages');
+                const data = await response.json();
+                
+                document.getElementById('result').innerHTML = `
+                    <div class="result success">
+                        <h3>Images Test Result:</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `
+                    <div class="result error">
+                        <h3>Images Test Error:</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function testCreate() {
+            try {
+                const formData = new FormData();
+                formData.append('productName', document.getElementById('productName').value);
+                formData.append('selectedImageUrl', document.getElementById('selectedImageUrl').value);
+                
+                console.log('Sending test create request...');
+                console.log('ProductName:', document.getElementById('productName').value);
+                console.log('SelectedImageUrl:', document.getElementById('selectedImageUrl').value);
+                
+                const response = await fetch('/Admin/Product/TestCreate', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                document.getElementById('result').innerHTML = `
+                    <div class="result ${data.success ? 'success' : 'error'}">
+                        <h3>Create Test Result:</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `
+                    <div class="result error">
+                        <h3>Create Test Error:</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html> 
