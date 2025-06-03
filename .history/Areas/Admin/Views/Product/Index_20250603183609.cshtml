@@ -1,0 +1,711 @@
+@model JollibeeClone.Areas.Admin.Models.PaginatedList<JollibeeClone.Areas.Admin.Models.Product>
+
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+}
+
+<div class="product-management">
+    <!-- Header với nút thêm mới -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-hamburger text-jollibee-red me-2"></i>
+                Quản lý sản phẩm
+            </h2>
+            <p class="text-muted">Quản lý tất cả sản phẩm trong cửa hàng</p>
+        </div>
+        <div class="header-actions">
+            <a href="@Url.Action("Create")" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus me-2"></i>
+                Thêm sản phẩm mới
+            </a>
+        </div>
+    </div>
+
+    <!-- Tìm kiếm và bộ lọc -->
+    <form method="get" id="filterForm">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" placeholder="Tìm kiếm sản phẩm...">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="categoryId" class="form-select">
+                            <option value="">Tất cả danh mục</option>
+                            @if (ViewBag.Categories != null)
+                            {
+                                @foreach (var category in (List<JollibeeClone.Areas.Admin.Models.Categories>)ViewBag.Categories)
+                                {
+                                    @if (ViewBag.CurrentCategory?.ToString() == category.CategoryID.ToString())
+                                    {
+                                        <option value="@category.CategoryID" selected="selected">@category.CategoryName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@category.CategoryID">@category.CategoryName</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="isAvailable" class="form-select">
+                            <option value="">Tất cả trạng thái</option>
+                            @if (ViewBag.CurrentAvailable?.ToString() == "True")
+                            {
+                                <option value="true" selected="selected">Có sẵn</option>
+                            }
+                            else
+                            {
+                                <option value="true">Có sẵn</option>
+                            }
+                            @if (ViewBag.CurrentAvailable?.ToString() == "False")
+                            {
+                                <option value="false" selected="selected">Hết hàng</option>
+                            }
+                            else
+                            {
+                                <option value="false">Hết hàng</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="sortOrder" class="form-select">
+                            @if (ViewBag.CurrentSort == null || ViewBag.CurrentSort == "")
+                            {
+                                <option value="" selected="selected">Tên A-Z</option>
+                            }
+                            else
+                            {
+                                <option value="">Tên A-Z</option>
+                            }
+                            @if (ViewBag.CurrentSort == "name_desc")
+                            {
+                                <option value="name_desc" selected="selected">Tên Z-A</option>
+                            }
+                            else
+                            {
+                                <option value="name_desc">Tên Z-A</option>
+                            }
+                            @if (ViewBag.CurrentSort == "price")
+                            {
+                                <option value="price" selected="selected">Giá thấp-cao</option>
+                            }
+                            else
+                            {
+                                <option value="price">Giá thấp-cao</option>
+                            }
+                            @if (ViewBag.CurrentSort == "price_desc")
+                            {
+                                <option value="price_desc" selected="selected">Giá cao-thấp</option>
+                            }
+                            else
+                            {
+                                <option value="price_desc">Giá cao-thấp</option>
+                            }
+                            @if (ViewBag.CurrentSort == "category")
+                            {
+                                <option value="category" selected="selected">Danh mục</option>
+                            }
+                            else
+                            {
+                                <option value="category">Danh mục</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-secondary me-2">
+                            <i class="fas fa-search"></i> Lọc
+                        </button>
+                        <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Xóa
+                        </a>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="view-toggle-group">
+                            <button type="button" class="btn btn-outline-secondary view-btn active" data-view="grid" title="Dạng lưới">
+                                <i class="fas fa-th"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary view-btn" data-view="list" title="Dạng danh sách">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Thông tin kết quả -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="result-count">
+            Hiển thị @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.PageIndex * Model.PageSize, Model.TotalCount)) của @Model.TotalCount sản phẩm
+        </div>
+        <div class="pagination-info">
+            Trang @Model.PageIndex / @Model.TotalPages
+        </div>
+    </div>
+
+    <!-- Danh sách sản phẩm -->
+    @if (Model.Any())
+    {
+        <!-- Grid View -->
+        <div id="gridView" class="view-container">
+            <div class="row">
+                @foreach (var product in Model)
+                {
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 product-item">
+                        <div class="product-card">
+                            <div class="product-image">
+                                @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                {
+                                    <img src="@product.ImageUrl" alt="@product.ProductName" 
+                                         onerror="this.onerror=null; this.src='/assets/images/bee.png';" />
+                                }
+                                else
+                                {
+                                    <div class="no-image">
+                                        <i class="fas fa-hamburger"></i>
+                                        <small class="text-muted">Chưa có ảnh</small>
+                                    </div>
+                                }
+                                <div class="product-overlay">
+                                    <span class="badge status-badge @(product.IsAvailable ? "status-active" : "status-inactive")">
+                                        @(product.IsAvailable ? "Có sẵn" : "Hết hàng")
+                                    </span>
+                                    @if (product.IsConfigurable)
+                                    {
+                                        <span class="badge bg-info configurable-badge">
+                                            <i class="fas fa-cogs me-1"></i>
+                                            Tùy chỉnh
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                            
+                            <div class="product-content">
+                                <h5 class="product-title">@product.ProductName</h5>
+                                @if (!string.IsNullOrEmpty(product.ShortDescription))
+                                {
+                                    <p class="product-description">@product.ShortDescription</p>
+                                }
+                                
+                                <div class="product-meta">
+                                    <span class="badge bg-secondary">
+                                        <i class="fas fa-folder me-1"></i>
+                                        @product.Category?.CategoryName
+                                    </span>
+                                </div>
+                                
+                                <div class="product-price">
+                                    @if (product.OriginalPrice.HasValue && product.OriginalPrice > product.Price)
+                                    {
+                                        <span class="original-price">@product.OriginalPrice.Value.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span>
+                                        <span class="current-price sale">@product.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span>
+                                        <span class="discount-badge">
+                                            -@(Math.Round((decimal)(product.OriginalPrice - product.Price) / product.OriginalPrice.Value * 100, 0))%
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="current-price">@product.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span>
+                                    }
+                                </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <a href="@Url.Action("Details", new { id = product.ProductID })" 
+                                   class="btn btn-sm btn-outline-info" title="Xem chi tiết">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="@Url.Action("Edit", new { id = product.ProductID })" 
+                                   class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="@Url.Action("Delete", new { id = product.ProductID })" 
+                                   class="btn btn-sm btn-outline-danger" title="Xóa">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- List View -->
+        <div id="listView" class="view-container" style="display: none;">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th width="60">Ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th width="120">Danh mục</th>
+                            <th width="100">Giá</th>
+                            <th width="80">Trạng thái</th>
+                            <th width="120">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in Model)
+                        {
+                            <tr class="product-row">
+                                <td>
+                                    @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                    {
+                                        <div class="table-product-image">
+                                            <img src="@product.ImageUrl" alt="@product.ProductName" 
+                                                 onerror="this.onerror=null; this.src='/assets/images/bee.png';" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="no-image-small">
+                                            <i class="fas fa-hamburger"></i>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="product-info">
+                                        <h6 class="mb-1">@product.ProductName</h6>
+                                        @if (product.IsConfigurable)
+                                        {
+                                            <small class="text-info">
+                                                <i class="fas fa-cogs me-1"></i>Tùy chỉnh
+                                            </small>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary">@product.Category?.CategoryName</span>
+                                </td>
+                                <td>
+                                    @if (product.OriginalPrice.HasValue && product.OriginalPrice > product.Price)
+                                    {
+                                        <div>
+                                            <small class="text-decoration-line-through text-muted">@product.OriginalPrice.Value.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</small>
+                                            <br><strong class="text-danger">@product.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</strong>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <strong>@product.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</strong>
+                                    }
+                                </td>
+                                <td>
+                                    @if (product.IsAvailable)
+                                    {
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check me-1"></i>
+                                            Có sẵn
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning">
+                                            <i class="fas fa-times me-1"></i>
+                                            Hết hàng
+                                        </span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="@Url.Action("Details", new { id = product.ProductID })" 
+                                           class="btn btn-sm btn-outline-info" title="Chi tiết">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="@Url.Action("Edit", new { id = product.ProductID })" 
+                                           class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id = product.ProductID })" 
+                                           class="btn btn-sm btn-outline-danger" title="Xóa">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        @if (Model.TotalPages > 1)
+        {
+            <nav aria-label="Product pagination" class="mt-4">
+                <ul class="pagination pagination-lg justify-content-center">
+                    @if (Model.HasPreviousPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { searchString = ViewBag.CurrentSearch, categoryId = ViewBag.CurrentCategory, isAvailable = ViewBag.CurrentAvailable, sortOrder = ViewBag.CurrentSort, page = 1 })">
+                                <i class="fas fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { searchString = ViewBag.CurrentSearch, categoryId = ViewBag.CurrentCategory, isAvailable = ViewBag.CurrentAvailable, sortOrder = ViewBag.CurrentSort, page = Model.PageIndex - 1 })">
+                                <i class="fas fa-angle-left"></i>
+                            </a>
+                        </li>
+                    }
+
+                    @{
+                        int startPage = Math.Max(1, Model.PageIndex - 2);
+                        int endPage = Math.Min(Model.TotalPages, Model.PageIndex + 2);
+                    }
+
+                    @for (int i = startPage; i <= endPage; i++)
+                    {
+                        <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { searchString = ViewBag.CurrentSearch, categoryId = ViewBag.CurrentCategory, isAvailable = ViewBag.CurrentAvailable, sortOrder = ViewBag.CurrentSort, page = i })">
+                                @i
+                            </a>
+                        </li>
+                    }
+
+                    @if (Model.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { searchString = ViewBag.CurrentSearch, categoryId = ViewBag.CurrentCategory, isAvailable = ViewBag.CurrentAvailable, sortOrder = ViewBag.CurrentSort, page = Model.PageIndex + 1 })">
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { searchString = ViewBag.CurrentSearch, categoryId = ViewBag.CurrentCategory, isAvailable = ViewBag.CurrentAvailable, sortOrder = ViewBag.CurrentSort, page = Model.TotalPages })">
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+    }
+    else
+    {
+        <!-- No Products -->
+        <div class="text-center py-5">
+            <i class="fas fa-hamburger fa-3x text-muted mb-3"></i>
+            <h5>Chưa có sản phẩm nào</h5>
+            <p class="text-muted">Bắt đầu bằng cách thêm sản phẩm đầu tiên</p>
+            <a href="@Url.Action("Create")" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>
+                Thêm sản phẩm đầu tiên
+            </a>
+        </div>
+    }
+</div>
+
+<style>
+:root {
+    --jollibee-red: #E2211C;
+    --jollibee-yellow: #FFCD00;
+    --jollibee-orange: #FFA500;
+    --jollibee-dark: #1a1a1a;
+    --jollibee-gray: #f8f9fa;
+}
+
+.product-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.product-image {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--jollibee-gray) 0%, #e9ecef 100%);
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.05);
+}
+
+.product-overlay {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.configurable-badge {
+    margin-top: 5px;
+}
+
+.product-content {
+    padding: 20px;
+    flex: 1;
+}
+
+.product-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--jollibee-dark);
+    line-height: 1.3;
+}
+
+.product-description {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-meta {
+    margin-bottom: 15px;
+}
+
+.product-price {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0;
+}
+
+.original-price {
+    color: #6c757d;
+    text-decoration: line-through;
+    font-size: 0.9rem;
+}
+
+.current-price {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--jollibee-red);
+}
+
+.current-price.sale {
+    color: var(--jollibee-red);
+}
+
+.discount-badge {
+    background: var(--jollibee-yellow);
+    color: var(--jollibee-dark);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.product-actions {
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    gap: 8px;
+}
+
+.table-product-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #dee2e6;
+}
+
+.table-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.no-image {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-size: 2rem;
+    gap: 8px;
+}
+
+.no-image small {
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.no-image-small {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    font-size: 1.2rem;
+}
+
+.product-info h6 {
+    margin: 0;
+    font-weight: 600;
+    color: var(--jollibee-dark);
+    font-size: 0.9rem;
+}
+
+.product-info small {
+    font-size: 0.75rem;
+}
+
+/* Compact table styles */
+.table td {
+    padding: 0.5rem;
+    vertical-align: middle;
+}
+
+.table tbody tr {
+    height: 60px;
+}
+
+.product-row:hover {
+    background-color: rgba(226, 33, 28, 0.05);
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 0.35em 0.6em;
+}
+
+.btn-group .btn {
+    padding: 0.25rem 0.5rem;
+    margin: 0 1px;
+}
+
+.image-error {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    background: rgba(220, 53, 69, 0.9);
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    border: none;
+}
+
+.product-image img[src*="no-image.svg"] {
+    object-fit: contain;
+    background: #f8f9fa;
+}
+
+.result-count {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.sort-options {
+    min-width: 200px;
+}
+
+/* View Toggle Buttons */
+.view-toggle-group {
+    display: inline-flex;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.view-toggle-group .view-btn {
+    border-radius: 0;
+    border: 1px solid #dee2e6;
+    margin: 0;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.view-toggle-group .view-btn:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.view-toggle-group .view-btn:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-left: none;
+}
+
+.view-toggle-group .view-btn.active {
+    background: var(--jollibee-red);
+    border-color: var(--jollibee-red);
+    color: white;
+    transform: scale(1.05);
+    z-index: 2;
+}
+
+.view-toggle-group .view-btn:hover:not(.active) {
+    background: #f8f9fa;
+    border-color: #adb5bd;
+    transform: translateY(-1px);
+}
+</style>
+
+@section Scripts {
+<script>
+$(document).ready(function() {
+    let currentView = 'grid';
+    
+    // View Toggle - only toggles between grid and list view  
+    $('.view-btn').on('click', function() {
+        const view = $(this).data('view');
+        if (view === currentView) return;
+        
+        $('.view-btn').removeClass('active');
+        $(this).addClass('active');
+        
+        if (view === 'grid') {
+            $('#listView').hide();
+            $('#gridView').show();
+            currentView = 'grid';
+        } else {
+            $('#gridView').hide();
+            $('#listView').show();
+            currentView = 'list';
+        }
+    });
+});
+</script>
+} 

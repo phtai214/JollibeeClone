@@ -421,6 +421,10 @@
       "PackagePath": "staticwebassets\\assets\\images\\sinhnhatsieuda3_menu.jpg"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\assets\\images\\stores\\e2caacbb-04d1-4af7-9ec1-3a5573f2901d_storeJollibee.png",
+      "PackagePath": "staticwebassets\\assets\\images\\stores\\e2caacbb-04d1-4af7-9ec1-3a5573f2901d_storeJollibee.png"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\assets\\images\\supbbido_menu.png",
       "PackagePath": "staticwebassets\\assets\\images\\supbbido_menu.png"
     },
@@ -471,6 +475,18 @@
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\images\\categories\\84f6db57-bb44-45a0-84f5-75930ad09f34_mon_trang_mieng.png",
+      "PackagePath": "staticwebassets\\images\\categories\\84f6db57-bb44-45a0-84f5-75930ad09f34_mon_trang_mieng.png"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\images\\categories\\c5b83887-831b-4541-944a-7cff298c2efd_thuc_uong.png",
+      "PackagePath": "staticwebassets\\images\\categories\\c5b83887-831b-4541-944a-7cff298c2efd_thuc_uong.png"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\address-selector.js",
+      "PackagePath": "staticwebassets\\js\\address-selector.js"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\site.js",
@@ -717,12 +733,20 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.min.map"
     },
     {
-      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\test-create-product.html",
-      "PackagePath": "staticwebassets\\test-create-product.html"
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\0b389aa1-2a81-4d04-af77-e7be9758b843.png",
+      "PackagePath": "staticwebassets\\uploads\\products\\0b389aa1-2a81-4d04-af77-e7be9758b843.png"
     },
     {
-      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\test-image.html",
-      "PackagePath": "staticwebassets\\test-image.html"
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\567efebd-1615-4fad-b106-a96ab721d588.png",
+      "PackagePath": "staticwebassets\\uploads\\products\\567efebd-1615-4fad-b106-a96ab721d588.png"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\8534494f-2ad0-4695-95c9-54e06a8099ac.png",
+      "PackagePath": "staticwebassets\\uploads\\products\\8534494f-2ad0-4695-95c9-54e06a8099ac.png"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\d87b3412-76fa-4e6b-9c06-65f510399a57.png",
+      "PackagePath": "staticwebassets\\uploads\\products\\d87b3412-76fa-4e6b-9c06-65f510399a57.png"
     },
     {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.JollibeeClone.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

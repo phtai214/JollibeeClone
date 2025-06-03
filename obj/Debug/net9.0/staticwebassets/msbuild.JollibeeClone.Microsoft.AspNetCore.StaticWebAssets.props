@@ -1854,6 +1854,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\assets\images\Sinhnhatthaga_khuyenmai.jpg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\assets\images\stores\e2caacbb-04d1-4af7-9ec1-3a5573f2901d_storeJollibee.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>JollibeeClone</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/JollibeeClone</BasePath>
+      <RelativePath>assets/images/stores/e2caacbb-04d1-4af7-9ec1-3a5573f2901d_storeJollibee.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>jhgiwi1ydp</Fingerprint>
+      <Integrity>91s1aUXcpMMPpOE385whzjwEVW8EpWb981ktSz1keTE=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\assets\images\stores\e2caacbb-04d1-4af7-9ec1-3a5573f2901d_storeJollibee.png'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\assets\images\supbbido_menu.png'))">
       <SourceType>Package</SourceType>
       <SourceId>JollibeeClone</SourceId>
@@ -2046,8 +2064,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>bfz4mm2jk2</Fingerprint>
-      <Integrity>qaVV7YmhLJrvMgTwrIxPNdkUtD7xS39AwExGBHYS8qg=</Integrity>
+      <Fingerprint>uv3a38j7nh</Fingerprint>
+      <Integrity>1toZAqxmuDb7yRNCvsrKHm/JsKTkPoLUWURmOCIug8M=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\product-admin.css'))</OriginalItemSpec>
@@ -2082,8 +2100,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>0irgo3we8w</Fingerprint>
-      <Integrity>yIwbE5QBcaLE09qZMZ6G+smzKy2ITMCtDqms9H+wOnY=</Integrity>
+      <Fingerprint>glmufeg3j9</Fingerprint>
+      <Integrity>HAuiUhgc9vKnWOWdjbsStcOVBVVKpfIG+cki7XB+fdI=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\store-admin.css'))</OriginalItemSpec>
@@ -2106,6 +2124,42 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\categories\84f6db57-bb44-45a0-84f5-75930ad09f34_mon_trang_mieng.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>JollibeeClone</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/JollibeeClone</BasePath>
+      <RelativePath>images/categories/84f6db57-bb44-45a0-84f5-75930ad09f34_mon_trang_mieng.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>ibx51na3pp</Fingerprint>
+      <Integrity>EgsPxIgxTmnmPb0yWSi9UoJLclBLgk0ChfcFE/YQUVE=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\categories\84f6db57-bb44-45a0-84f5-75930ad09f34_mon_trang_mieng.png'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\categories\c5b83887-831b-4541-944a-7cff298c2efd_thuc_uong.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>JollibeeClone</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/JollibeeClone</BasePath>
+      <RelativePath>images/categories/c5b83887-831b-4541-944a-7cff298c2efd_thuc_uong.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>kfhqy9fe7t</Fingerprint>
+      <Integrity>QI9Bu9sHul3czDMKE05aTngD7V6Vcp/0cNL7cUxNeIo=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\categories\c5b83887-831b-4541-944a-7cff298c2efd_thuc_uong.png'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\JollibeeClone.fdksstme51.bundle.scp.css'))">
       <SourceType>Package</SourceType>
       <SourceId>JollibeeClone</SourceId>
@@ -2123,6 +2177,24 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\JollibeeClone.fdksstme51.bundle.scp.css'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\address-selector.js'))">
+      <SourceType>Package</SourceType>
+      <SourceId>JollibeeClone</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/JollibeeClone</BasePath>
+      <RelativePath>js/address-selector.js</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>f4eaek9j71</Fingerprint>
+      <Integrity>AayriJ9udcix2dRj7Bm2VMBdCaygwd2gGVN9usktniI=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\address-selector.js'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))">
       <SourceType>Package</SourceType>
@@ -3222,41 +3294,77 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\lib\jquery\LICENSE.txt'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\test-create-product.html'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\products\0b389aa1-2a81-4d04-af77-e7be9758b843.png'))">
       <SourceType>Package</SourceType>
       <SourceId>JollibeeClone</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/JollibeeClone</BasePath>
-      <RelativePath>test-create-product.html</RelativePath>
+      <RelativePath>uploads/products/0b389aa1-2a81-4d04-af77-e7be9758b843.png</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>b6qldiw9ct</Fingerprint>
-      <Integrity>PZMx4Ln+Y0K6Wac8s1CjnCmUiGYp4YWB53aGfX3ZKuk=</Integrity>
+      <Fingerprint>u7sdo43exu</Fingerprint>
+      <Integrity>5tcGD+D7ErOH+A9PmUhFse5K/P2r9LwxxxVKBqOLkBI=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\test-create-product.html'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\products\0b389aa1-2a81-4d04-af77-e7be9758b843.png'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\test-image.html'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\products\567efebd-1615-4fad-b106-a96ab721d588.png'))">
       <SourceType>Package</SourceType>
       <SourceId>JollibeeClone</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/JollibeeClone</BasePath>
-      <RelativePath>test-image.html</RelativePath>
+      <RelativePath>uploads/products/567efebd-1615-4fad-b106-a96ab721d588.png</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>1lom8b23pz</Fingerprint>
-      <Integrity>C+avBRY8mNGfLPuaPy/TBdLpVgPwf72NkGTAxGxTrdo=</Integrity>
+      <Fingerprint>yjeupiz852</Fingerprint>
+      <Integrity>0unr+Xs4FTiJG6bIqi5Uq1UyLLAOvhXNk+pwVh6mXKo=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\test-image.html'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\products\567efebd-1615-4fad-b106-a96ab721d588.png'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\products\8534494f-2ad0-4695-95c9-54e06a8099ac.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>JollibeeClone</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/JollibeeClone</BasePath>
+      <RelativePath>uploads/products/8534494f-2ad0-4695-95c9-54e06a8099ac.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>jx4u02lgrg</Fingerprint>
+      <Integrity>ifNJF4q1bK6rkuVAjJjHDTAP5hJLZGMACV5cVDGZLxY=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\products\8534494f-2ad0-4695-95c9-54e06a8099ac.png'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\products\d87b3412-76fa-4e6b-9c06-65f510399a57.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>JollibeeClone</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/JollibeeClone</BasePath>
+      <RelativePath>uploads/products/d87b3412-76fa-4e6b-9c06-65f510399a57.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>kqqq80i0rx</Fingerprint>
+      <Integrity>JM4xoy75bO7pkkyxgh21/9D556HkJLblpQ9gwiCyvUg=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\products\d87b3412-76fa-4e6b-9c06-65f510399a57.png'))</OriginalItemSpec>
     </StaticWebAsset>
   </ItemGroup>
 </Project>
