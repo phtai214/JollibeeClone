@@ -1,0 +1,1438 @@
+@model JollibeeClone.Areas.Admin.ViewModels.PromotionListViewModel
+
+@{
+    ViewData["Title"] = "Quản lý Voucher";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/promotion-admin.css" asp-append-version="true" />
+    <style>
+        .debug-banner {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .debug-banner a {
+            color: white;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        .bulk-actions {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .bulk-actions.show {
+            display: block;
+        }
+        .export-menu {
+            position: relative;
+            display: inline-block;
+        }
+        .export-dropdown {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .export-dropdown.show {
+            display: block;
+        }
+        .export-dropdown a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .export-dropdown a:hover {
+            background-color: #f1f1f1;
+        }
+        .status-indicator {
+            animation: pulse 2s infinite;
+        }
+        @@keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Modern Filter Styling */
+        .filter-form {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+        }
+
+        .search-input-wrapper .input-group-text {
+            border-radius: 8px 0 0 8px;
+            border-color: #ced4da;
+            transition: all 0.3s ease;
+        }
+
+        .search-input-wrapper .form-control {
+            border-radius: 0 8px 8px 0;
+            border-color: #ced4da;
+            transition: all 0.3s ease;
+            padding-right: 40px;
+        }
+
+        .search-input-wrapper .form-control:focus {
+            border-color: #ff6600;
+            box-shadow: 0 0 0 0.2rem rgba(255, 102, 0, 0.25);
+        }
+
+        .search-input-wrapper .form-control:focus + .input-group-text,
+        .search-input-wrapper .input-group-text:has(+ .form-control:focus) {
+            border-color: #ff6600;
+            box-shadow: 0 0 0 0.2rem rgba(255, 102, 0, 0.25);
+        }
+
+        .clear-search {
+            transition: all 0.3s ease;
+            opacity: 0.6;
+        }
+
+        .clear-search:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .modern-select {
+            border-radius: 8px;
+            border-color: #ced4da;
+            transition: all 0.3s ease;
+            background-position: right 12px center;
+        }
+
+        .modern-select:focus {
+            border-color: #ff6600;
+            box-shadow: 0 0 0 0.2rem rgba(255, 102, 0, 0.25);
+        }
+
+        .btn-reset {
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+        .btn-reset:hover {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: white;
+            transform: rotate(360deg);
+        }
+
+        .active-filters {
+            padding: 15px;
+            background: rgba(255, 102, 0, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid #ff6600;
+            animation: slideDown 0.3s ease;
+        }
+
+        @@keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .active-filters .badge {
+            font-size: 0.9rem;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .active-filters .badge a {
+            transition: all 0.2s ease;
+            font-weight: bold;
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .active-filters .badge a:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            .filter-form .row {
+                gap: 1rem !important;
+            }
+            
+            .btn-reset {
+                width: 100%;
+                border-radius: 8px;
+                height: 38px;
+            }
+            
+            .active-filters {
+                margin-top: 1rem;
+            }
+            
+            .active-filters .badge {
+                margin-bottom: 5px;
+                display: inline-block;
+            }
+        }
+
+        /* Smooth transitions for all interactive elements */
+        .form-control, .form-select, .btn {
+            transition: all 0.3s ease;
+        }
+
+        /* Enhanced focus states */
+        .form-control:focus, .form-select:focus {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.15);
+        }
+
+        /* Loading state */
+        .filter-form.loading {
+            opacity: 0.7;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .filter-form.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ff6600;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        @@keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Focused state for search wrapper */
+        .search-input-wrapper.focused .input-group-text {
+            border-color: #ff6600;
+            background-color: rgba(255, 102, 0, 0.05);
+        }
+
+        .search-input-wrapper.focused .form-control {
+            border-color: #ff6600;
+        }
+
+        /* Enhanced emoji styling for selects */
+        .modern-select option {
+            padding: 8px 12px;
+        }
+
+        /* Hover effects for better UX */
+        .modern-select:hover:not(:focus) {
+            border-color: #adb5bd;
+            transform: translateY(-1px);
+        }
+
+        .search-input-wrapper:hover:not(.focused) .input-group-text,
+        .search-input-wrapper:hover:not(.focused) .form-control {
+            border-color: #adb5bd;
+        }
+
+        /* ===== MODERN VOUCHER CARD DESIGN ===== */
+        .voucher-card.modern-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0f0f0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .voucher-card.modern-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            border-color: #ff6600;
+        }
+
+        /* Card Header Modern */
+        .card-header-modern {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px 20px 0 20px;
+            position: relative;
+        }
+
+        .card-checkbox {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 10;
+        }
+
+        .card-checkbox .form-check-input {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 2px solid #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .card-checkbox .form-check-input:checked {
+            background-color: #ff6600;
+            border-color: #ff6600;
+        }
+
+        .status-modern {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 35px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.active { background-color: #28a745; }
+        .status-dot.inactive { background-color: #6c757d; }
+        .status-dot.expired { background-color: #dc3545; }
+        .status-dot.upcoming { background-color: #007bff; }
+
+        .status-text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-text.active { color: #28a745; }
+        .status-text.inactive { color: #6c757d; }
+        .status-text.expired { color: #dc3545; }
+        .status-text.upcoming { color: #007bff; }
+
+        .card-actions-modern {
+            margin-right: -5px;
+        }
+
+        .card-actions-modern .btn {
+            border: none;
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .card-actions-modern .btn:hover {
+            background-color: #f8f9fa;
+            transform: scale(1.1);
+        }
+
+        .card-actions-modern .dropdown-menu {
+            border: none;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            border-radius: 12px;
+            padding: 8px 0;
+            min-width: 200px;
+        }
+
+        .card-actions-modern .dropdown-item {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+
+        .card-actions-modern .dropdown-item:hover {
+            background-color: #f8f9fa;
+            transform: translateX(5px);
+        }
+
+        /* Card Body Modern */
+        .card-body-modern {
+            padding: 20px;
+            padding-top: 10px;
+        }
+
+        .promotion-info {
+            margin-bottom: 20px;
+        }
+
+        .promotion-title-modern {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .coupon-code-modern {
+            background: linear-gradient(135deg, #ff6600, #ff8533);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coupon-code-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .coupon-code-modern:hover::before {
+            left: 100%;
+        }
+
+        .code-text {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .code-label {
+            font-size: 0.7rem;
+            opacity: 0.9;
+            margin-top: 2px;
+            letter-spacing: 1px;
+        }
+
+        .promotion-description-modern {
+            color: #6c757d;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* Discount Circle */
+        .discount-circle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6600, #ff8533);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @@keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .discount-inner {
+            text-align: center;
+            color: white;
+        }
+
+        .discount-number {
+            font-size: 1.8rem;
+            font-weight: 900;
+            line-height: 1;
+            display: block;
+        }
+
+        .discount-percent {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .discount-label {
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Date Range Modern */
+        .date-range-modern {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #ff6600;
+        }
+
+        .date-item-modern {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+
+        .date-text {
+            font-weight: 600;
+        }
+
+        .date-arrow {
+            color: #ff6600;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+
+        /* Usage Modern */
+        .usage-modern {
+            margin: 20px 0;
+        }
+
+        .usage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .usage-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .usage-count {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #495057;
+        }
+
+        .progress-modern {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-modern {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6600, #ff8533);
+            border-radius: 10px;
+            transition: width 0.8s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar-modern::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @@keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .usage-percentage-modern {
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #ff6600;
+            margin-top: 5px;
+        }
+
+        .unlimited-badge {
+            text-align: center;
+            padding: 8px;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Card Footer Modern */
+        .card-footer-modern {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .scope-badges {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .scope-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .product-badge {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .category-badge {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .min-order-modern {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: #6c757d;
+            font-weight: 600;
+            padding: 8px 12px;
+            background: #fff5f5;
+            border-radius: 8px;
+            border: 1px solid #ffe6e6;
+        }
+
+        /* Card Status Variations */
+        .voucher-card.running {
+            border-left: 4px solid #28a745;
+        }
+
+        .voucher-card.upcoming {
+            border-left: 4px solid #007bff;
+        }
+
+        .voucher-card.expired {
+            border-left: 4px solid #dc3545;
+            opacity: 0.8;
+        }
+
+        .voucher-card.inactive {
+            border-left: 4px solid #6c757d;
+            opacity: 0.7;
+        }
+
+        /* Responsive adjustments for cards */
+        @@media (max-width: 768px) {
+            .voucher-card.modern-card {
+                margin-bottom: 20px;
+            }
+            
+            .discount-circle {
+                width: 70px;
+                height: 70px;
+                top: 10px;
+                right: 10px;
+            }
+            
+            .discount-number {
+                font-size: 1.5rem;
+            }
+            
+            .promotion-title-modern {
+                font-size: 1.1rem;
+                margin-right: 80px;
+            }
+            
+            .card-header-modern,
+            .card-body-modern {
+                padding: 15px;
+            }
+        }
+    </style>
+}
+
+@* <!-- Debug Banner - Remove in production -->
+<div class="debug-banner">
+    <i class="fas fa-tools"></i>
+    <strong>Debug Mode:</strong> Nếu bạn gặp lỗi khi tải voucher, 
+    <a href="@Url.Action("DebugIndex")" target="_blank">click vào đây để xem thông tin debug</a>
+</div> *@
+
+<div class="promotion-management">
+    <!-- Header -->
+    <div class="promotion-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="page-title">
+                    <i class="fas fa-tags text-jollibee-red me-2"></i>
+                    Quản lý Voucher
+                </h2>
+                <p class="text-muted mb-0">Tổng: <strong id="totalCount">@Model.TotalCount</strong> voucher</p>
+            </div>
+            <div class="d-flex gap-2">
+                <!-- Export Menu -->
+                <div class="export-menu">
+                    <button class="btn btn-info dropdown-toggle" type="button" onclick="toggleExportMenu()">
+                        <i class="fas fa-download me-2"></i>
+                        Xuất dữ liệu
+                    </button>
+                    <div id="exportDropdown" class="export-dropdown">
+                        <a href="@Url.Action("ExportToCsv")" id="exportCsv">
+                            <i class="fas fa-file-csv me-2"></i>Xuất CSV
+                        </a>
+                        <a href="#" onclick="exportSelected()">
+                            <i class="fas fa-file-export me-2"></i>Xuất mục đã chọn
+                        </a>
+                    </div>
+                </div>
+
+                <a href="@Url.Action("Create")" class="btn btn-jollibee-red">
+                    <i class="fas fa-plus me-2"></i>
+                    Tạo voucher mới
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Messages -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Bulk Actions -->
+    <div id="bulkActions" class="bulk-actions">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <span class="fw-bold">Đã chọn: <span id="selectedCount">0</span> voucher</span>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-success btn-sm" onclick="bulkOperation('activate')">
+                    <i class="fas fa-play me-1"></i>Kích hoạt
+                </button>
+                <button class="btn btn-warning btn-sm" onclick="bulkOperation('deactivate')">
+                    <i class="fas fa-pause me-1"></i>Tạm dừng
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="bulkOperation('delete')">
+                    <i class="fas fa-trash me-1"></i>Xóa
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="clearSelection()">
+                    <i class="fas fa-times me-1"></i>Bỏ chọn
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="promotion-form mb-4">
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-filter me-2"></i>
+                Bộ lọc & Tìm kiếm
+            </h3>
+            
+            <form asp-action="Index" method="get" class="filter-form">
+                <div class="row g-4 align-items-end">
+                    <!-- Search Input with Icon -->
+                    <div class="col-md-5">
+                        <label for="search" class="form-label">Tìm kiếm</label>
+                        <div class="search-input-wrapper">
+                            <div class="input-group">
+                                <span class="input-group-text border-end-0 bg-white">
+                                    <i class="fas fa-search text-muted"></i>
+                                </span>
+                                <input type="text" class="form-control border-start-0 ps-0" id="search" name="search" 
+                                       value="@Model.SearchTerm" placeholder="Tên voucher, mã voucher..." autocomplete="off">
+                                @if (!string.IsNullOrEmpty(Model.SearchTerm))
+                                {
+                                    <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3 text-muted clear-search" 
+                                            onclick="clearSearch()" style="z-index: 10; border: none; background: none;">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Status Filter -->
+                    <div class="col-md-3">
+                        <label for="status" class="form-label">Trạng thái</label>
+                        <select class="form-select modern-select" id="status" name="status">
+                            <option value="">Tất cả trạng thái</option>
+                            @if (Model.StatusFilter == "active")
+                            {
+                                <option value="active" selected>🟢 Đang hoạt động</option>
+                            }
+                            else
+                            {
+                                <option value="active">🟢 Đang hoạt động</option>
+                            }
+                            @if (Model.StatusFilter == "upcoming")
+                            {
+                                <option value="upcoming" selected>🔵 Sắp diễn ra</option>
+                            }
+                            else
+                            {
+                                <option value="upcoming">🔵 Sắp diễn ra</option>
+                            }
+                            @if (Model.StatusFilter == "expired")
+                            {
+                                <option value="expired" selected>🔴 Đã hết hạn</option>
+                            }
+                            else
+                            {
+                                <option value="expired">🔴 Đã hết hạn</option>
+                            }
+                            @if (Model.StatusFilter == "inactive")
+                            {
+                                <option value="inactive" selected>⚫ Không hoạt động</option>
+                            }
+                            else
+                            {
+                                <option value="inactive">⚫ Không hoạt động</option>
+                            }
+                        </select>
+                    </div>
+                    
+                    <!-- Sort Filter -->
+                    <div class="col-md-3">
+                        <label for="sort" class="form-label">Sắp xếp theo</label>
+                        <select class="form-select modern-select" id="sort" name="sort">
+                            @if (string.IsNullOrEmpty(Model.SortBy))
+                            {
+                                <option value="" selected>📅 Mới nhất</option>
+                            }
+                            else
+                            {
+                                <option value="">📅 Mới nhất</option>
+                            }
+                            @if (Model.SortBy == "name")
+                            {
+                                <option value="name" selected>🔤 Tên A-Z</option>
+                            }
+                            else
+                            {
+                                <option value="name">🔤 Tên A-Z</option>
+                            }
+                            @if (Model.SortBy == "name-desc")
+                            {
+                                <option value="name-desc" selected>🔤 Tên Z-A</option>
+                            }
+                            else
+                            {
+                                <option value="name-desc">🔤 Tên Z-A</option>
+                            }
+                            @if (Model.SortBy == "startdate")
+                            {
+                                <option value="startdate" selected>📆 Ngày bắt đầu</option>
+                            }
+                            else
+                            {
+                                <option value="startdate">📆 Ngày bắt đầu</option>
+                            }
+                            @if (Model.SortBy == "enddate")
+                            {
+                                <option value="enddate" selected>📆 Ngày kết thúc</option>
+                            }
+                            else
+                            {
+                                <option value="enddate">📆 Ngày kết thúc</option>
+                            }
+                            @if (Model.SortBy == "usage")
+                            {
+                                <option value="usage" selected>📊 Sử dụng nhiều nhất</option>
+                            }
+                            else
+                            {
+                                <option value="usage">📊 Sử dụng nhiều nhất</option>
+                            }
+                        </select>
+                    </div>
+                    
+                    <!-- Reset Button (only show when filters are active) -->
+                    <div class="col-md-1">
+                        @if (!string.IsNullOrEmpty(Model.SearchTerm) || !string.IsNullOrEmpty(Model.StatusFilter) || !string.IsNullOrEmpty(Model.SortBy))
+                        {
+                            <a href="@Url.Action("Index")" class="btn btn-outline-secondary btn-reset" 
+                               data-bs-toggle="tooltip" title="Xóa bộ lọc">
+                                <i class="fas fa-undo"></i>
+                            </a>
+                        }
+                    </div>
+                </div>
+                
+                <!-- Active Filters Display -->
+                @if (!string.IsNullOrEmpty(Model.SearchTerm) || !string.IsNullOrEmpty(Model.StatusFilter) || !string.IsNullOrEmpty(Model.SortBy))
+                {
+                    <div class="active-filters mt-3">
+                        <span class="text-muted me-2">Bộ lọc đang áp dụng:</span>
+                        @if (!string.IsNullOrEmpty(Model.SearchTerm))
+                        {
+                            <span class="badge bg-primary me-2">
+                                <i class="fas fa-search me-1"></i>
+                                "@Model.SearchTerm"
+                                <a href="@Url.Action("Index", new { status = Model.StatusFilter, sort = Model.SortBy })" 
+                                   class="text-white ms-1" style="text-decoration: none;">×</a>
+                            </span>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.StatusFilter))
+                        {
+                            <span class="badge bg-info me-2">
+                                <i class="fas fa-filter me-1"></i>
+                                @(Model.StatusFilter switch {
+                                    "active" => "Đang hoạt động",
+                                    "upcoming" => "Sắp diễn ra", 
+                                    "expired" => "Đã hết hạn",
+                                    "inactive" => "Không hoạt động",
+                                    _ => Model.StatusFilter
+                                })
+                                <a href="@Url.Action("Index", new { search = Model.SearchTerm, sort = Model.SortBy })" 
+                                   class="text-white ms-1" style="text-decoration: none;">×</a>
+                            </span>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.SortBy))
+                        {
+                            <span class="badge bg-warning text-dark me-2">
+                                <i class="fas fa-sort me-1"></i>
+                                @(Model.SortBy switch {
+                                    "name" => "Tên A-Z",
+                                    "name-desc" => "Tên Z-A",
+                                    "startdate" => "Ngày bắt đầu",
+                                    "enddate" => "Ngày kết thúc", 
+                                    "usage" => "Sử dụng nhiều nhất",
+                                    _ => "Mới nhất"
+                                })
+                                <a href="@Url.Action("Index", new { search = Model.SearchTerm, status = Model.StatusFilter })" 
+                                   class="text-dark ms-1" style="text-decoration: none;">×</a>
+                            </span>
+                        }
+                    </div>
+                }
+            </form>
+        </div>
+    </div>
+
+    <!-- Voucher List -->
+    <div class="row">
+        @if (Model.Promotions.Any())
+        {
+            @foreach (var promotion in Model.Promotions)
+            {
+                var statusClass = promotion.IsExpired ? "expired" : promotion.IsUpcoming ? "upcoming" : promotion.IsRunning ? "running" : "inactive";
+                var statusText = promotion.IsExpired ? "Đã hết hạn" : promotion.IsUpcoming ? "Sắp diễn ra" : promotion.IsRunning ? "Đang hoạt động" : "Không hoạt động";
+                var statusBadgeClass = promotion.IsExpired ? "expired" : promotion.IsUpcoming ? "upcoming" : promotion.IsRunning ? "active" : "inactive";
+
+                <div class="col-lg-6 col-xl-4 mb-4">
+                    <div class="promotion-card @statusClass" data-promotion-id="@promotion.PromotionID">
+                        <!-- Selection Checkbox -->
+                        <div class="card-checkbox">
+                            <input type="checkbox" class="form-check-input promotion-checkbox" 
+                                   value="@promotion.PromotionID" onchange="updateBulkActions()">
+                        </div>
+
+                        <!-- Card Header -->
+                        <div class="promotion-card-header">
+                            <div class="status-indicator">
+                                <span class="status-badge @statusBadgeClass" id="status-@promotion.PromotionID">@statusText</span>
+                                @if (promotion.IsRunning)
+                                {
+                                    <span class="status-dot ms-2">
+                                        <i class="fas fa-circle text-success" style="font-size: 8px;"></i>
+                                    </span>
+                                }
+                            </div>
+                            
+                            <h4 class="promotion-title">@promotion.PromotionName</h4>
+                            
+                            @if (!string.IsNullOrEmpty(promotion.CouponCode))
+                            {
+                                <div class="promotion-code">
+                                    <span class="code-text">@promotion.CouponCode</span>
+                                    <button class="copy-btn" onclick="copyToClipboard('@promotion.CouponCode')" title="Sao chép mã">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            }
+                            
+                            @if (!string.IsNullOrEmpty(promotion.Description))
+                            {
+                                <p class="promotion-description">@promotion.Description</p>
+                            }
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="promotion-card-body">
+                            <!-- Discount Display -->
+                            <div class="discount-display">
+                                <div class="discount-value">@promotion.DiscountValue%</div>
+                                <div class="discount-type">GIẢM GIÁ</div>
+                            </div>
+
+                            <!-- Date Range -->
+                            <div class="date-range">
+                                <div class="date-item">
+                                    <div class="date-label">Bắt đầu</div>
+                                    <div class="date-value">@promotion.StartDate.ToString("dd/MM/yyyy")</div>
+                                </div>
+                                <div class="date-separator">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                                <div class="date-item">
+                                    <div class="date-label">Kết thúc</div>
+                                    <div class="date-value">@promotion.EndDate.ToString("dd/MM/yyyy")</div>
+                                </div>
+                            </div>
+
+                            <!-- Usage Progress -->
+                            @if (promotion.MaxUses.HasValue)
+                            {
+                                <div class="usage-progress">
+                                    <div class="usage-info">
+                                        <span class="usage-label">Đã sử dụng</span>
+                                        <span class="usage-count">
+                                            <span id="uses-@promotion.PromotionID">@promotion.UsesCount</span>/@promotion.MaxUses
+                                        </span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" id="progress-@promotion.PromotionID" style="width: @(promotion.UsagePercentage)%"></div>
+                                    </div>
+                                    <div class="usage-percentage" id="percentage-@promotion.PromotionID">@promotion.UsagePercentage.ToString("F1")%</div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="usage-progress">
+                                    <div class="usage-info">
+                                        <span class="usage-label">Đã sử dụng</span>
+                                        <span class="usage-count">
+                                            <span id="uses-@promotion.PromotionID">@promotion.UsesCount</span> lần
+                                        </span>
+                                    </div>
+                                    <div class="unlimited-indicator">
+                                        <i class="fas fa-infinity"></i> Không giới hạn
+                                    </div>
+                                </div>
+                            }
+
+                            <!-- Scope Info -->
+                            <div class="scope-info">
+                                @if (promotion.ProductCount > 0)
+                                {
+                                    <span class="scope-badge product-scope">
+                                        <i class="fas fa-box"></i>
+                                        @promotion.ProductCount sản phẩm
+                                    </span>
+                                }
+                                @if (promotion.CategoryCount > 0)
+                                {
+                                    <span class="scope-badge category-scope">
+                                        <i class="fas fa-tags"></i>
+                                        @promotion.CategoryCount danh mục
+                                    </span>
+                                }
+                            </div>
+
+                            @if (promotion.MinOrderValue.HasValue)
+                            {
+                                <div class="min-order-info">
+                                    <i class="fas fa-shopping-cart text-jollibee-red"></i>
+                                    <span>Đơn tối thiểu: @promotion.MinOrderValue.Value.ToString("N0") VNĐ</span>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Card Actions - IMPROVED CLEAN DESIGN -->
+                        <div class="promotion-actions-modern">
+                            <a href="@Url.Action("Details", new { id = promotion.PromotionID })" 
+                               class="action-btn-modern view-btn" title="Xem chi tiết">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="@Url.Action("Edit", new { id = promotion.PromotionID })" 
+                               class="action-btn-modern edit-btn" title="Chỉnh sửa">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button onclick="togglePromotionStatus(@promotion.PromotionID)" 
+                                    class="action-btn-modern toggle-btn" 
+                                    id="toggle-@promotion.PromotionID"
+                                    title="@(promotion.IsActive ? "Tạm dừng" : "Kích hoạt")">
+                                <i class="fas fa-@(promotion.IsActive ? "pause" : "play")"></i>
+                            </button>
+                            <a href="@Url.Action("Delete", new { id = promotion.PromotionID })" 
+                               class="action-btn-modern delete-btn" title="Xóa voucher"
+                               onclick="return confirm('Bạn có chắc muốn xóa voucher này?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="fas fa-tags fa-4x text-muted mb-3"></i>
+                    <h4 class="text-muted">Chưa có voucher nào</h4>
+                    <p class="text-muted">Hãy tạo voucher đầu tiên cho cửa hàng của bạn!</p>
+                    <a href="@Url.Action("Create")" class="btn btn-jollibee-red">
+                        <i class="fas fa-plus me-2"></i>
+                        Tạo voucher mới
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Auto-submit filter form when dropdown changes
+            $('#status, #sort').on('change', function() {
+                // Add loading effect
+                $(this).closest('.filter-form').addClass('loading');
+                $(this).closest('form').submit();
+            });
+            
+            // Auto-submit search form after user stops typing (debounce)
+            let searchTimeout;
+            $('#search').on('input', function() {
+                clearTimeout(searchTimeout);
+                const $form = $(this).closest('form');
+                
+                searchTimeout = setTimeout(() => {
+                    $form.addClass('loading');
+                    $form.submit();
+                }, 800); // Wait 800ms after user stops typing
+            });
+            
+            // Handle Enter key in search input
+            $('#search').on('keypress', function(e) {
+                if (e.which === 13) { // Enter key
+                    e.preventDefault();
+                    $(this).closest('.filter-form').addClass('loading');
+                    $(this).closest('form').submit();
+                }
+            });
+            
+            // Focus effect for search input
+            $('#search').on('focus', function() {
+                $(this).closest('.search-input-wrapper').addClass('focused');
+            }).on('blur', function() {
+                $(this).closest('.search-input-wrapper').removeClass('focused');
+            });
+            
+            // Update statistics every 30 seconds
+            updateStatistics();
+            setInterval(updateStatistics, 30000);
+            
+            // Load promotion counts
+            updateTotalCount();
+            
+            // Real-time statistics update
+            setInterval(updateStatistics, 30000);
+            
+            // Initialize tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+
+        // Toggle export menu
+        function toggleExportMenu() {
+            document.getElementById("exportDropdown").classList.toggle("show");
+        }
+
+        // Close export menu when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                var dropdowns = document.getElementsByClassName("export-dropdown");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        // Update bulk actions visibility
+        function updateBulkActions() {
+            const checkboxes = document.querySelectorAll('.promotion-checkbox:checked');
+            const count = checkboxes.length;
+            
+            document.getElementById('selectedCount').textContent = count;
+            document.getElementById('bulkActions').classList.toggle('show', count > 0);
+        }
+
+        // Clear selection
+        function clearSelection() {
+            document.querySelectorAll('.promotion-checkbox').forEach(cb => cb.checked = false);
+            updateBulkActions();
+        }
+
+        // Bulk operations
+        function bulkOperation(operation) {
+            const selected = Array.from(document.querySelectorAll('.promotion-checkbox:checked'))
+                .map(cb => parseInt(cb.value));
+            
+            if (selected.length === 0) {
+                alert('Vui lòng chọn ít nhất một voucher');
+                return;
+            }
+
+            if (!confirm(`Bạn có chắc muốn ${operation} ${selected.length} voucher đã chọn?`)) {
+                return;
+            }
+
+            fetch('@Url.Action("BulkOperation")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                body: JSON.stringify({
+                    operation: operation,
+                    promotionIds: selected
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert('success', data.message);
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showAlert('danger', data.message);
+                }
+            })
+            .catch(error => {
+                showAlert('danger', 'Có lỗi xảy ra khi thực hiện thao tác');
+            });
+        }
+
+        // Toggle promotion status
+        function togglePromotionStatus(promotionId) {
+            fetch(`@Url.Action("ToggleStatus")?id=${promotionId}`, {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert('success', data.message);
+                    
+                    // Update UI
+                    const toggleBtn = document.getElementById(`toggle-${promotionId}`);
+                    const statusBadge = document.getElementById(`status-${promotionId}`);
+                    
+                    if (data.isActive) {
+                        toggleBtn.innerHTML = '<i class="fas fa-pause"></i> Tạm dừng';
+                        statusBadge.textContent = 'Đang hoạt động';
+                        statusBadge.className = 'status-badge active';
+                    } else {
+                        toggleBtn.innerHTML = '<i class="fas fa-play"></i> Kích hoạt';
+                        statusBadge.textContent = 'Không hoạt động';
+                        statusBadge.className = 'status-badge inactive';
+                    }
+                } else {
+                    showAlert('danger', data.message);
+                }
+            })
+            .catch(error => {
+                showAlert('danger', 'Có lỗi xảy ra khi thay đổi trạng thái');
+            });
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showAlert('success', 'Đã sao chép mã voucher: ' + text);
+            });
+        }
+
+        // Update statistics for all promotions
+        function updateStatistics() {
+            document.querySelectorAll('[data-promotion-id]').forEach(card => {
+                const promotionId = card.getAttribute('data-promotion-id');
+                
+                fetch(`@Url.Action("GetPromotionStatistics")?id=${promotionId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Update usage count
+                            const usesElement = document.getElementById(`uses-${promotionId}`);
+                            if (usesElement) {
+                                usesElement.textContent = data.usesCount;
+                            }
+                            
+                            // Update percentage and progress bar
+                            if (data.maxUses) {
+                                const percentageElement = document.getElementById(`percentage-${promotionId}`);
+                                const progressElement = document.getElementById(`progress-${promotionId}`);
+                                
+                                if (percentageElement) {
+                                    percentageElement.textContent = data.usagePercentage.toFixed(1) + '%';
+                                }
+                                if (progressElement) {
+                                    progressElement.style.width = data.usagePercentage + '%';
+                                }
+                            }
+                            
+                            // Update status if changed
+                            const statusElement = document.getElementById(`status-${promotionId}`);
+                            if (statusElement && statusElement.textContent !== getStatusText(data.status)) {
+                                updatePromotionStatus(promotionId, data.status);
+                            }
+                        }
+                    })
+                    .catch(error => console.log('Error updating statistics for promotion ' + promotionId));
+            });
+        }
+
+        // Get status text from status code
+        function getStatusText(status) {
+            switch (status) {
+                case 'active': return 'Đang hoạt động';
+                case 'upcoming': return 'Sắp diễn ra';
+                case 'expired': return 'Đã hết hạn';
+                case 'inactive': return 'Không hoạt động';
+                default: return 'Không xác định';
+            }
+        }
+
+        // Update promotion status in UI
+        function updatePromotionStatus(promotionId, status) {
+            const statusElement = document.getElementById(`status-${promotionId}`);
+            const card = document.querySelector(`[data-promotion-id="${promotionId}"]`);
+            
+            if (statusElement && card) {
+                statusElement.textContent = getStatusText(status);
+                statusElement.className = `status-badge ${status}`;
+                
+                // Update card class
+                card.className = card.className.replace(/\b(active|upcoming|expired|inactive|running)\b/g, '');
+                card.classList.add(status === 'active' ? 'running' : status);
+            }
+        }
+
+        // Export selected promotions
+        function exportSelected() {
+            const selected = Array.from(document.querySelectorAll('.promotion-checkbox:checked'))
+                .map(cb => cb.value);
+            
+            if (selected.length === 0) {
+                alert('Vui lòng chọn ít nhất một voucher để xuất');
+                return;
+            }
+            
+            const url = `@Url.Action("ExportToCsv")?ids=${selected.join(',')}`;
+            window.open(url, '_blank');
+        }
+
+        // Show alert messages
+        function showAlert(type, message) {
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            const container = document.querySelector('.promotion-management');
+            const header = container.querySelector('.promotion-header');
+            header.insertAdjacentHTML('afterend', alertHtml);
+            
+            // Auto dismiss after 5 seconds
+            setTimeout(() => {
+                const alert = container.querySelector('.alert');
+                if (alert) {
+                    alert.remove();
+                }
+            }, 5000);
+        }
+
+        // Update total count
+        function updateTotalCount() {
+            const promotionCards = document.querySelectorAll('[data-promotion-id]').length;
+            document.getElementById('totalCount').textContent = promotionCards;
+        }
+
+        // Clear search function
+        function clearSearch() {
+            const searchInput = document.getElementById('search');
+            const statusSelect = document.getElementById('status');
+            const sortSelect = document.getElementById('sort');
+            
+            // Create a clean URL without search parameter
+            const url = new URL(window.location);
+            url.searchParams.delete('search');
+            
+            // Navigate to the clean URL
+            window.location.href = url.toString();
+        }
+    </script>
+} 
