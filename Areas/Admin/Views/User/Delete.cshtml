@@ -1,0 +1,342 @@
+@model JollibeeClone.Areas.Admin.Models.User
+
+@{
+    ViewData["Title"] = "Xóa người dùng";
+    bool hasOrders = ViewBag.HasOrders ?? false;
+    int orderCount = ViewBag.OrderCount ?? 0;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/user-admin.css" />
+}
+
+<div class="user-management">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-user-times text-danger me-2"></i>
+                Xóa người dùng
+            </h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index")">
+                            <i class="fas fa-users me-1"></i>
+                            Quản lý người dùng
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Details", new { id = Model.UserID })">
+                            Chi tiết
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Xóa</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="header-actions">
+            <a href="@Url.Action("Details", new { id = Model.UserID })" class="btn btn-info me-2">
+                <i class="fas fa-eye me-2"></i>
+                Xem chi tiết
+            </a>
+            <a href="@Url.Action("Index")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại
+            </a>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- User Information Card -->
+            <div class="user-detail-card">
+                <div class="row">
+                    <div class="col-md-3 text-center">
+                        <div class="user-detail-avatar">
+                            @Model.FullName.Substring(0, 1)
+                        </div>
+                        <span class="badge status-badge @(Model.IsActive ? "status-active" : "status-inactive") fs-6">
+                            @(Model.IsActive ? "Đang hoạt động" : "Đã vô hiệu hóa")
+                        </span>
+                    </div>
+                    <div class="col-md-9">
+                        <h3 class="mb-3">@Model.FullName</h3>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="detail-info-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-id-card me-2"></i>
+                                        ID người dùng
+                                    </div>
+                                    <div class="detail-value">#@Model.UserID</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="detail-info-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-envelope me-2"></i>
+                                        Email
+                                    </div>
+                                    <div class="detail-value">@Model.Email</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                        {
+                            <div class="detail-info-item">
+                                <div class="detail-label">
+                                    <i class="fas fa-phone me-2"></i>
+                                    Số điện thoại
+                                </div>
+                                <div class="detail-value">@Model.PhoneNumber</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warning/Information Card -->
+            @if (hasOrders)
+            {
+                <!-- User has orders - show warning -->
+                <div class="delete-warning">
+                    <div class="text-center">
+                        <i class="fas fa-exclamation-triangle delete-warning-icon"></i>
+                        <h4>Không thể xóa người dùng này!</h4>
+                        <p class="mb-3">
+                            Người dùng <strong>@Model.FullName</strong> đã có <strong>@orderCount đơn hàng</strong> trong hệ thống.
+                            Để đảm bảo tính toàn vẹn dữ liệu, bạn chỉ có thể vô hiệu hóa tài khoản này.
+                        </p>
+                        
+                        <div class="alert alert-info">
+                            <h6 class="alert-heading">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Tại sao không thể xóa?
+                            </h6>
+                            <ul class="mb-0 text-start">
+                                <li>Đơn hàng cần lưu vết thông tin người đặt hàng</li>
+                                <li>Xóa người dùng sẽ làm mất liên kết với đơn hàng</li>
+                                <li>Điều này có thể gây ra lỗi hệ thống và mất dữ liệu</li>
+                                <li>Vô hiệu hóa tài khoản sẽ ngăn đăng nhập nhưng giữ lại dữ liệu</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alternative Actions -->
+                <div class="user-detail-card">
+                    <h5 class="mb-3">
+                        <i class="fas fa-cogs me-2"></i>
+                        Hành động thay thế
+                    </h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            @if (Model.IsActive)
+                            {
+                                <div class="d-grid">
+                                    <form asp-action="Edit" method="post">
+                                        <input type="hidden" name="UserID" value="@Model.UserID" />
+                                        <input type="hidden" name="FullName" value="@Model.FullName" />
+                                        <input type="hidden" name="Email" value="@Model.Email" />
+                                        <input type="hidden" name="PhoneNumber" value="@Model.PhoneNumber" />
+                                        <input type="hidden" name="IsActive" value="false" />
+                                        <button type="submit" class="btn btn-warning btn-lg">
+                                            <i class="fas fa-ban me-2"></i>
+                                            Vô hiệu hóa tài khoản
+                                        </button>
+                                    </form>
+                                    <small class="text-muted mt-2">
+                                        Người dùng sẽ không thể đăng nhập nhưng dữ liệu được giữ lại
+                                    </small>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center">
+                                    <p class="text-muted">
+                                        <i class="fas fa-ban me-2"></i>
+                                        Tài khoản đã được vô hiệu hóa
+                                    </p>
+                                    <form asp-action="Edit" method="post" class="d-inline">
+                                        <input type="hidden" name="UserID" value="@Model.UserID" />
+                                        <input type="hidden" name="FullName" value="@Model.FullName" />
+                                        <input type="hidden" name="Email" value="@Model.Email" />
+                                        <input type="hidden" name="PhoneNumber" value="@Model.PhoneNumber" />
+                                        <input type="hidden" name="IsActive" value="true" />
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fas fa-check me-2"></i>
+                                            Kích hoạt lại
+                                        </button>
+                                    </form>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-grid gap-2">
+                                <a href="@Url.Action("Edit", new { id = Model.UserID })" class="btn btn-outline-jollibee">
+                                    <i class="fas fa-edit me-2"></i>
+                                    Chỉnh sửa thông tin
+                                </a>
+                                <a href="@Url.Action("Details", new { id = Model.UserID })" class="btn btn-outline-info">
+                                    <i class="fas fa-eye me-2"></i>
+                                    Xem chi tiết đơn hàng
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <!-- User has no orders - can be deleted -->
+                <div class="user-detail-card">
+                    <div class="text-center">
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle fs-1 text-warning mb-3"></i>
+                            <h4 class="alert-heading">Xác nhận xóa người dùng</h4>
+                            <p>Bạn có chắc chắn muốn xóa người dùng <strong>@Model.FullName</strong>?</p>
+                            <hr>
+                            <p class="mb-0">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan sẽ bị xóa vĩnh viễn.
+                            </p>
+                        </div>
+                        
+                        <div class="alert alert-success">
+                            <h6 class="alert-heading">
+                                <i class="fas fa-check-circle me-2"></i>
+                                An toàn để xóa
+                            </h6>
+                            <ul class="mb-0">
+                                <li>Người dùng này chưa có đơn hàng nào</li>
+                                <li>Không có dữ liệu liên quan khác</li>
+                                <li>Có thể xóa an toàn khỏi hệ thống</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirmation Form -->
+                <div class="user-detail-card">
+                    <form asp-action="Delete" method="post" id="deleteForm">
+                        <input type="hidden" asp-for="UserID" />
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="confirmDelete" required>
+                            <label class="form-check-label" for="confirmDelete">
+                                Tôi hiểu rằng hành động này không thể hoàn tác và đồng ý xóa người dùng này.
+                            </label>
+                        </div>
+
+                        <div class="d-flex gap-3 justify-content-center">
+                            <a href="@Url.Action("Details", new { id = Model.UserID })" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-times me-2"></i>
+                                Hủy bỏ
+                            </a>
+                            <button type="submit" class="btn btn-danger btn-lg" id="deleteBtn" disabled>
+                                <i class="fas fa-trash me-2"></i>
+                                Xóa vĩnh viễn
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            }
+
+            <!-- Additional Information -->
+            <div class="user-detail-card">
+                <h6 class="mb-3">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    Thống kê người dùng
+                </h6>
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-icon" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="stats-number">@orderCount</div>
+                            <div class="stats-label">Đơn hàng</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-icon" style="background: linear-gradient(135deg, #17a2b8, #138496);">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="stats-number">@Model.UserAddresses.Count</div>
+                            <div class="stats-label">Địa chỉ</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-icon" style="background: linear-gradient(135deg, #ffc107, #e0a800);">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <div class="stats-number">@Model.Carts.Count</div>
+                            <div class="stats-label">Giỏ hàng</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-icon" style="background: linear-gradient(135deg, @(Model.IsActive ? "#28a745" : "#dc3545"), @(Model.IsActive ? "#20c997" : "#c82333"));">
+                                <i class="fas fa-@(Model.IsActive ? "check" : "times")"></i>
+                            </div>
+                            <div class="stats-number">@(Model.IsActive ? "ON" : "OFF")</div>
+                            <div class="stats-label">Trạng thái</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Enable/disable delete button based on checkbox
+            $('#confirmDelete').change(function() {
+                const deleteBtn = $('#deleteBtn');
+                if ($(this).is(':checked')) {
+                    deleteBtn.prop('disabled', false);
+                } else {
+                    deleteBtn.prop('disabled', true);
+                }
+            });
+
+            // Confirm deletion
+            $('#deleteForm').submit(function(e) {
+                const confirmed = confirm('Bạn có chắc chắn muốn xóa người dùng này? Hành động này không thể hoàn tác!');
+                if (!confirmed) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                const deleteBtn = $('#deleteBtn');
+                deleteBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Đang xóa...');
+                
+                // Re-enable button after 5 seconds if form doesn't submit successfully
+                setTimeout(function() {
+                    deleteBtn.prop('disabled', false).html('<i class="fas fa-trash me-2"></i>Xóa vĩnh viễn');
+                    $('#confirmDelete').prop('checked', false);
+                }, 5000);
+            });
+
+            // Double click protection
+            let submitClicked = false;
+            $('#deleteBtn').click(function() {
+                if (submitClicked) {
+                    return false;
+                }
+                submitClicked = true;
+                setTimeout(function() {
+                    submitClicked = false;
+                }, 3000);
+            });
+        });
+    </script>
+} 

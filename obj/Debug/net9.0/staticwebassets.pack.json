@@ -473,6 +473,10 @@
       "PackagePath": "staticwebassets\\css\\category-admin.css"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\order-admin.css",
+      "PackagePath": "staticwebassets\\css\\order-admin.css"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\product-admin.css",
       "PackagePath": "staticwebassets\\css\\product-admin.css"
     },
@@ -487,6 +491,10 @@
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\store-admin.css",
       "PackagePath": "staticwebassets\\css\\store-admin.css"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\user-admin.css",
+      "PackagePath": "staticwebassets\\css\\user-admin.css"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\favicon.ico",
