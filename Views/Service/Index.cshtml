@@ -1,0 +1,197 @@
+@{
+    ViewData["Title"] = "Dịch Vụ";
+}
+
+<div class="services-hero position-relative">
+    <div class="services-overlay"></div>
+    <div class="container position-relative">
+        <div class="services-content text-center">
+            <h1 class="display-4 fw-bold text-white mb-4">DỊCH VỤ</h1>
+            <p class="lead text-white-75">TẬN HƯỞNG NHỮNG KHOẢNH KHẮC TRỌN VẸN CÙNG JOLLIBEE</p>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Hotline -->
+        <div class="col-md-6 col-lg-4">
+            <div class="service-card h-100">
+                <div class="service-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <h3>1900 - 1533</h3>
+                <p>Liên hệ ngay với chúng tôi để được tư vấn và hỗ trợ.</p>
+                <a href="#" class="btn btn-service">Xem thêm</a>
+            </div>
+        </div>
+        <!-- Birthday Party -->
+        <div class="col-md-6 col-lg-4">
+            <div class="service-card h-100">
+                <div class="service-icon">
+                    <i class="fas fa-birthday-cake"></i>
+                </div>
+                <h3>Đặt tiệc sinh nhật</h3>
+                <p>Bạn đang tìm ý tưởng cho một buổi tiệc sinh nhật thật đặc biệt dành cho con của bạn? Hãy chọn những bữa tiệc của Jollibee. Sẽ có nhiều điều vui nhộn và rất đáng nhớ dành cho con của bạn.</p>
+                <a href="#" class="btn btn-service">Xem thêm</a>
+            </div>
+        </div>
+        <!-- Kids Club -->
+        <div class="col-md-6 col-lg-4">
+            <div class="service-card h-100">
+                <div class="service-icon">
+                    <i class="fas fa-child"></i>
+                </div>
+                <h3>Jollibee Kid Club</h3>
+                <p>Hãy để con bạn thoả thích thể hiện và khám phá tài năng bên trong của mình cùng cơ hội gặp gỡ những bạn đồng lứa khác tại Jollibee Kids Club.</p>
+                <a href="#" class="btn btn-service">Xem thêm</a>
+            </div>
+        </div>
+        <!-- Big Order -->
+        <div class="col-md-6 col-lg-4">
+            <div class="service-card h-100">
+                <div class="service-icon">
+                    <i class="fas fa-box-open"></i>
+                </div>
+                <h3>Đơn hàng lớn</h3>
+                <p>Để phục vụ sở thích quây quần cùng gia đình và bạn bè, chương trình chiết khấu hấp dẫn dành cho những đơn hàng lớn đã ra đời để đem đến những lựa chọn tiện lợi hơn cho bạn.</p>
+                <a href="#" class="btn btn-service">Xem thêm</a>
+            </div>
+        </div>
+        <!-- Gift Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="service-card h-100">
+                <div class="service-icon">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <h3>Thẻ Quà Tặng</h3>
+                <p>Thẻ quà tặng Jollibee - món quà ý nghĩa cho người thân và bạn bè trong mọi dịp đặc biệt.</p>
+                <a href="#" class="btn btn-service">Xem thêm</a>
+            </div>
+        </div>
+        <!-- Online Order -->
+        <div class="col-md-6 col-lg-4">
+            <div class="service-card h-100">
+                <div class="service-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Đặt Hàng Online</h3>
+                <p>Đặt hàng trực tuyến dễ dàng qua website hoặc ứng dụng di động với nhiều ưu đãi hấp dẫn.</p>
+                <a href="#" class="btn btn-service">Xem thêm</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .services-hero {
+        background-image: url('/assets/images/services-bg.jpg');
+        background-size: cover;
+        background-position: center;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .services-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(227, 25, 55, 0.9), rgba(227, 25, 55, 0.7));
+    }
+
+    .services-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .service-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(227, 25, 55, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(227, 25, 55, 0.15);
+        border-color: rgba(227, 25, 55, 0.2);
+    }
+
+    .service-icon {
+        width: 80px;
+        height: 80px;
+        background: #e31937;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: white;
+        font-size: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .service-card:hover .service-icon {
+        transform: scale(1.1);
+        background: #ffc627;
+        color: #e31937;
+    }
+
+    .service-card h3 {
+        color: #e31937;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .service-card p {
+        color: #666;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-service {
+        background: #e31937;
+        color: white;
+        border: none;
+        padding: 0.5rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-service:hover {
+        background: #ffc627;
+        color: #e31937;
+        transform: translateY(-2px);
+    }
+
+    @@media (max-width: 768px) {
+        .services-hero {
+            height: 300px;
+        }
+        
+        .service-card {
+            padding: 1.5rem;
+        }
+        
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+    }
+</style> 

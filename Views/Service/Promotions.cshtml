@@ -1,0 +1,165 @@
+@{
+    ViewData["Title"] = "Khuyến mãi";
+}
+
+<div class="promotions-hero position-relative" style="background-image: url('/assets/images/banner1_trangchu.jpg');">
+    <div class="promotions-overlay"></div>
+    <div class="promotions-content text-center">
+        <h1 class="display-4 fw-bold text-white mb-4">KHUYẾN MÃI</h1>
+        <p class="lead text-white-75">KHÁM PHÁ NHỮNG ƯU ĐÃI HẤP DẪN TỪ JOLLIBEE</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Promotion 1 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="promotion-card h-100">
+                <div class="promotion-image">
+                    <img src="~/assets/images/Trachanh_khuyenmai.jpg" alt="Trà chanh hạt chia" class="img-fluid">
+                </div>
+                <div class="promotion-content">
+                    <h3>Trà chanh hạt chia - Chua ngọt thanh mát</h3>
+                    <p>Thưởng thức hương vị mới lạ với trà chanh hạt chia.</p>
+                    <a href="#" class="btn btn-promotion">Xem thêm</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promotion 2 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="promotion-card h-100">
+                <div class="promotion-image">
+                    <img src="~/assets/images/Sinhnhatthaga_khuyenmai.jpg" alt="Sinh nhật thả ga" class="img-fluid">
+                </div>
+                <div class="promotion-content">
+                    <h3>Sinh nhật thả ga, Teen quẩy siêu đã</h3>
+                    <p>Chương trình đặc biệt dành cho các bạn teen trong dịp sinh nhật.</p>
+                    <a href="#" class="btn btn-promotion">Xem thêm</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promotion 3 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="promotion-card h-100">
+                <div class="promotion-image">
+                    <img src="~/assets/images/DatNhanTaiCuaHang_khuyenmai.jpg" alt="Đặt món nhận tại cửa hàng" class="img-fluid">
+                </div>
+                <div class="promotion-content">
+                    <h3>Đặt món nhận tại cửa hàng - Đặt Jollibee App ngay!</h3>
+                    <p>Tiết kiệm thời gian với dịch vụ đặt món và nhận tại cửa hàng.</p>
+                    <a href="#" class="btn btn-promotion">Xem thêm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .promotions-hero {
+        background-size: cover;
+        background-position: center;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        width: 100%;
+    }
+
+    .promotions-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(227, 25, 55, 0.9), rgba(227, 25, 55, 0.7));
+    }
+
+    .promotions-content {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        text-align: center;
+    }
+
+    .promotion-card {
+        background: #ffffff;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(227, 25, 55, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .promotion-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(227, 25, 55, 0.15);
+    }
+
+    .promotion-image {
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .promotion-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .promotion-card:hover .promotion-image img {
+        transform: scale(1.1);
+    }
+
+    .promotion-content {
+        padding: 1.5rem;
+    }
+
+    .promotion-content h3 {
+        color: #e31937;
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .promotion-content p {
+        color: #666;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-promotion {
+        background: #e31937;
+        color: white;
+        border: none;
+        padding: 0.5rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-promotion:hover {
+        background: #ffc627;
+        color: #e31937;
+        transform: translateY(-2px);
+    }
+
+    @@media (max-width: 768px) {
+        .promotions-hero {
+            height: 300px;
+        }
+        
+        .promotion-card {
+            margin-bottom: 1.5rem;
+        }
+        
+        .promotion-image {
+            height: 180px;
+        }
+    }
+</style> 

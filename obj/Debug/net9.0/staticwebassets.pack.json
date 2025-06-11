@@ -2,7 +2,7 @@
   "Files": [
     {
       "Id": "E:\\Programming\\GitHub\\JollibeeClone\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\JollibeeClone.bundle.scp.css",
-      "PackagePath": "staticwebassets\\JollibeeClone.fdksstme51.bundle.scp.css"
+      "PackagePath": "staticwebassets\\JollibeeClone.clk443y3we.bundle.scp.css"
     },
     {
       "Id": "E:\\Programming\\GitHub\\JollibeeClone\\wwwroot\\assets\\images\\1burger1khoai1nuoc_menu.png",
@@ -321,6 +321,10 @@
       "PackagePath": "staticwebassets\\assets\\images\\laytaicuahang_trangchu.png"
     },
     {
+      "Id": "E:\\Programming\\GitHub\\JollibeeClone\\wwwroot\\assets\\images\\logo-footer.png",
+      "PackagePath": "staticwebassets\\assets\\images\\logo-footer.png"
+    },
+    {
       "Id": "E:\\Programming\\GitHub\\JollibeeClone\\wwwroot\\assets\\images\\logo_appstore.png",
       "PackagePath": "staticwebassets\\assets\\images\\logo_appstore.png"
     },
@@ -445,8 +449,28 @@
       "PackagePath": "staticwebassets\\assets\\images\\tuideocheo_mini.jpg"
     },
     {
+      "Id": "E:\\Programming\\GitHub\\JollibeeClone\\wwwroot\\css\\banner-welcome.css",
+      "PackagePath": "staticwebassets\\css\\banner-welcome.css"
+    },
+    {
+      "Id": "E:\\Programming\\GitHub\\JollibeeClone\\wwwroot\\css\\news-section.css",
+      "PackagePath": "staticwebassets\\css\\news-section.css"
+    },
+    {
+      "Id": "E:\\Programming\\GitHub\\JollibeeClone\\wwwroot\\css\\service-section.css",
+      "PackagePath": "staticwebassets\\css\\service-section.css"
+    },
+    {
       "Id": "E:\\Programming\\GitHub\\JollibeeClone\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "E:\\Programming\\GitHub\\JollibeeClone\\wwwroot\\css\\store-locator.css",
+      "PackagePath": "staticwebassets\\css\\store-locator.css"
+    },
+    {
+      "Id": "E:\\Programming\\GitHub\\JollibeeClone\\wwwroot\\css\\today-menu.css",
+      "PackagePath": "staticwebassets\\css\\today-menu.css"
     },
     {
       "Id": "E:\\Programming\\GitHub\\JollibeeClone\\wwwroot\\favicon.ico",
@@ -455,6 +479,10 @@
     {
       "Id": "E:\\Programming\\GitHub\\JollibeeClone\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "E:\\Programming\\GitHub\\JollibeeClone\\wwwroot\\js\\store-locator.js",
+      "PackagePath": "staticwebassets\\js\\store-locator.js"
     },
     {
       "Id": "E:\\Programming\\GitHub\\JollibeeClone\\wwwroot\\lib\\bootstrap\\LICENSE",
