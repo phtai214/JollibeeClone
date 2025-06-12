@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("JollibeeClone")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1482f315afee8740a4d1b169e01582a2edb04c3a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+05ddba834edbbb0171f9a6e4b6f0124f373be070")]
 [assembly: System.Reflection.AssemblyProductAttribute("JollibeeClone")]
 [assembly: System.Reflection.AssemblyTitleAttribute("JollibeeClone")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -473,6 +473,10 @@
       "PackagePath": "staticwebassets\\css\\category-admin.css"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\modern-dashboard.css",
+      "PackagePath": "staticwebassets\\css\\modern-dashboard.css"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\order-admin.css",
       "PackagePath": "staticwebassets\\css\\order-admin.css"
     },
@@ -487,6 +491,10 @@
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\smart-search.css",
+      "PackagePath": "staticwebassets\\css\\smart-search.css"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\store-admin.css",
@@ -517,8 +525,16 @@
       "PackagePath": "staticwebassets\\js\\address-selector.js"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\admin.js",
+      "PackagePath": "staticwebassets\\js\\admin.js"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\smart-search.js",
+      "PackagePath": "staticwebassets\\js\\smart-search.js"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\lib\\bootstrap\\LICENSE",

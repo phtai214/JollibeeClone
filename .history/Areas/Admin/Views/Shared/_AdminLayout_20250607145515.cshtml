@@ -1,0 +1,950 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Jollibee Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/adminpanel.css" asp-append-version="true" />
+    
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                @* <img src="~/images/logo_jollibee.png" alt="Jollibee" class="logo" /> *@
+                <img src="~/assets/images/logo_jollibee.png" alt="Jollibee" class="logo" />
+                <h4>Admin Panel</h4>
+            </div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="~/Admin" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/Admin/Category" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Category" ? "active" : "")">
+                        <i class="fas fa-list"></i>
+                        <span>Danh mục</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/Admin/Product" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Product" ? "active" : "")">
+                        <i class="fas fa-hamburger"></i>
+                        <span>Sản phẩm</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/Admin/Order" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Order" ? "active" : "")">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Đơn hàng</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/Admin/User" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "User" ? "active" : "")">
+                        <i class="fas fa-users"></i>
+                        <span>Người dùng</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/Admin/Store" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Store" ? "active" : "")">
+                        <i class="fas fa-store"></i>
+                        <span>Cửa hàng</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/Admin/Promotion">
+                        <i class="fas fa-tags"></i>
+                        <span>Voucher</span>
+                    </a>
+                </li>
+                <li>
+                    <form method="post" action="@Url.Action("Logout", "Auth", new { area = "Admin" })" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="nav-link logout-btn" onclick="return confirm('Bạn có chắc muốn đăng xuất?')" style="background: none; border: none; color: inherit; text-align: left; width: 100%; padding: 0.75rem 1rem;">
+                            <i class="fas fa-right-from-bracket" ></i>
+                            <span>Đăng xuất</span>
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <!-- Dynamic Breadcrumb with Icons -->
+                    <div class="dynamic-breadcrumb">
+                        <div class="breadcrumb-item">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        @if (ViewData["Title"] != null && ViewData["Title"].ToString() != "Dashboard")
+                        {
+                            <i class="fas fa-chevron-right breadcrumb-separator"></i>
+                            <div class="breadcrumb-item active">
+                                <i class="fas fa-circle-dot"></i>
+                                <span>@ViewData["Title"]</span>
+                            </div>
+                        }
+                    </div>
+
+                        <!-- Enhanced Real-time Stats Bar -->
+    <div class="enhanced-stats-bar">
+        <div class="stat-card modern-card" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Người dùng mới hôm nay">
+            <div class="stat-icon users-icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value" id="newUsersToday">0</div>
+                <div class="stat-label">Người dùng mới</div>
+                <div class="stat-trend positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span class="trend-value">+12%</span>
+                </div>
+            </div>
+            <div class="stat-sparkline" data-stat="users"></div>
+        </div>
+
+        <div class="stat-card modern-card" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Đơn hàng mới hôm nay">
+            <div class="stat-icon orders-icon">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value" id="newOrdersToday">0</div>
+                <div class="stat-label">Đơn hàng mới</div>
+                <div class="stat-trend negative">
+                    <i class="fas fa-arrow-down"></i>
+                    <span class="trend-value">-3%</span>
+                </div>
+            </div>
+            <div class="stat-sparkline" data-stat="orders"></div>
+        </div>
+
+        <div class="stat-card modern-card" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Doanh thu tuần này">
+            <div class="stat-icon revenue-icon">
+                <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value" id="weeklyRevenue">0 đ</div>
+                <div class="stat-label">Doanh thu tuần</div>
+                <div class="stat-trend positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span class="trend-value">+8%</span>
+                </div>
+            </div>
+            <div class="stat-sparkline" data-stat="revenue"></div>
+        </div>
+
+        <div class="stat-card modern-card" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sản phẩm được thêm">
+            <div class="stat-icon products-icon">
+                <i class="fas fa-hamburger"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value" id="newProductsToday">0</div>
+                <div class="stat-label">Sản phẩm mới</div>
+                <div class="stat-trend positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span class="trend-value">+5%</span>
+                </div>
+            </div>
+            <div class="stat-sparkline" data-stat="products"></div>
+        </div>
+    </div>
+
+                    <!-- Smart Search with AI -->
+                    <div class="smart-search">
+                        <div class="search-container">
+                            <i class="fas fa-brain search-ai-icon"></i>
+                            <input type="text" class="search-input" placeholder="AI Smart Search...">
+                            <div class="search-suggestions">
+                                <div class="suggestion-category">
+                                    <h6>Gợi ý nhanh</h6>
+                                    <div class="suggestion-item">
+                                        <i class="fas fa-hamburger"></i>
+                                        <span>Sản phẩm bán chạy</span>
+                                    </div>
+                                    <div class="suggestion-item">
+                                        <i class="fas fa-chart-line"></i>
+                                        <span>Báo cáo doanh thu</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @* <button class="search-filter-btn" data-bs-toggle="tooltip" title="Bộ lọc nâng cao">
+                            <i class="fas fa-sliders-h"></i>
+                        </button> *@
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <!-- Theme Switcher -->
+                        <div class="theme-switcher" data-bs-toggle="tooltip" title="Chuyển đổi giao diện">
+                            <button class="quick-btn theme-btn" id="themeToggle">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+
+                        <!-- Notifications -->
+                        <div class="dropdown">
+                            <button class="quick-btn notifications" data-bs-toggle="dropdown">
+                                <i class="fas fa-bell"></i>
+                                <span class="notification-badge pulse">3</span>
+                            </button>
+                            <div class="dropdown-menu notification-dropdown">
+                                <div class="dropdown-header">
+                                    <h6>Thông báo</h6>
+                                    <span class="badge bg-primary">3 mới</span>
+                                </div>
+                                <div class="notification-list">
+                                    <div class="notification-item unread">
+                                        <div class="notification-icon bg-success">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </div>
+                                        <div class="notification-content">
+                                            <h6>Đơn hàng mới</h6>
+                                            <p>Có 2 đơn hàng mới cần xử lý</p>
+                                            <small>2 phút trước</small>
+                                        </div>
+                                    </div>
+                                    <div class="notification-item unread">
+                                        <div class="notification-icon bg-warning">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </div>
+                                        <div class="notification-content">
+                                            <h6>Sản phẩm sắp hết</h6>
+                                            <p>Burger Tôm có ít hơn 10 phần</p>
+                                            <small>15 phút trước</small>
+                                        </div>
+                                    </div>
+                                    <div class="notification-item">
+                                        <div class="notification-icon bg-info">
+                                            <i class="fas fa-user-plus"></i>
+                                        </div>
+                                        <div class="notification-content">
+                                            <h6>Khách hàng mới</h6>
+                                            <p>5 khách hàng vừa đăng ký</p>
+                                            <small>1 giờ trước</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-footer">
+                                    <a href="#" class="btn btn-sm btn-outline-primary">Xem tất cả</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Messages -->
+                        <div class="dropdown">
+                            <button class="quick-btn messages" data-bs-toggle="dropdown">
+                                <i class="fas fa-envelope"></i>
+                                <span class="notification-badge">5</span>
+                            </button>
+                            <div class="dropdown-menu message-dropdown">
+                                <div class="dropdown-header">
+                                    <h6>Tin nhắn</h6>
+                                    <span class="badge bg-success">5 mới</span>
+                                </div>
+                                <div class="message-list">
+                                    <div class="message-item">
+                                        <img src="~/assets/images/logo_jollibee.png" alt="User" class="message-avatar">
+                                        <div class="message-content">
+                                            <h6>Nguyễn Văn A</h6>
+                                            <p>Có thể hỗ trợ tôi về đơn hàng...</p>
+                                            <small>5 phút trước</small>
+                                        </div>
+                                    </div>
+                                    <div class="message-item">
+                                        <img src="~/assets/images/logo_jollibee.png" alt="User" class="message-avatar">
+                                        <div class="message-content">
+                                            <h6>Trần Thị B</h6>
+                                            <p>Sản phẩm này còn không ạ?</p>
+                                            <small>10 phút trước</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-footer">
+                                    <a href="#" class="btn btn-sm btn-outline-success">Xem tất cả</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Add -->
+                        <div class="dropdown">
+                            <button class="quick-btn quick-add" data-bs-toggle="dropdown" data-bs-toggle="tooltip" title="Thêm nhanh">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <div class="dropdown-menu quick-add-dropdown">
+                                <h6 class="dropdown-header">Thêm nhanh</h6>
+                                <a class="dropdown-item" href="~/Admin/Product/Create">
+                                    <i class="fas fa-hamburger text-primary"></i>
+                                    Sản phẩm mới
+                                </a>
+                                <a class="dropdown-item" href="~/Admin/Category/Create">
+                                    <i class="fas fa-list text-success"></i>
+                                    Danh mục mới
+                                </a>
+                                <a class="dropdown-item" href="~/Admin/User/Create">
+                                    <i class="fas fa-user-plus text-info"></i>
+                                    Người dùng mới
+                                </a>
+                                <a class="dropdown-item" href="~/Admin/Promotion/Create">
+                                    <i class="fas fa-tags text-warning"></i>
+                                    Voucher mới
+                                </a>
+                                <a class="dropdown-item" href="~/Admin/Store/Create">
+                                    <i class="fas fa-store text-secondary"></i>
+                                    Cửa hàng mới
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Menu -->
+                    <div class="dropdown user-menu">
+                        <button class="user-menu-btn compact" data-bs-toggle="dropdown">
+                            <img src="~/assets/images/logo_jollibee.png" alt="Admin" class="user-avatar " />
+                            <div class="user-info">
+                                <span class="user-name">@Context.Session.GetString("AdminUserName")</span>
+                                <small class="user-role">Quản trị viên</small>
+                            </div>
+                            <i class="fas fa-chevron-down dropdown-arrow"></i>
+                        </button>
+                        
+                        <div class="dropdown-menu user-dropdown">
+                            <!-- User Profile Section -->
+                            <div class="user-profile-section">
+                                <img src="~/assets/images/logo_jollibee.png" alt="Admin" class="profile-avatar" />
+                                <div class="profile-info">
+                                    <h6>@Context.Session.GetString("AdminUserName")</h6>
+                                    <p>@Context.Session.GetString("AdminEmail")</p>
+                                    <span class="status-badge online">
+                                        <i class="fas fa-circle"></i>
+                                        Online
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="dropdown-divider"></div>
+                            
+                            <!-- Menu Items -->
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user-circle"></i>
+                                <span>Hồ sơ của tôi</span>
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-cog"></i>
+                                <span>Cài đặt</span>
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-bell"></i>
+                                <span>Thông báo</span>
+                                <span class="badge bg-warning ms-auto">3</span>
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Bảo mật</span>
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-question-circle"></i>
+                                <span>Trợ giúp</span>
+                            </a>
+                            
+                            <div class="dropdown-divider"></div>
+                            
+                            <!-- Theme Options -->
+                            <div class="theme-options">
+                                <span class="dropdown-header">Giao diện</span>
+                                <div class="theme-selector">
+                                    <button class="theme-option active" data-theme="light">
+                                        <i class="fas fa-sun"></i>
+                                        Sáng
+                                    </button>
+                                    <button class="theme-option" data-theme="dark">
+                                        <i class="fas fa-moon"></i>
+                                        Tối
+                                    </button>
+                                    <button class="theme-option" data-theme="auto">
+                                        <i class="fas fa-adjust"></i>
+                                        Tự động
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="dropdown-divider"></div>
+                            
+                            <!-- Logout -->
+                            <form method="post" action="@Url.Action("Logout", "Auth", new { area = "Admin" })" class="m-0">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="dropdown-item logout-item" onclick="return confirm('Bạn có chắc muốn đăng xuất?')">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Đăng xuất</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="content-area">
+                <!-- Breadcrumb -->
+                <nav class="breadcrumb-nav">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="~/Admin">Dashboard</a></li>
+                        @if (ViewData["Title"] != null && ViewData["Title"].ToString() != "Dashboard")
+                        {
+                            <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                        }
+                    </ol>
+                </nav>
+
+                <!-- Alert Messages -->
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>
+                        @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                <!-- Enhanced Page Content with Real-time Updates -->
+                <div class="page-content enhanced-content">
+                    <!-- Real-time Activity Feed (only show on dashboard) -->
+                    @if (ViewContext.RouteData.Values["controller"]?.ToString() == "Home")
+                    {
+                        <div class="activity-sidebar">
+                            <div class="activity-header">
+                                <h6><i class="fas fa-pulse"></i> Hoạt động trực tiếp</h6>
+                                <div class="activity-indicator">
+                                    <span class="live-dot"></span>
+                                    <span>LIVE</span>
+                                </div>
+                            </div>
+                            <div class="activity-feed" id="realTimeActivity">
+                                <!-- Activity items will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    }
+                    
+                    <div class="main-page-content">
+                        @RenderBody()
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/admin.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        // Add some interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // Theme Switcher
+            const themeToggle = document.getElementById('themeToggle');
+            const themeOptions = document.querySelectorAll('.theme-option');
+            let currentTheme = localStorage.getItem('theme') || 'light';
+
+            // Apply saved theme
+            applyTheme(currentTheme);
+            updateThemeUI(currentTheme);
+
+            // Theme toggle button
+            themeToggle.addEventListener('click', function() {
+                currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+                applyTheme(currentTheme);
+                updateThemeUI(currentTheme);
+                localStorage.setItem('theme', currentTheme);
+            });
+
+            // Theme option buttons
+            themeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const selectedTheme = this.dataset.theme;
+                    currentTheme = selectedTheme;
+                    applyTheme(currentTheme);
+                    updateThemeUI(currentTheme);
+                    localStorage.setItem('theme', currentTheme);
+                });
+            });
+
+            function applyTheme(theme) {
+                document.body.setAttribute('data-theme', theme);
+                
+                if (theme === 'dark') {
+                    document.body.style.background = '#1a1a1a';
+                    document.querySelector('.main-header').style.background = 'linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%)';
+                    document.querySelector('.sidebar').style.background = '#2d2d2d';
+                } else {
+                    document.body.style.background = '';
+                    document.querySelector('.main-header').style.background = 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)';
+                    document.querySelector('.sidebar').style.background = '';
+                }
+            }
+
+            function updateThemeUI(theme) {
+                // Update theme toggle icon
+                const icon = themeToggle.querySelector('i');
+                icon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+                
+                // Update theme options
+                themeOptions.forEach(option => {
+                    option.classList.toggle('active', option.dataset.theme === theme);
+                });
+            }
+
+            // Smart Search functionality
+            const searchInput = document.querySelector('.search-input');
+            const searchSuggestions = document.querySelector('.search-suggestions');
+            
+            if (searchInput) {
+                searchInput.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'scale(1.02)';
+                    searchSuggestions.style.opacity = '1';
+                    searchSuggestions.style.visibility = 'visible';
+                    searchSuggestions.style.transform = 'translateY(0)';
+                });
+
+                searchInput.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'scale(1)';
+                    setTimeout(() => {
+                        searchSuggestions.style.opacity = '0';
+                        searchSuggestions.style.visibility = 'hidden';
+                        searchSuggestions.style.transform = 'translateY(-10px)';
+                    }, 200);
+                });
+
+                // Keyboard shortcut (Ctrl + K)
+                document.addEventListener('keydown', function(e) {
+                    if (e.ctrlKey && e.key === 'k') {
+                        e.preventDefault();
+                        searchInput.focus();
+                    }
+                });
+
+                // Search input animation
+                searchInput.addEventListener('input', function() {
+                    const value = this.value;
+                    if (value.length > 0) {
+                        this.style.borderColor = 'var(--jollibee-red)';
+                        this.style.boxShadow = '0 0 0 0.2rem rgba(220, 38, 38, 0.1)';
+                    } else {
+                        this.style.borderColor = '#e9ecef';
+                        this.style.boxShadow = 'none';
+                    }
+                });
+            }
+
+            // Quick action buttons animations
+            const quickBtns = document.querySelectorAll('.quick-btn');
+            quickBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+
+            // Stat items hover effects
+            const statItems = document.querySelectorAll('.stat-item');
+            statItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px) scale(1.05)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Notification mark as read
+            const notificationItems = document.querySelectorAll('.notification-item');
+            notificationItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.classList.remove('unread');
+                    
+                    // Update notification count
+                    const badge = document.querySelector('.notifications .notification-badge');
+                    let count = parseInt(badge.textContent);
+                    if (count > 1) {
+                        badge.textContent = count - 1;
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                });
+            });
+
+            // User menu dropdown arrow rotation
+            const userMenuBtn = document.querySelector('.user-menu-btn');
+            const userDropdown = document.querySelector('.user-menu .dropdown-menu');
+            
+            if (userMenuBtn && userDropdown) {
+                userMenuBtn.addEventListener('click', function() {
+                    const arrow = this.querySelector('.dropdown-arrow');
+                    if (userDropdown.classList.contains('show')) {
+                        arrow.style.transform = 'rotate(0deg)';
+                    } else {
+                        arrow.style.transform = 'rotate(180deg)';
+                    }
+                });
+            }
+
+            // Quick stats real-time updates (simulation)
+            function updateQuickStats() {
+                const statNumbers = document.querySelectorAll('.stat-number');
+                statNumbers.forEach(stat => {
+                    const currentValue = parseInt(stat.textContent);
+                    const change = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
+                    const newValue = Math.max(0, currentValue + change);
+                    
+                    if (newValue !== currentValue) {
+                        stat.style.transform = 'scale(1.2)';
+                        stat.style.color = change > 0 ? '#10b981' : '#ef4444';
+                        
+                        setTimeout(() => {
+                            stat.textContent = newValue;
+                            stat.style.transform = 'scale(1)';
+                            stat.style.color = '#495057';
+                        }, 200);
+                    }
+                });
+            }
+
+            // Enhanced Real-time Stats System
+            let currentStats = {
+                users: 0,
+                orders: 0,
+                revenue: 0,
+                products: 0
+            };
+
+            // Initialize real-time stats
+            initializeRealTimeStats();
+
+            function initializeRealTimeStats() {
+                // Fetch initial stats from server
+                fetchStatsFromServer().then(stats => {
+                    currentStats = stats;
+                    updateStatsDisplay();
+                });
+
+                // Set up real-time updates every 10 seconds
+                setInterval(() => {
+                    fetchStatsFromServer().then(stats => {
+                        animateStatsUpdate(stats);
+                    });
+                }, 10000);
+            }
+
+            function fetchStatsFromServer() {
+                // Simulate API call - replace with actual AJAX call
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve({
+                            users: Math.floor(Math.random() * 100) + 50,
+                            orders: Math.floor(Math.random() * 50) + 20,
+                            revenue: Math.floor(Math.random() * 10000000) + 5000000,
+                            products: Math.floor(Math.random() * 20) + 10
+                        });
+                    }, 500);
+                });
+            }
+
+            function animateStatsUpdate(newStats) {
+                Object.keys(newStats).forEach(key => {
+                    const element = document.getElementById(getStatElementId(key));
+                    if (element && newStats[key] !== currentStats[key]) {
+                        // Add pulse animation
+                        element.classList.add('updating');
+                        
+                        // Count up animation
+                        animateCountUp(element, currentStats[key], newStats[key], key);
+                        
+                        setTimeout(() => {
+                            element.classList.remove('updating');
+                        }, 1000);
+                    }
+                });
+                
+                currentStats = newStats;
+                updateSparklines();
+            }
+
+            function getStatElementId(statType) {
+                const mapping = {
+                    users: 'newUsersToday',
+                    orders: 'newOrdersToday',
+                    revenue: 'weeklyRevenue',
+                    products: 'newProductsToday'
+                };
+                return mapping[statType];
+            }
+
+            function animateCountUp(element, start, end, type) {
+                const duration = 1000;
+                const startTime = performance.now();
+                
+                function updateCount(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    const current = Math.floor(start + (end - start) * progress);
+                    
+                    if (type === 'revenue') {
+                        element.textContent = current.toLocaleString('vi-VN') + ' đ';
+                    } else {
+                        element.textContent = current;
+                    }
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(updateCount);
+                    }
+                }
+                
+                requestAnimationFrame(updateCount);
+            }
+
+            function updateStatsDisplay() {
+                document.getElementById('newUsersToday').textContent = currentStats.users;
+                document.getElementById('newOrdersToday').textContent = currentStats.orders;
+                document.getElementById('weeklyRevenue').textContent = currentStats.revenue.toLocaleString('vi-VN') + ' đ';
+                document.getElementById('newProductsToday').textContent = currentStats.products;
+            }
+
+            function updateSparklines() {
+                // Simple sparkline simulation
+                const sparklines = document.querySelectorAll('.stat-sparkline');
+                sparklines.forEach(sparkline => {
+                    const points = Array.from({length: 10}, () => Math.random() * 100);
+                    drawSparkline(sparkline, points);
+                });
+            }
+
+            function drawSparkline(element, points) {
+                const width = element.offsetWidth || 60;
+                const height = element.offsetHeight || 20;
+                
+                const canvas = element.querySelector('canvas') || document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                
+                if (!element.querySelector('canvas')) {
+                    element.appendChild(canvas);
+                }
+                
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, width, height);
+                
+                ctx.strokeStyle = '#dc2626';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                
+                points.forEach((point, index) => {
+                    const x = (index / (points.length - 1)) * width;
+                    const y = height - (point / 100) * height;
+                    
+                    if (index === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                
+                ctx.stroke();
+            }
+
+            // Real-time Activity Feed
+            initializeActivityFeed();
+
+            function initializeActivityFeed() {
+                const activityFeed = document.getElementById('realTimeActivity');
+                if (!activityFeed) return;
+
+                // Add initial activities
+                addActivityItem('Đơn hàng mới #12345 đã được tạo', 'order', 'vừa xong');
+                addActivityItem('Sản phẩm "Burger Gà Giòn" đã được cập nhật', 'product', '2 phút trước');
+                addActivityItem('Người dùng mới đã đăng ký', 'user', '5 phút trước');
+
+                // Simulate real-time activity
+                setInterval(() => {
+                    const activities = [
+                        { text: 'Đơn hàng mới #' + Math.floor(Math.random() * 10000) + ' đã được tạo', type: 'order' },
+                        { text: 'Sản phẩm mới đã được thêm', type: 'product' },
+                        { text: 'Người dùng mới đã đăng ký', type: 'user' },
+                        { text: 'Voucher được sử dụng', type: 'promotion' },
+                        { text: 'Đánh giá mới: 5 sao', type: 'review' }
+                    ];
+                    
+                    const activity = activities[Math.floor(Math.random() * activities.length)];
+                    addActivityItem(activity.text, activity.type, 'vừa xong');
+                }, 15000);
+            }
+
+            function addActivityItem(text, type, time) {
+                const activityFeed = document.getElementById('realTimeActivity');
+                if (!activityFeed) return;
+
+                const iconMap = {
+                    order: 'fas fa-shopping-cart',
+                    product: 'fas fa-hamburger',
+                    user: 'fas fa-user-plus',
+                    promotion: 'fas fa-tags',
+                    review: 'fas fa-star'
+                };
+
+                const colorMap = {
+                    order: 'success',
+                    product: 'primary',
+                    user: 'info',
+                    promotion: 'warning',
+                    review: 'danger'
+                };
+
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item new-activity';
+                activityItem.innerHTML = `
+                    <div class="activity-icon ${colorMap[type]}">
+                        <i class="${iconMap[type]}"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p>${text}</p>
+                        <small>${time}</small>
+                    </div>
+                `;
+
+                activityFeed.insertBefore(activityItem, activityFeed.firstChild);
+
+                // Animate in
+                setTimeout(() => {
+                    activityItem.classList.remove('new-activity');
+                }, 100);
+
+                // Remove old items (keep only 10)
+                const items = activityFeed.querySelectorAll('.activity-item');
+                if (items.length > 10) {
+                    items[items.length - 1].remove();
+                }
+            }
+
+            // Enhanced notification system
+            function showNotification(message, type = 'info', duration = 5000) {
+                const notification = document.createElement('div');
+                notification.className = `notification notification-${type}`;
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                        <span>${message}</span>
+                    </div>
+                    <button class="notification-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+
+                document.body.appendChild(notification);
+
+                // Animate in
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100);
+
+                // Auto remove
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                }, duration);
+
+                // Manual close
+                notification.querySelector('.notification-close').addEventListener('click', () => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                });
+            }
+
+            // Update stats every 30 seconds
+            setInterval(updateQuickStats, 30000);
+
+            // Suggestion items click handlers
+            const suggestionItems = document.querySelectorAll('.suggestion-item');
+            suggestionItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const text = this.querySelector('span').textContent;
+                    searchInput.value = text;
+                    searchInput.dispatchEvent(new Event('input'));
+                    
+                    // Hide suggestions
+                    searchSuggestions.style.opacity = '0';
+                    searchSuggestions.style.visibility = 'hidden';
+                    searchSuggestions.style.transform = 'translateY(-10px)';
+                });
+            });
+
+            // Quick add buttons
+            const quickAddItems = document.querySelectorAll('.quick-add-dropdown .dropdown-item');
+            quickAddItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Add a small animation
+                    this.style.background = 'var(--jollibee-red)';
+                    this.style.color = 'white';
+                    
+                    setTimeout(() => {
+                        this.style.background = '';
+                        this.style.color = '';
+                    }, 200);
+                });
+            });
+
+            // Logout confirmation
+            const logoutItem = document.querySelector('.logout-item');
+            if (logoutItem) {
+                logoutItem.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    if (confirm('Bạn có chắc chắn muốn đăng xuất không?')) {
+                        // Add loading animation
+                        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Đang đăng xuất...</span>';
+                        
+                        // Simulate logout delay
+                        setTimeout(() => {
+                            window.location.href = this.href;
+                        }, 1000);
+                    }
+                });
+            }
+
+            // Add smooth scroll for better UX
+            document.documentElement.style.scrollBehavior = 'smooth';
+        });
+    </script>
+</body>
+</html>

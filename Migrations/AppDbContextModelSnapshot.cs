@@ -640,7 +640,7 @@ namespace JollibeeClone.Migrations
 
                     b.HasIndex("CategoryID");
 
-                    b.ToTable("PromotionCategoryScopes");
+                    b.ToTable("PromotionCategoryScopes", (string)null);
                 });
 
             modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.PromotionProductScope", b =>
@@ -655,7 +655,7 @@ namespace JollibeeClone.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("PromotionProductScopes");
+                    b.ToTable("PromotionProductScopes", (string)null);
                 });
 
             modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Role", b =>
@@ -816,6 +816,43 @@ namespace JollibeeClone.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("UserAddresses");
+                });
+
+            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.UserPromotion", b =>
+                {
+                    b.Property<int>("UserPromotionID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserPromotionID"));
+
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PromotionID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UsedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserPromotionID");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("PromotionID");
+
+                    b.HasIndex("UserID", "PromotionID")
+                        .IsUnique();
+
+                    b.ToTable("UserPromotions");
                 });
 
             modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.UserRole", b =>
@@ -1054,6 +1091,32 @@ namespace JollibeeClone.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.UserPromotion", b =>
+                {
+                    b.HasOne("JollibeeClone.Areas.Admin.Models.Orders", "Order")
+                        .WithMany("UserPromotions")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("JollibeeClone.Areas.Admin.Models.Promotion", "Promotion")
+                        .WithMany("UserPromotions")
+                        .HasForeignKey("PromotionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("JollibeeClone.Areas.Admin.Models.User", "User")
+                        .WithMany("UserPromotions")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Promotion");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.UserRole", b =>
                 {
                     b.HasOne("JollibeeClone.Areas.Admin.Models.Role", "Role")
@@ -1102,6 +1165,8 @@ namespace JollibeeClone.Migrations
                     b.Navigation("OrderItems");
 
                     b.Navigation("Payments");
+
+                    b.Navigation("UserPromotions");
                 });
 
             modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.PaymentMethods", b =>
@@ -1136,6 +1201,8 @@ namespace JollibeeClone.Migrations
                     b.Navigation("PromotionCategoryScopes");
 
                     b.Navigation("PromotionProductScopes");
+
+                    b.Navigation("UserPromotions");
                 });
 
             modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Role", b =>
@@ -1155,6 +1222,8 @@ namespace JollibeeClone.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("UserAddresses");
+
+                    b.Navigation("UserPromotions");
 
                     b.Navigation("UserRoles");
                 });

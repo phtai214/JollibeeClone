@@ -1,0 +1,416 @@
+/* Modern Dashboard Stats Cards */
+
+.modern-stats-card {
+    /* background: #ffffff; */
+    background: linear-gradient(135deg, #ffe8e8 0%, #faffc3 100%);
+    border-radius: 20px;
+    padding: 30px 25px;
+    border: none;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.modern-stats-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.modern-stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* Card Backgrounds & Icons */
+.card-background {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    
+}
+
+.card-icon {
+    font-size: 20px;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Users Card */
+.card-users .card-background {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Orders Card */
+.card-orders .card-background {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* Revenue Card */
+.card-revenue .card-background {
+    background: linear-gradient(135deg, #ffeacd 0%, #fcb69f 100%);
+}
+
+/* Products Card */
+.card-products .card-background {
+    background: linear-gradient(135deg, #ff9a9e 0%, #ffc5ed 100%);
+}
+
+/* Card Content */
+.card-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.stats-info {
+    margin-bottom: 15px;
+}
+
+.stats-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0 0 8px 0;
+    line-height: 1;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.stats-title {
+    font-size: 0.95rem;
+    color: #718096;
+    margin: 0;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0.02em;
+}
+
+/* Trend Indicators */
+.stats-trend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+}
+
+.stats-trend i {
+    font-size: 14px;
+    padding: 4px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.trend-positive i {
+    color: #48bb78;
+    background: rgba(72, 187, 120, 0.1);
+}
+
+.trend-negative i {
+    color: #f56565;
+    background: rgba(245, 101, 101, 0.1);
+}
+
+.trend-value {
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.trend-positive .trend-value {
+    color: #48bb78;
+}
+
+.trend-negative .trend-value {
+    color: #f56565;
+}
+
+.trend-label {
+    font-size: 0.75rem;
+    color: #a0aec0;
+    font-weight: 500;
+}
+
+/* Real-time Update Indicator */
+.realtime-indicator {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.realtime-indicator::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.pulse-dot {
+    width: 12px;
+    height: 12px;
+    background: #48bb78;
+    border-radius: 50%;
+    animation: pulse-dot 2s infinite;
+    box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.7);
+}
+
+@keyframes pulse-dot {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.7);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 8px rgba(72, 187, 120, 0);
+    }
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(72, 187, 120, 0);
+    }
+}
+
+.realtime-indicator > span {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.realtime-indicator small {
+    opacity: 0.9;
+    font-size: 0.875rem;
+}
+
+/* Enhanced Animations */
+.modern-stats-card .stats-number {
+    transition: all 0.3s ease;
+}
+
+.modern-stats-card:hover .stats-number {
+    transform: scale(1.05);
+    color: #1a202c;
+}
+
+.modern-stats-card:hover .card-background {
+    transform: scale(1.1);
+}
+
+.modern-stats-card .card-background {
+    transition: transform 0.3s ease;
+}
+
+/* Loading Animation */
+.stats-number.updating {
+    animation: number-update 0.6s ease-in-out;
+}
+
+@keyframes number-update {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); color: #667eea; }
+    100% { transform: scale(1); }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .modern-stats-card {
+        height: 160px;
+        padding: 25px 20px;
+    }
+    
+    .stats-number {
+        font-size: 2.2rem;
+    }
+    
+    .card-background {
+        width: 55px;
+        height: 55px;
+    }
+    
+    .card-icon {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 768px) {
+    .modern-stats-card {
+        height: 140px;
+        padding: 20px 18px;
+        margin-bottom: 20px;
+    }
+    
+    .stats-number {
+        font-size: 1.8rem;
+    }
+    
+    .card-background {
+        width: 50px;
+        height: 50px;
+        top: 15px;
+        right: 15px;
+        border-radius: 12px;
+    }
+    
+    .card-icon {
+        font-size: 20px;
+    }
+    
+    .stats-title {
+        font-size: 0.85rem;
+    }
+    
+    .trend-value {
+        font-size: 0.8rem;
+    }
+    
+    .trend-label {
+        font-size: 0.7rem;
+    }
+    
+    .realtime-indicator {
+        padding: 12px 20px;
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+    
+    .realtime-indicator > span {
+        font-size: 0.9rem;
+    }
+    
+    .realtime-indicator small {
+        font-size: 0.8rem;
+    }
+}
+
+/* Dark Theme Support */
+[data-theme="dark"] .modern-stats-card {
+    background: #2d3748;
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .stats-number {
+    color: #f7fafc;
+}
+
+[data-theme="dark"] .stats-title {
+    color: #a0aec0;
+}
+
+[data-theme="dark"] .trend-label {
+    color: #718096;
+}
+
+[data-theme="dark"] .modern-stats-card:hover .stats-number {
+    color: #ffffff;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .modern-stats-card,
+    .pulse-dot,
+    .realtime-indicator::before,
+    .stats-number,
+    .card-background {
+        animation: none;
+        transition: none;
+    }
+}
+
+.modern-stats-card:focus-within {
+    outline: 2px solid #667eea;
+    outline-offset: 4px;
+}
+
+/* Print Styles */
+@media print {
+    .modern-stats-card {
+        box-shadow: none;
+        border: 1px solid #e2e8f0;
+        break-inside: avoid;
+    }
+    
+    .card-background {
+        opacity: 0.3;
+    }
+    
+    .realtime-indicator {
+        background: #f7fafc;
+        color: #2d3748;
+        border: 1px solid #e2e8f0;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .modern-stats-card {
+        border: 2px solid #000;
+    }
+    
+    .stats-number {
+        color: #000;
+        font-weight: 900;
+    }
+    
+    .stats-title {
+        color: #333;
+        font-weight: 700;
+    }
+}
+
+/* Additional Animations */
+.animate-in {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.update-notification i,
+.api-update-notification i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+} 

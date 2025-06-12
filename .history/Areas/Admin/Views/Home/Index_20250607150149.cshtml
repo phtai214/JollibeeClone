@@ -1,0 +1,502 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="dashboard">
+    <!-- Enhanced Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="modern-stats-card card-users">
+                <div class="card-background">
+                    <div class="card-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="stats-info">
+                        <h3 class="stats-number" id="usersCount" data-target="@ViewBag.TotalUsers">@ViewBag.TotalUsers</h3>
+                        <h6 class="stats-title">Người dùng mới</h6>
+                    </div>
+                    <div class="stats-trend trend-positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span class="trend-value" id="usersPercent">0%</span>
+                        <small class="trend-label">hơn tháng trước</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="modern-stats-card card-orders">
+                <div class="card-background">
+                    <div class="card-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="stats-info">
+                        <h3 class="stats-number" id="ordersCount" data-target="@ViewBag.TotalOrders">@ViewBag.TotalOrders</h3>
+                        <h6 class="stats-title">Đơn hàng mới</h6>
+                    </div>
+                    <div class="stats-trend trend-negative">
+                        <i class="fas fa-arrow-down"></i>
+                        <span class="trend-value" id="ordersPercent">0%</span>
+                        <small class="trend-label">so với hôm qua</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="modern-stats-card card-revenue">
+                <div class="card-background">
+                    <div class="card-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="stats-info">
+                        <h3 class="stats-number" id="revenueCount" data-target="0">0 đ</h3>
+                        <h6 class="stats-title">Tổng doanh thu</h6>
+                    </div>
+                    <div class="stats-trend trend-negative">
+                        <i class="fas fa-arrow-down"></i>
+                        <span class="trend-value" id="revenuePercent">0%</span>
+                        <small class="trend-label">so với tuần trước</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="modern-stats-card card-products">
+                <div class="card-background">
+                    <div class="card-icon">
+                        <i class="fas fa-hamburger"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="stats-info">
+                        <h3 class="stats-number" id="productsCount" data-target="@ViewBag.TotalProducts">@ViewBag.TotalProducts</h3>
+                        <h6 class="stats-title">Sản phẩm</h6>
+                    </div>
+                    <div class="stats-trend trend-positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span class="trend-value" id="productsPercent">0%</span>
+                        <small class="trend-label">sản phẩm mới</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Real-time Updates Indicator -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="realtime-indicator">
+                <div class="pulse-dot"></div>
+                <span>Cập nhật thời gian thực</span>
+                <small id="lastUpdate">Cập nhật lần cuối: <span id="updateTime"></span></small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-bolt text-jollibee-red me-2"></i>
+                        Thao tác nhanh
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="~/Admin/Category/Create" class="quick-action-card">
+                                <div class="quick-action-icon bg-jollibee-red">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <div class="quick-action-content">
+                                    <h6>Thêm danh mục</h6>
+                                    <p>Tạo danh mục mới</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="~/Admin/Product/Create" class="quick-action-card">
+                                <div class="quick-action-icon bg-jollibee-orange">
+                                    <i class="fas fa-hamburger"></i>
+                                </div>
+                                <div class="quick-action-content">
+                                    <h6>Thêm sản phẩm</h6>
+                                    <p>Tạo sản phẩm mới</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="~/Admin/Category" class="quick-action-card">
+                                <div class="quick-action-icon bg-jollibee-yellow">
+                                    <i class="fas fa-list"></i>
+                                </div>
+                                <div class="quick-action-content">
+                                    <h6>Quản lý danh mục</h6>
+                                    <p>Xem tất cả danh mục</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="~/Admin/Product" class="quick-action-card">
+                                <div class="quick-action-icon" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                                    <i class="fas fa-box"></i>
+                                </div>
+                                <div class="quick-action-content">
+                                    <h6>Quản lý sản phẩm</h6>
+                                    <p>Xem tất cả sản phẩm</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-clock text-jollibee-red me-2"></i>
+                        Đơn hàng gần đây
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.RecentOrders != null && ((IEnumerable<dynamic>)ViewBag.RecentOrders).Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Khách hàng</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Ngày đặt</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var order in (IEnumerable<dynamic>)ViewBag.RecentOrders)
+                                    {
+                                        <tr>
+                                            <td>#@order.OrderID</td>
+                                            <td>@order.User?.Username</td>
+                                            <td>@order.TotalAmount.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
+                                            <td>@order.OrderDate.ToString("dd/MM/yyyy")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted text-center py-3">Chưa có đơn hàng nào</p>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-star text-jollibee-yellow me-2"></i>
+                        Sản phẩm mới nhất
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.RecentProducts != null && ((IEnumerable<dynamic>)ViewBag.RecentProducts).Any())
+                    {
+                        <div class="recent-products">
+                            @foreach (var product in (IEnumerable<dynamic>)ViewBag.RecentProducts)
+                            {
+                                <div class="recent-product-item">
+                                    <div class="product-image">
+                                        @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                        {
+                                            <img src="@product.ImageUrl" alt="@product.ProductName" />
+                                        }
+                                        else
+                                        {
+                                            <div class="no-image">
+                                                <i class="fas fa-image"></i>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="product-info">
+                                        <h6>@product.ProductName</h6>
+                                        <p class="text-muted">@product.Category?.CategoryName</p>
+                                        <span class="badge bg-jollibee-red">@product.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted text-center py-3">Chưa có sản phẩm nào</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Minimal styles for quick actions and recent products only */
+.quick-action-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.quick-action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    text-decoration: none;
+    color: inherit;
+}
+
+.quick-action-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.quick-action-content h6 {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.quick-action-content p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.recent-product-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.recent-product-item:last-child {
+    border-bottom: none;
+}
+
+.product-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.no-image {
+    width: 100%;
+    height: 100%;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+}
+
+.product-info h6 {
+    margin: 0 0 5px 0;
+    font-size: 0.9rem;
+}
+
+.product-info p {
+    margin: 0 0 5px 0;
+    font-size: 0.8rem;
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Initialize charts and animations
+    initializeCharts();
+    animateNumbers();
+    startRealTimeUpdates();
+    
+    function initializeCharts() {
+        const chartConfig = {
+            type: 'line',
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { display: false },
+                    y: { display: false }
+                },
+                elements: {
+                    point: { radius: 0 },
+                    line: { tension: 0.4 }
+                }
+            }
+        };
+
+        // Users Chart
+        new Chart(document.getElementById('usersChart'), {
+            ...chartConfig,
+            data: {
+                labels: ['', '', '', '', '', '', ''],
+                datasets: [{
+                    data: [12, 19, 15, 25, 22, 30, 28],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    fill: true,
+                    borderWidth: 2
+                }]
+            }
+        });
+
+        // Orders Chart
+        new Chart(document.getElementById('ordersChart'), {
+            ...chartConfig,
+            data: {
+                labels: ['', '', '', '', '', '', ''],
+                datasets: [{
+                    data: [30, 25, 20, 15, 10, 5, 0],
+                    borderColor: '#f5576c',
+                    backgroundColor: 'rgba(245, 87, 108, 0.1)',
+                    fill: true,
+                    borderWidth: 2
+                }]
+            }
+        });
+
+        // Revenue Chart
+        new Chart(document.getElementById('revenueChart'), {
+            ...chartConfig,
+            data: {
+                labels: ['', '', '', '', '', '', ''],
+                datasets: [{
+                    data: [100, 80, 60, 40, 20, 10, 0],
+                    borderColor: '#fcb69f',
+                    backgroundColor: 'rgba(252, 182, 159, 0.1)',
+                    fill: true,
+                    borderWidth: 2
+                }]
+            }
+        });
+
+        // Products Chart
+        new Chart(document.getElementById('productsChart'), {
+            ...chartConfig,
+            data: {
+                labels: ['', '', '', '', '', '', ''],
+                datasets: [{
+                    data: [5, 10, 8, 15, 12, 18, 20],
+                    borderColor: '#fcb69f',
+                    backgroundColor: 'rgba(252, 182, 159, 0.1)',
+                    fill: true,
+                    borderWidth: 2
+                }]
+            }
+        });
+    }
+
+    function animateNumbers() {
+        $('.stats-number').each(function() {
+            const $this = $(this);
+            const target = parseInt($this.data('target')) || 0;
+            const duration = 2000;
+            const start = 0;
+            const startTime = Date.now();
+
+            function updateNumber() {
+                const currentTime = Date.now();
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const current = Math.floor(start + (target - start) * progress);
+                
+                if ($this.attr('id') === 'revenueCount') {
+                    $this.text(current.toLocaleString('vi-VN') + ' đ');
+                } else {
+                    $this.text(current.toLocaleString('vi-VN'));
+                }
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateNumber);
+                }
+            }
+
+            requestAnimationFrame(updateNumber);
+        });
+    }
+
+    function startRealTimeUpdates() {
+        updateTime();
+        setInterval(updateTime, 1000);
+        
+        // Simulate real-time data updates
+        setInterval(function() {
+            updateRandomStats();
+        }, 5000);
+    }
+
+    function updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleString('vi-VN', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+        $('#updateTime').text(timeString);
+    }
+
+    function updateRandomStats() {
+        // Simulate random percentage changes
+        const percentages = [
+            Math.floor(Math.random() * 20),
+            Math.floor(Math.random() * 15),
+            Math.floor(Math.random() * 25),
+            Math.floor(Math.random() * 10)
+        ];
+
+        $('#usersPercent').text(percentages[0] + '%');
+        $('#ordersPercent').text(percentages[1] + '%');
+        $('#revenuePercent').text(percentages[2] + '%');
+        $('#productsPercent').text(percentages[3] + '%');
+    }
+});
+</script> 
