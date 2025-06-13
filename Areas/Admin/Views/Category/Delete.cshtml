@@ -1,7 +1,7 @@
-@model JollibeeClone.Areas.Admin.Models.Categories
+@model JollibeeClone.Models.Categories
 
 @{
-    ViewData["Title"] = "Xóa danh mục";
+    ViewData["Title"] = "XÃ³a danh má»¥c";
 }
 
 @section Styles {
@@ -14,67 +14,67 @@
         <div>
             <h2 class="page-title">
                 <i class="fas fa-trash text-danger me-2"></i>
-                Xóa danh mục
+                XÃ³a danh má»¥c
             </h2>
-            <p class="text-muted">Xác nhận xóa danh mục: <strong class="text-danger">@Model.CategoryName</strong></p>
+            <p class="text-muted">XÃ¡c nháº­n xÃ³a danh má»¥c: <strong class="text-danger">@Model.CategoryName</strong></p>
         </div>
         <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-2"></i>
-            Quay lại danh sách
+            Quay láº¡i danh sÃ¡ch
         </a>
     </div>
 
-    <!-- Cảnh báo -->
+    <!-- Cáº£nh bÃ¡o -->
     <div class="alert alert-danger" role="alert">
         <i class="fas fa-exclamation-triangle me-2"></i>
-        <strong>Cảnh báo!</strong> Hành động này không thể hoàn tác. Danh mục sẽ bị xóa vĩnh viễn khỏi hệ thống.
+        <strong>Cáº£nh bÃ¡o!</strong> HÃ nh Ä‘á»™ng nÃ y khÃ´ng thá»ƒ hoÃ n tÃ¡c. Danh má»¥c sáº½ bá»‹ xÃ³a vÄ©nh viá»…n khá»i há»‡ thá»‘ng.
     </div>
 
-    <!-- Kiểm tra ràng buộc -->
+    <!-- Kiá»ƒm tra rÃ ng buá»™c -->
     @if ((Model.Products != null && Model.Products.Any()) || (Model.SubCategories != null && Model.SubCategories.Any()))
     {
         <div class="alert alert-warning" role="alert">
             <i class="fas fa-ban me-2"></i>
-            <strong>Không thể xóa!</strong> Danh mục này có chứa:
+            <strong>KhÃ´ng thá»ƒ xÃ³a!</strong> Danh má»¥c nÃ y cÃ³ chá»©a:
             <ul class="mb-0 mt-2">
                 @if (Model.Products != null && Model.Products.Any())
                 {
-                    <li>@Model.Products.Count() sản phẩm</li>
+                    <li>@Model.Products.Count() sáº£n pháº©m</li>
                 }
                 @if (Model.SubCategories != null && Model.SubCategories.Any())
                 {
-                    <li>@Model.SubCategories.Count() danh mục con</li>
+                    <li>@Model.SubCategories.Count() danh má»¥c con</li>
                 }
             </ul>
-            <p class="mt-2 mb-0">Vui lòng chuyển hoặc xóa các mục này trước khi xóa danh mục.</p>
+            <p class="mt-2 mb-0">Vui lÃ²ng chuyá»ƒn hoáº·c xÃ³a cÃ¡c má»¥c nÃ y trÆ°á»›c khi xÃ³a danh má»¥c.</p>
         </div>
     }
 
-    <!-- Thông tin danh mục sẽ bị xóa -->
+    <!-- ThÃ´ng tin danh má»¥c sáº½ bá»‹ xÃ³a -->
     <div class="row">
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header bg-light">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-info-circle me-2"></i>
-                        Thông tin danh mục sẽ bị xóa
+                        ThÃ´ng tin danh má»¥c sáº½ bá»‹ xÃ³a
                     </h5>
                 </div>
                 <div class="card-body">
                     <dl class="row">
-                        <dt class="col-sm-3">ID danh mục:</dt>
+                        <dt class="col-sm-3">ID danh má»¥c:</dt>
                         <dd class="col-sm-9">@Html.DisplayFor(model => model.CategoryID)</dd>
 
-                        <dt class="col-sm-3">Tên danh mục:</dt>
+                        <dt class="col-sm-3">TÃªn danh má»¥c:</dt>
                         <dd class="col-sm-9">@Html.DisplayFor(model => model.CategoryName)</dd>
 
                         @if (!string.IsNullOrEmpty(Model.Description))
                         {
-                            <dt class="col-sm-3">Mô tả:</dt>
+                            <dt class="col-sm-3">MÃ´ táº£:</dt>
                             <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
                         }
 
-                        <dt class="col-sm-3">Danh mục cha:</dt>
+                        <dt class="col-sm-3">Danh má»¥c cha:</dt>
                         <dd class="col-sm-9">
                             @if (Model.ParentCategoryID.HasValue && Model.ParentCategory != null)
                             {
@@ -82,27 +82,27 @@
                             }
                             else
                             {
-                                <span class="text-muted">Danh mục gốc</span>
+                                <span class="text-muted">Danh má»¥c gá»‘c</span>
                             }
                         </dd>
 
-                        <dt class="col-sm-3">Số thứ tự:</dt>
+                        <dt class="col-sm-3">Sá»‘ thá»© tá»±:</dt>
                         <dd class="col-sm-9">@Html.DisplayFor(model => model.DisplayOrder)</dd>
 
-                        <dt class="col-sm-3">Số sản phẩm:</dt>
+                        <dt class="col-sm-3">Sá»‘ sáº£n pháº©m:</dt>
                         <dd class="col-sm-9">
-                            <span class="badge bg-info">@(Model.Products?.Count() ?? 0) sản phẩm</span>
+                            <span class="badge bg-info">@(Model.Products?.Count() ?? 0) sáº£n pháº©m</span>
                         </dd>
 
-                        <dt class="col-sm-3">Số danh mục con:</dt>
+                        <dt class="col-sm-3">Sá»‘ danh má»¥c con:</dt>
                         <dd class="col-sm-9">
-                            <span class="badge bg-secondary">@(Model.SubCategories?.Count() ?? 0) danh mục con</span>
+                            <span class="badge bg-secondary">@(Model.SubCategories?.Count() ?? 0) danh má»¥c con</span>
                         </dd>
                     </dl>
 
                     <hr>
 
-                    <!-- Form xác nhận xóa -->
+                    <!-- Form xÃ¡c nháº­n xÃ³a -->
                     @if ((Model.Products == null || !Model.Products.Any()) && (Model.SubCategories == null || !Model.SubCategories.Any()))
                     {
                         <form asp-action="Delete" method="post">
@@ -113,7 +113,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="confirmDelete" required>
                                     <label class="form-check-label" for="confirmDelete">
-                                        Tôi hiểu rằng hành động này không thể hoàn tác và đồng ý xóa danh mục này.
+                                        TÃ´i hiá»ƒu ráº±ng hÃ nh Ä‘á»™ng nÃ y khÃ´ng thá»ƒ hoÃ n tÃ¡c vÃ  Ä‘á»“ng Ã½ xÃ³a danh má»¥c nÃ y.
                                     </label>
                                 </div>
                             </div>
@@ -121,15 +121,15 @@
                             <div class="form-actions">
                                 <button type="submit" class="btn btn-danger btn-lg" id="deleteBtn" disabled>
                                     <i class="fas fa-trash me-2"></i>
-                                    Xác nhận xóa danh mục
+                                    XÃ¡c nháº­n xÃ³a danh má»¥c
                                 </button>
                                 <a href="@Url.Action("Index")" class="btn btn-secondary btn-lg">
                                     <i class="fas fa-times me-2"></i>
-                                    Hủy
+                                    Há»§y
                                 </a>
                                 <a href="@Url.Action("Edit", new { id = Model.CategoryID })" class="btn btn-warning btn-lg">
                                     <i class="fas fa-edit me-2"></i>
-                                    Chỉnh sửa thay vì xóa
+                                    Chá»‰nh sá»­a thay vÃ¬ xÃ³a
                                 </a>
                             </div>
                         </form>
@@ -139,16 +139,16 @@
                         <div class="text-center">
                             <p class="text-danger mb-3">
                                 <i class="fas fa-ban me-2"></i>
-                                Không thể xóa danh mục này vì có chứa dữ liệu.
+                                KhÃ´ng thá»ƒ xÃ³a danh má»¥c nÃ y vÃ¬ cÃ³ chá»©a dá»¯ liá»‡u.
                             </p>
                             <div class="form-actions">
                                 <a href="@Url.Action("Index")" class="btn btn-secondary btn-lg">
                                     <i class="fas fa-arrow-left me-2"></i>
-                                    Quay lại danh sách
+                                    Quay láº¡i danh sÃ¡ch
                                 </a>
                                 <a href="@Url.Action("Edit", new { id = Model.CategoryID })" class="btn btn-warning btn-lg">
                                     <i class="fas fa-edit me-2"></i>
-                                    Chỉnh sửa danh mục
+                                    Chá»‰nh sá»­a danh má»¥c
                                 </a>
                             </div>
                         </div>
@@ -156,28 +156,28 @@
                 </div>
             </div>
 
-            <!-- Danh sách sản phẩm trong danh mục -->
+            <!-- Danh sÃ¡ch sáº£n pháº©m trong danh má»¥c -->
             @if (Model.Products != null && Model.Products.Any())
             {
                 <div class="card mt-4">
                     <div class="card-header bg-warning text-dark">
                         <h5 class="card-title mb-0">
                             <i class="fas fa-hamburger me-2"></i>
-                            Sản phẩm trong danh mục (@Model.Products.Count())
+                            Sáº£n pháº©m trong danh má»¥c (@Model.Products.Count())
                         </h5>
                     </div>
                     <div class="card-body">
                         <p class="text-warning mb-3">
                             <i class="fas fa-exclamation-triangle me-2"></i>
-                            Các sản phẩm này sẽ cần được chuyển sang danh mục khác trước khi xóa:
+                            CÃ¡c sáº£n pháº©m nÃ y sáº½ cáº§n Ä‘Æ°á»£c chuyá»ƒn sang danh má»¥c khÃ¡c trÆ°á»›c khi xÃ³a:
                         </p>
                         <div class="table-responsive">
                             <table class="table table-sm">
                                 <thead>
                                     <tr>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Giá</th>
-                                        <th>Thao tác</th>
+                                        <th>TÃªn sáº£n pháº©m</th>
+                                        <th>GiÃ¡</th>
+                                        <th>Thao tÃ¡c</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -188,7 +188,7 @@
                                             <td>@product.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
                                             <td>
                                                 <a href="@Url.Action("Edit", "Product", new { id = product.ProductID })" class="btn btn-sm btn-outline-warning">
-                                                    Chuyển danh mục
+                                                    Chuyá»ƒn danh má»¥c
                                                 </a>
                                             </td>
                                         </tr>
@@ -198,26 +198,26 @@
                         </div>
                         @if (Model.Products.Count() > 5)
                         {
-                            <p class="text-muted">... và @(Model.Products.Count() - 5) sản phẩm khác</p>
+                            <p class="text-muted">... vÃ  @(Model.Products.Count() - 5) sáº£n pháº©m khÃ¡c</p>
                         }
                     </div>
                 </div>
             }
 
-            <!-- Danh sách danh mục con -->
+            <!-- Danh sÃ¡ch danh má»¥c con -->
             @if (Model.SubCategories != null && Model.SubCategories.Any())
             {
                 <div class="card mt-4">
                     <div class="card-header bg-warning text-dark">
                         <h5 class="card-title mb-0">
                             <i class="fas fa-sitemap me-2"></i>
-                            Danh mục con (@Model.SubCategories.Count())
+                            Danh má»¥c con (@Model.SubCategories.Count())
                         </h5>
                     </div>
                     <div class="card-body">
                         <p class="text-warning mb-3">
                             <i class="fas fa-exclamation-triangle me-2"></i>
-                            Các danh mục con này cần được xử lý trước:
+                            CÃ¡c danh má»¥c con nÃ y cáº§n Ä‘Æ°á»£c xá»­ lÃ½ trÆ°á»›c:
                         </p>
                         <div class="row">
                             @foreach (var subCategory in Model.SubCategories)
@@ -228,10 +228,10 @@
                                             <h6 class="mb-0">@subCategory.CategoryName</h6>
                                             <div>
                                                 <a href="@Url.Action("Edit", new { id = subCategory.CategoryID })" class="btn btn-sm btn-outline-warning">
-                                                    Chỉnh sửa
+                                                    Chá»‰nh sá»­a
                                                 </a>
                                                 <a href="@Url.Action("Delete", new { id = subCategory.CategoryID })" class="btn btn-sm btn-outline-danger">
-                                                    Xóa
+                                                    XÃ³a
                                                 </a>
                                             </div>
                                         </div>
@@ -249,12 +249,12 @@
         </div>
 
         <div class="col-lg-4">
-            <!-- Ảnh danh mục -->
+            <!-- áº¢nh danh má»¥c -->
             <div class="card">
                 <div class="card-header bg-light">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-image me-2"></i>
-                        Hình ảnh danh mục
+                        HÃ¬nh áº£nh danh má»¥c
                     </h5>
                 </div>
                 <div class="card-body text-center">
@@ -266,46 +266,46 @@
                     {
                         <div class="no-image">
                             <i class="fas fa-folder" style="font-size: 4rem; color: #ddd;"></i>
-                            <p class="text-muted mt-2">Không có ảnh</p>
+                            <p class="text-muted mt-2">KhÃ´ng cÃ³ áº£nh</p>
                         </div>
                     }
                 </div>
             </div>
 
-            <!-- Cảnh báo liên quan -->
+            <!-- Cáº£nh bÃ¡o liÃªn quan -->
             <div class="card mt-4">
                 <div class="card-header bg-warning text-dark">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-exclamation-triangle me-2"></i>
-                        Lưu ý quan trọng
+                        LÆ°u Ã½ quan trá»ng
                     </h5>
                 </div>
                 <div class="card-body">
                     <ul class="mb-0">
-                        <li>Danh mục sẽ bị xóa vĩnh viễn khỏi hệ thống</li>
-                        <li>Hình ảnh liên quan cũng sẽ bị xóa</li>
-                        <li>Không thể xóa nếu có sản phẩm hoặc danh mục con</li>
-                        <li>Thông tin thống kê sẽ bị ảnh hưởng</li>
-                        <li>Hành động này không thể hoàn tác</li>
+                        <li>Danh má»¥c sáº½ bá»‹ xÃ³a vÄ©nh viá»…n khá»i há»‡ thá»‘ng</li>
+                        <li>HÃ¬nh áº£nh liÃªn quan cÅ©ng sáº½ bá»‹ xÃ³a</li>
+                        <li>KhÃ´ng thá»ƒ xÃ³a náº¿u cÃ³ sáº£n pháº©m hoáº·c danh má»¥c con</li>
+                        <li>ThÃ´ng tin thá»‘ng kÃª sáº½ bá»‹ áº£nh hÆ°á»Ÿng</li>
+                        <li>HÃ nh Ä‘á»™ng nÃ y khÃ´ng thá»ƒ hoÃ n tÃ¡c</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Gợi ý thay thế -->
+            <!-- Gá»£i Ã½ thay tháº¿ -->
             <div class="card mt-4">
                 <div class="card-header bg-info text-white">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-lightbulb me-2"></i>
-                        Gợi ý thay thế
+                        Gá»£i Ã½ thay tháº¿
                     </h5>
                 </div>
                 <div class="card-body">
-                    <p><strong>Thay vì xóa, bạn có thể:</strong></p>
+                    <p><strong>Thay vÃ¬ xÃ³a, báº¡n cÃ³ thá»ƒ:</strong></p>
                     <ul class="mb-0">
-                        <li>Chuyển sản phẩm sang danh mục khác</li>
-                        <li>Gộp danh mục con vào danh mục cha</li>
-                        <li>Chỉnh sửa thông tin để phù hợp hơn</li>
-                        <li>Thay đổi thứ tự hiển thị</li>
+                        <li>Chuyá»ƒn sáº£n pháº©m sang danh má»¥c khÃ¡c</li>
+                        <li>Gá»™p danh má»¥c con vÃ o danh má»¥c cha</li>
+                        <li>Chá»‰nh sá»­a thÃ´ng tin Ä‘á»ƒ phÃ¹ há»£p hÆ¡n</li>
+                        <li>Thay Ä‘á»•i thá»© tá»± hiá»ƒn thá»‹</li>
                     </ul>
                 </div>
             </div>
@@ -325,11 +325,11 @@ $(document).ready(function() {
     $('form').on('submit', function(e) {
         if (!$('#confirmDelete').is(':checked')) {
             e.preventDefault();
-            alert('Vui lòng xác nhận bằng cách đánh dấu vào ô checkbox!');
+            alert('Vui lÃ²ng xÃ¡c nháº­n báº±ng cÃ¡ch Ä‘Ã¡nh dáº¥u vÃ o Ã´ checkbox!');
             return false;
         }
 
-        var confirmed = confirm('Bạn có chắc chắn muốn xóa danh mục "' + '@Model.CategoryName' + '"?\n\nHành động này không thể hoàn tác!');
+        var confirmed = confirm('Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n xÃ³a danh má»¥c "' + '@Model.CategoryName' + '"?\n\nHÃ nh Ä‘á»™ng nÃ y khÃ´ng thá»ƒ hoÃ n tÃ¡c!');
         if (!confirmed) {
             e.preventDefault();
             return false;
@@ -338,10 +338,11 @@ $(document).ready(function() {
         // Show loading state
         var submitBtn = $('#deleteBtn');
         var originalText = submitBtn.html();
-        submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Đang xóa...');
+        submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Äang xÃ³a...');
         
         // Don't reset on timeout since this is deletion
     });
 });
 </script>
 } 
+

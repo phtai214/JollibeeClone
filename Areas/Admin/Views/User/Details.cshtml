@@ -1,7 +1,7 @@
-@model JollibeeClone.Areas.Admin.Models.User
+@model JollibeeClone.Models.User
 
 @{
-    ViewData["Title"] = "Chi tiết người dùng";
+    ViewData["Title"] = "Chi tiáº¿t ngÆ°á»i dÃ¹ng";
 }
 
 @section Styles {
@@ -14,33 +14,33 @@
         <div>
             <h2 class="page-title">
                 <i class="fas fa-user text-jollibee-red me-2"></i>
-                Chi tiết người dùng
+                Chi tiáº¿t ngÆ°á»i dÃ¹ng
             </h2>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a href="@Url.Action("Index")">
                             <i class="fas fa-users me-1"></i>
-                            Quản lý người dùng
+                            Quáº£n lÃ½ ngÆ°á»i dÃ¹ng
                         </a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Chi tiết</li>
+                    <li class="breadcrumb-item active" aria-current="page">Chi tiáº¿t</li>
                 </ol>
             </nav>
         </div>
         <div class="header-actions">
             <a href="@Url.Action("Edit", new { id = Model.UserID })" class="btn btn-warning me-2">
                 <i class="fas fa-edit me-2"></i>
-                Chỉnh sửa
+                Chá»‰nh sá»­a
             </a>
             <a href="@Url.Action("Index")" class="btn btn-secondary">
                 <i class="fas fa-arrow-left me-2"></i>
-                Quay lại
+                Quay láº¡i
             </a>
         </div>
     </div>
 
-    <!-- Hiển thị thông báo -->
+    <!-- Hiá»ƒn thá»‹ thÃ´ng bÃ¡o -->
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert alert-success alert-dismissible fade show">
@@ -60,7 +60,7 @@
     }
 
     <div class="row">
-        <!-- Thông tin chính -->
+        <!-- ThÃ´ng tin chÃ­nh -->
         <div class="col-md-8">
             <div class="user-detail-card">
                 <div class="row">
@@ -69,7 +69,7 @@
                             @Model.FullName.Substring(0, 1)
                         </div>
                         <span class="badge status-badge @(Model.IsActive ? "status-active" : "status-inactive") fs-6">
-                            @(Model.IsActive ? "Đang hoạt động" : "Đã vô hiệu hóa")
+                            @(Model.IsActive ? "Äang hoáº¡t Ä‘á»™ng" : "ÄÃ£ vÃ´ hiá»‡u hÃ³a")
                         </span>
                     </div>
                     <div class="col-md-8">
@@ -78,7 +78,7 @@
                         <div class="detail-info-item">
                             <div class="detail-label">
                                 <i class="fas fa-id-card me-2"></i>
-                                ID người dùng
+                                ID ngÆ°á»i dÃ¹ng
                             </div>
                             <div class="detail-value">#@Model.UserID</div>
                         </div>
@@ -98,7 +98,7 @@
                             <div class="detail-info-item">
                                 <div class="detail-label">
                                     <i class="fas fa-phone me-2"></i>
-                                    Số điện thoại
+                                    Sá»‘ Ä‘iá»‡n thoáº¡i
                                 </div>
                                 <div class="detail-value">
                                     <a href="tel:@Model.PhoneNumber" class="text-decoration-none">@Model.PhoneNumber</a>
@@ -109,21 +109,21 @@
                         <div class="detail-info-item">
                             <div class="detail-label">
                                 <i class="fas fa-toggle-on me-2"></i>
-                                Trạng thái tài khoản
+                                Tráº¡ng thÃ¡i tÃ i khoáº£n
                             </div>
                             <div class="detail-value">
                                 @if (Model.IsActive)
                                 {
                                     <span class="text-success">
                                         <i class="fas fa-check-circle me-1"></i>
-                                        Đang hoạt động
+                                        Äang hoáº¡t Ä‘á»™ng
                                     </span>
                                 }
                                 else
                                 {
                                     <span class="text-danger">
                                         <i class="fas fa-times-circle me-1"></i>
-                                        Đã vô hiệu hóa
+                                        ÄÃ£ vÃ´ hiá»‡u hÃ³a
                                     </span>
                                 }
                             </div>
@@ -133,7 +133,7 @@
             </div>
         </div>
 
-        <!-- Thống kê -->
+        <!-- Thá»‘ng kÃª -->
         <div class="col-md-4">
             <div class="row">
                 <div class="col-12 mb-3">
@@ -142,7 +142,7 @@
                             <i class="fas fa-shopping-cart"></i>
                         </div>
                         <div class="stats-number">@ViewBag.OrderCount</div>
-                        <div class="stats-label">Tổng đơn hàng</div>
+                        <div class="stats-label">Tá»•ng Ä‘Æ¡n hÃ ng</div>
                     </div>
                 </div>
                 
@@ -152,7 +152,7 @@
                             <i class="fas fa-clock"></i>
                         </div>
                         <div class="stats-number">@ViewBag.ActiveOrderCount</div>
-                        <div class="stats-label">Đơn hàng đang xử lý</div>
+                        <div class="stats-label">ÄÆ¡n hÃ ng Ä‘ang xá»­ lÃ½</div>
                     </div>
                 </div>
 
@@ -162,30 +162,30 @@
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <div class="stats-number">@Model.UserAddresses.Count</div>
-                        <div class="stats-label">Địa chỉ đã lưu</div>
+                        <div class="stats-label">Äá»‹a chá»‰ Ä‘Ã£ lÆ°u</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Lịch sử đơn hàng -->
+    <!-- Lá»‹ch sá»­ Ä‘Æ¡n hÃ ng -->
     @if (Model.Orders.Any())
     {
         <div class="user-detail-card">
             <h4 class="mb-3">
                 <i class="fas fa-history me-2"></i>
-                Lịch sử đơn hàng gần đây
+                Lá»‹ch sá»­ Ä‘Æ¡n hÃ ng gáº§n Ä‘Ã¢y
             </h4>
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead class="table-light">
                         <tr>
-                            <th>Mã đơn hàng</th>
-                            <th>Ngày đặt</th>
-                            <th>Tổng tiền</th>
-                            <th>Trạng thái</th>
-                            <th>Hành động</th>
+                            <th>MÃ£ Ä‘Æ¡n hÃ ng</th>
+                            <th>NgÃ y Ä‘áº·t</th>
+                            <th>Tá»•ng tiá»n</th>
+                            <th>Tráº¡ng thÃ¡i</th>
+                            <th>HÃ nh Ä‘á»™ng</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -203,24 +203,24 @@
                                     @switch (order.OrderStatusID)
                                     {
                                         case 1:
-                                            <span class="badge bg-warning">Chờ xử lý</span>
+                                            <span class="badge bg-warning">Chá» xá»­ lÃ½</span>
                                             break;
                                         case 2:
-                                            <span class="badge bg-info">Đang chuẩn bị</span>
+                                            <span class="badge bg-info">Äang chuáº©n bá»‹</span>
                                             break;
                                         case 3:
-                                            <span class="badge bg-success">Hoàn thành</span>
+                                            <span class="badge bg-success">HoÃ n thÃ nh</span>
                                             break;
                                         case 4:
-                                            <span class="badge bg-danger">Đã hủy</span>
+                                            <span class="badge bg-danger">ÄÃ£ há»§y</span>
                                             break;
                                         default:
-                                            <span class="badge bg-secondary">Không xác định</span>
+                                            <span class="badge bg-secondary">KhÃ´ng xÃ¡c Ä‘á»‹nh</span>
                                             break;
                                     }
                                 </td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-outline-jollibee" title="Xem chi tiết đơn hàng">
+                                    <a href="#" class="btn btn-sm btn-outline-jollibee" title="Xem chi tiáº¿t Ä‘Æ¡n hÃ ng">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                 </td>
@@ -234,7 +234,7 @@
                 <div class="text-center mt-3">
                     <a href="#" class="btn btn-outline-jollibee">
                         <i class="fas fa-plus me-2"></i>
-                        Xem tất cả @Model.Orders.Count đơn hàng
+                        Xem táº¥t cáº£ @Model.Orders.Count Ä‘Æ¡n hÃ ng
                     </a>
                 </div>
             }
@@ -244,18 +244,18 @@
     {
         <div class="user-detail-card text-center">
             <i class="fas fa-shopping-cart text-muted" style="font-size: 3rem;"></i>
-            <h5 class="mt-3 text-muted">Chưa có đơn hàng nào</h5>
-            <p class="text-muted">Người dùng này chưa thực hiện đơn hàng nào.</p>
+            <h5 class="mt-3 text-muted">ChÆ°a cÃ³ Ä‘Æ¡n hÃ ng nÃ o</h5>
+            <p class="text-muted">NgÆ°á»i dÃ¹ng nÃ y chÆ°a thá»±c hiá»‡n Ä‘Æ¡n hÃ ng nÃ o.</p>
         </div>
     }
 
-    <!-- Địa chỉ đã lưu -->
+    <!-- Äá»‹a chá»‰ Ä‘Ã£ lÆ°u -->
     @if (Model.UserAddresses.Any())
     {
         <div class="user-detail-card">
             <h4 class="mb-3">
                 <i class="fas fa-map-marker-alt me-2"></i>
-                Địa chỉ đã lưu
+                Äá»‹a chá»‰ Ä‘Ã£ lÆ°u
             </h4>
             <div class="row">
                 @foreach (var address in Model.UserAddresses.Take(3))
@@ -265,12 +265,12 @@
                             <div class="card-body">
                                 <h6 class="card-title">
                                     <i class="fas fa-home me-1"></i>
-                                    Địa chỉ #@address.AddressID
+                                    Äá»‹a chá»‰ #@address.AddressID
                                 </h6>
                                 <p class="card-text small text-muted">
-                                    <!-- Hiển thị thông tin địa chỉ nếu có trong model -->
+                                    <!-- Hiá»ƒn thá»‹ thÃ´ng tin Ä‘á»‹a chá»‰ náº¿u cÃ³ trong model -->
                                     <i class="fas fa-map-pin me-1"></i>
-                                    Địa chỉ đã lưu
+                                    Äá»‹a chá»‰ Ä‘Ã£ lÆ°u
                                 </p>
                             </div>
                         </div>
@@ -282,31 +282,31 @@
                 <div class="text-center">
                     <a href="#" class="btn btn-outline-jollibee">
                         <i class="fas fa-plus me-2"></i>
-                        Xem tất cả @Model.UserAddresses.Count địa chỉ
+                        Xem táº¥t cáº£ @Model.UserAddresses.Count Ä‘á»‹a chá»‰
                     </a>
                 </div>
             }
         </div>
     }
 
-    <!-- Hành động quản lý -->
+    <!-- HÃ nh Ä‘á»™ng quáº£n lÃ½ -->
     <div class="user-detail-card">
         <h4 class="mb-3">
             <i class="fas fa-cogs me-2"></i>
-            Hành động quản lý
+            HÃ nh Ä‘á»™ng quáº£n lÃ½
         </h4>
         <div class="row">
             <div class="col-md-6">
                 <div class="d-grid gap-2">
                     <a href="@Url.Action("Edit", new { id = Model.UserID })" class="btn btn-warning">
                         <i class="fas fa-edit me-2"></i>
-                        Chỉnh sửa thông tin
+                        Chá»‰nh sá»­a thÃ´ng tin
                     </a>
                     @if (Model.IsActive)
                     {
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deactivateModal">
                             <i class="fas fa-ban me-2"></i>
-                            Vô hiệu hóa tài khoản
+                            VÃ´ hiá»‡u hÃ³a tÃ i khoáº£n
                         </button>
                     }
                     else
@@ -319,7 +319,7 @@
                             <input type="hidden" name="IsActive" value="true" />
                             <button type="submit" class="btn btn-success w-100">
                                 <i class="fas fa-check me-2"></i>
-                                Kích hoạt tài khoản
+                                KÃ­ch hoáº¡t tÃ i khoáº£n
                             </button>
                         </form>
                     }
@@ -329,13 +329,13 @@
                 <div class="d-grid gap-2">
                     <a href="mailto:@Model.Email" class="btn btn-info">
                         <i class="fas fa-envelope me-2"></i>
-                        Gửi email
+                        Gá»­i email
                     </a>
                     @if (!string.IsNullOrEmpty(Model.PhoneNumber))
                     {
                         <a href="tel:@Model.PhoneNumber" class="btn btn-success">
                             <i class="fas fa-phone me-2"></i>
-                            Gọi điện thoại
+                            Gá»i Ä‘iá»‡n thoáº¡i
                         </a>
                     }
                 </div>
@@ -344,26 +344,26 @@
     </div>
 </div>
 
-<!-- Modal xác nhận vô hiệu hóa -->
+<!-- Modal xÃ¡c nháº­n vÃ´ hiá»‡u hÃ³a -->
 <div class="modal fade" id="deactivateModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
                     <i class="fas fa-exclamation-triangle text-warning me-2"></i>
-                    Xác nhận vô hiệu hóa
+                    XÃ¡c nháº­n vÃ´ hiá»‡u hÃ³a
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>Bạn có chắc chắn muốn vô hiệu hóa tài khoản của <strong>@Model.FullName</strong>?</p>
+                <p>Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n vÃ´ hiá»‡u hÃ³a tÃ i khoáº£n cá»§a <strong>@Model.FullName</strong>?</p>
                 <p class="text-muted small">
                     <i class="fas fa-info-circle me-1"></i>
-                    Tài khoản sẽ không thể đăng nhập nhưng dữ liệu sẽ được giữ lại.
+                    TÃ i khoáº£n sáº½ khÃ´ng thá»ƒ Ä‘Äƒng nháº­p nhÆ°ng dá»¯ liá»‡u sáº½ Ä‘Æ°á»£c giá»¯ láº¡i.
                 </p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Há»§y</button>
                 <form asp-action="Edit" method="post" class="d-inline">
                     <input type="hidden" name="UserID" value="@Model.UserID" />
                     <input type="hidden" name="FullName" value="@Model.FullName" />
@@ -372,7 +372,7 @@
                     <input type="hidden" name="IsActive" value="false" />
                     <button type="submit" class="btn btn-danger">
                         <i class="fas fa-ban me-2"></i>
-                        Vô hiệu hóa
+                        VÃ´ hiá»‡u hÃ³a
                     </button>
                 </form>
             </div>
@@ -390,3 +390,4 @@
         });
     </script>
 } 
+

@@ -1,7 +1,7 @@
-@model JollibeeClone.Areas.Admin.Models.Store
+@model JollibeeClone.Models.Store
 
 @{
-    ViewData["Title"] = "Xóa cửa hàng";
+    ViewData["Title"] = "XÃ³a cá»­a hÃ ng";
 }
 
 @section Styles {
@@ -14,13 +14,13 @@
         <div>
             <h2 class="page-title">
                 <i class="fas fa-trash text-danger me-2"></i>
-                Xóa cửa hàng
+                XÃ³a cá»­a hÃ ng
             </h2>
-            <p class="text-muted">Xác nhận xóa cửa hàng khỏi hệ thống</p>
+            <p class="text-muted">XÃ¡c nháº­n xÃ³a cá»­a hÃ ng khá»i há»‡ thá»‘ng</p>
         </div>
         <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-2"></i>
-            Quay lại danh sách
+            Quay láº¡i danh sÃ¡ch
         </a>
     </div>
 
@@ -31,10 +31,10 @@
                 <i class="fas fa-exclamation-triangle fa-2x"></i>
             </div>
             <div>
-                <h5 class="alert-heading mb-1">Cảnh báo!</h5>
+                <h5 class="alert-heading mb-1">Cáº£nh bÃ¡o!</h5>
                 <p class="mb-0">
-                    Bạn có chắc chắn muốn xóa cửa hàng này? Hành động này không thể hoàn tác.
-                    Tất cả dữ liệu liên quan đến cửa hàng sẽ bị mất vĩnh viễn.
+                    Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n xÃ³a cá»­a hÃ ng nÃ y? HÃ nh Ä‘á»™ng nÃ y khÃ´ng thá»ƒ hoÃ n tÃ¡c.
+                    Táº¥t cáº£ dá»¯ liá»‡u liÃªn quan Ä‘áº¿n cá»­a hÃ ng sáº½ bá»‹ máº¥t vÄ©nh viá»…n.
                 </p>
             </div>
         </div>
@@ -48,24 +48,24 @@
                 <div class="card-header bg-danger text-white">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-store me-2"></i>
-                        Thông tin cửa hàng sẽ bị xóa
+                        ThÃ´ng tin cá»­a hÃ ng sáº½ bá»‹ xÃ³a
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Tên cửa hàng:</label>
+                            <label class="form-label fw-bold">TÃªn cá»­a hÃ ng:</label>
                             <div class="info-display">
                                 <i class="fas fa-store text-primary me-2"></i>
                                 @Model.StoreName
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Trạng thái:</label>
+                            <label class="form-label fw-bold">Tráº¡ng thÃ¡i:</label>
                             <div class="info-display">
                                 <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
                                     <i class="fas @(Model.IsActive ? "fa-check-circle" : "fa-pause-circle") me-1"></i>
-                                    @(Model.IsActive ? "Đang hoạt động" : "Tạm dừng")
+                                    @(Model.IsActive ? "Äang hoáº¡t Ä‘á»™ng" : "Táº¡m dá»«ng")
                                 </span>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
 
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            <label class="form-label fw-bold">Địa chỉ đầy đủ:</label>
+                            <label class="form-label fw-bold">Äá»‹a chá»‰ Ä‘áº§y Ä‘á»§:</label>
                             <div class="info-display">
                                 <i class="fas fa-map-marker-alt text-danger me-2"></i>
                                 @Model.StreetAddress@(!string.IsNullOrEmpty(Model.Ward) ? ", " + Model.Ward : ""), @Model.District, @Model.City
@@ -87,7 +87,7 @@
                             @if (!string.IsNullOrEmpty(Model.PhoneNumber))
                             {
                                 <div class="col-md-6">
-                                    <label class="form-label fw-bold">Số điện thoại:</label>
+                                    <label class="form-label fw-bold">Sá»‘ Ä‘iá»‡n thoáº¡i:</label>
                                     <div class="info-display">
                                         <i class="fas fa-phone text-success me-2"></i>
                                         @Model.PhoneNumber
@@ -97,7 +97,7 @@
                             @if (!string.IsNullOrEmpty(Model.OpeningHours))
                             {
                                 <div class="col-md-6">
-                                    <label class="form-label fw-bold">Giờ mở cửa:</label>
+                                    <label class="form-label fw-bold">Giá» má»Ÿ cá»­a:</label>
                                     <div class="info-display">
                                         <i class="fas fa-clock text-info me-2"></i>
                                         @Model.OpeningHours
@@ -114,26 +114,26 @@
                 <div class="card-header bg-warning text-dark">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-info-circle me-2"></i>
-                        Tác động của việc xóa
+                        TÃ¡c Ä‘á»™ng cá»§a viá»‡c xÃ³a
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="impact-list">
                         <div class="impact-item">
                             <i class="fas fa-times-circle text-danger me-2"></i>
-                            <span>Thông tin cửa hàng sẽ bị xóa vĩnh viễn</span>
+                            <span>ThÃ´ng tin cá»­a hÃ ng sáº½ bá»‹ xÃ³a vÄ©nh viá»…n</span>
                         </div>
                         <div class="impact-item">
                             <i class="fas fa-times-circle text-danger me-2"></i>
-                            <span>Không thể khôi phục dữ liệu sau khi xóa</span>
+                            <span>KhÃ´ng thá»ƒ khÃ´i phá»¥c dá»¯ liá»‡u sau khi xÃ³a</span>
                         </div>
                         <div class="impact-item">
                             <i class="fas fa-exclamation-triangle text-warning me-2"></i>
-                            <span>Các đơn hàng liên quan (nếu có) sẽ bị ảnh hưởng</span>
+                            <span>CÃ¡c Ä‘Æ¡n hÃ ng liÃªn quan (náº¿u cÃ³) sáº½ bá»‹ áº£nh hÆ°á»Ÿng</span>
                         </div>
                         <div class="impact-item">
                             <i class="fas fa-exclamation-triangle text-warning me-2"></i>
-                            <span>Khách hàng sẽ không thể tìm thấy cửa hàng này</span>
+                            <span>KhÃ¡ch hÃ ng sáº½ khÃ´ng thá»ƒ tÃ¬m tháº¥y cá»­a hÃ ng nÃ y</span>
                         </div>
                     </div>
                 </div>
@@ -146,16 +146,16 @@
                     <input asp-for="StoreID" type="hidden" />
                     <button type="submit" class="btn btn-danger btn-lg me-3" onclick="return confirmDelete()">
                         <i class="fas fa-trash me-2"></i>
-                        Xác nhận xóa cửa hàng
+                        XÃ¡c nháº­n xÃ³a cá»­a hÃ ng
                     </button>
                 </form>
                 <a href="@Url.Action("Details", new { id = Model.StoreID })" class="btn btn-outline-info btn-lg me-2">
                     <i class="fas fa-eye me-2"></i>
-                    Xem chi tiết
+                    Xem chi tiáº¿t
                 </a>
                 <a href="@Url.Action("Index")" class="btn btn-outline-secondary btn-lg">
                     <i class="fas fa-times me-2"></i>
-                    Hủy bỏ
+                    Há»§y bá»
                 </a>
             </div>
         </div>
@@ -167,7 +167,7 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-image me-2"></i>
-                        Hình ảnh cửa hàng
+                        HÃ¬nh áº£nh cá»­a hÃ ng
                     </h5>
                 </div>
                 <div class="card-body p-0">
@@ -179,7 +179,7 @@
                             <div class="image-overlay">
                                 <span class="badge bg-danger">
                                     <i class="fas fa-trash me-1"></i>
-                                    Sẽ bị xóa
+                                    Sáº½ bá»‹ xÃ³a
                                 </span>
                             </div>
                         }
@@ -187,7 +187,7 @@
                         {
                             <div class="no-image-preview">
                                 <i class="fas fa-store fa-3x text-muted mb-2"></i>
-                                <p class="text-muted">Không có hình ảnh</p>
+                                <p class="text-muted">KhÃ´ng cÃ³ hÃ¬nh áº£nh</p>
                             </div>
                         }
                     </div>
@@ -199,29 +199,29 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-map-marker-alt me-2"></i>
-                        Thông tin địa chỉ
+                        ThÃ´ng tin Ä‘á»‹a chá»‰
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="address-summary">
                         <div class="address-item">
                             <i class="fas fa-city text-primary me-2"></i>
-                            <strong>Tỉnh/Thành phố:</strong> @Model.City
+                            <strong>Tá»‰nh/ThÃ nh phá»‘:</strong> @Model.City
                         </div>
                         <div class="address-item">
                             <i class="fas fa-map text-warning me-2"></i>
-                            <strong>Quận/Huyện:</strong> @Model.District
+                            <strong>Quáº­n/Huyá»‡n:</strong> @Model.District
                         </div>
                         @if (!string.IsNullOrEmpty(Model.Ward))
                         {
                             <div class="address-item">
                                 <i class="fas fa-map-pin text-secondary me-2"></i>
-                                <strong>Phường/Xã:</strong> @Model.Ward
+                                <strong>PhÆ°á»ng/XÃ£:</strong> @Model.Ward
                             </div>
                         }
                         <div class="address-item">
                             <i class="fas fa-road text-info me-2"></i>
-                            <strong>Địa chỉ:</strong> @Model.StreetAddress
+                            <strong>Äá»‹a chá»‰:</strong> @Model.StreetAddress
                         </div>
                     </div>
                 </div>
@@ -232,22 +232,22 @@
                 <div class="card-header bg-info text-white">
                     <h6 class="card-title mb-0">
                         <i class="fas fa-lightbulb me-2"></i>
-                        Thay vào đó, bạn có thể:
+                        Thay vÃ o Ä‘Ã³, báº¡n cÃ³ thá»ƒ:
                     </h6>
                 </div>
                 <div class="card-body">
                     <div class="alternative-actions">
                         <a href="@Url.Action("Edit", new { id = Model.StoreID })" class="alternative-action">
                             <i class="fas fa-edit text-warning me-2"></i>
-                            <span>Chỉnh sửa thông tin cửa hàng</span>
+                            <span>Chá»‰nh sá»­a thÃ´ng tin cá»­a hÃ ng</span>
                         </a>
                         <div class="alternative-action" onclick="toggleStoreStatus()">
                             <i class="fas @(Model.IsActive ? "fa-pause" : "fa-play") text-@(Model.IsActive ? "warning" : "success") me-2"></i>
-                            <span>@(Model.IsActive ? "Tạm dừng hoạt động" : "Kích hoạt lại cửa hàng")</span>
+                            <span>@(Model.IsActive ? "Táº¡m dá»«ng hoáº¡t Ä‘á»™ng" : "KÃ­ch hoáº¡t láº¡i cá»­a hÃ ng")</span>
                         </div>
                         <a href="@Url.Action("Details", new { id = Model.StoreID })" class="alternative-action">
                             <i class="fas fa-eye text-info me-2"></i>
-                            <span>Xem thông tin chi tiết</span>
+                            <span>Xem thÃ´ng tin chi tiáº¿t</span>
                         </a>
                     </div>
                 </div>
@@ -257,14 +257,14 @@
             <div class="card mt-3 border-secondary">
                 <div class="card-body text-center">
                     <i class="fas fa-question-circle fa-2x text-muted mb-2"></i>
-                    <h6>Cần hỗ trợ?</h6>
+                    <h6>Cáº§n há»— trá»£?</h6>
                     <p class="text-muted small">
-                        Nếu bạn không chắc chắn về việc xóa cửa hàng này, 
-                        hãy liên hệ với bộ phận hỗ trợ kỹ thuật.
+                        Náº¿u báº¡n khÃ´ng cháº¯c cháº¯n vá» viá»‡c xÃ³a cá»­a hÃ ng nÃ y, 
+                        hÃ£y liÃªn há»‡ vá»›i bá»™ pháº­n há»— trá»£ ká»¹ thuáº­t.
                     </p>
                     <button type="button" class="btn btn-outline-secondary btn-sm">
                         <i class="fas fa-envelope me-1"></i>
-                        Liên hệ hỗ trợ
+                        LiÃªn há»‡ há»— trá»£
                     </button>
                 </div>
             </div>
@@ -275,15 +275,16 @@
 @section Scripts {
     <script>
         function confirmDelete() {
-            return confirm('Bạn có chắc chắn muốn xóa cửa hàng "@Model.StoreName"? Hành động này không thể hoàn tác!');
+            return confirm('Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n xÃ³a cá»­a hÃ ng "@Model.StoreName"? HÃ nh Ä‘á»™ng nÃ y khÃ´ng thá»ƒ hoÃ n tÃ¡c!');
         }
 
         function toggleStoreStatus() {
-            const action = @Model.IsActive.ToString().ToLower() ? 'tạm dừng' : 'kích hoạt lại';
-            if (confirm(`Bạn có muốn ${action} cửa hàng "@Model.StoreName" thay vì xóa?`)) {
+            const action = @Model.IsActive.ToString().ToLower() ? 'táº¡m dá»«ng' : 'kÃ­ch hoáº¡t láº¡i';
+            if (confirm(`Báº¡n cÃ³ muá»‘n ${action} cá»­a hÃ ng "@Model.StoreName" thay vÃ¬ xÃ³a?`)) {
                 // Redirect to edit page with a hint to change status
                 window.location.href = '@Url.Action("Edit", new { id = Model.StoreID })' + '#status-section';
             }
         }
     </script>
 } 
+

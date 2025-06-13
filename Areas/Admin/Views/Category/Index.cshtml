@@ -1,7 +1,7 @@
-@model IEnumerable<JollibeeClone.Areas.Admin.Models.Categories>
+@model IEnumerable<JollibeeClone.Models.Categories>
 
 @{
-    ViewData["Title"] = "Quản lý danh mục";
+    ViewData["Title"] = "Quáº£n lÃ½ danh má»¥c";
 }
 
 @section Styles {
@@ -9,59 +9,59 @@
 }
 
 <div class="category-management">
-    <!-- Header với nút thêm mới -->
+    <!-- Header vá»›i nÃºt Thêm má»›i -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="page-title">
                 <i class="fas fa-list text-jollibee-red me-2"></i>
-                Quản lý danh mục
+                Quáº£n lÃ½ danh má»¥c
             </h2>
-            <p class="text-muted">Quản lý tất cả danh mục sản phẩm của cửa hàng</p>
+            <p class="text-muted">Quáº£n lÃ½ táº¥t cáº£ danh má»¥c sáº£n pháº©m cá»§a cá»­a hÃ ng</p>
         </div>
         <a href="@Url.Action("Create")" class="btn btn-primary btn-lg">
             <i class="fas fa-plus me-2"></i>
-            Thêm danh mục mới
+            Thêm danh má»¥c má»›i
         </a>
     </div>
 
-    <!-- Tìm kiếm và bộ lọc -->
+    <!-- TÃ¬m kiáº¿m vÃ  bá»™ lá»c -->
     <div class="card mb-4">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3">
                     <div class="search-box">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm danh mục...">
+                        <input type="text" id="searchInput" class="form-control" placeholder="TÃ¬m kiáº¿m danh má»¥c...">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <select id="statusFilter" class="form-select">
-                        <option value="">Tất cả trạng thái</option>
-                        <option value="true">Hoạt động</option>
-                        <option value="false">Không hoạt động</option>
+                        <option value="">Táº¥t cáº£ tráº¡ng thÃ¡i</option>
+                        <option value="true">Hoáº¡t Ä‘á»™ng</option>
+                        <option value="false">KhÃ´ng hoáº¡t Ä‘á»™ng</option>
                     </select>
                 </div>
                 <div class="col-md-2">
                     <select id="parentFilter" class="form-select">
-                        <option value="">Tất cả loại</option>
-                        <option value="parent">Danh mục cha</option>
-                        <option value="child">Danh mục con</option>
+                        <option value="">Táº¥t cáº£ loáº¡i</option>
+                        <option value="parent">Danh má»¥c cha</option>
+                        <option value="child">Danh má»¥c con</option>
                     </select>
                 </div>
                 <div class="col-md-2">
                     <select id="sortBy" class="form-select">
-                        <option value="name">Tên A-Z</option>
-                        <option value="name-desc">Tên Z-A</option>
-                        <option value="order">Thứ tự</option>
-                        <option value="created">Mới nhất</option>
+                        <option value="name">TÃªn A-Z</option>
+                        <option value="name-desc">TÃªn Z-A</option>
+                        <option value="order">Thá»© tá»±</option>
+                        <option value="created">Má»›i nháº¥t</option>
                     </select>
                 </div>
                 <div class="col-md-3 text-end">
                     <div class="view-toggle-group">
-                        <button type="button" class="btn btn-outline-secondary view-btn active" data-view="grid" title="Dạng lưới">
+                        <button type="button" class="btn btn-outline-secondary view-btn active" data-view="grid" title="Dáº¡ng lÆ°á»›i">
                             <i class="fas fa-th"></i>
                         </button>
-                        <button type="button" class="btn btn-outline-secondary view-btn" data-view="list" title="Dạng danh sách">
+                        <button type="button" class="btn btn-outline-secondary view-btn" data-view="list" title="Dáº¡ng danh sÃ¡ch">
                             <i class="fas fa-list"></i>
                         </button>
                     </div>
@@ -70,14 +70,14 @@
         </div>
     </div>
 
-    <!-- Thông tin kết quả -->
+    <!-- ThÃ´ng tin káº¿t quáº£ -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="result-count">
-            <span id="categoryCount">@Model.Count()</span> danh mục được tìm thấy
+            <span id="categoryCount">@Model.Count()</span> danh má»¥c Ä‘Æ°á»£c tÃ¬m tháº¥y
         </div>
     </div>
 
-    <!-- Danh sách danh mục -->
+    <!-- Danh sÃ¡ch danh má»¥c -->
     @if (Model.Any())
     {
         <!-- Grid View -->
@@ -105,13 +105,13 @@
                                     }
                                     <div class="image-overlay">
                                         <div class="quick-actions">
-                                            <button class="action-btn view-btn" onclick="window.location.href='@Url.Action("Details", new { id = category.CategoryID })'" title="Xem chi tiết">
+                                            <button class="action-btn view-btn" onclick="window.location.href='@Url.Action("Details", new { id = category.CategoryID })'" title="Xem chi tiáº¿t">
                                                 <i class="fas fa-eye"></i>
                                             </button>
-                                            <button class="action-btn edit-btn" onclick="window.location.href='@Url.Action("Edit", new { id = category.CategoryID })'" title="Chỉnh sửa">
+                                            <button class="action-btn edit-btn" onclick="window.location.href='@Url.Action("Edit", new { id = category.CategoryID })'" title="Chá»‰nh sá»­a">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                            <button class="action-btn delete-btn" onclick="window.location.href='@Url.Action("Delete", new { id = category.CategoryID })'" title="Xóa">
+                                            <button class="action-btn delete-btn" onclick="window.location.href='@Url.Action("Delete", new { id = category.CategoryID })'" title="XÃ³a">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -158,7 +158,7 @@
                                 {
                                     <div class="parent-info">
                                         <i class="fas fa-sitemap"></i>
-                                        <span>thuộc <strong>@category.ParentCategory.CategoryName</strong></span>
+                                        <span>thuá»™c <strong>@category.ParentCategory.CategoryName</strong></span>
                                     </div>
                                 }
                             </div>
@@ -172,7 +172,7 @@
                                         </div>
                                         <div class="stat-content">
                                             <span class="stat-number">@category.Products.Count()</span>
-                                            <span class="stat-label">Sản phẩm</span>
+                                            <span class="stat-label">Sáº£n pháº©m</span>
                                         </div>
                                     </div>
                                     
@@ -184,7 +184,7 @@
                                         </div>
                                         <div class="stat-content">
                                             <span class="stat-number">@category.SubCategories.Count()</span>
-                                            <span class="stat-label">Danh mục con</span>
+                                            <span class="stat-label">Danh má»¥c con</span>
                                         </div>
                                     </div>
                                 </div>
@@ -195,14 +195,14 @@
                                         {
                                             <span class="status-active">
                                                 <i class="fas fa-check-circle"></i>
-                                                Đang hoạt động
+                                                Äang hoáº¡t Ä‘á»™ng
                                             </span>
                                         }
                                         else
                                         {
                                             <span class="status-inactive">
                                                 <i class="fas fa-pause-circle"></i>
-                                                Tạm dừng
+                                                Táº¡m dá»«ng
                                             </span>
                                         }
                                     </div>
@@ -220,14 +220,14 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th width="80">Ảnh</th>
-                            <th>Tên danh mục</th>
-                            <th width="150">Loại</th>
-                            <th width="100">Thứ tự</th>
-                            <th width="120">Trạng thái</th>
-                            <th width="100">Sản phẩm</th>
-                            <th width="120">Danh mục con</th>
-                            <th width="150">Thao tác</th>
+                            <th width="80">áº¢nh</th>
+                            <th>TÃªn danh má»¥c</th>
+                            <th width="150">Loáº¡i</th>
+                            <th width="100">Thá»© tá»±</th>
+                            <th width="120">Tráº¡ng thÃ¡i</th>
+                            <th width="100">Sáº£n pháº©m</th>
+                            <th width="120">Danh má»¥c con</th>
+                            <th width="150">Thao tÃ¡c</th>
                         </tr>
                     </thead>
                     <tbody id="categoryTableBody">
@@ -285,14 +285,14 @@
                                     {
                                         <span class="badge bg-success">
                                             <i class="fas fa-check me-1"></i>
-                                            Hoạt động
+                                            Hoáº¡t Ä‘á»™ng
                                         </span>
                                     }
                                     else
                                     {
                                         <span class="badge bg-warning">
                                             <i class="fas fa-exclamation me-1"></i>
-                                            Tạm dừng
+                                            Táº¡m dá»«ng
                                         </span>
                                     }
                                 </td>
@@ -305,15 +305,15 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a href="@Url.Action("Details", new { id = category.CategoryID })" 
-                                           class="btn btn-sm btn-outline-info" title="Chi tiết" >
+                                           class="btn btn-sm btn-outline-info" title="Chi tiáº¿t" >
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="@Url.Action("Edit", new { id = category.CategoryID })" 
-                                           class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                                           class="btn btn-sm btn-outline-warning" title="Chá»‰nh sá»­a">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <a href="@Url.Action("Delete", new { id = category.CategoryID })" 
-                                           class="btn btn-sm btn-outline-danger" title="Xóa">
+                                           class="btn btn-sm btn-outline-danger" title="XÃ³a">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
@@ -331,11 +331,11 @@
             <div class="empty-state-icon">
                 <i class="fas fa-folder-open"></i>
             </div>
-            <h4>Chưa có danh mục nào</h4>
-            <p>Bắt đầu bằng cách tạo danh mục đầu tiên cho cửa hàng của bạn</p>
+            <h4>ChÆ°a cÃ³ danh má»¥c nÃ o</h4>
+            <p>Báº¯t Ä‘áº§u báº±ng cÃ¡ch táº¡o danh má»¥c Ä‘áº§u tiÃªn cho cá»­a hÃ ng cá»§a báº¡n</p>
             <a href="@Url.Action("Create")" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>
-                Tạo danh mục đầu tiên
+                Táº¡o danh má»¥c Ä‘áº§u tiÃªn
             </a>
         </div>
     }
@@ -449,11 +449,11 @@ $(document).ready(function() {
                     // Find display order from badge content
                     var aBadgeText = $(a).find('.badge').filter(function() {
                         var text = $(this).text();
-                        return text.indexOf('Thứ tự') !== -1 || !isNaN(text);
+                        return text.indexOf('Thá»© tá»±') !== -1 || !isNaN(text);
                     }).first().text();
                     var bBadgeText = $(b).find('.badge').filter(function() {
                         var text = $(this).text();
-                        return text.indexOf('Thứ tự') !== -1 || !isNaN(text);
+                        return text.indexOf('Thá»© tá»±') !== -1 || !isNaN(text);
                     }).first().text();
                     
                     aVal = parseInt(aBadgeText.replace(/[^0-9]/g, '')) || 0;
@@ -474,3 +474,4 @@ $(document).ready(function() {
 });
 </script>
 } 
+

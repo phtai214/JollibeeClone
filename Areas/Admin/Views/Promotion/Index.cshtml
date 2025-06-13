@@ -1,7 +1,7 @@
-@model JollibeeClone.Areas.Admin.ViewModels.PromotionListViewModel
+@model JollibeeClone.ViewModels.PromotionListViewModel
 
 @{
-    ViewData["Title"] = "Quản lý Voucher";
+    ViewData["Title"] = "Quáº£n lÃ½ Voucher";
 }
 
 @section Styles {
@@ -709,8 +709,8 @@
 @* <!-- Debug Banner - Remove in production -->
 <div class="debug-banner">
     <i class="fas fa-tools"></i>
-    <strong>Debug Mode:</strong> Nếu bạn gặp lỗi khi tải voucher, 
-    <a href="@Url.Action("DebugIndex")" target="_blank">click vào đây để xem thông tin debug</a>
+    <strong>Debug Mode:</strong> Náº¿u báº¡n gáº·p lá»—i khi táº£i voucher, 
+    <a href="@Url.Action("DebugIndex")" target="_blank">click vÃ o Ä‘Ã¢y Ä‘á»ƒ xem thÃ´ng tin debug</a>
 </div> *@
 
 <div class="promotion-management">
@@ -720,30 +720,30 @@
             <div>
                 <h2 class="page-title">
                     <i class="fas fa-tags text-jollibee-red me-2"></i>
-                    Quản lý Voucher
+                    Quáº£n lÃ½ Voucher
                 </h2>
-                <p class="text-muted mb-0">Tổng: <strong id="totalCount">@Model.TotalCount</strong> voucher</p>
+                <p class="text-muted mb-0">Tá»•ng: <strong id="totalCount">@Model.TotalCount</strong> voucher</p>
             </div>
             <div class="d-flex gap-2">
                 <!-- Export Menu -->
                 <div class="export-menu">
                     <button class="btn btn-info dropdown-toggle" type="button" onclick="toggleExportMenu()">
                         <i class="fas fa-download me-2"></i>
-                        Xuất dữ liệu
+                        Xuáº¥t dá»¯ liá»‡u
                     </button>
                     <div id="exportDropdown" class="export-dropdown">
                         <a href="@Url.Action("ExportToCsv")" id="exportCsv">
-                            <i class="fas fa-file-csv me-2"></i>Xuất CSV
+                            <i class="fas fa-file-csv me-2"></i>Xuáº¥t CSV
                         </a>
                         <a href="#" onclick="exportSelected()">
-                            <i class="fas fa-file-export me-2"></i>Xuất mục đã chọn
+                            <i class="fas fa-file-export me-2"></i>Xuáº¥t má»¥c Ä‘Ã£ chá»n
                         </a>
                     </div>
                 </div>
 
                 <a href="@Url.Action("Create")" class="btn btn-jollibee-red">
                     <i class="fas fa-plus me-2"></i>
-                    Tạo voucher mới
+                    Táº¡o voucher má»›i
                 </a>
             </div>
         </div>
@@ -772,20 +772,20 @@
     <div id="bulkActions" class="bulk-actions">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <span class="fw-bold">Đã chọn: <span id="selectedCount">0</span> voucher</span>
+                <span class="fw-bold">ÄÃ£ chá»n: <span id="selectedCount">0</span> voucher</span>
             </div>
             <div class="d-flex gap-2">
                 <button class="btn btn-success btn-sm" onclick="bulkOperation('activate')">
-                    <i class="fas fa-play me-1"></i>Kích hoạt
+                    <i class="fas fa-play me-1"></i>KÃ­ch hoáº¡t
                 </button>
                 <button class="btn btn-warning btn-sm" onclick="bulkOperation('deactivate')">
-                    <i class="fas fa-pause me-1"></i>Tạm dừng
+                    <i class="fas fa-pause me-1"></i>Táº¡m dá»«ng
                 </button>
                 <button class="btn btn-danger btn-sm" onclick="bulkOperation('delete')">
-                    <i class="fas fa-trash me-1"></i>Xóa
+                    <i class="fas fa-trash me-1"></i>XÃ³a
                 </button>
                 <button class="btn btn-secondary btn-sm" onclick="clearSelection()">
-                    <i class="fas fa-times me-1"></i>Bỏ chọn
+                    <i class="fas fa-times me-1"></i>Bá» chá»n
                 </button>
             </div>
         </div>
@@ -796,21 +796,21 @@
         <div class="form-section">
             <h3 class="section-title">
                 <i class="fas fa-filter me-2"></i>
-                Bộ lọc & Tìm kiếm
+                Bá»™ lá»c & TÃ¬m kiáº¿m
             </h3>
             
             <form asp-action="Index" method="get" class="filter-form">
                 <div class="row g-4 align-items-end">
                     <!-- Search Input with Icon -->
                     <div class="col-md-5">
-                        <label for="search" class="form-label">Tìm kiếm</label>
+                        <label for="search" class="form-label">TÃ¬m kiáº¿m</label>
                         <div class="search-input-wrapper">
                             <div class="input-group">
                                 <span class="input-group-text border-end-0 bg-white">
                                     <i class="fas fa-search text-muted"></i>
                                 </span>
                                 <input type="text" class="form-control border-start-0 ps-0" id="search" name="search" 
-                                       value="@Model.SearchTerm" placeholder="Tên voucher, mã voucher..." autocomplete="off">
+                                       value="@Model.SearchTerm" placeholder="TÃªn voucher, mÃ£ voucher..." autocomplete="off">
                                 @if (!string.IsNullOrEmpty(Model.SearchTerm))
                                 {
                                     <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3 text-muted clear-search" 
@@ -824,95 +824,95 @@
                     
                     <!-- Status Filter -->
                     <div class="col-md-3">
-                        <label for="status" class="form-label">Trạng thái</label>
+                        <label for="status" class="form-label">Tráº¡ng thÃ¡i</label>
                         <select class="form-select modern-select" id="status" name="status">
-                            <option value="">Tất cả trạng thái</option>
+                            <option value="">Táº¥t cáº£ tráº¡ng thÃ¡i</option>
                             @if (Model.StatusFilter == "active")
                             {
-                                <option value="active" selected>🟢 Đang hoạt động</option>
+                                <option value="active" selected>ðŸŸ¢ Äang hoáº¡t Ä‘á»™ng</option>
                             }
                             else
                             {
-                                <option value="active">🟢 Đang hoạt động</option>
+                                <option value="active">ðŸŸ¢ Äang hoáº¡t Ä‘á»™ng</option>
                             }
                             @if (Model.StatusFilter == "upcoming")
                             {
-                                <option value="upcoming" selected>🔵 Sắp diễn ra</option>
+                                <option value="upcoming" selected>ðŸ”µ Sáº¯p diá»…n ra</option>
                             }
                             else
                             {
-                                <option value="upcoming">🔵 Sắp diễn ra</option>
+                                <option value="upcoming">ðŸ”µ Sáº¯p diá»…n ra</option>
                             }
                             @if (Model.StatusFilter == "expired")
                             {
-                                <option value="expired" selected>🔴 Đã hết hạn</option>
+                                <option value="expired" selected>ðŸ”´ ÄÃ£ háº¿t háº¡n</option>
                             }
                             else
                             {
-                                <option value="expired">🔴 Đã hết hạn</option>
+                                <option value="expired">ðŸ”´ ÄÃ£ háº¿t háº¡n</option>
                             }
                             @if (Model.StatusFilter == "inactive")
                             {
-                                <option value="inactive" selected>⚫ Không hoạt động</option>
+                                <option value="inactive" selected>âš« KhÃ´ng hoáº¡t Ä‘á»™ng</option>
                             }
                             else
                             {
-                                <option value="inactive">⚫ Không hoạt động</option>
+                                <option value="inactive">âš« KhÃ´ng hoáº¡t Ä‘á»™ng</option>
                             }
                         </select>
                     </div>
                     
                     <!-- Sort Filter -->
                     <div class="col-md-3">
-                        <label for="sort" class="form-label">Sắp xếp theo</label>
+                        <label for="sort" class="form-label">Sáº¯p xáº¿p theo</label>
                         <select class="form-select modern-select" id="sort" name="sort">
                             @if (string.IsNullOrEmpty(Model.SortBy))
                             {
-                                <option value="" selected>📅 Mới nhất</option>
+                                <option value="" selected>ðŸ“… Má»›i nháº¥t</option>
                             }
                             else
                             {
-                                <option value="">📅 Mới nhất</option>
+                                <option value="">ðŸ“… Má»›i nháº¥t</option>
                             }
                             @if (Model.SortBy == "name")
                             {
-                                <option value="name" selected>🔤 Tên A-Z</option>
+                                <option value="name" selected>ðŸ”¤ TÃªn A-Z</option>
                             }
                             else
                             {
-                                <option value="name">🔤 Tên A-Z</option>
+                                <option value="name">ðŸ”¤ TÃªn A-Z</option>
                             }
                             @if (Model.SortBy == "name-desc")
                             {
-                                <option value="name-desc" selected>🔤 Tên Z-A</option>
+                                <option value="name-desc" selected>ðŸ”¤ TÃªn Z-A</option>
                             }
                             else
                             {
-                                <option value="name-desc">🔤 Tên Z-A</option>
+                                <option value="name-desc">ðŸ”¤ TÃªn Z-A</option>
                             }
                             @if (Model.SortBy == "startdate")
                             {
-                                <option value="startdate" selected>📆 Ngày bắt đầu</option>
+                                <option value="startdate" selected>ðŸ“† NgÃ y báº¯t Ä‘áº§u</option>
                             }
                             else
                             {
-                                <option value="startdate">📆 Ngày bắt đầu</option>
+                                <option value="startdate">ðŸ“† NgÃ y báº¯t Ä‘áº§u</option>
                             }
                             @if (Model.SortBy == "enddate")
                             {
-                                <option value="enddate" selected>📆 Ngày kết thúc</option>
+                                <option value="enddate" selected>ðŸ“† NgÃ y káº¿t thÃºc</option>
                             }
                             else
                             {
-                                <option value="enddate">📆 Ngày kết thúc</option>
+                                <option value="enddate">ðŸ“† NgÃ y káº¿t thÃºc</option>
                             }
                             @if (Model.SortBy == "usage")
                             {
-                                <option value="usage" selected>📊 Sử dụng nhiều nhất</option>
+                                <option value="usage" selected>ðŸ“Š Sá»­ dá»¥ng nhiá»u nháº¥t</option>
                             }
                             else
                             {
-                                <option value="usage">📊 Sử dụng nhiều nhất</option>
+                                <option value="usage">ðŸ“Š Sá»­ dá»¥ng nhiá»u nháº¥t</option>
                             }
                         </select>
                     </div>
@@ -922,7 +922,7 @@
                         @if (!string.IsNullOrEmpty(Model.SearchTerm) || !string.IsNullOrEmpty(Model.StatusFilter) || !string.IsNullOrEmpty(Model.SortBy))
                         {
                             <a href="@Url.Action("Index")" class="btn btn-outline-secondary btn-reset" 
-                               data-bs-toggle="tooltip" title="Xóa bộ lọc">
+                               data-bs-toggle="tooltip" title="XÃ³a bá»™ lá»c">
                                 <i class="fas fa-undo"></i>
                             </a>
                         }
@@ -933,14 +933,14 @@
                 @if (!string.IsNullOrEmpty(Model.SearchTerm) || !string.IsNullOrEmpty(Model.StatusFilter) || !string.IsNullOrEmpty(Model.SortBy))
                 {
                     <div class="active-filters mt-3">
-                        <span class="text-muted me-2">Bộ lọc đang áp dụng:</span>
+                        <span class="text-muted me-2">Bá»™ lá»c Ä‘ang Ã¡p dá»¥ng:</span>
                         @if (!string.IsNullOrEmpty(Model.SearchTerm))
                         {
                             <span class="badge bg-primary me-2">
                                 <i class="fas fa-search me-1"></i>
                                 "@Model.SearchTerm"
                                 <a href="@Url.Action("Index", new { status = Model.StatusFilter, sort = Model.SortBy })" 
-                                   class="text-white ms-1" style="text-decoration: none;">×</a>
+                                   class="text-white ms-1" style="text-decoration: none;">Ã—</a>
                             </span>
                         }
                         @if (!string.IsNullOrEmpty(Model.StatusFilter))
@@ -948,14 +948,14 @@
                             <span class="badge bg-info me-2">
                                 <i class="fas fa-filter me-1"></i>
                                 @(Model.StatusFilter switch {
-                                    "active" => "Đang hoạt động",
-                                    "upcoming" => "Sắp diễn ra", 
-                                    "expired" => "Đã hết hạn",
-                                    "inactive" => "Không hoạt động",
+                                    "active" => "Äang hoáº¡t Ä‘á»™ng",
+                                    "upcoming" => "Sáº¯p diá»…n ra", 
+                                    "expired" => "ÄÃ£ háº¿t háº¡n",
+                                    "inactive" => "KhÃ´ng hoáº¡t Ä‘á»™ng",
                                     _ => Model.StatusFilter
                                 })
                                 <a href="@Url.Action("Index", new { search = Model.SearchTerm, sort = Model.SortBy })" 
-                                   class="text-white ms-1" style="text-decoration: none;">×</a>
+                                   class="text-white ms-1" style="text-decoration: none;">Ã—</a>
                             </span>
                         }
                         @if (!string.IsNullOrEmpty(Model.SortBy))
@@ -963,15 +963,15 @@
                             <span class="badge bg-warning text-dark me-2">
                                 <i class="fas fa-sort me-1"></i>
                                 @(Model.SortBy switch {
-                                    "name" => "Tên A-Z",
-                                    "name-desc" => "Tên Z-A",
-                                    "startdate" => "Ngày bắt đầu",
-                                    "enddate" => "Ngày kết thúc", 
-                                    "usage" => "Sử dụng nhiều nhất",
-                                    _ => "Mới nhất"
+                                    "name" => "TÃªn A-Z",
+                                    "name-desc" => "TÃªn Z-A",
+                                    "startdate" => "NgÃ y báº¯t Ä‘áº§u",
+                                    "enddate" => "NgÃ y káº¿t thÃºc", 
+                                    "usage" => "Sá»­ dá»¥ng nhiá»u nháº¥t",
+                                    _ => "Má»›i nháº¥t"
                                 })
                                 <a href="@Url.Action("Index", new { search = Model.SearchTerm, status = Model.StatusFilter })" 
-                                   class="text-dark ms-1" style="text-decoration: none;">×</a>
+                                   class="text-dark ms-1" style="text-decoration: none;">Ã—</a>
                             </span>
                         }
                     </div>
@@ -987,7 +987,7 @@
             @foreach (var promotion in Model.Promotions)
             {
                 var statusClass = promotion.IsExpired ? "expired" : promotion.IsUpcoming ? "upcoming" : promotion.IsRunning ? "running" : "inactive";
-                var statusText = promotion.IsExpired ? "Đã hết hạn" : promotion.IsUpcoming ? "Sắp diễn ra" : promotion.IsRunning ? "Đang hoạt động" : "Không hoạt động";
+                var statusText = promotion.IsExpired ? "ÄÃ£ háº¿t háº¡n" : promotion.IsUpcoming ? "Sáº¯p diá»…n ra" : promotion.IsRunning ? "Äang hoáº¡t Ä‘á»™ng" : "KhÃ´ng hoáº¡t Ä‘á»™ng";
                 var statusBadgeClass = promotion.IsExpired ? "expired" : promotion.IsUpcoming ? "upcoming" : promotion.IsRunning ? "active" : "inactive";
 
                 <div class="col-lg-6 col-xl-4 mb-4">
@@ -1016,7 +1016,7 @@
                             {
                                 <div class="promotion-code">
                                     <span class="code-text">@promotion.CouponCode</span>
-                                    <button class="copy-btn" onclick="copyToClipboard('@promotion.CouponCode')" title="Sao chép mã">
+                                    <button class="copy-btn" onclick="copyToClipboard('@promotion.CouponCode')" title="Sao chÃ©p mÃ£">
                                         <i class="fas fa-copy"></i>
                                     </button>   
                                 </div>
@@ -1033,20 +1033,20 @@
                             <!-- Discount Display -->
                             <div class="discount-display">
                                 <div class="discount-value">@promotion.DiscountValue%</div>
-                                <div class="discount-type">GIẢM GIÁ</div>
+                                <div class="discount-type">GIáº¢M GIÃ</div>
                             </div>
 
                             <!-- Date Range -->
                             <div class="date-range">
                                 <div class="date-item">
-                                    <div class="date-label">Bắt đầu</div>
+                                    <div class="date-label">Báº¯t Ä‘áº§u</div>
                                     <div class="date-value">@promotion.StartDate.ToString("dd/MM/yyyy")</div>
                                 </div>
                                 <div class="date-separator">
                                     <i class="fas fa-arrow-right"></i>
                                 </div>
                                 <div class="date-item">
-                                    <div class="date-label">Kết thúc</div>
+                                    <div class="date-label">Káº¿t thÃºc</div>
                                     <div class="date-value">@promotion.EndDate.ToString("dd/MM/yyyy")</div>
                                 </div>
                             </div>
@@ -1056,7 +1056,7 @@
                             {
                                 <div class="usage-progress">
                                     <div class="usage-info">
-                                        <span class="usage-label">Đã sử dụng</span>
+                                        <span class="usage-label">ÄÃ£ sá»­ dá»¥ng</span>
                                         <span class="usage-count">
                                             <span id="uses-@promotion.PromotionID">@promotion.UsesCount</span>/@promotion.MaxUses
                                         </span>
@@ -1071,13 +1071,13 @@
                             {
                                 <div class="usage-progress">
                                     <div class="usage-info">
-                                        <span class="usage-label">Đã sử dụng</span>
+                                        <span class="usage-label">ÄÃ£ sá»­ dá»¥ng</span>
                                         <span class="usage-count">
-                                            <span id="uses-@promotion.PromotionID">@promotion.UsesCount</span> lần
+                                            <span id="uses-@promotion.PromotionID">@promotion.UsesCount</span> láº§n
                                         </span>
                                     </div>
                                     <div class="unlimited-indicator">
-                                        <i class="fas fa-infinity"></i> Không giới hạn
+                                        <i class="fas fa-infinity"></i> KhÃ´ng giá»›i háº¡n
                                     </div>
                                 </div>
                             }
@@ -1088,14 +1088,14 @@
                                 {
                                     <span class="scope-badge product-scope">
                                         <i class="fas fa-box"></i>
-                                        @promotion.ProductCount sản phẩm
+                                        @promotion.ProductCount sáº£n pháº©m
                                     </span>
                                 }
                                 @if (promotion.CategoryCount > 0)
                                 {
                                     <span class="scope-badge category-scope">
                                         <i class="fas fa-tags"></i>
-                                        @promotion.CategoryCount danh mục
+                                        @promotion.CategoryCount danh má»¥c
                                     </span>
                                 }
                             </div>
@@ -1104,7 +1104,7 @@
                             {
                                 <div class="min-order-info">
                                     <i class="fas fa-shopping-cart text-jollibee-red"></i>
-                                    <span>Đơn tối thiểu: @promotion.MinOrderValue.Value.ToString("N0") VNĐ</span>
+                                    <span>ÄÆ¡n tá»‘i thiá»ƒu: @promotion.MinOrderValue.Value.ToString("N0") VNÄ</span>
                                 </div>
                             }
                         </div>
@@ -1112,22 +1112,22 @@
                         <!-- Card Actions - IMPROVED CLEAN DESIGN -->
                         <div class="promotion-actions-modern">
                             <a href="@Url.Action("Details", new { id = promotion.PromotionID })" 
-                               class="action-btn-modern view-btn" title="Xem chi tiết">
+                               class="action-btn-modern view-btn" title="Xem chi tiáº¿t">
                                 <i class="fas fa-eye"></i>
                             </a>
                             <a href="@Url.Action("Edit", new { id = promotion.PromotionID })" 
-                               class="action-btn-modern edit-btn" title="Chỉnh sửa">
+                               class="action-btn-modern edit-btn" title="Chá»‰nh sá»­a">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <button onclick="togglePromotionStatus(@promotion.PromotionID)" 
                                     class="action-btn-modern toggle-btn" 
                                     id="toggle-@promotion.PromotionID"
-                                    title="@(promotion.IsActive ? "Tạm dừng" : "Kích hoạt")">
+                                    title="@(promotion.IsActive ? "Táº¡m dá»«ng" : "KÃ­ch hoáº¡t")">
                                 <i class="fas fa-@(promotion.IsActive ? "pause" : "play")"></i>
                             </button>
                             <a href="@Url.Action("Delete", new { id = promotion.PromotionID })" 
-                               class="action-btn-modern delete-btn" title="Xóa voucher"
-                               onclick="return confirm('Bạn có chắc muốn xóa voucher này?')">
+                               class="action-btn-modern delete-btn" title="XÃ³a voucher"
+                               onclick="return confirm('Báº¡n cÃ³ cháº¯c muá»‘n xÃ³a voucher nÃ y?')">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </div>
@@ -1140,11 +1140,11 @@
             <div class="col-12">
                 <div class="text-center py-5">
                     <i class="fas fa-tags fa-4x text-muted mb-3"></i>
-                    <h4 class="text-muted">Chưa có voucher nào</h4>
-                    <p class="text-muted">Hãy tạo voucher đầu tiên cho cửa hàng của bạn!</p>
+                    <h4 class="text-muted">ChÆ°a cÃ³ voucher nÃ o</h4>
+                    <p class="text-muted">HÃ£y táº¡o voucher Ä‘áº§u tiÃªn cho cá»­a hÃ ng cá»§a báº¡n!</p>
                     <a href="@Url.Action("Create")" class="btn btn-jollibee-red">
                         <i class="fas fa-plus me-2"></i>
-                        Tạo voucher mới
+                        Táº¡o voucher má»›i
                     </a>
                 </div>
             </div>
@@ -1243,11 +1243,11 @@
                 .map(cb => parseInt(cb.value));
             
             if (selected.length === 0) {
-                alert('Vui lòng chọn ít nhất một voucher');
+                alert('Vui lÃ²ng chá»n Ã­t nháº¥t má»™t voucher');
                 return;
             }
 
-            if (!confirm(`Bạn có chắc muốn ${operation} ${selected.length} voucher đã chọn?`)) {
+            if (!confirm(`Báº¡n cÃ³ cháº¯c muá»‘n ${operation} ${selected.length} voucher Ä‘Ã£ chá»n?`)) {
                 return;
             }
 
@@ -1272,7 +1272,7 @@
                 }
             })
             .catch(error => {
-                showAlert('danger', 'Có lỗi xảy ra khi thực hiện thao tác');
+                showAlert('danger', 'CÃ³ lá»—i xáº£y ra khi thá»±c hiá»‡n thao tÃ¡c');
             });
         }
 
@@ -1295,13 +1295,13 @@
                     
                     if (data.isActive) {
                         toggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                        toggleBtn.title = 'Tạm dừng';
-                        statusBadge.textContent = 'Đang hoạt động';
+                        toggleBtn.title = 'Táº¡m dá»«ng';
+                        statusBadge.textContent = 'Äang hoáº¡t Ä‘á»™ng';
                         statusBadge.className = 'status-badge active';
                     } else {
                         toggleBtn.innerHTML = '<i class="fas fa-play"></i>';
-                        toggleBtn.title = 'Kích hoạt';
-                        statusBadge.textContent = 'Không hoạt động';
+                        toggleBtn.title = 'KÃ­ch hoáº¡t';
+                        statusBadge.textContent = 'KhÃ´ng hoáº¡t Ä‘á»™ng';
                         statusBadge.className = 'status-badge inactive';
                     }
                 } else {
@@ -1309,14 +1309,14 @@
                 }
             })
             .catch(error => {
-                showAlert('danger', 'Có lỗi xảy ra khi thay đổi trạng thái');
+                showAlert('danger', 'CÃ³ lá»—i xáº£y ra khi thay Ä‘á»•i tráº¡ng thÃ¡i');
             });
         }
 
         // Copy to clipboard
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                showAlert('success', 'Đã sao chép mã voucher: ' + text);
+                showAlert('success', 'ÄÃ£ sao chÃ©p mÃ£ voucher: ' + text);
             });
         }
 
@@ -1362,11 +1362,11 @@
         // Get status text from status code
         function getStatusText(status) {
             switch (status) {
-                case 'active': return 'Đang hoạt động';
-                case 'upcoming': return 'Sắp diễn ra';
-                case 'expired': return 'Đã hết hạn';
-                case 'inactive': return 'Không hoạt động';
-                default: return 'Không xác định';
+                case 'active': return 'Äang hoáº¡t Ä‘á»™ng';
+                case 'upcoming': return 'Sáº¯p diá»…n ra';
+                case 'expired': return 'ÄÃ£ háº¿t háº¡n';
+                case 'inactive': return 'KhÃ´ng hoáº¡t Ä‘á»™ng';
+                default: return 'KhÃ´ng xÃ¡c Ä‘á»‹nh';
             }
         }
 
@@ -1391,7 +1391,7 @@
                 .map(cb => cb.value);
             
             if (selected.length === 0) {
-                alert('Vui lòng chọn ít nhất một voucher để xuất');
+                alert('Vui lÃ²ng chá»n Ã­t nháº¥t má»™t voucher Ä‘á»ƒ xuáº¥t');
                 return;
             }
             
@@ -1443,3 +1443,4 @@
         }
     </script>
 }
+

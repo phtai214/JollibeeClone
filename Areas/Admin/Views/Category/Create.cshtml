@@ -1,7 +1,7 @@
-@model JollibeeClone.Areas.Admin.Models.Categories
+@model JollibeeClone.Models.Categories
 
 @{
-    ViewData["Title"] = "Thêm danh mục mới";
+    ViewData["Title"] = "Thêm danh má»¥c má»›i";
 }
 
 @section Styles {
@@ -14,24 +14,24 @@
         <div>
             <h2 class="page-title">
                 <i class="fas fa-plus-circle text-jollibee-red me-2"></i>
-                Thêm danh mục mới
+                Thêm danh má»¥c má»›i
             </h2>
-            <p class="text-muted">Tạo danh mục sản phẩm mới cho cửa hàng</p>
+            <p class="text-muted">Táº¡o danh má»¥c sáº£n pháº©m má»›i cho cá»­a hÃ ng</p>
         </div>
         <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-2"></i>
-            Quay lại danh sách
+            Quay láº¡i danh sÃ¡ch
         </a>
     </div>
 
-    <!-- Form tạo danh mục -->
+    <!-- Form táº¡o danh má»¥c -->
     <div class="row">
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-info-circle me-2"></i>
-                        Thông tin danh mục
+                        ThÃ´ng tin danh má»¥c
                     </h5>
                 </div>
                 <div class="card-body">
@@ -41,14 +41,14 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="mb-3">
-                                    <label asp-for="CategoryName" class="form-label required">Tên danh mục</label>
-                                    <input asp-for="CategoryName" class="form-control form-control-lg" placeholder="Nhập tên danh mục..." />
+                                    <label asp-for="CategoryName" class="form-label required">TÃªn danh má»¥c</label>
+                                    <input asp-for="CategoryName" class="form-control form-control-lg" placeholder="Nháº­p tÃªn danh má»¥c..." />
                                     <span asp-validation-for="CategoryName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label asp-for="DisplayOrder" class="form-label">Thứ tự hiển thị</label>
+                                    <label asp-for="DisplayOrder" class="form-label">Thá»© tá»± hiá»ƒn thá»‹</label>
                                     <input asp-for="DisplayOrder" class="form-control" type="number" min="0" value="0" />
                                     <span asp-validation-for="DisplayOrder" class="text-danger"></span>
                                 </div>
@@ -56,17 +56,17 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Description" class="form-label">Mô tả</label>
-                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Nhập mô tả cho danh mục..."></textarea>
+                            <label asp-for="Description" class="form-label">MÃ´ táº£</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Nháº­p mÃ´ táº£ cho danh má»¥c..."></textarea>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="ParentCategoryID" class="form-label">Danh mục cha</label>
+                            <label asp-for="ParentCategoryID" class="form-label">Danh má»¥c cha</label>
                             <select asp-for="ParentCategoryID" class="form-select" asp-items="ViewBag.ParentCategoryID">
-                                <option value="">-- Chọn danh mục cha (nếu có) --</option>
+                                <option value="">-- Chá»n danh má»¥c cha (náº¿u cÃ³) --</option>
                             </select>
-                            <div class="form-text">Để trống nếu đây là danh mục gốc</div>
+                            <div class="form-text">Äá»ƒ trá»‘ng náº¿u Ä‘Ã¢y lÃ  danh má»¥c gá»‘c</div>
                             <span asp-validation-for="ParentCategoryID" class="text-danger"></span>
                         </div>
 
@@ -74,20 +74,20 @@
                             <div class="form-check form-switch">
                                 <input asp-for="IsActive" class="form-check-input" type="checkbox" checked />
                                 <label asp-for="IsActive" class="form-check-label">
-                                    Kích hoạt danh mục
+                                    KÃ­ch hoáº¡t danh má»¥c
                                 </label>
                             </div>
-                            <div class="form-text">Danh mục chỉ hiển thị khi được kích hoạt</div>
+                            <div class="form-text">Danh má»¥c chá»‰ hiá»ƒn thá»‹ khi Ä‘Æ°á»£c kÃ­ch hoáº¡t</div>
                         </div>
 
                         <div class="form-actions">
                             <button type="submit" class="btn btn-primary btn-lg">
                                 <i class="fas fa-save me-2"></i>
-                                Tạo danh mục
+                                Táº¡o danh má»¥c
                             </button>
                             <a href="@Url.Action("Index")" class="btn btn-secondary btn-lg">
                                 <i class="fas fa-times me-2"></i>
-                                Hủy
+                                Há»§y
                             </a>
                         </div>
                         
@@ -99,12 +99,12 @@
         </div>
 
         <div class="col-lg-4">
-            <!-- Upload ảnh -->
+            <!-- Upload áº£nh -->
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-image me-2"></i>
-                        Hình ảnh danh mục
+                        HÃ¬nh áº£nh danh má»¥c
                     </h5>
                 </div>
                 <div class="card-body">
@@ -113,11 +113,11 @@
                             <div class="file-upload-icon">
                                 <i class="fas fa-cloud-upload-alt"></i>
                             </div>
-                            <p><strong>Kéo thả ảnh vào đây</strong></p>
-                            <p>hoặc</p>
+                            <p><strong>KÃ©o tháº£ áº£nh vÃ o Ä‘Ã¢y</strong></p>
+                            <p>hoáº·c</p>
                             <label for="imageFile" class="btn btn-outline-primary">
                                 <i class="fas fa-folder-open me-2"></i>
-                                Chọn file
+                                Chá»n file
                             </label>
                             <input type="file" id="imageFile" name="imageFile" accept="image/*" style="display: none;" />
                         </div>
@@ -127,48 +127,48 @@
                             <div class="image-actions">
                                 <button type="button" class="btn btn-sm btn-danger" id="removeImage">
                                     <i class="fas fa-trash"></i>
-                                    Xóa ảnh
+                                    XÃ³a áº£nh
                                 </button>
                             </div>
                         </div>
                     </div>
                     
                     <div class="upload-guidelines">
-                        <h6><i class="fas fa-info-circle me-2"></i>Hướng dẫn upload ảnh:</h6>
+                        <h6><i class="fas fa-info-circle me-2"></i>HÆ°á»›ng dáº«n upload áº£nh:</h6>
                         <ul>
-                            <li>Kích thước tối đa: 5MB</li>
-                            <li>Định dạng: JPG, PNG, GIF</li>
-                            <li>Kích thước khuyến nghị: 400x300px</li>
+                            <li>KÃ­ch thÆ°á»›c tá»‘i Ä‘a: 5MB</li>
+                            <li>Äá»‹nh dáº¡ng: JPG, PNG, GIF</li>
+                            <li>KÃ­ch thÆ°á»›c khuyáº¿n nghá»‹: 400x300px</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- Hướng dẫn -->
+            <!-- HÆ°á»›ng dáº«n -->
             <div class="card mt-4">
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-lightbulb me-2"></i>
-                        Gợi ý
+                        Gá»£i Ã½
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="tips">
                         <div class="tip-item">
                             <i class="fas fa-check-circle text-success"></i>
-                            <span>Đặt tên danh mục rõ ràng, dễ hiểu</span>
+                            <span>Äáº·t tÃªn danh má»¥c rÃµ rÃ ng, dá»… hiá»ƒu</span>
                         </div>
                         <div class="tip-item">
                             <i class="fas fa-check-circle text-success"></i>
-                            <span>Sử dụng mô tả để giải thích chi tiết</span>
+                            <span>Sá»­ dá»¥ng mÃ´ táº£ Ä‘á»ƒ giáº£i thÃ­ch chi tiáº¿t</span>
                         </div>
                         <div class="tip-item">
                             <i class="fas fa-check-circle text-success"></i>
-                            <span>Thứ tự hiển thị giúp sắp xếp danh mục</span>
+                            <span>Thá»© tá»± hiá»ƒn thá»‹ giÃºp sáº¯p xáº¿p danh má»¥c</span>
                         </div>
                         <div class="tip-item">
                             <i class="fas fa-check-circle text-success"></i>
-                            <span>Ảnh nên có nền trắng hoặc trong suốt</span>
+                            <span>áº¢nh nÃªn cÃ³ ná»n tráº¯ng hoáº·c trong suá»‘t</span>
                         </div>
                     </div>
                 </div>
@@ -183,7 +183,7 @@
 
 <script>
 $(document).ready(function() {
-    // Form validation và submission handling
+    // Form validation vÃ  submission handling
     $('#createCategoryForm').on('submit', function(e) {
         // Sync file to hidden input inside form
         var visibleImageFile = $('#imageFile')[0].files[0];
@@ -196,7 +196,7 @@ $(document).ready(function() {
         var categoryName = $('#CategoryName').val().trim();
         
         if (!categoryName) {
-            alert('Vui lòng nhập tên danh mục!');
+            alert('Vui lÃ²ng nháº­p tÃªn danh má»¥c!');
             $('#CategoryName').focus();
             isValid = false;
         }
@@ -209,7 +209,7 @@ $(document).ready(function() {
         // Show loading state
         var submitBtn = $(this).find('button[type="submit"]');
         var originalText = submitBtn.html();
-        submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Đang tạo...');
+        submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Äang táº¡o...');
         
         // Reset on error (failsafe)
         setTimeout(function() {
@@ -217,7 +217,7 @@ $(document).ready(function() {
         }, 10000);
     });
 
-    // Xử lý upload ảnh
+    // Xá»­ lÃ½ upload áº£nh
     $('#imageFile').on('change', function(e) {
         var file = e.target.files[0];
         
@@ -270,13 +270,13 @@ $(document).ready(function() {
         }
 
         if (!file.type.match('image.*')) {
-            alert('Vui lòng chọn file ảnh!');
+            alert('Vui lÃ²ng chá»n file áº£nh!');
             $('#imageFile').val('');
             return;
         }
 
         if (file.size > 5 * 1024 * 1024) {
-            alert('File ảnh quá lớn! Vui lòng chọn file nhỏ hơn 5MB.');
+            alert('File áº£nh quÃ¡ lá»›n! Vui lÃ²ng chá»n file nhá» hÆ¡n 5MB.');
             $('#imageFile').val('');
             return;
         }
@@ -288,10 +288,11 @@ $(document).ready(function() {
             $('#imagePreview').show();
         };
         reader.onerror = function() {
-            alert('Không thể đọc file ảnh!');
+            alert('KhÃ´ng thá»ƒ Ä‘á»c file áº£nh!');
         };
         reader.readAsDataURL(file);
     }
 });
 </script>
 } 
+

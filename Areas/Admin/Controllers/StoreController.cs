@@ -1,5 +1,5 @@
-using JollibeeClone.Areas.Admin.Data;
-using JollibeeClone.Areas.Admin.Models;
+﻿using JollibeeClone.Data;
+using JollibeeClone.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using JollibeeClone.Areas.Admin.Attributes;
@@ -87,7 +87,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading stores");
-                TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải danh sách cửa hàng.";
+                TempData["ErrorMessage"] = "CÃ³ lá»—i xáº£y ra khi táº£i danh sÃ¡ch cá»­a hÃ ng.";
                 return View(new PaginatedList<Store>(new List<Store>(), 0, 1, 9));
             }
         }
@@ -97,7 +97,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
         {
             if (id == null)
             {
-                TempData["ErrorMessage"] = "ID cửa hàng không hợp lệ.";
+                TempData["ErrorMessage"] = "ID cá»­a hÃ ng khÃ´ng há»£p lá»‡.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -108,7 +108,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
 
                 if (store == null)
                 {
-                    TempData["ErrorMessage"] = "Không tìm thấy cửa hàng.";
+                    TempData["ErrorMessage"] = "KhÃ´ng tÃ¬m tháº¥y cá»­a hÃ ng.";
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -117,7 +117,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading store details for ID: {StoreId}", id);
-                TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải thông tin cửa hàng.";
+                TempData["ErrorMessage"] = "CÃ³ lá»—i xáº£y ra khi táº£i thÃ´ng tin cá»­a hÃ ng.";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -141,25 +141,25 @@ namespace JollibeeClone.Areas.Admin.Controllers
 
                 if (string.IsNullOrWhiteSpace(store.StoreName))
                 {
-                    errors.Add("Tên cửa hàng là bắt buộc");
+                    errors.Add("TÃªn cá»­a hÃ ng lÃ  báº¯t buá»™c");
                     isValid = false;
                 }
 
                 if (string.IsNullOrWhiteSpace(store.StreetAddress))
                 {
-                    errors.Add("Địa chỉ là bắt buộc");
+                    errors.Add("Äá»‹a chá»‰ lÃ  báº¯t buá»™c");
                     isValid = false;
                 }
 
                 if (string.IsNullOrWhiteSpace(store.District))
                 {
-                    errors.Add("Quận/Huyện là bắt buộc");
+                    errors.Add("Quáº­n/Huyá»‡n lÃ  báº¯t buá»™c");
                     isValid = false;
                 }
 
                 if (string.IsNullOrWhiteSpace(store.City))
                 {
-                    errors.Add("Thành phố là bắt buộc");
+                    errors.Add("ThÃ nh phá»‘ lÃ  báº¯t buá»™c");
                     isValid = false;
                 }
 
@@ -168,7 +168,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
                     .FirstOrDefaultAsync(s => s.StoreName.ToLower() == store.StoreName.ToLower());
                 if (existingStore != null)
                 {
-                    errors.Add("Tên cửa hàng đã tồn tại");
+                    errors.Add("TÃªn cá»­a hÃ ng Ä‘Ã£ tá»“n táº¡i");
                     isValid = false;
                 }
 
@@ -193,7 +193,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
                     {
                         _context.Add(store);
                         await _context.SaveChangesAsync();
-                        TempData["SuccessMessage"] = "Thêm cửa hàng thành công!";
+                        TempData["SuccessMessage"] = "Thêm cá»­a hÃ ng thÃ nh cÃ´ng!";
                         return RedirectToAction(nameof(Index));
                     }
                 }
@@ -207,7 +207,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating store");
-                ModelState.AddModelError("", "Có lỗi xảy ra khi tạo cửa hàng.");
+                ModelState.AddModelError("", "CÃ³ lá»—i xáº£y ra khi táº¡o cá»­a hÃ ng.");
             }
 
             return View(store);
@@ -218,7 +218,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
         {
             if (id == null)
             {
-                TempData["ErrorMessage"] = "ID cửa hàng không hợp lệ.";
+                TempData["ErrorMessage"] = "ID cá»­a hÃ ng khÃ´ng há»£p lá»‡.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -227,7 +227,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
                 var store = await _context.Stores.FindAsync(id);
                 if (store == null)
                 {
-                    TempData["ErrorMessage"] = "Không tìm thấy cửa hàng.";
+                    TempData["ErrorMessage"] = "KhÃ´ng tÃ¬m tháº¥y cá»­a hÃ ng.";
                     return RedirectToAction(nameof(Index));
                 }
                 return View(store);
@@ -235,7 +235,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading store for edit, ID: {StoreId}", id);
-                TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải thông tin cửa hàng.";
+                TempData["ErrorMessage"] = "CÃ³ lá»—i xáº£y ra khi táº£i thÃ´ng tin cá»­a hÃ ng.";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -247,7 +247,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
         {
             if (id != store.StoreID)
             {
-                TempData["ErrorMessage"] = "ID cửa hàng không hợp lệ.";
+                TempData["ErrorMessage"] = "ID cá»­a hÃ ng khÃ´ng há»£p lá»‡.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -259,25 +259,25 @@ namespace JollibeeClone.Areas.Admin.Controllers
 
                 if (string.IsNullOrWhiteSpace(store.StoreName))
                 {
-                    errors.Add("Tên cửa hàng là bắt buộc");
+                    errors.Add("TÃªn cá»­a hÃ ng lÃ  báº¯t buá»™c");
                     isValid = false;
                 }
 
                 if (string.IsNullOrWhiteSpace(store.StreetAddress))
                 {
-                    errors.Add("Địa chỉ là bắt buộc");
+                    errors.Add("Äá»‹a chá»‰ lÃ  báº¯t buá»™c");
                     isValid = false;
                 }
 
                 if (string.IsNullOrWhiteSpace(store.District))
                 {
-                    errors.Add("Quận/Huyện là bắt buộc");
+                    errors.Add("Quáº­n/Huyá»‡n lÃ  báº¯t buá»™c");
                     isValid = false;
                 }
 
                 if (string.IsNullOrWhiteSpace(store.City))
                 {
-                    errors.Add("Thành phố là bắt buộc");
+                    errors.Add("ThÃ nh phá»‘ lÃ  báº¯t buá»™c");
                     isValid = false;
                 }
 
@@ -286,7 +286,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
                     .FirstOrDefaultAsync(s => s.StoreName.ToLower() == store.StoreName.ToLower() && s.StoreID != store.StoreID);
                 if (existingStore != null)
                 {
-                    errors.Add("Tên cửa hàng đã tồn tại");
+                    errors.Add("TÃªn cá»­a hÃ ng Ä‘Ã£ tá»“n táº¡i");
                     isValid = false;
                 }
 
@@ -319,7 +319,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
                     {
                         _context.Update(store);
                         await _context.SaveChangesAsync();
-                        TempData["SuccessMessage"] = "Cập nhật cửa hàng thành công!";
+                        TempData["SuccessMessage"] = "Cáº­p nháº­t cá»­a hÃ ng thÃ nh cÃ´ng!";
                         return RedirectToAction(nameof(Index));
                     }
                 }
@@ -334,18 +334,18 @@ namespace JollibeeClone.Areas.Admin.Controllers
             {
                 if (!await StoreExistsAsync(store.StoreID))
                 {
-                    TempData["ErrorMessage"] = "Cửa hàng không tồn tại.";
+                    TempData["ErrorMessage"] = "Cá»­a hÃ ng khÃ´ng tá»“n táº¡i.";
                     return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Có xung đột dữ liệu. Vui lòng thử lại.");
+                    ModelState.AddModelError("", "CÃ³ xung Ä‘á»™t dá»¯ liá»‡u. Vui lÃ²ng thá»­ láº¡i.");
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating store");
-                ModelState.AddModelError("", "Có lỗi xảy ra khi cập nhật cửa hàng.");
+                ModelState.AddModelError("", "CÃ³ lá»—i xáº£y ra khi cáº­p nháº­t cá»­a hÃ ng.");
             }
 
             return View(store);
@@ -356,7 +356,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
         {
             if (id == null)
             {
-                TempData["ErrorMessage"] = "ID cửa hàng không hợp lệ.";
+                TempData["ErrorMessage"] = "ID cá»­a hÃ ng khÃ´ng há»£p lá»‡.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -366,7 +366,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
                     .FirstOrDefaultAsync(m => m.StoreID == id);
                 if (store == null)
                 {
-                    TempData["ErrorMessage"] = "Không tìm thấy cửa hàng.";
+                    TempData["ErrorMessage"] = "KhÃ´ng tÃ¬m tháº¥y cá»­a hÃ ng.";
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -375,7 +375,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading store for delete, ID: {StoreId}", id);
-                TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải thông tin cửa hàng.";
+                TempData["ErrorMessage"] = "CÃ³ lá»—i xáº£y ra khi táº£i thÃ´ng tin cá»­a hÃ ng.";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -394,7 +394,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
                     var hasOrders = await _context.Orders.AnyAsync(o => o.StoreID == id);
                     if (hasOrders)
                     {
-                        TempData["ErrorMessage"] = "Không thể xóa cửa hàng này vì có đơn hàng liên quan.";
+                        TempData["ErrorMessage"] = "KhÃ´ng thá»ƒ xÃ³a cá»­a hÃ ng nÃ y vÃ¬ cÃ³ Ä‘Æ¡n hÃ ng liÃªn quan.";
                         return RedirectToAction(nameof(Index));
                     }
 
@@ -406,17 +406,17 @@ namespace JollibeeClone.Areas.Admin.Controllers
 
                     _context.Stores.Remove(store);
                     await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Xóa cửa hàng thành công!";
+                    TempData["SuccessMessage"] = "XÃ³a cá»­a hÃ ng thÃ nh cÃ´ng!";
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Không tìm thấy cửa hàng.";
+                    TempData["ErrorMessage"] = "KhÃ´ng tÃ¬m tháº¥y cá»­a hÃ ng.";
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting store with ID: {StoreId}", id);
-                TempData["ErrorMessage"] = "Có lỗi xảy ra khi xóa cửa hàng.";
+                TempData["ErrorMessage"] = "CÃ³ lá»—i xáº£y ra khi xÃ³a cá»­a hÃ ng.";
             }
 
             return RedirectToAction(nameof(Index));
@@ -432,7 +432,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
             // Check file size (5MB limit)
             if (file.Length > 5 * 1024 * 1024)
             {
-                return "Kích thước ảnh không được vượt quá 5MB.";
+                return "KÃ­ch thÆ°á»›c áº£nh khÃ´ng Ä‘Æ°á»£c vÆ°á»£t quÃ¡ 5MB.";
             }
 
             // Check file type
@@ -440,7 +440,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
             var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
             if (!allowedTypes.Contains(fileExtension))
             {
-                return "Chỉ chấp nhận các định dạng ảnh: JPG, JPEG, PNG, GIF, WEBP.";
+                return "Chá»‰ cháº¥p nháº­n cÃ¡c Ä‘á»‹nh dáº¡ng áº£nh: JPG, JPEG, PNG, GIF, WEBP.";
             }
 
             return string.Empty;
@@ -494,3 +494,5 @@ namespace JollibeeClone.Areas.Admin.Controllers
         }
     }
 } 
+
+

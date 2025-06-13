@@ -1,28 +1,28 @@
-@model JollibeeClone.Areas.Admin.Models.PaginatedList<JollibeeClone.Areas.Admin.Models.Product>
+@model JollibeeClone.Models.PaginatedList<JollibeeClone.Models.Product>
 
 @{
-    ViewData["Title"] = "Quản lý sản phẩm";
+    ViewData["Title"] = "Quáº£n lÃ½ sáº£n pháº©m";
 }
 
 <div class="product-management">
-    <!-- Header với nút thêm mới -->
+    <!-- Header vá»›i nÃºt Thêm má»›i -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="page-title">
                 <i class="fas fa-hamburger text-jollibee-red me-2"></i>
-                Quản lý sản phẩm
+                Quáº£n lÃ½ sáº£n pháº©m
             </h2>
-            <p class="text-muted">Quản lý tất cả sản phẩm trong cửa hàng</p>
+            <p class="text-muted">Quáº£n lÃ½ táº¥t cáº£ sáº£n pháº©m trong cá»­a hÃ ng</p>
         </div>
         <div class="header-actions">
             <a href="@Url.Action("Create")" class="btn btn-primary btn-lg">
                 <i class="fas fa-plus me-2"></i>
-                Thêm sản phẩm mới
+                Thêm sáº£n pháº©m má»›i
             </a>
         </div>
     </div>
 
-    <!-- Tìm kiếm và bộ lọc -->
+    <!-- TÃ¬m kiáº¿m vÃ  bá»™ lá»c -->
     <form method="get" id="filterForm">
         <div class="card mb-4">
             <div class="card-body">
@@ -30,15 +30,15 @@
                     <div class="col-md-3">
                         <div class="search-box">
                             <i class="fas fa-search search-icon"></i>
-                            <input type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" placeholder="Tìm kiếm sản phẩm...">
+                            <input type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" placeholder="TÃ¬m kiáº¿m sáº£n pháº©m...">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <select name="categoryId" class="form-select">
-                            <option value="">Tất cả danh mục</option>
+                            <option value="">Táº¥t cáº£ danh má»¥c</option>
                             @if (ViewBag.Categories != null)
                             {
-                                @foreach (var category in (List<JollibeeClone.Areas.Admin.Models.Categories>)ViewBag.Categories)
+                                @foreach (var category in (List<JollibeeClone.Models.Categories>)ViewBag.Categories)
                                 {
                                     @if (ViewBag.CurrentCategory?.ToString() == category.CategoryID.ToString())
                                     {
@@ -54,22 +54,22 @@
                     </div>
                     <div class="col-md-2">
                         <select name="isAvailable" class="form-select">
-                            <option value="">Tất cả trạng thái</option>
+                            <option value="">Táº¥t cáº£ tráº¡ng thÃ¡i</option>
                             @if (ViewBag.CurrentAvailable?.ToString() == "True")
                             {
-                                <option value="true" selected="selected">Có sẵn</option>
+                                <option value="true" selected="selected">CÃ³ sáºµn</option>
                             }
                             else
                             {
-                                <option value="true">Có sẵn</option>
+                                <option value="true">CÃ³ sáºµn</option>
                             }
                             @if (ViewBag.CurrentAvailable?.ToString() == "False")
                             {
-                                <option value="false" selected="selected">Hết hàng</option>
+                                <option value="false" selected="selected">Háº¿t hÃ ng</option>
                             }
                             else
                             {
-                                <option value="false">Hết hàng</option>
+                                <option value="false">Háº¿t hÃ ng</option>
                             }
                         </select>
                     </div>
@@ -77,60 +77,60 @@
                         <select name="sortOrder" class="form-select">
                             @if (ViewBag.CurrentSort == null || ViewBag.CurrentSort == "")
                             {
-                                <option value="" selected="selected">Tên A-Z</option>
+                                <option value="" selected="selected">TÃªn A-Z</option>
                             }
                             else
                             {
-                                <option value="">Tên A-Z</option>
+                                <option value="">TÃªn A-Z</option>
                             }
                             @if (ViewBag.CurrentSort == "name_desc")
                             {
-                                <option value="name_desc" selected="selected">Tên Z-A</option>
+                                <option value="name_desc" selected="selected">TÃªn Z-A</option>
                             }
                             else
                             {
-                                <option value="name_desc">Tên Z-A</option>
+                                <option value="name_desc">TÃªn Z-A</option>
                             }
                             @if (ViewBag.CurrentSort == "price")
                             {
-                                <option value="price" selected="selected">Giá thấp-cao</option>
+                                <option value="price" selected="selected">GiÃ¡ tháº¥p-cao</option>
                             }
                             else
                             {
-                                <option value="price">Giá thấp-cao</option>
+                                <option value="price">GiÃ¡ tháº¥p-cao</option>
                             }
                             @if (ViewBag.CurrentSort == "price_desc")
                             {
-                                <option value="price_desc" selected="selected">Giá cao-thấp</option>
+                                <option value="price_desc" selected="selected">GiÃ¡ cao-tháº¥p</option>
                             }
                             else
                             {
-                                <option value="price_desc">Giá cao-thấp</option>
+                                <option value="price_desc">GiÃ¡ cao-tháº¥p</option>
                             }
                             @if (ViewBag.CurrentSort == "category")
                             {
-                                <option value="category" selected="selected">Danh mục</option>
+                                <option value="category" selected="selected">Danh má»¥c</option>
                             }
                             else
                             {
-                                <option value="category">Danh mục</option>
+                                <option value="category">Danh má»¥c</option>
                             }
                         </select>
                     </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-secondary me-2">
-                            <i class="fas fa-search"></i> Lọc
+                            <i class="fas fa-search"></i> Lá»c
                         </button>
                         <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
-                            <i class="fas fa-times"></i> Xóa
+                            <i class="fas fa-times"></i> XÃ³a
                         </a>
                     </div>
                     <div class="col-md-1">
                         <div class="view-toggle-group">
-                            <button type="button" class="btn btn-outline-secondary view-btn active" data-view="grid" title="Dạng lưới">
+                            <button type="button" class="btn btn-outline-secondary view-btn active" data-view="grid" title="Dáº¡ng lÆ°á»›i">
                                 <i class="fas fa-th"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary view-btn" data-view="list" title="Dạng danh sách">
+                            <button type="button" class="btn btn-outline-secondary view-btn" data-view="list" title="Dáº¡ng danh sÃ¡ch">
                                 <i class="fas fa-list"></i>
                             </button>
                         </div>
@@ -140,17 +140,17 @@
         </div>
     </form>
 
-    <!-- Thông tin kết quả -->
+    <!-- ThÃ´ng tin káº¿t quáº£ -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="result-count">
-            Hiển thị @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.PageIndex * Model.PageSize, Model.TotalCount)) của @Model.TotalCount sản phẩm
+            Hiá»ƒn thá»‹ @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.PageIndex * Model.PageSize, Model.TotalCount)) cá»§a @Model.TotalCount sáº£n pháº©m
         </div>
         <div class="pagination-info">
             Trang @Model.PageIndex / @Model.TotalPages
         </div>
     </div>
 
-    <!-- Danh sách sản phẩm -->
+    <!-- Danh sÃ¡ch sáº£n pháº©m -->
     @if (Model.Any())
     {
         <!-- Grid View -->
@@ -170,18 +170,18 @@
                                 {
                                     <div class="no-image">
                                         <i class="fas fa-hamburger"></i>
-                                        <small class="text-muted">Chưa có ảnh</small>
+                                        <small class="text-muted">ChÆ°a cÃ³ áº£nh</small>
                                     </div>
                                 }
                                 <div class="product-overlay">
                                     <span class="badge status-badge @(product.IsAvailable ? "status-active" : "status-inactive")">
-                                        @(product.IsAvailable ? "Có sẵn" : "Hết hàng")
+                                        @(product.IsAvailable ? "CÃ³ sáºµn" : "Háº¿t hÃ ng")
                                     </span>
                                     @if (product.IsConfigurable)
                                     {
                                         <span class="badge bg-info configurable-badge">
                                             <i class="fas fa-cogs me-1"></i>
-                                            Tùy chỉnh
+                                            TÃ¹y chá»‰nh
                                         </span>
                                     }
                                 </div>
@@ -219,15 +219,15 @@
                             
                             <div class="product-actions">
                                 <a href="@Url.Action("Details", new { id = product.ProductID })" 
-                                   class="btn btn-sm btn-outline-info" title="Xem chi tiết">
+                                   class="btn btn-sm btn-outline-info" title="Xem chi tiáº¿t">
                                     <i class="fas fa-eye"></i>
                                 </a>
                                 <a href="@Url.Action("Edit", new { id = product.ProductID })" 
-                                   class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                                   class="btn btn-sm btn-outline-warning" title="Chá»‰nh sá»­a">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <a href="@Url.Action("Delete", new { id = product.ProductID })" 
-                                   class="btn btn-sm btn-outline-danger" title="Xóa">
+                                   class="btn btn-sm btn-outline-danger" title="XÃ³a">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </div>
@@ -243,12 +243,12 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th width="60">Ảnh</th>
-                            <th>Tên sản phẩm</th>
-                            <th width="120">Danh mục</th>
-                            <th width="100">Giá</th>
-                            <th width="80">Trạng thái</th>
-                            <th width="120">Thao tác</th>
+                            <th width="60">áº¢nh</th>
+                            <th>TÃªn sáº£n pháº©m</th>
+                            <th width="120">Danh má»¥c</th>
+                            <th width="100">GiÃ¡</th>
+                            <th width="80">Tráº¡ng thÃ¡i</th>
+                            <th width="120">Thao tÃ¡c</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -276,7 +276,7 @@
                                         @if (product.IsConfigurable)
                                         {
                                             <small class="text-info">
-                                                <i class="fas fa-cogs me-1"></i>Tùy chỉnh
+                                                <i class="fas fa-cogs me-1"></i>TÃ¹y chá»‰nh
                                             </small>
                                         }
                                     </div>
@@ -302,29 +302,29 @@
                                     {
                                         <span class="badge bg-success">
                                             <i class="fas fa-check me-1"></i>
-                                            Có sẵn
+                                            CÃ³ sáºµn
                                         </span>
                                     }
                                     else
                                     {
                                         <span class="badge bg-warning">
                                             <i class="fas fa-times me-1"></i>
-                                            Hết hàng
+                                            Háº¿t hÃ ng
                                         </span>
                                     }
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a href="@Url.Action("Details", new { id = product.ProductID })" 
-                                           class="btn btn-sm btn-outline-info" title="Chi tiết">
+                                           class="btn btn-sm btn-outline-info" title="Chi tiáº¿t">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="@Url.Action("Edit", new { id = product.ProductID })" 
-                                           class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                                           class="btn btn-sm btn-outline-warning" title="Chá»‰nh sá»­a">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <a href="@Url.Action("Delete", new { id = product.ProductID })" 
-                                           class="btn btn-sm btn-outline-danger" title="Xóa">
+                                           class="btn btn-sm btn-outline-danger" title="XÃ³a">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
@@ -391,11 +391,11 @@
         <!-- No Products -->
         <div class="text-center py-5">
             <i class="fas fa-hamburger fa-3x text-muted mb-3"></i>
-            <h5>Chưa có sản phẩm nào</h5>
-            <p class="text-muted">Bắt đầu bằng cách thêm sản phẩm đầu tiên</p>
+            <h5>ChÆ°a cÃ³ sáº£n pháº©m nÃ o</h5>
+            <p class="text-muted">Báº¯t Ä‘áº§u báº±ng cÃ¡ch Thêm sáº£n pháº©m Ä‘áº§u tiÃªn</p>
             <a href="@Url.Action("Create")" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>
-                Thêm sản phẩm đầu tiên
+                Thêm sáº£n pháº©m Ä‘áº§u tiÃªn
             </a>
         </div>
     }
@@ -709,3 +709,4 @@ $(document).ready(function() {
 });
 </script>
 } 
+

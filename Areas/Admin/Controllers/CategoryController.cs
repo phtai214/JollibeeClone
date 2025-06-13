@@ -1,5 +1,5 @@
-﻿using JollibeeClone.Areas.Admin.Data;
-using JollibeeClone.Areas.Admin.Models;
+﻿using JollibeeClone.Data;
+using JollibeeClone.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -478,4 +478,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
         }
     }
 }
+
+
+
 

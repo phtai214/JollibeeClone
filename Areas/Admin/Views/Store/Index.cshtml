@@ -1,7 +1,7 @@
-@model JollibeeClone.Areas.Admin.Models.PaginatedList<JollibeeClone.Areas.Admin.Models.Store>
+@model JollibeeClone.Models.PaginatedList<JollibeeClone.Models.Store>
 
 @{
-    ViewData["Title"] = "Quản lý cửa hàng";
+    ViewData["Title"] = "Quáº£n lÃ½ cá»­a hÃ ng";
 }
 
 @section Styles {
@@ -9,22 +9,22 @@
 }
 
 <div class="store-management">
-    <!-- Header với nút thêm mới -->
+    <!-- Header vá»›i nÃºt Thêm má»›i -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="page-title">
                 <i class="fas fa-store text-jollibee-red me-2"></i>
-                Quản lý cửa hàng
+                Quáº£n lÃ½ cá»­a hÃ ng
             </h2>
-            <p class="text-muted">Quản lý tất cả các cửa hàng Jollibee</p>
+            <p class="text-muted">Quáº£n lÃ½ táº¥t cáº£ cÃ¡c cá»­a hÃ ng Jollibee</p>
         </div>
         <a href="@Url.Action("Create")" class="btn btn-primary btn-lg">
             <i class="fas fa-plus me-2"></i>
-            Thêm cửa hàng mới
+            Thêm cá»­a hÃ ng má»›i
         </a>
     </div>
 
-    <!-- Tìm kiếm và bộ lọc -->
+    <!-- TÃ¬m kiáº¿m vÃ  bá»™ lá»c -->
     <form method="get" id="filterForm">
         <div class="card mb-4">
             <div class="card-body">
@@ -32,12 +32,12 @@
                     <div class="col-md-3">
                         <div class="search-box">
                             <i class="fas fa-search search-icon"></i>
-                            <input type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" placeholder="Tìm kiếm cửa hàng...">
+                            <input type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" placeholder="TÃ¬m kiáº¿m cá»­a hÃ ng...">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <select name="city" class="form-select">
-                            <option value="">Tất cả thành phố</option>
+                            <option value="">Táº¥t cáº£ thÃ nh phá»‘</option>
                             @if (ViewBag.Cities != null)
                             {
                                 @foreach (var cityItem in (List<string>)ViewBag.Cities)
@@ -56,22 +56,22 @@
                     </div>
                     <div class="col-md-2">
                         <select name="isActive" class="form-select">
-                            <option value="">Tất cả trạng thái</option>
+                            <option value="">Táº¥t cáº£ tráº¡ng thÃ¡i</option>
                             @if (ViewBag.CurrentActive?.ToString() == "True")
                             {
-                                <option value="true" selected="selected">Hoạt động</option>
+                                <option value="true" selected="selected">Hoáº¡t Ä‘á»™ng</option>
                             }
                             else
                             {
-                                <option value="true">Hoạt động</option>
+                                <option value="true">Hoáº¡t Ä‘á»™ng</option>
                             }
                             @if (ViewBag.CurrentActive?.ToString() == "False")
                             {
-                                <option value="false" selected="selected">Đóng cửa</option>
+                                <option value="false" selected="selected">ÄÃ³ng cá»­a</option>
                             }
                             else
                             {
-                                <option value="false">Đóng cửa</option>
+                                <option value="false">ÄÃ³ng cá»­a</option>
                             }
                         </select>
                     </div>
@@ -79,52 +79,52 @@
                         <select name="sortOrder" class="form-select">
                             @if (ViewBag.CurrentSort == null || ViewBag.CurrentSort == "")
                             {
-                                <option value="" selected="selected">Tên A-Z</option>
+                                <option value="" selected="selected">TÃªn A-Z</option>
                             }
                             else
                             {
-                                <option value="">Tên A-Z</option>
+                                <option value="">TÃªn A-Z</option>
                             }
                             @if (ViewBag.CurrentSort == "name_desc")
                             {
-                                <option value="name_desc" selected="selected">Tên Z-A</option>
+                                <option value="name_desc" selected="selected">TÃªn Z-A</option>
                             }
                             else
                             {
-                                <option value="name_desc">Tên Z-A</option>
+                                <option value="name_desc">TÃªn Z-A</option>
                             }
                             @if (ViewBag.CurrentSort == "city")
                             {
-                                <option value="city" selected="selected">Thành phố A-Z</option>
+                                <option value="city" selected="selected">ThÃ nh phá»‘ A-Z</option>
                             }
                             else
                             {
-                                <option value="city">Thành phố A-Z</option>
+                                <option value="city">ThÃ nh phá»‘ A-Z</option>
                             }
                             @if (ViewBag.CurrentSort == "city_desc")
                             {
-                                <option value="city_desc" selected="selected">Thành phố Z-A</option>
+                                <option value="city_desc" selected="selected">ThÃ nh phá»‘ Z-A</option>
                             }
                             else
                             {
-                                <option value="city_desc">Thành phố Z-A</option>
+                                <option value="city_desc">ThÃ nh phá»‘ Z-A</option>
                             }
                         </select>
                     </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-secondary me-2">
-                            <i class="fas fa-search"></i> Lọc
+                            <i class="fas fa-search"></i> Lá»c
                         </button>
                         <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
-                            <i class="fas fa-times"></i> Xóa
+                            <i class="fas fa-times"></i> XÃ³a
                         </a>
                     </div>
                     <div class="col-md-1 text-end">
                         <div class="view-toggle-group">
-                            <button type="button" class="btn btn-outline-secondary view-btn active" data-view="grid" title="Dạng lưới">
+                            <button type="button" class="btn btn-outline-secondary view-btn active" data-view="grid" title="Dáº¡ng lÆ°á»›i">
                                 <i class="fas fa-th"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary view-btn" data-view="list" title="Dạng danh sách">
+                            <button type="button" class="btn btn-outline-secondary view-btn" data-view="list" title="Dáº¡ng danh sÃ¡ch">
                                 <i class="fas fa-list"></i>
                             </button>
                         </div>
@@ -134,17 +134,17 @@
         </div>
     </form>
 
-    <!-- Thông tin kết quả -->
+    <!-- ThÃ´ng tin káº¿t quáº£ -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="result-count">
-            Hiển thị @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.PageIndex * Model.PageSize, Model.TotalCount)) của @Model.TotalCount cửa hàng
+            Hiá»ƒn thá»‹ @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.PageIndex * Model.PageSize, Model.TotalCount)) cá»§a @Model.TotalCount cá»­a hÃ ng
         </div>
         <div class="pagination-info">
             Trang @Model.PageIndex / @Model.TotalPages
         </div>
     </div>
 
-    <!-- Danh sách cửa hàng -->
+    <!-- Danh sÃ¡ch cá»­a hÃ ng -->
     @if (Model.Any())
     {
         <!-- Grid View -->
@@ -170,13 +170,13 @@
                                     }
                                     <div class="image-overlay">
                                         <div class="quick-actions">
-                                            <button class="action-btn view-btn" onclick="window.location.href='@Url.Action("Details", new { id = store.StoreID })'" title="Xem chi tiết">
+                                            <button class="action-btn view-btn" onclick="window.location.href='@Url.Action("Details", new { id = store.StoreID })'" title="Xem chi tiáº¿t">
                                                 <i class="fas fa-eye"></i>
                                             </button>
-                                            <button class="action-btn edit-btn" onclick="window.location.href='@Url.Action("Edit", new { id = store.StoreID })'" title="Chỉnh sửa">
+                                            <button class="action-btn edit-btn" onclick="window.location.href='@Url.Action("Edit", new { id = store.StoreID })'" title="Chá»‰nh sá»­a">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                            <button class="action-btn delete-btn" onclick="window.location.href='@Url.Action("Delete", new { id = store.StoreID })'" title="Xóa">
+                                            <button class="action-btn delete-btn" onclick="window.location.href='@Url.Action("Delete", new { id = store.StoreID })'" title="XÃ³a">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -231,14 +231,14 @@
                                     {
                                         <span class="status-active">
                                             <i class="fas fa-check-circle"></i>
-                                            Đang hoạt động
+                                            Äang hoáº¡t Ä‘á»™ng
                                         </span>
                                     }
                                     else
                                     {
                                         <span class="status-inactive">
                                             <i class="fas fa-times-circle"></i>
-                                            Đóng cửa
+                                            ÄÃ³ng cá»­a
                                         </span>
                                     }
                                 </div>
@@ -255,13 +255,13 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th width="80">Ảnh</th>
-                            <th>Tên cửa hàng</th>
-                            <th>Địa chỉ</th>
-                            <th width="150">Thành phố</th>
-                            <th width="120">Liên hệ</th>
-                            <th width="100">Trạng thái</th>
-                            <th width="150">Thao tác</th>
+                            <th width="80">áº¢nh</th>
+                            <th>TÃªn cá»­a hÃ ng</th>
+                            <th>Äá»‹a chá»‰</th>
+                            <th width="150">ThÃ nh phá»‘</th>
+                            <th width="120">LiÃªn há»‡</th>
+                            <th width="100">Tráº¡ng thÃ¡i</th>
+                            <th width="150">Thao tÃ¡c</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -313,29 +313,29 @@
                                     {
                                         <span class="badge bg-success">
                                             <i class="fas fa-check me-1"></i>
-                                            Hoạt động
+                                            Hoáº¡t Ä‘á»™ng
                                         </span>
                                     }
                                     else
                                     {
                                         <span class="badge bg-warning">
                                             <i class="fas fa-times me-1"></i>
-                                            Đóng cửa
+                                            ÄÃ³ng cá»­a
                                         </span>
                                     }
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a href="@Url.Action("Details", new { id = store.StoreID })" 
-                                           class="btn btn-sm btn-outline-info" title="Chi tiết">
+                                           class="btn btn-sm btn-outline-info" title="Chi tiáº¿t">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="@Url.Action("Edit", new { id = store.StoreID })" 
-                                           class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                                           class="btn btn-sm btn-outline-warning" title="Chá»‰nh sá»­a">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <a href="@Url.Action("Delete", new { id = store.StoreID })" 
-                                           class="btn btn-sm btn-outline-danger" title="Xóa">
+                                           class="btn btn-sm btn-outline-danger" title="XÃ³a">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
@@ -403,11 +403,11 @@
             <div class="empty-state-icon">
                 <i class="fas fa-store"></i>
             </div>
-            <h4>Chưa có cửa hàng nào</h4>
-            <p>Bắt đầu bằng cách thêm cửa hàng đầu tiên</p>
+            <h4>ChÆ°a cÃ³ cá»­a hÃ ng nÃ o</h4>
+            <p>Báº¯t Ä‘áº§u báº±ng cÃ¡ch Thêm cá»­a hÃ ng Ä‘áº§u tiÃªn</p>
             <a href="@Url.Action("Create")" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>
-                Thêm cửa hàng đầu tiên
+                Thêm cá»­a hÃ ng Ä‘áº§u tiÃªn
             </a>
         </div>
     }
@@ -439,3 +439,4 @@ $(document).ready(function() {
 });
 </script>
 } 
+

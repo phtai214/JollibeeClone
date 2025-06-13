@@ -1,7 +1,7 @@
-@model JollibeeClone.Areas.Admin.Models.Categories
+@model JollibeeClone.Models.Categories
 
 @{
-    ViewData["Title"] = "Chi tiết danh mục";
+    ViewData["Title"] = "Chi tiáº¿t danh má»¥c";
 }
 
 @section Styles {
@@ -14,51 +14,51 @@
         <div>
             <h2 class="page-title">
                 <i class="fas fa-folder text-jollibee-yellow me-2"></i>
-                Chi tiết danh mục
+                Chi tiáº¿t danh má»¥c
             </h2>
-            <p class="text-muted">Thông tin chi tiết về danh mục: <strong>@Model.CategoryName</strong></p>
+            <p class="text-muted">ThÃ´ng tin chi tiáº¿t vá» danh má»¥c: <strong>@Model.CategoryName</strong></p>
         </div>
         <div class="header-actions">
             <a href="@Url.Action("Edit", new { id = Model.CategoryID })" class="btn btn-warning">
                 <i class="fas fa-edit me-2"></i>
-                Chỉnh sửa
+                Chá»‰nh sá»­a
             </a>
             <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
                 <i class="fas fa-arrow-left me-2"></i>
-                Quay lại danh sách
+                Quay láº¡i danh sÃ¡ch
             </a>
         </div>
     </div>
 
     <div class="row">
-        <!-- Thông tin chính -->
+        <!-- ThÃ´ng tin chÃ­nh -->
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-info-circle me-2"></i>
-                        Thông tin danh mục
+                        ThÃ´ng tin danh má»¥c
                     </h5>
                 </div>
                 <div class="card-body">
                     <dl class="row">
-                        <dt class="col-sm-3">ID danh mục:</dt>
+                        <dt class="col-sm-3">ID danh má»¥c:</dt>
                         <dd class="col-sm-9">
                             <span class="badge bg-primary">#@Html.DisplayFor(model => model.CategoryID)</span>
                         </dd>
 
-                        <dt class="col-sm-3">Tên danh mục:</dt>
+                        <dt class="col-sm-3">TÃªn danh má»¥c:</dt>
                         <dd class="col-sm-9">
                             <h5 class="mb-0">@Html.DisplayFor(model => model.CategoryName)</h5>
                         </dd>
 
                         @if (!string.IsNullOrEmpty(Model.Description))
                         {
-                            <dt class="col-sm-3">Mô tả:</dt>
+                            <dt class="col-sm-3">MÃ´ táº£:</dt>
                             <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
                         }
 
-                        <dt class="col-sm-3">Danh mục cha:</dt>
+                        <dt class="col-sm-3">Danh má»¥c cha:</dt>
                         <dd class="col-sm-9">
                             @if (Model.ParentCategoryID.HasValue && Model.ParentCategory != null)
                             {
@@ -69,11 +69,11 @@
                             }
                             else
                             {
-                                <span class="text-muted">Danh mục gốc</span>
+                                <span class="text-muted">Danh má»¥c gá»‘c</span>
                             }
                         </dd>
 
-                        <dt class="col-sm-3">Số thứ tự:</dt>
+                        <dt class="col-sm-3">Sá»‘ thá»© tá»±:</dt>
                         <dd class="col-sm-9">
                             <span class="badge bg-info">@Html.DisplayFor(model => model.DisplayOrder)</span>
                         </dd>
@@ -81,14 +81,14 @@
                 </div>
             </div>
 
-            <!-- Danh mục con -->
+            <!-- Danh má»¥c con -->
             @if (Model.SubCategories != null && Model.SubCategories.Any())
             {
                 <div class="card mt-4">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             <i class="fas fa-sitemap me-2"></i>
-                            Danh mục con (@Model.SubCategories.Count())
+                            Danh má»¥c con (@Model.SubCategories.Count())
                         </h5>
                     </div>
                     <div class="card-body">
@@ -107,10 +107,10 @@
                                         }
                                         <div class="sub-category-actions">
                                             <a href="@Url.Action("Details", new { id = subCategory.CategoryID })" class="btn btn-sm btn-outline-info">
-                                                Chi tiết
+                                                Chi tiáº¿t
                                             </a>
                                             <a href="@Url.Action("Edit", new { id = subCategory.CategoryID })" class="btn btn-sm btn-outline-warning">
-                                                Sửa
+                                                Sá»­a
                                             </a>
                                         </div>
                                     </div>
@@ -121,14 +121,14 @@
                 </div>
             }
 
-            <!-- Sản phẩm trong danh mục -->
+            <!-- Sáº£n pháº©m trong danh má»¥c -->
             @if (Model.Products != null && Model.Products.Any())
             {
                 <div class="card mt-4">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             <i class="fas fa-hamburger me-2"></i>
-                            Sản phẩm trong danh mục (@Model.Products.Count())
+                            Sáº£n pháº©m trong danh má»¥c (@Model.Products.Count())
                         </h5>
                     </div>
                     <div class="card-body">
@@ -136,11 +136,11 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Ảnh</th>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Giá</th>
-                                        <th>Trạng thái</th>
-                                        <th>Thao tác</th>
+                                        <th>áº¢nh</th>
+                                        <th>TÃªn sáº£n pháº©m</th>
+                                        <th>GiÃ¡</th>
+                                        <th>Tráº¡ng thÃ¡i</th>
+                                        <th>Thao tÃ¡c</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -166,16 +166,16 @@
                                             <td>
                                                 @if (product.IsAvailable)
                                                 {
-                                                    <span class="badge bg-success">Có sẵn</span>
+                                                    <span class="badge bg-success">CÃ³ sáºµn</span>
                                                 }
                                                 else
                                                 {
-                                                    <span class="badge bg-warning">Hết hàng</span>
+                                                    <span class="badge bg-warning">Háº¿t hÃ ng</span>
                                                 }
                                             </td>
                                             <td>
                                                 <a href="@Url.Action("Details", "Product", new { id = product.ProductID })" class="btn btn-sm btn-outline-info">
-                                                    Chi tiết
+                                                    Chi tiáº¿t
                                                 </a>
                                             </td>
                                         </tr>
@@ -187,7 +187,7 @@
                         {
                             <div class="text-center mt-3">
                                 <a href="@Url.Action("Index", "Product", new { categoryId = Model.CategoryID })" class="btn btn-outline-primary">
-                                    Xem tất cả @Model.Products.Count() sản phẩm
+                                    Xem táº¥t cáº£ @Model.Products.Count() sáº£n pháº©m
                                 </a>
                             </div>
                         }
@@ -200,26 +200,26 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-cogs me-2"></i>
-                        Thao tác
+                        Thao tÃ¡c
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="d-flex flex-wrap gap-2">
                         <a href="@Url.Action("Edit", new { id = Model.CategoryID })" class="btn btn-warning">
                             <i class="fas fa-edit me-2"></i>
-                            Chỉnh sửa danh mục
+                            Chá»‰nh sá»­a danh má»¥c
                         </a>
                         <a href="@Url.Action("Delete", new { id = Model.CategoryID })" class="btn btn-danger">
                             <i class="fas fa-trash me-2"></i>
-                            Xóa danh mục
+                            XÃ³a danh má»¥c
                         </a>
                         <a href="@Url.Action("Create", new { parentId = Model.CategoryID })" class="btn btn-success">
                             <i class="fas fa-plus me-2"></i>
-                            Thêm danh mục con
+                            Thêm danh má»¥c con
                         </a>
                         <button class="btn btn-info" onclick="copyCategoryInfo()">
                             <i class="fas fa-copy me-2"></i>
-                            Sao chép thông tin
+                            Sao chÃ©p thÃ´ng tin
                         </button>
                     </div>
                 </div>
@@ -228,12 +228,12 @@
 
         <!-- Sidebar -->
         <div class="col-lg-4">
-            <!-- Ảnh danh mục -->
+            <!-- áº¢nh danh má»¥c -->
             <div class="card category-image-card">
                 <div class="card-header category-image-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-image me-2"></i>
-                        Hình ảnh danh mục
+                        HÃ¬nh áº£nh danh má»¥c
                     </h5>
                 </div>
                 <div class="card-body p-0">
@@ -249,7 +249,7 @@
                                 </div>
                             </div>
                             <div class="mt-2 text-center">
-                                <small class="text-muted">Nhấp để xem ảnh lớn</small>
+                                <small class="text-muted">Nháº¥p Ä‘á»ƒ xem áº£nh lá»›n</small>
                             </div>
                         }
                         else
@@ -266,12 +266,12 @@
                                             <i class="fas fa-sparkles spark-3"></i>
                                         </div>
                                     </div>
-                                    <h5 class="upload-title">Chưa có ảnh danh mục</h5>
-                                    <p class="upload-subtitle">Thêm ảnh để danh mục trở nên hấp dẫn hơn</p>
+                                    <h5 class="upload-title">ChÆ°a cÃ³ áº£nh danh má»¥c</h5>
+                                    <p class="upload-subtitle">Thêm áº£nh Ä‘á»ƒ danh má»¥c trá»Ÿ nÃªn háº¥p dáº«n hÆ¡n</p>
                                     <a href="@Url.Action("Edit", new { id = Model.CategoryID })" class="btn-upload">
                                         <span class="btn-upload-text">
                                             <i class="fas fa-image me-2"></i>
-                                            Thêm ảnh ngay
+                                            Thêm áº£nh ngay
                                         </span>
                                         <div class="btn-upload-bg"></div>
                                     </a>
@@ -289,19 +289,19 @@
                         <div class="image-info-text">
                             <small>
                                 <i class="fas fa-mouse-pointer"></i>
-                                Nhấp vào ảnh để xem kích thước lớn
+                                Nháº¥p vÃ o áº£nh Ä‘á»ƒ xem kÃ­ch thÆ°á»›c lá»›n
                             </small>
                         </div>
                     }
                 </div>
             </div>
 
-            <!-- Thống kê nhanh -->
+            <!-- Thá»‘ng kÃª nhanh -->
             <div class="card mt-4">
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-chart-bar me-2"></i>
-                        Thống kê nhanh
+                        Thá»‘ng kÃª nhanh
                     </h5>
                 </div>
                 <div class="card-body">
@@ -310,8 +310,8 @@
                             <i class="fas fa-hamburger"></i>
                         </div>
                         <div class="stat-content">
-                            <h6>@(Model.Products?.Count() ?? 0) Sản phẩm</h6>
-                            <p>Trong danh mục này</p>
+                            <h6>@(Model.Products?.Count() ?? 0) Sáº£n pháº©m</h6>
+                            <p>Trong danh má»¥c nÃ y</p>
                         </div>
                     </div>
 
@@ -322,8 +322,8 @@
                                 <i class="fas fa-sitemap"></i>
                             </div>
                             <div class="stat-content">
-                                <h6>@Model.SubCategories.Count() Danh mục con</h6>
-                                <p>Phân cấp bên dưới</p>
+                                <h6>@Model.SubCategories.Count() Danh má»¥c con</h6>
+                                <p>PhÃ¢n cáº¥p bÃªn dÆ°á»›i</p>
                             </div>
                         </div>
                     }
@@ -333,38 +333,38 @@
                             <i class="fas fa-sort-numeric-down"></i>
                         </div>
                         <div class="stat-content">
-                            <h6>Thứ tự: @Model.DisplayOrder</h6>
-                            <p>Vị trí hiển thị</p>
+                            <h6>Thá»© tá»±: @Model.DisplayOrder</h6>
+                            <p>Vá»‹ trÃ­ hiá»ƒn thá»‹</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Gợi ý -->
+            <!-- Gá»£i Ã½ -->
             <div class="card mt-4">
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-lightbulb me-2"></i>
-                        Gợi ý cải thiện
+                        Gá»£i Ã½ cáº£i thiá»‡n
                     </h5>
                 </div>
                 <div class="card-body">
                     <ul class="improvement-tips">
                         @if (string.IsNullOrEmpty(Model.ImageUrl))
                         {
-                            <li><i class="fas fa-image text-warning"></i> Thêm ảnh danh mục để trải nghiệm tốt hơn</li>
+                            <li><i class="fas fa-image text-warning"></i> Thêm áº£nh danh má»¥c Ä‘á»ƒ tráº£i nghiá»‡m tá»‘t hÆ¡n</li>
                         }
                         @if (string.IsNullOrEmpty(Model.Description))
                         {
-                            <li><i class="fas fa-pencil-alt text-info"></i> Thêm mô tả giúp khách hàng hiểu rõ hơn</li>
+                            <li><i class="fas fa-pencil-alt text-info"></i> Thêm mÃ´ táº£ giÃºp khÃ¡ch hÃ ng hiá»ƒu rÃµ hÆ¡n</li>
                         }
                         @if (Model.Products == null || !Model.Products.Any())
                         {
-                            <li><i class="fas fa-plus text-success"></i> Thêm sản phẩm vào danh mục</li>
+                            <li><i class="fas fa-plus text-success"></i> Thêm sáº£n pháº©m vÃ o danh má»¥c</li>
                         }
                         @if (Model.SubCategories == null || !Model.SubCategories.Any())
                         {
-                            <li><i class="fas fa-sitemap text-primary"></i> Tạo danh mục con để tổ chức tốt hơn</li>
+                            <li><i class="fas fa-sitemap text-primary"></i> Táº¡o danh má»¥c con Ä‘á»ƒ tá»• chá»©c tá»‘t hÆ¡n</li>
                         }
                     </ul>
                 </div>
@@ -376,14 +376,14 @@
 @section Scripts {
 <script>
 function copyCategoryInfo() {
-    var categoryInfo = `Danh mục: @Model.CategoryName
+    var categoryInfo = `Danh má»¥c: @Model.CategoryName
 ID: @Model.CategoryID
-@(!string.IsNullOrEmpty(Model.Description) ? "Mô tả: " + Model.Description : "")
-@(Model.ParentCategory != null ? "Danh mục cha: " + Model.ParentCategory.CategoryName : "Danh mục gốc")
-Số sản phẩm: @(Model.Products?.Count() ?? 0)`;
+@(!string.IsNullOrEmpty(Model.Description) ? "MÃ´ táº£: " + Model.Description : "")
+@(Model.ParentCategory != null ? "Danh má»¥c cha: " + Model.ParentCategory.CategoryName : "Danh má»¥c gá»‘c")
+Sá»‘ sáº£n pháº©m: @(Model.Products?.Count() ?? 0)`;
     
     navigator.clipboard.writeText(categoryInfo).then(function() {
-        alert('Đã sao chép thông tin danh mục!');
+        alert('ÄÃ£ sao chÃ©p thÃ´ng tin danh má»¥c!');
     }).catch(function() {
         // Fallback for older browsers
         var textArea = document.createElement('textarea');
@@ -392,7 +392,7 @@ Số sản phẩm: @(Model.Products?.Count() ?? 0)`;
         textArea.select();
         document.execCommand('copy');
         document.body.removeChild(textArea);
-        alert('Đã sao chép thông tin danh mục!');
+        alert('ÄÃ£ sao chÃ©p thÃ´ng tin danh má»¥c!');
     });
 }
 
@@ -418,18 +418,18 @@ $(document).ready(function() {
                                 <div class="mt-3">
                                     <small class="text-muted d-block">
                                         <i class="fas fa-info-circle me-1"></i>
-                                        Ảnh danh mục: @Model.CategoryName
+                                        áº¢nh danh má»¥c: @Model.CategoryName
                                     </small>
                                 </div>
                             </div>
                             <div class="modal-footer border-0" style="background: #f8f9fa;">
                                 <a href="@Url.Action("Edit", new { id = Model.CategoryID })" class="btn btn-warning">
                                     <i class="fas fa-edit me-2"></i>
-                                    Thay đổi ảnh
+                                    Thay Ä‘á»•i áº£nh
                                 </a>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                     <i class="fas fa-times me-2"></i>
-                                    Đóng
+                                    ÄÃ³ng
                                 </button>
                             </div>
                         </div>
@@ -465,12 +465,12 @@ $(document).ready(function() {
         }
     );
     
-    // Add loading state for "Thêm ảnh" button
+    // Add loading state for "Thêm áº£nh" button
     $('.add-image-btn').on('click', function(e) {
         var $btn = $(this);
         var originalText = $btn.html();
         
-        $btn.html('<i class="fas fa-spinner fa-spin me-2"></i>Đang chuyển hướng...');
+        $btn.html('<i class="fas fa-spinner fa-spin me-2"></i>Äang chuyá»ƒn hÆ°á»›ng...');
         
         // Allow normal navigation after showing loading state
         setTimeout(function() {
@@ -480,3 +480,4 @@ $(document).ready(function() {
 });
 </script>
 } 
+

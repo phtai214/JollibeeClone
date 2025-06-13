@@ -1,4 +1,4 @@
-using JollibeeClone.Areas.Admin.Data;
+using JollibeeClone.Data;
 using JollibeeClone.Areas.Admin.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -72,3 +72,5 @@ namespace JollibeeClone.Areas.Admin.Controllers
         }
     }
 } 
+
+

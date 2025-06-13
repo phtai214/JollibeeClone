@@ -1,7 +1,7 @@
-@model JollibeeClone.Areas.Admin.Models.Product
+@model JollibeeClone.Models.Product
 
 @{
-    ViewData["Title"] = "Xóa sản phẩm";
+    ViewData["Title"] = "XÃ³a sáº£n pháº©m";
 }
 
 @section Styles {
@@ -14,47 +14,47 @@
         <div>
             <h2 class="page-title">
                 <i class="fas fa-trash text-danger me-2"></i>
-                Xóa sản phẩm
+                XÃ³a sáº£n pháº©m
             </h2>
-            <p class="text-muted">Xác nhận xóa sản phẩm: <strong class="text-danger">@Model.ProductName</strong></p>
+            <p class="text-muted">XÃ¡c nháº­n xÃ³a sáº£n pháº©m: <strong class="text-danger">@Model.ProductName</strong></p>
         </div>
         <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-2"></i>
-            Quay lại danh sách
+            Quay láº¡i danh sÃ¡ch
         </a>
     </div>
 
-    <!-- Cảnh báo -->
+    <!-- Cáº£nh bÃ¡o -->
     <div class="alert alert-danger" role="alert">
         <i class="fas fa-exclamation-triangle me-2"></i>
-        <strong>Cảnh báo!</strong> Hành động này không thể hoàn tác. Sản phẩm sẽ bị xóa vĩnh viễn khỏi hệ thống.
+        <strong>Cáº£nh bÃ¡o!</strong> HÃ nh Ä‘á»™ng nÃ y khÃ´ng thá»ƒ hoÃ n tÃ¡c. Sáº£n pháº©m sáº½ bá»‹ xÃ³a vÄ©nh viá»…n khá»i há»‡ thá»‘ng.
     </div>
 
-    <!-- Thông tin sản phẩm sẽ bị xóa -->
+    <!-- ThÃ´ng tin sáº£n pháº©m sáº½ bá»‹ xÃ³a -->
     <div class="row">
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header bg-light">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-info-circle me-2"></i>
-                        Thông tin sản phẩm sẽ bị xóa
+                        ThÃ´ng tin sáº£n pháº©m sáº½ bá»‹ xÃ³a
                     </h5>
                 </div>
                 <div class="card-body">
                     <dl class="row">
-                        <dt class="col-sm-3">ID sản phẩm:</dt>
+                        <dt class="col-sm-3">ID sáº£n pháº©m:</dt>
                         <dd class="col-sm-9">@Html.DisplayFor(model => model.ProductID)</dd>
 
-                        <dt class="col-sm-3">Tên sản phẩm:</dt>
+                        <dt class="col-sm-3">TÃªn sáº£n pháº©m:</dt>
                         <dd class="col-sm-9">@Html.DisplayFor(model => model.ProductName)</dd>
 
                         @if (!string.IsNullOrEmpty(Model.ShortDescription))
                         {
-                            <dt class="col-sm-3">Mô tả:</dt>
+                            <dt class="col-sm-3">MÃ´ táº£:</dt>
                             <dd class="col-sm-9">@Html.DisplayFor(model => model.ShortDescription)</dd>
                         }
 
-                        <dt class="col-sm-3">Giá bán:</dt>
+                        <dt class="col-sm-3">GiÃ¡ bÃ¡n:</dt>
                         <dd class="col-sm-9">
                             <span class="fw-bold text-success">@Model.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span>
                             @if (Model.OriginalPrice.HasValue && Model.OriginalPrice > Model.Price)
@@ -65,7 +65,7 @@
                             }
                         </dd>
 
-                        <dt class="col-sm-3">Danh mục:</dt>
+                        <dt class="col-sm-3">Danh má»¥c:</dt>
                         <dd class="col-sm-9">
                             @if (Model.Category != null)
                             {
@@ -73,39 +73,39 @@
                             }
                             else
                             {
-                                <span class="text-muted">Chưa phân loại</span>
+                                <span class="text-muted">ChÆ°a phÃ¢n loáº¡i</span>
                             }
                         </dd>
 
-                        <dt class="col-sm-3">Tùy chỉnh:</dt>
+                        <dt class="col-sm-3">TÃ¹y chá»‰nh:</dt>
                         <dd class="col-sm-9">
                             @if (Model.IsConfigurable)
                             {
                                 <span class="badge bg-info">
                                     <i class="fas fa-cogs me-1"></i>
-                                    Có thể tùy chỉnh
+                                    CÃ³ thá»ƒ tÃ¹y chá»‰nh
                                 </span>
                             }
                             else
                             {
-                                <span class="badge bg-secondary">Không tùy chỉnh</span>
+                                <span class="badge bg-secondary">KhÃ´ng tÃ¹y chá»‰nh</span>
                             }
                         </dd>
 
-                        <dt class="col-sm-3">Trạng thái:</dt>
+                        <dt class="col-sm-3">Tráº¡ng thÃ¡i:</dt>
                         <dd class="col-sm-9">
                             @if (Model.IsAvailable)
                             {
                                 <span class="badge bg-success">
                                     <i class="fas fa-check me-1"></i>
-                                    Có sẵn
+                                    CÃ³ sáºµn
                                 </span>
                             }
                             else
                             {
                                 <span class="badge bg-warning">
                                     <i class="fas fa-exclamation me-1"></i>
-                                    Hết hàng
+                                    Háº¿t hÃ ng
                                 </span>
                             }
                         </dd>
@@ -113,7 +113,7 @@
 
                     <hr>
 
-                    <!-- Form xác nhận xóa -->
+                    <!-- Form xÃ¡c nháº­n xÃ³a -->
                     <form asp-action="Delete" method="post">
                         <input asp-for="ProductID" type="hidden" />
                         @Html.AntiForgeryToken()
@@ -122,7 +122,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="confirmDelete" required>
                                 <label class="form-check-label" for="confirmDelete">
-                                    Tôi hiểu rằng hành động này không thể hoàn tác và đồng ý xóa sản phẩm này.
+                                    TÃ´i hiá»ƒu ráº±ng hÃ nh Ä‘á»™ng nÃ y khÃ´ng thá»ƒ hoÃ n tÃ¡c vÃ  Ä‘á»“ng Ã½ xÃ³a sáº£n pháº©m nÃ y.
                                 </label>
                             </div>
                         </div>
@@ -130,15 +130,15 @@
                         <div class="form-actions">
                             <button type="submit" class="btn btn-danger btn-lg" id="deleteBtn" disabled>
                                 <i class="fas fa-trash me-2"></i>
-                                Xác nhận xóa sản phẩm
+                                XÃ¡c nháº­n xÃ³a sáº£n pháº©m
                             </button>
                             <a href="@Url.Action("Index")" class="btn btn-secondary btn-lg">
                                 <i class="fas fa-times me-2"></i>
-                                Hủy
+                                Há»§y
                             </a>
                             <a href="@Url.Action("Edit", new { id = Model.ProductID })" class="btn btn-warning btn-lg">
                                 <i class="fas fa-edit me-2"></i>
-                                Chỉnh sửa thay vì xóa
+                                Chá»‰nh sá»­a thay vÃ¬ xÃ³a
                             </a>
                         </div>
                     </form>
@@ -147,12 +147,12 @@
         </div>
 
         <div class="col-lg-4">
-            <!-- Ảnh sản phẩm -->
+            <!-- áº¢nh sáº£n pháº©m -->
             <div class="card">
                 <div class="card-header bg-light">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-image me-2"></i>
-                        Hình ảnh sản phẩm
+                        HÃ¬nh áº£nh sáº£n pháº©m
                     </h5>
                 </div>
                 <div class="card-body text-center">
@@ -164,46 +164,46 @@
                     {
                         <div class="no-image">
                             <i class="fas fa-hamburger" style="font-size: 4rem; color: #ddd;"></i>
-                            <p class="text-muted mt-2">Không có ảnh</p>
+                            <p class="text-muted mt-2">KhÃ´ng cÃ³ áº£nh</p>
                         </div>
                     }
                 </div>
             </div>
 
-            <!-- Cảnh báo liên quan -->
+            <!-- Cáº£nh bÃ¡o liÃªn quan -->
             <div class="card mt-4">
                 <div class="card-header bg-warning text-dark">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-exclamation-triangle me-2"></i>
-                        Lưu ý quan trọng
+                        LÆ°u Ã½ quan trá»ng
                     </h5>
                 </div>
                 <div class="card-body">
                     <ul class="mb-0">
-                        <li>Sản phẩm sẽ bị xóa vĩnh viễn khỏi hệ thống</li>
-                        <li>Hình ảnh liên quan cũng sẽ bị xóa</li>
-                        <li>Nếu sản phẩm đã có trong đơn hàng, không thể xóa</li>
-                        <li>Thông tin thống kê sẽ bị ảnh hưởng</li>
-                        <li>Hành động này không thể hoàn tác</li>
+                        <li>Sáº£n pháº©m sáº½ bá»‹ xÃ³a vÄ©nh viá»…n khá»i há»‡ thá»‘ng</li>
+                        <li>HÃ¬nh áº£nh liÃªn quan cÅ©ng sáº½ bá»‹ xÃ³a</li>
+                        <li>Náº¿u sáº£n pháº©m Ä‘Ã£ cÃ³ trong Ä‘Æ¡n hÃ ng, khÃ´ng thá»ƒ xÃ³a</li>
+                        <li>ThÃ´ng tin thá»‘ng kÃª sáº½ bá»‹ áº£nh hÆ°á»Ÿng</li>
+                        <li>HÃ nh Ä‘á»™ng nÃ y khÃ´ng thá»ƒ hoÃ n tÃ¡c</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Gợi ý thay thế -->
+            <!-- Gá»£i Ã½ thay tháº¿ -->
             <div class="card mt-4">
                 <div class="card-header bg-info text-white">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-lightbulb me-2"></i>
-                        Gợi ý thay thế
+                        Gá»£i Ã½ thay tháº¿
                     </h5>
                 </div>
                 <div class="card-body">
-                    <p><strong>Thay vì xóa, bạn có thể:</strong></p>
+                    <p><strong>Thay vÃ¬ xÃ³a, báº¡n cÃ³ thá»ƒ:</strong></p>
                     <ul class="mb-0">
-                        <li>Đặt sản phẩm ở trạng thái "Hết hàng"</li>
-                        <li>Chỉnh sửa thông tin để cập nhật</li>
-                        <li>Chuyển sang danh mục khác</li>
-                        <li>Tạm thời ẩn khỏi khách hàng</li>
+                        <li>Äáº·t sáº£n pháº©m á»Ÿ tráº¡ng thÃ¡i "Háº¿t hÃ ng"</li>
+                        <li>Chá»‰nh sá»­a thÃ´ng tin Ä‘á»ƒ cáº­p nháº­t</li>
+                        <li>Chuyá»ƒn sang danh má»¥c khÃ¡c</li>
+                        <li>Táº¡m thá»i áº©n khá»i khÃ¡ch hÃ ng</li>
                     </ul>
                 </div>
             </div>
@@ -223,11 +223,11 @@ $(document).ready(function() {
     $('form').on('submit', function(e) {
         if (!$('#confirmDelete').is(':checked')) {
             e.preventDefault();
-            alert('Vui lòng xác nhận bằng cách đánh dấu vào ô checkbox!');
+            alert('Vui lÃ²ng xÃ¡c nháº­n báº±ng cÃ¡ch Ä‘Ã¡nh dáº¥u vÃ o Ã´ checkbox!');
             return false;
         }
 
-        var confirmed = confirm('Bạn có chắc chắn muốn xóa sản phẩm "' + '@Model.ProductName' + '"?\n\nHành động này không thể hoàn tác!');
+        var confirmed = confirm('Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n xÃ³a sáº£n pháº©m "' + '@Model.ProductName' + '"?\n\nHÃ nh Ä‘á»™ng nÃ y khÃ´ng thá»ƒ hoÃ n tÃ¡c!');
         if (!confirmed) {
             e.preventDefault();
             return false;
@@ -236,10 +236,11 @@ $(document).ready(function() {
         // Show loading state
         var submitBtn = $('#deleteBtn');
         var originalText = submitBtn.html();
-        submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Đang xóa...');
+        submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Äang xÃ³a...');
         
         // Don't reset on timeout since this is deletion
     });
 });
 </script>
 } 
+

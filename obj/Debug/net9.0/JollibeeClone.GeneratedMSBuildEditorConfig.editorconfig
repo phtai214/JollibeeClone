@@ -60,6 +60,26 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/News/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTmV3c1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/News/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTmV3c1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/News/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTmV3c1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/News/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTmV3c1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/News/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTmV3c1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Order/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcT3JkZXJcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -114,6 +134,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Promotion/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvbW90aW9uXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Service/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2VydmljZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Service/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2VydmljZVxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Service/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2VydmljZVxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Service/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2VydmljZVxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Service/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2VydmljZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Shared/_AdminLayout.cshtml]

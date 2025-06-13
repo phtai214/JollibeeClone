@@ -1,6 +1,6 @@
 @{
     Layout = null;
-    ViewData["Title"] = "Tạo Admin Đầu Tiên";
+    ViewData["Title"] = "Táº¡o Admin Äáº§u TiÃªn";
 }
 
 <!DOCTYPE html>
@@ -25,8 +25,8 @@
                 <div class="logo-icon">
                     <i class="fas fa-user-shield"></i>
                 </div>
-                <h1>Tạo Admin Đầu Tiên</h1>
-                <p>Tạo tài khoản quản trị viên đầu tiên cho hệ thống</p>
+                <h1>Táº¡o Admin Äáº§u TiÃªn</h1>
+                <p>Táº¡o tÃ i khoáº£n quáº£n trá»‹ viÃªn Ä‘áº§u tiÃªn cho há»‡ thá»‘ng</p>
             </div>
         </div>
 
@@ -35,7 +35,7 @@
             <div class="text-center mb-4">
                 <button id="createAdminBtn" class="btn btn-login">
                     <i class="fas fa-user-plus me-2"></i>
-                    Tạo Admin Ngay
+                    Táº¡o Admin Ngay
                 </button>
             </div>
 
@@ -43,14 +43,14 @@
 
             <div class="alert alert-info">
                 <i class="fas fa-info-circle me-2"></i>
-                <strong>Thông tin tài khoản admin sẽ được tạo:</strong><br>
+                <strong>ThÃ´ng tin tÃ i khoáº£n admin sáº½ Ä‘Æ°á»£c táº¡o:</strong><br>
                 <strong>Email:</strong> admin@jollibee.com<br>
-                <strong>Mật khẩu:</strong> admin123<br>
-                <small class="text-muted">Bạn có thể đổi mật khẩu sau khi đăng nhập</small>
+                <strong>Máº­t kháº©u:</strong> admin123<br>
+                <small class="text-muted">Báº¡n cÃ³ thá»ƒ Ä‘á»•i máº­t kháº©u sau khi Ä‘Äƒng nháº­p</small>
             </div>
 
             <div class="footer-text">
-                <p><a href="@Url.Action("Login", "Auth")">← Quay lại trang đăng nhập</a></p>
+                <p><a href="@Url.Action("Login", "Auth")">â† Quay láº¡i trang Ä‘Äƒng nháº­p</a></p>
             </div>
         </div>
     </div>
@@ -65,8 +65,8 @@
                 const $btn = $(this);
                 const $result = $('#result');
                 
-                // Disable button và show loading
-                $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Đang tạo...');
+                // Disable button vÃ  show loading
+                $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Äang táº¡o...');
                 
                 // Call API
                 $.ajax({
@@ -76,7 +76,7 @@
                         $result.removeClass('alert-danger').addClass('alert alert-success').show();
                         if (response.success) {
                             $result.html('<i class="fas fa-check-circle me-2"></i>' + response.message);
-                            $btn.html('<i class="fas fa-check me-2"></i>Đã tạo thành công!');
+                            $btn.html('<i class="fas fa-check me-2"></i>ÄÃ£ táº¡o thÃ nh cÃ´ng!');
                             
                             // Redirect to login after 3 seconds
                             setTimeout(function() {
@@ -84,13 +84,13 @@
                             }, 3000);
                         } else {
                             $result.html('<i class="fas fa-exclamation-triangle me-2"></i>' + response.message);
-                            $btn.prop('disabled', false).html('<i class="fas fa-user-plus me-2"></i>Tạo Admin Ngay');
+                            $btn.prop('disabled', false).html('<i class="fas fa-user-plus me-2"></i>Táº¡o Admin Ngay');
                         }
                     },
                     error: function() {
                         $result.removeClass('alert-success').addClass('alert alert-danger').show();
-                        $result.html('<i class="fas fa-exclamation-circle me-2"></i>Có lỗi xảy ra khi tạo admin!');
-                        $btn.prop('disabled', false).html('<i class="fas fa-user-plus me-2"></i>Tạo Admin Ngay');
+                        $result.html('<i class="fas fa-exclamation-circle me-2"></i>CÃ³ lá»—i xáº£y ra khi táº¡o admin!');
+                        $btn.prop('disabled', false).html('<i class="fas fa-user-plus me-2"></i>Táº¡o Admin Ngay');
                     }
                 });
             });
@@ -98,3 +98,4 @@
     </script>
 </body>
 </html> 
+

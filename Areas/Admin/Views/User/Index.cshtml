@@ -1,7 +1,7 @@
-@model JollibeeClone.Areas.Admin.Models.PaginatedList<JollibeeClone.Areas.Admin.Models.User>
+@model JollibeeClone.Models.PaginatedList<JollibeeClone.Models.User>
 
 @{
-    ViewData["Title"] = "Quản lý người dùng";
+    ViewData["Title"] = "Quáº£n lÃ½ ngÆ°á»i dÃ¹ng";
 }
 
 @section Styles {
@@ -14,19 +14,19 @@
         <div>
             <h2 class="page-title">
                 <i class="fas fa-users text-jollibee-red me-2"></i>
-                Quản lý người dùng
+                Quáº£n lÃ½ ngÆ°á»i dÃ¹ng
             </h2>
-            <p class="text-muted" style="margin-bottom: 2px;">Quản lý tất cả người dùng trong hệ thống</p>
+            <p class="text-muted" style="margin-bottom: 2px;">Quáº£n lÃ½ táº¥t cáº£ ngÆ°á»i dÃ¹ng trong há»‡ thá»‘ng</p>
         </div>
         <div class="header-actions">
             <a href="@Url.Action("Create")" class="btn btn-jollibee btn-lg">
                 <i class="fas fa-plus me-2"></i>
-                Thêm người dùng mới
+                Thêm ngÆ°á»i dÃ¹ng má»›i
             </a>
         </div>
     </div>
 
-    <!-- Hiển thị thông báo -->
+    <!-- Hiá»ƒn thá»‹ thÃ´ng bÃ¡o -->
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert alert-success alert-dismissible fade show">
@@ -45,7 +45,7 @@
         </div>
     }
 
-    <!-- Tìm kiếm và bộ lọc -->
+    <!-- TÃ¬m kiáº¿m vÃ  bá»™ lá»c -->
     <form method="get" id="filterForm">
         <div class="card mb-4">
             <div class="card-body">
@@ -53,27 +53,27 @@
                     <div class="col-md-4">
                         <div class="search-box">
                             <i class="fas fa-search search-icon"></i>
-                            <input type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" placeholder="Tìm kiếm tên, email, số điện thoại...">
+                            <input type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" placeholder="TÃ¬m kiáº¿m tên, email, sá»‘ Ä‘iá»‡n thoáº¡i...">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <select name="isActive" class="form-select">
-                            <option value="">Tất cả trạng thái</option>
+                            <option value="">Táº¥t cáº£ tráº¡ng thÃ¡i</option>
                             @if (ViewBag.CurrentActive?.ToString() == "True")
                             {
-                                <option value="true" selected="selected">Đang hoạt động</option>
+                                <option value="true" selected="selected">Äang hoáº¡t Ä‘á»™ng</option>
                             }
                             else
                             {
-                                <option value="true">Đang hoạt động</option>
+                                <option value="true">Äang hoáº¡t Ä‘á»™ng</option>
                             }
                             @if (ViewBag.CurrentActive?.ToString() == "False")
                             {
-                                <option value="false" selected="selected">Đã vô hiệu hóa</option>
+                                <option value="false" selected="selected">ÄÃ£ vÃ´ hiá»‡u hÃ³a</option>
                             }
                             else
                             {
-                                <option value="false">Đã vô hiệu hóa</option>
+                                <option value="false">ÄÃ£ vÃ´ hiá»‡u hÃ³a</option>
                             }
                         </select>
                     </div>
@@ -81,19 +81,19 @@
                         <select name="sortOrder" class="form-select">
                             @if (ViewBag.CurrentSort == null || ViewBag.CurrentSort == "")
                             {
-                                <option value="" selected="selected">Tên A-Z</option>
+                                <option value="" selected="selected">tên A-Z</option>
                             }
                             else
                             {
-                                <option value="">Tên A-Z</option>
+                                <option value="">tên A-Z</option>
                             }
                             @if (ViewBag.CurrentSort == "name_desc")
                             {
-                                <option value="name_desc" selected="selected">Tên Z-A</option>
+                                <option value="name_desc" selected="selected">tên Z-A</option>
                             }
                             else
                             {
-                                <option value="name_desc">Tên Z-A</option>
+                                <option value="name_desc">tên Z-A</option>
                             }
                             @if (ViewBag.CurrentSort == "email")
                             {
@@ -113,28 +113,28 @@
                             }
                             @if (ViewBag.CurrentSort == "status")
                             {
-                                <option value="status" selected="selected">Trạng thái</option>
+                                <option value="status" selected="selected">Tráº¡ng thÃ¡i</option>
                             }
                             else
                             {
-                                <option value="status">Trạng thái</option>
+                                <option value="status">Tráº¡ng thÃ¡i</option>
                             }
                         </select>
                     </div>
                     <div class="col-md-3">
                         <button type="submit" class="btn btn-secondary me-2">
-                            <i class="fas fa-search"></i> Lọc
+                            <i class="fas fa-search"></i> Lá»c
                         </button>
                         <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
-                            <i class="fas fa-times"></i> Xóa bộ lọc
+                            <i class="fas fa-times"></i> XÃ³a bá»™ lá»c
                         </a>
                     </div>
                     <div class="col-md-1">
                         <div class="view-toggle-group">
-                            <button type="button" class="btn btn-outline-secondary view-btn active" data-view="grid" title="Dạng lưới">
+                            <button type="button" class="btn btn-outline-secondary view-btn active" data-view="grid" title="Dáº¡ng lÆ°á»›i">
                                 <i class="fas fa-th"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary view-btn" data-view="list" title="Dạng danh sách">
+                            <button type="button" class="btn btn-outline-secondary view-btn" data-view="list" title="Dáº¡ng danh sÃ¡ch">
                                 <i class="fas fa-list"></i>
                             </button>
                         </div>
@@ -144,17 +144,17 @@
         </div>
     </form>
 
-    <!-- Thông tin kết quả -->
+    <!-- ThÃ´ng tin káº¿t quáº£ -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="result-count">
-            Hiển thị @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.PageIndex * Model.PageSize, Model.TotalCount)) của @Model.TotalCount người dùng
+            Hiá»ƒn thá»‹ @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.PageIndex * Model.PageSize, Model.TotalCount)) cá»§a @Model.TotalCount ngÆ°á»i dÃ¹ng
         </div>
         <div class="pagination-info">
             Trang @Model.PageIndex / @Model.TotalPages
         </div>
     </div>
 
-    <!-- Danh sách người dùng -->
+    <!-- Danh sÃ¡ch ngÆ°á»i dÃ¹ng -->
     @if (Model.Any())
     {
         <!-- Grid View -->
@@ -177,14 +177,14 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li><a class="dropdown-item" href="@Url.Action("Details", new { id = user.UserID })">
-                                                <i class="fas fa-eye me-2"></i>Xem chi tiết
+                                                <i class="fas fa-eye me-2"></i>Xem chi tiáº¿t
                                             </a></li>
                                             <li><a class="dropdown-item" href="@Url.Action("Edit", new { id = user.UserID })">
-                                                <i class="fas fa-edit me-2"></i>Chỉnh sửa
+                                                <i class="fas fa-edit me-2"></i>Chá»‰nh sá»­a
                                             </a></li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item text-danger" href="@Url.Action("Delete", new { id = user.UserID })">
-                                                <i class="fas fa-trash me-2"></i>Xóa
+                                                <i class="fas fa-trash me-2"></i>XÃ³a
                                             </a></li>
                                         </ul>
                                     </div>
@@ -214,7 +214,7 @@
                                     {
                                         <div class="info-item">
                                             <i class="fas fa-phone icon text-muted"></i>
-                                            <span class="info-text text-muted">Chưa có SĐT</span>
+                                            <span class="info-text text-muted">ChÆ°a cÃ³ SÄT</span>
                                         </div>
                                     }
                                 </div>
@@ -225,17 +225,17 @@
                                 <div class="status-section">
                                     <span class="status-badge-modern @(user.IsActive ? "status-active-modern" : "status-inactive-modern")">
                                         <i class="fas @(user.IsActive ? "fa-check-circle" : "fa-ban") me-1"></i>
-                                        @(user.IsActive ? "Hoạt động" : "Vô hiệu hóa")
+                                        @(user.IsActive ? "Hoáº¡t Ä‘á»™ng" : "VÃ´ hiá»‡u hÃ³a")
                                     </span>
                                 </div>
                                 <div class="action-buttons">
-                                    <a href="@Url.Action("Details", new { id = user.UserID })" class="btn-action btn-view" title="Xem chi tiết">
+                                    <a href="@Url.Action("Details", new { id = user.UserID })" class="btn-action btn-view" title="Xem chi tiáº¿t">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="@Url.Action("Edit", new { id = user.UserID })" class="btn-action btn-edit" title="Chỉnh sửa">
+                                    <a href="@Url.Action("Edit", new { id = user.UserID })" class="btn-action btn-edit" title="Chá»‰nh sá»­a">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    @* <a href="@Url.Action("Delete", new { id = user.UserID })" class="btn-action btn-delete" title="Xóa">
+                                    @* <a href="@Url.Action("Delete", new { id = user.UserID })" class="btn-action btn-delete" title="XÃ³a">
                                         <i class="fas fa-trash"></i>
                                     </a> *@
                                 </div>
@@ -253,11 +253,11 @@
                     <thead>
                         <tr>
                             <th width="80">Avatar</th>
-                            <th>Thông tin người dùng</th>
-                            <th width="140">Liên hệ</th>
-                            <th width="100">Trạng thái</th>
-                            <th width="100">Đơn hàng</th>
-                            <th width="120">Thao tác</th>
+                            <th>ThÃ´ng tin ngÆ°á»i dÃ¹ng</th>
+                            <th width="140">LiÃªn há»‡</th>
+                            <th width="100">Tráº¡ng thÃ¡i</th>
+                            <th width="100">ÄÆ¡n hÃ ng</th>
+                            <th width="120">Thao tÃ¡c</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -286,7 +286,7 @@
                                 <td>
                                     @if (!string.IsNullOrEmpty(user.PhoneNumber))
                                     {
-                                        <a href="tel:@user.PhoneNumber" class="btn btn-sm btn-outline-success" title="Gọi điện">
+                                        <a href="tel:@user.PhoneNumber" class="btn btn-sm btn-outline-success" title="Gá»i Ä‘iá»‡n">
                                             <i class="fas fa-phone me-1"></i>
                                             @user.PhoneNumber
                                         </a>
@@ -295,7 +295,7 @@
                                     {
                                         <span class="text-muted small">
                                             <i class="fas fa-phone-slash me-1"></i>
-                                            Chưa có SĐT
+                                            ChÆ°a cÃ³ SÄT
                                         </span>
                                     }
                                 </td>
@@ -304,14 +304,14 @@
                                     {
                                         <span class="badge bg-success">
                                             <i class="fas fa-check me-1"></i>
-                                            Hoạt động
+                                            Hoáº¡t Ä‘á»™ng
                                         </span>
                                     }
                                     else
                                     {
                                         <span class="badge bg-danger">
                                             <i class="fas fa-ban me-1"></i>
-                                            Vô hiệu hóa
+                                            VÃ´ hiá»‡u hÃ³a
                                         </span>
                                     }
                                 </td>
@@ -334,15 +334,15 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a href="@Url.Action("Details", new { id = user.UserID })" 
-                                           class="btn btn-sm btn-outline-info" title="Chi tiết">
+                                           class="btn btn-sm btn-outline-info" title="Chi tiáº¿t">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="@Url.Action("Edit", new { id = user.UserID })" 
-                                           class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                                           class="btn btn-sm btn-outline-warning" title="Chá»‰nh sá»­a">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <a href="@Url.Action("Delete", new { id = user.UserID })" 
-                                           class="btn btn-sm btn-outline-danger" title="Xóa">
+                                           class="btn btn-sm btn-outline-danger" title="XÃ³a">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
@@ -432,11 +432,11 @@
         <!-- Empty State -->
         <div class="empty-state">
             <i class="fas fa-users"></i>
-            <h3>Không tìm thấy người dùng nào</h3>
-            <p>Thử thay đổi bộ lọc hoặc tìm kiếm để hiển thị kết quả khác.</p>
+            <h3>KhÃ´ng tÃ¬m tháº¥y ngÆ°á»i dÃ¹ng nÃ o</h3>
+            <p>Thá»­ thay Ä‘á»•i bá»™ lá»c hoáº·c tÃ¬m kiáº¿m Ä‘á»ƒ hiá»ƒn thá»‹ káº¿t quáº£ khÃ¡c.</p>
             <a href="@Url.Action("Create")" class="btn btn-jollibee">
                 <i class="fas fa-plus me-2"></i>
-                Thêm người dùng đầu tiên
+                Thêm ngÆ°á»i dÃ¹ng Ä‘áº§u tiÃªn
             </a>
         </div>
     }
@@ -487,3 +487,4 @@
         });
     </script>
 } 
+

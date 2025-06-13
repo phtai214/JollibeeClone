@@ -1,0 +1,294 @@
+@model JollibeeClone.Areas.Admin.Models.News
+
+@{
+    ViewData["Title"] = "Thêm tin tức mới";
+}
+
+<div class="news-create">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-plus text-jollibee-red me-2"></i>
+                Thêm tin tức mới
+            </h2>
+            <p class="text-muted">Tạo tin tức hoặc bài viết khuyến mãi mới</p>
+        </div>
+        <div class="header-actions">
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại danh sách
+            </a>
+        </div>
+    </div>
+
+    <form asp-action="Create" method="post" enctype="multipart/form-data" id="newsForm">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        
+        <div class="row">
+            <!-- Form chính -->
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-edit me-2"></i>
+                            Thông tin tin tức
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Tiêu đề -->
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label required">Tiêu đề</label>
+                            <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề tin tức..." />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <!-- Mô tả ngắn -->
+                        <div class="mb-3">
+                            <label asp-for="ShortDescription" class="form-label">Mô tả ngắn</label>
+                            <textarea asp-for="ShortDescription" class="form-control" rows="3" placeholder="Nhập mô tả ngắn (tối đa 500 ký tự)..."></textarea>
+                            <span asp-validation-for="ShortDescription" class="text-danger"></span>
+                            <div class="form-text">Mô tả ngắn sẽ hiển thị trong danh sách tin tức</div>
+                        </div>
+
+                        <!-- Nội dung -->
+                        <div class="mb-3">
+                            <label asp-for="Content" class="form-label required">Nội dung</label>
+                            <textarea asp-for="Content" class="form-control" rows="10" id="contentEditor" placeholder="Nhập nội dung chi tiết..."></textarea>
+                            <span asp-validation-for="Content" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Upload ảnh -->
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="card-title mb-0">
+                            <i class="fas fa-image me-2"></i>
+                            Hình ảnh tin tức
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="image-upload-section">
+                            <div class="file-upload-area" id="fileUploadArea">
+                                <div class="file-upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <p><strong>Kéo thả ảnh vào đây</strong></p>
+                                <p>hoặc</p>
+                                <label for="imageFile" class="btn btn-outline-primary">
+                                    <i class="fas fa-folder-open me-2"></i>
+                                    Chọn file từ máy
+                                </label>
+                                <input asp-for="ImageFile" type="file" id="imageFile" accept="image/*" style="display: none;" />
+                            </div>
+                            
+                            <div id="imagePreview" class="image-preview" style="display: none;">
+                                <img id="previewImg" src="#" alt="Preview" />
+                                <div class="image-actions">
+                                    <button type="button" class="btn btn-sm btn-danger" id="removeImage">
+                                        <i class="fas fa-trash"></i>
+                                        Xóa ảnh
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="upload-guidelines">
+                            <h6><i class="fas fa-info-circle me-2"></i>Hướng dẫn upload ảnh:</h6>
+                            <ul>
+                                <li>Kích thước tối đa: 5MB</li>
+                                <li>Định dạng: JPG, PNG, GIF, WEBP</li>
+                                <li>Kích thước khuyến nghị: 800x600px</li>
+                                <li>Ảnh chất lượng cao để thu hút người đọc</li>
+                            </ul>
+                        </div>
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Thiết lập -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="card-title mb-0">
+                            <i class="fas fa-cog me-2"></i>
+                            Thiết lập
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <!-- Loại tin tức -->
+                        <div class="mb-3">
+                            <label class="form-label required">Loại tin tức</label>
+                            <div class="news-type-options">
+                                <div class="form-check">
+                                    <input asp-for="NewsType" type="radio" value="Tin tức" class="form-check-input" id="newsTypeNews" checked />
+                                    <label class="form-check-label" for="newsTypeNews">
+                                        <i class="fas fa-newspaper text-info me-2"></i>
+                                        Tin tức
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="NewsType" type="radio" value="Khuyến mãi" class="form-check-input" id="newsTypePromotion" />
+                                    <label class="form-check-label" for="newsTypePromotion">
+                                        <i class="fas fa-tags text-success me-2"></i>
+                                        Khuyến mãi
+                                    </label>
+                                </div>
+                            </div>
+                            <span asp-validation-for="NewsType" class="text-danger"></span>
+                            <div class="form-text">
+                                <strong>Tin tức:</strong> Hiển thị ở trang /tin-tuc<br>
+                                <strong>Khuyến mãi:</strong> Hiển thị ở trang /khuyen-mai
+                            </div>
+                        </div>
+
+                        <!-- Tác giả -->
+                        <div class="mb-3">
+                            <label asp-for="AuthorID" class="form-label">Tác giả</label>
+                            <select asp-for="AuthorID" asp-items="ViewBag.AuthorID" class="form-select">
+                                <option value="">-- Chọn tác giả --</option>
+                            </select>
+                            <span asp-validation-for="AuthorID" class="text-danger"></span>
+                        </div>
+
+                        <!-- Trạng thái xuất bản -->
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input asp-for="IsPublished" type="checkbox" class="form-check-input" id="isPublished" checked />
+                                <label class="form-check-label" for="isPublished">
+                                    <i class="fas fa-globe me-2"></i>
+                                    Xuất bản ngay
+                                </label>
+                            </div>
+                            <div class="form-text">
+                                Bỏ chọn để lưu dưới dạng nháp
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nút lưu -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>
+                                Lưu tin tức
+                            </button>
+                            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>
+                                Hủy bỏ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    
+    <script>
+        $(document).ready(function() {
+            // Image preview
+            $('#imageFile').change(function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#previewImg').attr('src', e.target.result).show();
+                        $('.upload-placeholder').hide();
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    $('#previewImg').hide();
+                    $('.upload-placeholder').show();
+                }
+            });
+
+            // Form validation
+            $('#newsForm').submit(function(e) {
+                let isValid = true;
+                
+                // Check title
+                if (!$('#Title').val().trim()) {
+                    isValid = false;
+                    $('#Title').addClass('is-invalid');
+                } else {
+                    $('#Title').removeClass('is-invalid');
+                }
+                
+                // Check content
+                if (!$('#Content').val().trim()) {
+                    isValid = false;
+                    $('#Content').addClass('is-invalid');
+                } else {
+                    $('#Content').removeClass('is-invalid');
+                }
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    $('html, body').animate({
+                        scrollTop: $('.is-invalid').first().offset().top - 100
+                    }, 500);
+                }
+            });
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        .image-upload-section {
+            text-align: center;
+        }
+        
+        .image-preview {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .upload-placeholder {
+            text-align: center;
+        }
+        
+        .news-type-options .form-check {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .news-type-options .form-check:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .news-type-options .form-check-input:checked + .form-check-label {
+            font-weight: bold;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #dc3545;
+        }
+    </style>
+} 

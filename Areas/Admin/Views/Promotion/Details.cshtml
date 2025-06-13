@@ -1,9 +1,9 @@
-@model JollibeeClone.Areas.Admin.ViewModels.PromotionViewModel
+@model JollibeeClone.ViewModels.PromotionViewModel
 
 @{
-    ViewData["Title"] = "Chi tiết Voucher";
+    ViewData["Title"] = "Chi tiáº¿t Voucher";
     var statusClass = Model.EndDate < DateTime.Today ? "expired" : Model.StartDate > DateTime.Today ? "upcoming" : Model.IsActive ? "running" : "inactive";
-    var statusText = Model.EndDate < DateTime.Today ? "Đã hết hạn" : Model.StartDate > DateTime.Today ? "Sắp diễn ra" : Model.IsActive ? "Đang hoạt động" : "Không hoạt động";
+    var statusText = Model.EndDate < DateTime.Today ? "ÄÃ£ háº¿t háº¡n" : Model.StartDate > DateTime.Today ? "Sáº¯p diá»…n ra" : Model.IsActive ? "Äang hoáº¡t Ä‘á»™ng" : "KhÃ´ng hoáº¡t Ä‘á»™ng";
     var statusBadgeClass = Model.EndDate < DateTime.Today ? "expired" : Model.StartDate > DateTime.Today ? "upcoming" : Model.IsActive ? "active" : "inactive";
     var usagePercentage = Model.MaxUses.HasValue ? (double)Model.UsesCount / Model.MaxUses.Value * 100 : 0;
 }
@@ -19,33 +19,33 @@
             <div>
                 <h2 class="page-title">
                     <i class="fas fa-eye text-jollibee-red me-2"></i>
-                    Chi tiết Voucher
+                    Chi tiáº¿t Voucher
                 </h2>
-                <p class="text-muted mb-0">Thông tin chi tiết voucher: <strong>@Model.PromotionName</strong></p>
+                <p class="text-muted mb-0">ThÃ´ng tin chi tiáº¿t voucher: <strong>@Model.PromotionName</strong></p>
             </div>
             <div class="d-flex gap-2">
                 <button onclick="togglePromotionStatus(@Model.PromotionID)" class="btn btn-warning" id="toggle-@Model.PromotionID">
                     <i class="fas fa-@(Model.IsActive ? "pause" : "play") me-2"></i>
-                    @(Model.IsActive ? "Tạm dừng" : "Kích hoạt")
+                    @(Model.IsActive ? "Táº¡m dá»«ng" : "KÃ­ch hoáº¡t")
                 </button>
                 @if (!string.IsNullOrEmpty(Model.CouponCode))
                 {
                     <button onclick="copyToClipboard('@Model.CouponCode')" class="btn btn-info">
                         <i class="fas fa-copy me-2"></i>
-                        Sao chép mã
+                        Sao chÃ©p mÃ£
                     </button>
                 }
                 <button onclick="refreshStatistics()" class="btn btn-secondary">
                     <i class="fas fa-sync-alt me-2"></i>
-                    Làm mới
+                    LÃ m má»›i
                 </button>
                 <a href="@Url.Action("Edit", new { id = Model.PromotionID })" class="btn btn-warning">
                     <i class="fas fa-edit me-2"></i>
-                    Chỉnh sửa
+                    Chá»‰nh sá»­a
                 </a>
                 <a href="@Url.Action("Index")" class="btn btn-secondary">
                     <i class="fas fa-arrow-left me-2"></i>
-                    Quay lại
+                    Quay láº¡i
                 </a>
             </div>
         </div>
@@ -98,13 +98,13 @@
                     <!-- Discount Display -->
                     <div class="discount-display">
                         <div class="discount-value">@Model.DiscountValue%</div>
-                        <div class="discount-type">Giảm @Model.DiscountType</div>
+                        <div class="discount-type">Giáº£m @Model.DiscountType</div>
                     </div>
 
                     <!-- Date Range -->
                     <div class="date-range">
                         <div class="date-item">
-                            <div class="date-label">Bắt đầu</div>
+                            <div class="date-label">Báº¯t Ä‘áº§u</div>
                             <div class="date-value">@Model.StartDate.ToString("dd/MM/yyyy")</div>
                             <div class="text-muted small">@Model.StartDate.ToString("HH:mm")</div>
                         </div>
@@ -112,7 +112,7 @@
                             <i class="fas fa-arrow-right"></i>
                         </div>
                         <div class="date-item">
-                            <div class="date-label">Kết thúc</div>
+                            <div class="date-label">Káº¿t thÃºc</div>
                             <div class="date-value">@Model.EndDate.ToString("dd/MM/yyyy")</div>
                             <div class="text-muted small">@Model.EndDate.ToString("HH:mm")</div>
                         </div>
@@ -123,7 +123,7 @@
                     {
                         <div class="usage-progress">
                             <div class="usage-info">
-                                <span class="usage-label">Đã sử dụng: @Model.UsesCount/@Model.MaxUses</span>
+                                <span class="usage-label">ÄÃ£ sá»­ dá»¥ng: @Model.UsesCount/@Model.MaxUses</span>
                                 <span class="usage-percentage">@usagePercentage.ToString("F1")%</span>
                             </div>
                             <div class="progress">
@@ -135,8 +135,8 @@
                     {
                         <div class="usage-progress">
                             <div class="usage-info">
-                                <span class="usage-label">Đã sử dụng: @Model.UsesCount lần</span>
-                                <span class="usage-percentage">Không giới hạn</span>
+                                <span class="usage-label">ÄÃ£ sá»­ dá»¥ng: @Model.UsesCount láº§n</span>
+                                <span class="usage-percentage">KhÃ´ng giá»›i háº¡n</span>
                             </div>
                         </div>
                     }
@@ -145,7 +145,7 @@
                     {
                         <div class="text-center mt-3 p-3 bg-light rounded">
                             <i class="fas fa-shopping-cart text-jollibee-red me-2"></i>
-                            <strong>Đơn hàng tối thiểu: @Model.MinOrderValue.Value.ToString("N0") VNĐ</strong>
+                            <strong>ÄÆ¡n hÃ ng tá»‘i thiá»ƒu: @Model.MinOrderValue.Value.ToString("N0") VNÄ</strong>
                         </div>
                     }
 
@@ -153,7 +153,7 @@
                     {
                         <div class="text-center mt-2 p-2 bg-info bg-opacity-10 rounded">
                             <i class="fas fa-user text-info me-2"></i>
-                            <small>Tối đa @Model.MaxUsesPerUser lần/khách hàng</small>
+                            <small>Tá»‘i Ä‘a @Model.MaxUsesPerUser láº§n/khÃ¡ch hÃ ng</small>
                         </div>
                     }
                 </div>
@@ -162,15 +162,15 @@
                 <div class="promotion-actions">
                     <a href="@Url.Action("Edit", new { id = Model.PromotionID })" class="action-btn btn-edit">
                         <i class="fas fa-edit"></i>
-                        Chỉnh sửa
+                        Chá»‰nh sá»­a
                     </a>
                     <a href="@Url.Action("Delete", new { id = Model.PromotionID })" class="action-btn btn-delete">
                         <i class="fas fa-trash"></i>
-                        Xóa
+                        XÃ³a
                     </a>
                     <a href="@Url.Action("Index")" class="action-btn btn-view">
                         <i class="fas fa-list"></i>
-                        Danh sách
+                        Danh sÃ¡ch
                     </a>
                 </div>
             </div>
@@ -183,17 +183,17 @@
                 <div class="form-section">
                     <h3 class="section-title">
                         <i class="fas fa-chart-bar me-2"></i>
-                        Thống kê nhanh
+                        Thá»‘ng kÃª nhanh
                     </h3>
                     
                     <div class="promotion-stats">
                         <div class="stat-item">
                             <span class="stat-number">@Model.UsesCount</span>
-                            <span class="stat-label">Lượt sử dụng</span>
+                            <span class="stat-label">LÆ°á»£t sá»­ dá»¥ng</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-number">@(Model.MaxUses.HasValue ? Model.MaxUses.Value - Model.UsesCount : "∞")</span>
-                            <span class="stat-label">Còn lại</span>
+                            <span class="stat-number">@(Model.MaxUses.HasValue ? Model.MaxUses.Value - Model.UsesCount : "âˆž")</span>
+                            <span class="stat-label">CÃ²n láº¡i</span>
                         </div>
                     </div>
 
@@ -204,7 +204,7 @@
                                 <div class="progress-bar bg-success" style="width: @(usagePercentage)%"></div>
                             </div>
                             <div class="text-center mt-2">
-                                <small class="text-muted">@usagePercentage.ToString("F1")% đã sử dụng</small>
+                                <small class="text-muted">@usagePercentage.ToString("F1")% Ä‘Ã£ sá»­ dá»¥ng</small>
                             </div>
                         </div>
                     }
@@ -217,19 +217,19 @@
                     }
 
                     <div class="mt-4">
-                        <h6>Thời gian</h6>
+                        <h6>Thá»i gian</h6>
                         <div class="row text-center">
                             <div class="col-4">
                                 <div class="text-jollibee-red fw-bold">@daysTotal</div>
-                                <small class="text-muted">Tổng ngày</small>
+                                <small class="text-muted">Tá»•ng ngÃ y</small>
                             </div>
                             <div class="col-4">
                                 <div class="text-success fw-bold">@(Math.Max(0, daysElapsed))</div>
-                                <small class="text-muted">Đã trước</small>
+                                <small class="text-muted">ÄÃ£ trÆ°á»›c</small>
                             </div>
                             <div class="col-4">
                                 <div class="text-warning fw-bold">@(Math.Max(0, daysRemaining))</div>
-                                <small class="text-muted">Còn lại</small>
+                                <small class="text-muted">CÃ²n láº¡i</small>
                             </div>
                         </div>
                     </div>
@@ -241,7 +241,7 @@
                 <div class="form-section">
                     <h3 class="section-title">
                         <i class="fas fa-info-circle me-2"></i>
-                        Thông tin hệ thống
+                        ThÃ´ng tin há»‡ thá»‘ng
                     </h3>
                     
                     <table class="table table-sm">
@@ -250,15 +250,15 @@
                             <td>@Model.PromotionID</td>
                         </tr>
                         <tr>
-                            <td><strong>Loại giảm giá:</strong></td>
+                            <td><strong>Loáº¡i giáº£m giÃ¡:</strong></td>
                             <td>@Model.DiscountType</td>
                         </tr>
                         <tr>
-                            <td><strong>Trạng thái:</strong></td>
+                            <td><strong>Tráº¡ng thÃ¡i:</strong></td>
                             <td><span class="status-badge @statusBadgeClass">@statusText</span></td>
                         </tr>
                         <tr>
-                            <td><strong>Ngày tạo:</strong></td>
+                            <td><strong>NgÃ y táº¡o:</strong></td>
                             <td>@DateTime.Now.ToString("dd/MM/yyyy")</td>
                         </tr>
                     </table>
@@ -274,15 +274,15 @@
                 <div class="form-section">
                     <h3 class="section-title">
                         <i class="fas fa-users me-2"></i>
-                        Lịch sử sử dụng voucher
+                        Lá»‹ch sá»­ sá»­ dá»¥ng voucher
                         <span class="badge bg-jollibee-red ms-2" id="usage-count-badge">@Model.UsesCount</span>
                     </h3>
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <p class="text-muted mb-0">Danh sách khách hàng đã sử dụng voucher này</p>
+                        <p class="text-muted mb-0">Danh sÃ¡ch khÃ¡ch hÃ ng Ä‘Ã£ sá»­ dá»¥ng voucher nÃ y</p>
                         <button onclick="refreshUsageStats()" class="btn btn-sm btn-outline-primary">
                             <i class="fas fa-sync-alt me-1"></i>
-                            Làm mới
+                            LÃ m má»›i
                         </button>
                     </div>
 
@@ -292,23 +292,23 @@
                             <div class="card text-center">
                                 <div class="card-body">
                                     <h5 class="card-title text-primary mb-1" id="total-users">0</h5>
-                                    <p class="card-text small text-muted">Tổng khách hàng</p>
+                                    <p class="card-text small text-muted">Tá»•ng khÃ¡ch hÃ ng</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="card text-center">
                                 <div class="card-body">
-                                    <h5 class="card-title text-success mb-1" id="total-discount">0 ₫</h5>
-                                    <p class="card-text small text-muted">Tổng giảm giá</p>
+                                    <h5 class="card-title text-success mb-1" id="total-discount">0 â‚«</h5>
+                                    <p class="card-text small text-muted">Tá»•ng giáº£m giÃ¡</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="card text-center">
                                 <div class="card-body">
-                                    <h5 class="card-title text-warning mb-1" id="avg-discount">0 ₫</h5>
-                                    <p class="card-text small text-muted">TB giảm giá/người</p>
+                                    <h5 class="card-title text-warning mb-1" id="avg-discount">0 â‚«</h5>
+                                    <p class="card-text small text-muted">TB giáº£m giÃ¡/ngÆ°á»i</p>
                                 </div>
                             </div>
                         </div>
@@ -316,7 +316,7 @@
                             <div class="card text-center">
                                 <div class="card-body">
                                     <h5 class="card-title text-info mb-1" id="recent-usage">0</h5>
-                                    <p class="card-text small text-muted">Sử dụng hôm nay</p>
+                                    <p class="card-text small text-muted">Sá»­ dá»¥ng hÃ´m nay</p>
                                 </div>
                             </div>
                         </div>
@@ -326,9 +326,9 @@
                     <div id="usage-stats-container">
                         <div class="text-center py-4">
                             <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Đang tải...</span>
+                                <span class="visually-hidden">Äang táº£i...</span>
                             </div>
-                            <p class="mt-2 text-muted">Đang tải dữ liệu...</p>
+                            <p class="mt-2 text-muted">Äang táº£i dá»¯ liá»‡u...</p>
                         </div>
                     </div>
                 </div>
@@ -343,7 +343,7 @@
                 <div class="form-section">
                     <h3 class="section-title">
                         <i class="fas fa-target me-2"></i>
-                        Phạm vi áp dụng
+                        Pháº¡m vi Ã¡p dá»¥ng
                     </h3>
 
                     <!-- Tabs Navigation -->
@@ -351,13 +351,13 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab">
                                 <i class="fas fa-box me-2"></i>
-                                Sản phẩm áp dụng (@Model.SelectedProducts.Count)
+                                Sáº£n pháº©m Ã¡p dá»¥ng (@Model.SelectedProducts.Count)
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="categories-tab" data-bs-toggle="tab" data-bs-target="#categories" type="button" role="tab">
                                 <i class="fas fa-tags me-2"></i>
-                                Danh mục áp dụng (@Model.SelectedCategories.Count)
+                                Danh má»¥c Ã¡p dá»¥ng (@Model.SelectedCategories.Count)
                             </button>
                         </li>
                     </ul>
@@ -376,7 +376,7 @@
                                                 <div class="card h-100">
                                                     <div class="card-body">
                                                         <h6 class="card-title">@product.ProductName</h6>
-                                                        <p class="card-text text-muted small">@product.Price.ToString("N0") VNĐ</p>
+                                                        <p class="card-text text-muted small">@product.Price.ToString("N0") VNÄ</p>
                                                             @if (!string.IsNullOrEmpty(product.ShortDescription))
                                                         {
                                                             <p class="card-text small">@product.ShortDescription</p>
@@ -391,8 +391,8 @@
                                 {
                                     <div class="text-center py-4">
                                         <i class="fas fa-box fa-3x text-muted mb-3"></i>
-                                        <h5 class="text-muted">Chưa có sản phẩm nào được chọn</h5>
-                                        <p class="text-muted">Voucher này chưa được áp dụng cho sản phẩm cụ thể nào.</p>
+                                        <h5 class="text-muted">ChÆ°a cÃ³ sáº£n pháº©m nÃ o Ä‘Æ°á»£c chá»n</h5>
+                                        <p class="text-muted">Voucher nÃ y chÆ°a Ä‘Æ°á»£c Ã¡p dá»¥ng cho sáº£n pháº©m cá»¥ thá»ƒ nÃ o.</p>
                                     </div>
                                 }
                             </div>
@@ -416,7 +416,7 @@
                                                         }
                                                         <span class="badge bg-jollibee-red">
                                                             <i class="fas fa-tag me-1"></i>
-                                                            Danh mục
+                                                            Danh má»¥c
                                                         </span>
                                                     </div>
                                                 </div>
@@ -428,8 +428,8 @@
                                 {
                                     <div class="text-center py-4">
                                         <i class="fas fa-tags fa-3x text-muted mb-3"></i>
-                                        <h5 class="text-muted">Chưa có danh mục nào được chọn</h5>
-                                        <p class="text-muted">Voucher này chưa được áp dụng cho danh mục sản phẩm nào.</p>
+                                        <h5 class="text-muted">ChÆ°a cÃ³ danh má»¥c nÃ o Ä‘Æ°á»£c chá»n</h5>
+                                        <p class="text-muted">Voucher nÃ y chÆ°a Ä‘Æ°á»£c Ã¡p dá»¥ng cho danh má»¥c sáº£n pháº©m nÃ o.</p>
                                     </div>
                                 }
                             </div>
@@ -440,8 +440,8 @@
                     {
                         <div class="alert alert-warning mt-3" role="alert">
                             <i class="fas fa-exclamation-triangle me-2"></i>
-                            <strong>Lưu ý:</strong> Voucher này chưa được áp dụng cho sản phẩm hoặc danh mục nào. 
-                            Hãy <a href="@Url.Action("Edit", new { id = Model.PromotionID })" class="alert-link">chỉnh sửa</a> để thiết lập phạm vi áp dụng.
+                            <strong>LÆ°u Ã½:</strong> Voucher nÃ y chÆ°a Ä‘Æ°á»£c Ã¡p dá»¥ng cho sáº£n pháº©m hoáº·c danh má»¥c nÃ o. 
+                            HÃ£y <a href="@Url.Action("Edit", new { id = Model.PromotionID })" class="alert-link">chá»‰nh sá»­a</a> Ä‘á»ƒ thiáº¿t láº­p pháº¡m vi Ã¡p dá»¥ng.
                         </div>
                     }
                 </div>
@@ -485,7 +485,7 @@
             const originalContent = toggleBtn.innerHTML;
             
             // Show loading state
-            toggleBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang xử lý...';
+            toggleBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Äang xá»­ lÃ½...';
             toggleBtn.disabled = true;
 
             fetch(`@Url.Action("ToggleStatus")?id=${promotionId}`, {
@@ -501,11 +501,11 @@
                     
                     // Update button UI
                     if (data.isActive) {
-                        toggleBtn.innerHTML = '<i class="fas fa-pause me-2"></i>Tạm dừng';
-                        updateStatusBadge('active', 'Đang hoạt động');
+                        toggleBtn.innerHTML = '<i class="fas fa-pause me-2"></i>Táº¡m dá»«ng';
+                        updateStatusBadge('active', 'Äang hoáº¡t Ä‘á»™ng');
                     } else {
-                        toggleBtn.innerHTML = '<i class="fas fa-play me-2"></i>Kích hoạt';
-                        updateStatusBadge('inactive', 'Không hoạt động');
+                        toggleBtn.innerHTML = '<i class="fas fa-play me-2"></i>KÃ­ch hoáº¡t';
+                        updateStatusBadge('inactive', 'KhÃ´ng hoáº¡t Ä‘á»™ng');
                     }
                     
                     // Refresh statistics after status change
@@ -517,7 +517,7 @@
                 toggleBtn.disabled = false;
             })
             .catch(error => {
-                showAlert('danger', 'Có lỗi xảy ra khi thay đổi trạng thái');
+                showAlert('danger', 'CÃ³ lá»—i xáº£y ra khi thay Ä‘á»•i tráº¡ng thÃ¡i');
                 toggleBtn.innerHTML = originalContent;
                 toggleBtn.disabled = false;
             });
@@ -526,7 +526,7 @@
         // Copy to clipboard
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                showAlert('success', 'Đã sao chép mã voucher: ' + text);
+                showAlert('success', 'ÄÃ£ sao chÃ©p mÃ£ voucher: ' + text);
             }).catch(() => {
                 // Fallback for browsers that don't support clipboard API
                 const textArea = document.createElement('textarea');
@@ -535,7 +535,7 @@
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                showAlert('success', 'Đã sao chép mã voucher: ' + text);
+                showAlert('success', 'ÄÃ£ sao chÃ©p mÃ£ voucher: ' + text);
             });
         }
 
@@ -545,7 +545,7 @@
             const originalContent = refreshBtn.innerHTML;
             
             // Show loading state
-            refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang tải...';
+            refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Äang táº£i...';
             refreshBtn.disabled = true;
 
             fetch(`@Url.Action("GetPromotionStatistics")?id=@Model.PromotionID`)
@@ -553,13 +553,13 @@
                 .then(data => {
                     if (data.success) {
                         updateStatistics(data);
-                        showAlert('success', 'Đã cập nhật thống kê');
+                        showAlert('success', 'ÄÃ£ cáº­p nháº­t thá»‘ng kÃª');
                     } else {
                         showAlert('danger', data.message);
                     }
                 })
                 .catch(error => {
-                    showAlert('danger', 'Có lỗi xảy ra khi tải thống kê');
+                    showAlert('danger', 'CÃ³ lá»—i xáº£y ra khi táº£i thá»‘ng kÃª');
                 })
                 .finally(() => {
                     refreshBtn.innerHTML = originalContent;
@@ -595,7 +595,7 @@
                 if (data.remainingUses !== null) {
                     el.textContent = data.remainingUses;
                 } else {
-                    el.textContent = '∞';
+                    el.textContent = 'âˆž';
                 }
             });
 
@@ -628,11 +628,11 @@
         // Get status text from status code
         function getStatusText(status) {
             switch (status) {
-                case 'active': return 'Đang hoạt động';
-                case 'upcoming': return 'Sắp diễn ra';
-                case 'expired': return 'Đã hết hạn';
-                case 'inactive': return 'Không hoạt động';
-                default: return 'Không xác định';
+                case 'active': return 'Äang hoáº¡t Ä‘á»™ng';
+                case 'upcoming': return 'Sáº¯p diá»…n ra';
+                case 'expired': return 'ÄÃ£ háº¿t háº¡n';
+                case 'inactive': return 'KhÃ´ng hoáº¡t Ä‘á»™ng';
+                default: return 'KhÃ´ng xÃ¡c Ä‘á»‹nh';
             }
         }
 
@@ -719,12 +719,12 @@
                         updateUsageSummary(data.summary);
                         renderUsageTable(data.usageStats);
                     } else {
-                        showUsageError(data.message || 'Không có dữ liệu');
+                        showUsageError(data.message || 'KhÃ´ng cÃ³ dá»¯ liá»‡u');
                     }
                 })
                 .catch(error => {
                     console.error('Error loading usage statistics:', error);
-                    showUsageError('Có lỗi xảy ra khi tải dữ liệu: ' + error.message);
+                    showUsageError('CÃ³ lá»—i xáº£y ra khi táº£i dá»¯ liá»‡u: ' + error.message);
                 });
         }
 
@@ -734,9 +734,9 @@
             container.innerHTML = `
                 <div class="text-center py-4">
                     <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Đang tải...</span>
+                        <span class="visually-hidden">Äang táº£i...</span>
                     </div>
-                    <p class="mt-2 text-muted">Đang tải dữ liệu...</p>
+                    <p class="mt-2 text-muted">Äang táº£i dá»¯ liá»‡u...</p>
                 </div>
             `;
             loadUsageStatistics();
@@ -767,8 +767,8 @@
                 container.innerHTML = `
                     <div class="text-center py-5">
                         <i class="fas fa-users fa-3x text-muted mb-3"></i>
-                        <h5 class="text-muted">Chưa có ai sử dụng voucher này</h5>
-                        <p class="text-muted">Khi có khách hàng sử dụng voucher, thông tin sẽ hiển thị ở đây.</p>
+                        <h5 class="text-muted">ChÆ°a cÃ³ ai sá»­ dá»¥ng voucher nÃ y</h5>
+                        <p class="text-muted">Khi cÃ³ khÃ¡ch hÃ ng sá»­ dá»¥ng voucher, thÃ´ng tin sáº½ hiá»ƒn thá»‹ á»Ÿ Ä‘Ã¢y.</p>
                     </div>
                 `;
                 return;
@@ -779,12 +779,12 @@
                     <table class="table table-hover">
                         <thead class="table-light">
                             <tr>
-                                <th><i class="fas fa-user me-1"></i>Khách hàng</th>
+                                <th><i class="fas fa-user me-1"></i>KhÃ¡ch hÃ ng</th>
                                 <th><i class="fas fa-envelope me-1"></i>Email</th>
-                                <th><i class="fas fa-tag me-1"></i>Giảm giá</th>
-                                <th><i class="fas fa-calendar me-1"></i>Ngày sử dụng</th>
-                                <th><i class="fas fa-receipt me-1"></i>Đơn hàng</th>
-                                @* <th><i class="fas fa-cog me-1"></i>Thao tác</th> *@
+                                <th><i class="fas fa-tag me-1"></i>Giáº£m giÃ¡</th>
+                                <th><i class="fas fa-calendar me-1"></i>NgÃ y sá»­ dá»¥ng</th>
+                                <th><i class="fas fa-receipt me-1"></i>ÄÆ¡n hÃ ng</th>
+                                @* <th><i class="fas fa-cog me-1"></i>Thao tÃ¡c</th> *@
                             </tr>
                         </thead>
                         <tbody>
@@ -804,7 +804,7 @@
                                 </div>
                                 <div>
                                     <strong>${usage.userFullName}</strong>
-                                    ${isToday ? '<span class="badge bg-warning text-dark ms-2">Hôm nay</span>' : ''}
+                                    ${isToday ? '<span class="badge bg-warning text-dark ms-2">HÃ´m nay</span>' : ''}
                                 </div>
                             </div>
                         </td>
@@ -830,15 +830,15 @@
                                     <strong>${usage.orderCode}</strong>
                                     ${usage.orderTotal ? `<br><small class="text-muted">${formatCurrency(usage.orderTotal)}</small>` : ''}
                                 </a>
-                            ` : '<span class="text-muted">Không có</span>'}
+                            ` : '<span class="text-muted">KhÃ´ng cÃ³</span>'}
                         </td>
                         @* <td>
                             <div class="btn-group btn-group-sm">
-                                <button class="btn btn-outline-primary" onclick="viewUserDetails(${usage.userId})" title="Xem thông tin user">
+                                <button class="btn btn-outline-primary" onclick="viewUserDetails(${usage.userId})" title="Xem thÃ´ng tin user">
                                     <i class="fas fa-eye"></i>
                                 </button>
                                 ${usage.orderCode ? `
-                                    <a href="/Admin/Orders/Details/${usage.orderId}" class="btn btn-outline-info" title="Xem đơn hàng">
+                                    <a href="/Admin/Orders/Details/${usage.orderId}" class="btn btn-outline-info" title="Xem Ä‘Æ¡n hÃ ng">
                                         <i class="fas fa-receipt"></i>
                                     </a>
                                 ` : ''}
@@ -858,7 +858,7 @@
             if (usageStats.length > 10) {
                 tableHtml += `
                     <div class="text-center mt-3">
-                        <small class="text-muted">Hiển thị ${Math.min(10, usageStats.length)} trong tổng số ${usageStats.length} lượt sử dụng</small>
+                        <small class="text-muted">Hiá»ƒn thá»‹ ${Math.min(10, usageStats.length)} trong tá»•ng sá»‘ ${usageStats.length} lÆ°á»£t sá»­ dá»¥ng</small>
                     </div>
                 `;
             }
@@ -872,11 +872,11 @@
             container.innerHTML = `
                 <div class="text-center py-4">
                     <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
-                    <h5 class="text-muted">Không thể tải dữ liệu</h5>
+                    <h5 class="text-muted">KhÃ´ng thá»ƒ táº£i dá»¯ liá»‡u</h5>
                     <p class="text-muted">${message}</p>
                     <button onclick="refreshUsageStats()" class="btn btn-primary">
                         <i class="fas fa-sync-alt me-1"></i>
-                        Thử lại
+                        Thá»­ láº¡i
                     </button>
                 </div>
             `;
@@ -885,7 +885,7 @@
         // View user details
         function viewUserDetails(userId) {
             // Open user details in a modal or new page
-            showAlert('info', 'Tính năng xem chi tiết user sẽ được phát triển sau');
+            showAlert('info', 'TÃ­nh nÄƒng xem chi tiáº¿t user sáº½ Ä‘Æ°á»£c phÃ¡t triá»ƒn sau');
         }
 
         // Utility functions
@@ -914,12 +914,13 @@
 
         // Add tooltips for keyboard shortcuts
         $(document).ready(function() {
-            $('[href*="Edit"]').attr('title', 'Chỉnh sửa (Ctrl+E)');
-            $('[onclick*="refreshStatistics"]').attr('title', 'Làm mới (Ctrl+R)');
+            $('[href*="Edit"]').attr('title', 'Chá»‰nh sá»­a (Ctrl+E)');
+            $('[onclick*="refreshStatistics"]').attr('title', 'LÃ m má»›i (Ctrl+R)');
             @if (!string.IsNullOrEmpty(Model.CouponCode))
             {
-                <text>$('[onclick*="copyToClipboard"]').attr('title', 'Sao chép mã (Ctrl+C)');</text>
+                <text>$('[onclick*="copyToClipboard"]').attr('title', 'Sao chÃ©p mÃ£ (Ctrl+C)');</text>
             }
         });
     </script>
 } 
+

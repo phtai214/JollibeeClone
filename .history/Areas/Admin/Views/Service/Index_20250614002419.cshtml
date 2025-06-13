@@ -1,0 +1,455 @@
+@model JollibeeClone.Areas.Admin.Models.PaginatedList<JollibeeClone.Areas.Admin.Models.Service>
+
+@{
+    ViewData["Title"] = "Quản lý dịch vụ";
+}
+
+<div class="service-management">
+    <!-- Header với nút thêm mới -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-concierge-bell text-jollibee-red me-2"></i>
+                Quản lý dịch vụ
+            </h2>
+            <p class="text-muted">Quản lý tất cả dịch vụ của cửa hàng</p>
+        </div>
+        <div class="header-actions">
+            <a href="@Url.Action("Create")" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus me-2"></i>
+                Thêm dịch vụ mới
+            </a>
+        </div>
+    </div>
+
+    <!-- Tìm kiếm và bộ lọc -->
+    <form method="get" id="filterForm">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" placeholder="Tìm kiếm dịch vụ...">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="isActive" class="form-select">
+                            <option value="">Tất cả trạng thái</option>
+                            @if (ViewBag.CurrentActive?.ToString() == "True")
+                            {
+                                <option value="true" selected="selected">Đang hoạt động</option>
+                            }
+                            else
+                            {
+                                <option value="true">Đang hoạt động</option>
+                            }
+                            @if (ViewBag.CurrentActive?.ToString() == "False")
+                            {
+                                <option value="false" selected="selected">Tạm dừng</option>
+                            }
+                            else
+                            {
+                                <option value="false">Tạm dừng</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="sortOrder" class="form-select">
+                            @if (ViewBag.CurrentSort == null || ViewBag.CurrentSort == "")
+                            {
+                                <option value="" selected="selected">Thứ tự hiển thị</option>
+                            }
+                            else
+                            {
+                                <option value="">Thứ tự hiển thị</option>
+                            }
+                            @if (ViewBag.CurrentSort == "name_desc")
+                            {
+                                <option value="name_desc" selected="selected">Tên Z-A</option>
+                            }
+                            else
+                            {
+                                <option value="name_desc">Tên Z-A</option>
+                            }
+                            @if (ViewBag.CurrentSort == "order")
+                            {
+                                <option value="order" selected="selected">Thứ tự tăng</option>
+                            }
+                            else
+                            {
+                                <option value="order">Thứ tự tăng</option>
+                            }
+                            @if (ViewBag.CurrentSort == "order_desc")
+                            {
+                                <option value="order_desc" selected="selected">Thứ tự giảm</option>
+                            }
+                            else
+                            {
+                                <option value="order_desc">Thứ tự giảm</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-secondary me-2">
+                            <i class="fas fa-search"></i> Lọc
+                        </button>
+                        <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Xóa
+                        </a>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="view-toggle-group">
+                            <button type="button" class="btn btn-outline-secondary view-btn active" data-view="grid" title="Dạng lưới">
+                                <i class="fas fa-th"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary view-btn" data-view="list" title="Dạng danh sách">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Thông tin kết quả -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="result-count">
+            Hiển thị @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.PageIndex * Model.PageSize, Model.TotalCount)) của @Model.TotalCount dịch vụ
+        </div>
+        <div class="pagination-info">
+            Trang @Model.PageIndex / @Model.TotalPages
+        </div>
+    </div>
+
+    <!-- Danh sách dịch vụ -->
+    @if (Model.Any())
+    {
+        <!-- Grid View -->
+        <div id="gridView" class="view-container">
+            <div class="row">
+                @foreach (var service in Model)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="service-card modern-card">
+                            <div class="service-image">
+                                @if (!string.IsNullOrEmpty(service.ImageUrl))
+                                {
+                                    <img src="@service.ImageUrl" alt="@service.ServiceName" 
+                                         onerror="this.onerror=null; this.src='/assets/images/bee.png';" />
+                                }
+                                else
+                                {
+                                    <div class="no-image">
+                                        <i class="fas fa-concierge-bell"></i>
+                                        <small class="text-muted">Chưa có ảnh</small>
+                                    </div>
+                                }
+                                <div class="service-overlay">
+                                    <span class="badge status-badge @(service.IsActive ? "status-active" : "status-inactive")">
+                                        <i class="fas @(service.IsActive ? "fa-check" : "fa-times") me-1"></i>
+                                        @(service.IsActive ? "Hoạt động" : "Tạm dừng")
+                                    </span>
+                                    <span class="badge bg-info order-badge">
+                                        <i class="fas fa-sort-numeric-up me-1"></i>
+                                        Thứ tự: @service.DisplayOrder
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="service-content">
+                                <h5 class="service-title">@service.ServiceName</h5>
+                                @if (!string.IsNullOrEmpty(service.ShortDescription))
+                                {
+                                    <p class="service-description">@service.ShortDescription</p>
+                                }
+                                
+                                <div class="service-actions mt-3">
+                                    <a href="@Url.Action("Details", new { id = service.ServiceID })" class="btn btn-sm btn-outline-info">
+                                        <i class="fas fa-eye"></i> Xem
+                                    </a>
+                                    <a href="@Url.Action("Edit", new { id = service.ServiceID })" class="btn btn-sm btn-outline-warning">
+                                        <i class="fas fa-edit"></i> Sửa
+                                    </a>
+                                    <a href="@Url.Action("Delete", new { id = service.ServiceID })" class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-trash"></i> Xóa
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- List View -->
+        <div id="listView" class="view-container" style="display: none;">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th width="60">Ảnh</th>
+                            <th>Tên dịch vụ</th>
+                            <th width="100">Thứ tự</th>
+                            <th width="120">Mô tả ngắn</th>
+                            <th width="80">Trạng thái</th>
+                            <th width="120">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var service in Model)
+                        {
+                            <tr class="service-row">
+                                <td>
+                                    @if (!string.IsNullOrEmpty(service.ImageUrl))
+                                    {
+                                        <div class="table-service-image">
+                                            <img src="@service.ImageUrl" alt="@service.ServiceName" 
+                                                 onerror="this.onerror=null; this.src='/assets/images/bee.png';" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="no-image-table">
+                                            <i class="fas fa-concierge-bell"></i>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="service-info">
+                                        <h6 class="mb-1">@service.ServiceName</h6>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">
+                                        <i class="fas fa-sort-numeric-up me-1"></i>
+                                        @service.DisplayOrder
+                                    </span>
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(service.ShortDescription))
+                                    {
+                                        <small class="text-muted">@service.ShortDescription</small>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">--</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (service.IsActive)
+                                    {
+                                        <span class="badge status-badge status-active">
+                                            <i class="fas fa-check me-1"></i>
+                                            Hoạt động
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge status-badge status-inactive">
+                                            <i class="fas fa-times me-1"></i>
+                                            Tạm dừng
+                                        </span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="@Url.Action("Details", new { id = service.ServiceID })" 
+                                           class="btn btn-sm btn-outline-info" title="Chi tiết">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="@Url.Action("Edit", new { id = service.ServiceID })" 
+                                           class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id = service.ServiceID })" 
+                                           class="btn btn-sm btn-outline-danger" title="Xóa">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state text-center py-5">
+            <i class="fas fa-concierge-bell fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">Chưa có dịch vụ nào</h4>
+            <p class="text-muted">Hãy bắt đầu bằng cách thêm dịch vụ đầu tiên</p>
+            <a href="@Url.Action("Create")" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>
+                Thêm dịch vụ mới
+            </a>
+        </div>
+    }
+
+    <!-- Pagination -->
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                @if (Model.HasPreviousPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index", new { 
+                            page = Model.PageIndex - 1, 
+                            searchString = ViewBag.CurrentSearch, 
+                            isActive = ViewBag.CurrentActive,
+                            sortOrder = ViewBag.CurrentSort 
+                        })">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                }
+
+                @for (int i = Math.Max(1, Model.PageIndex - 2); i <= Math.Min(Model.TotalPages, Model.PageIndex + 2); i++)
+                {
+                    <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { 
+                            page = i, 
+                            searchString = ViewBag.CurrentSearch, 
+                            isActive = ViewBag.CurrentActive,
+                            sortOrder = ViewBag.CurrentSort 
+                        })">@i</a>
+                    </li>
+                }
+
+                @if (Model.HasNextPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index", new { 
+                            page = Model.PageIndex + 1, 
+                            searchString = ViewBag.CurrentSearch, 
+                            isActive = ViewBag.CurrentActive,
+                            sortOrder = ViewBag.CurrentSort 
+                        })">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Auto submit form when filter changes
+            $('#filterForm select').change(function() {
+                $('#filterForm').submit();
+            });
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        .service-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            height: 100%;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .service-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .no-image {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            color: #6c757d;
+        }
+        
+        .no-image i {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .service-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .service-content {
+            padding: 20px;
+        }
+        
+        .service-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .service-description {
+            color: #6c757d;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .status-active {
+            background-color: #28a745 !important;
+        }
+        
+        .status-inactive {
+            background-color: #6c757d !important;
+        }
+        
+        .order-badge {
+            font-size: 11px;
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+            z-index: 2;
+        }
+        
+        .search-box input {
+            padding-left: 45px;
+        }
+    </style>
+} 

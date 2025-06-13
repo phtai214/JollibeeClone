@@ -1,7 +1,7 @@
-@model JollibeeClone.Areas.Admin.Models.Store
+@model JollibeeClone.Models.Store
 
 @{
-    ViewData["Title"] = "Chi tiết cửa hàng";
+    ViewData["Title"] = "Chi tiáº¿t cá»­a hÃ ng";
 }
 
 @section Styles {
@@ -14,18 +14,18 @@
         <div>
             <h2 class="page-title">
                 <i class="fas fa-store text-jollibee-red me-2"></i>
-                Chi tiết cửa hàng
+                Chi tiáº¿t cá»­a hÃ ng
             </h2>
-            <p class="text-muted">Thông tin chi tiết về cửa hàng: <strong>@Model.StoreName</strong></p>
+            <p class="text-muted">ThÃ´ng tin chi tiáº¿t vá» cá»­a hÃ ng: <strong>@Model.StoreName</strong></p>
         </div>
         <div class="btn-group">
             <a href="@Url.Action("Edit", new { id = Model.StoreID })" class="btn btn-warning">
                 <i class="fas fa-edit me-2"></i>
-                Chỉnh sửa
+                Chá»‰nh sá»­a
             </a>
             <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
                 <i class="fas fa-arrow-left me-2"></i>
-                Quay lại danh sách
+                Quay láº¡i danh sÃ¡ch
             </a>
         </div>
     </div>
@@ -38,24 +38,24 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-info-circle me-2"></i>
-                        Thông tin cơ bản
+                        ThÃ´ng tin cÆ¡ báº£n
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Tên cửa hàng:</label>
+                            <label class="form-label fw-bold">TÃªn cá»­a hÃ ng:</label>
                             <div class="info-value">
                                 <i class="fas fa-store text-jollibee-red me-2"></i>
                                 @Model.StoreName
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Trạng thái:</label>
+                            <label class="form-label fw-bold">Tráº¡ng thÃ¡i:</label>
                             <div class="info-value">
                                 <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary") fs-6">
                                     <i class="fas @(Model.IsActive ? "fa-check-circle" : "fa-pause-circle") me-1"></i>
-                                    @(Model.IsActive ? "Đang hoạt động" : "Tạm dừng hoạt động")
+                                    @(Model.IsActive ? "Äang hoáº¡t Ä‘á»™ng" : "Táº¡m dá»«ng hoáº¡t Ä‘á»™ng")
                                 </span>
                             </div>
                         </div>
@@ -68,13 +68,13 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-map-marker-alt me-2"></i>
-                        Thông tin địa chỉ
+                        ThÃ´ng tin Ä‘á»‹a chá»‰
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <label class="form-label fw-bold">Địa chỉ đường:</label>
+                            <label class="form-label fw-bold">Äá»‹a chá»‰ Ä‘Æ°á»ng:</label>
                             <div class="info-value">
                                 <i class="fas fa-road text-info me-2"></i>
                                 @Model.StreetAddress
@@ -85,7 +85,7 @@
                         @if (!string.IsNullOrEmpty(Model.Ward))
                         {
                             <div class="col-md-4 mb-3">
-                                <label class="form-label fw-bold">Phường/Xã:</label>
+                                <label class="form-label fw-bold">PhÆ°á»ng/XÃ£:</label>
                                 <div class="info-value">
                                     <i class="fas fa-map-pin text-secondary me-2"></i>
                                     @Model.Ward
@@ -93,14 +93,14 @@
                             </div>
                         }
                         <div class="col-md-@(!string.IsNullOrEmpty(Model.Ward) ? "4" : "6") mb-3">
-                            <label class="form-label fw-bold">Quận/Huyện:</label>
+                            <label class="form-label fw-bold">Quáº­n/Huyá»‡n:</label>
                             <div class="info-value">
                                 <i class="fas fa-map text-warning me-2"></i>
                                 @Model.District
                             </div>
                         </div>
                         <div class="col-md-@(!string.IsNullOrEmpty(Model.Ward) ? "4" : "6") mb-3">
-                            <label class="form-label fw-bold">Tỉnh/Thành phố:</label>
+                            <label class="form-label fw-bold">Tá»‰nh/ThÃ nh phá»‘:</label>
                             <div class="info-value">
                                 <i class="fas fa-city text-primary me-2"></i>
                                 @Model.City
@@ -110,7 +110,7 @@
                     
                     <!-- Full Address Display -->
                     <div class="full-address-display">
-                        <label class="form-label fw-bold">Địa chỉ đầy đủ:</label>
+                        <label class="form-label fw-bold">Äá»‹a chá»‰ Ä‘áº§y Ä‘á»§:</label>
                         <div class="address-card">
                             <i class="fas fa-map-marker-alt text-jollibee-red me-2"></i>
                             <span>@Model.StreetAddress@(!string.IsNullOrEmpty(Model.Ward) ? ", " + Model.Ward : ""), @Model.District, @Model.City</span>
@@ -124,13 +124,13 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-phone me-2"></i>
-                        Thông tin liên hệ
+                        ThÃ´ng tin liÃªn há»‡
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Số điện thoại:</label>
+                            <label class="form-label fw-bold">Sá»‘ Ä‘iá»‡n thoáº¡i:</label>
                             <div class="info-value">
                                 @if (!string.IsNullOrEmpty(Model.PhoneNumber))
                                 {
@@ -141,13 +141,13 @@
                                 {
                                     <span class="text-muted">
                                         <i class="fas fa-minus me-2"></i>
-                                        Chưa có thông tin
+                                        ChÆ°a cÃ³ thÃ´ng tin
                                     </span>
                                 }
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Giờ mở cửa:</label>
+                            <label class="form-label fw-bold">Giá» má»Ÿ cá»­a:</label>
                             <div class="info-value">
                                 @if (!string.IsNullOrEmpty(Model.OpeningHours))
                                 {
@@ -158,7 +158,7 @@
                                 {
                                     <span class="text-muted">
                                         <i class="fas fa-minus me-2"></i>
-                                        Chưa có thông tin
+                                        ChÆ°a cÃ³ thÃ´ng tin
                                     </span>
                                 }
                             </div>
@@ -175,7 +175,7 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-image me-2"></i>
-                        Hình ảnh cửa hàng
+                        HÃ¬nh áº£nh cá»­a hÃ ng
                     </h5>
                 </div>
                 <div class="card-body p-0">
@@ -187,7 +187,7 @@
                             <div class="image-actions">
                                 <button type="button" class="btn btn-sm btn-dark" onclick="viewImageFullscreen('@Model.ImageUrl')">
                                     <i class="fas fa-expand me-1"></i>
-                                    Xem toàn màn hình
+                                    Xem toÃ n mÃ n hÃ¬nh
                                 </button>
                             </div>
                         }
@@ -195,10 +195,10 @@
                         {
                             <div class="no-image-placeholder">
                                 <i class="fas fa-store fa-4x text-muted mb-3"></i>
-                                <p class="text-muted">Chưa có hình ảnh cửa hàng</p>
+                                <p class="text-muted">ChÆ°a cÃ³ hÃ¬nh áº£nh cá»­a hÃ ng</p>
                                 <a href="@Url.Action("Edit", new { id = Model.StoreID })" class="btn btn-outline-primary">
                                     <i class="fas fa-plus me-1"></i>
-                                    Thêm ảnh
+                                    Thêm áº£nh
                                 </a>
                             </div>
                         }
@@ -211,23 +211,23 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-tools me-2"></i>
-                        Thao tác
+                        Thao tÃ¡c
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
                         <a href="@Url.Action("Edit", new { id = Model.StoreID })" class="btn btn-warning">
                             <i class="fas fa-edit me-2"></i>
-                            Chỉnh sửa cửa hàng
+                            Chá»‰nh sá»­a cá»­a hÃ ng
                         </a>
                         <a href="@Url.Action("Delete", new { id = Model.StoreID })" class="btn btn-outline-danger">
                             <i class="fas fa-trash me-2"></i>
-                            Xóa cửa hàng
+                            XÃ³a cá»­a hÃ ng
                         </a>
                         <hr>
                         <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
                             <i class="fas fa-list me-2"></i>
-                            Danh sách cửa hàng
+                            Danh sÃ¡ch cá»­a hÃ ng
                         </a>
                     </div>
                 </div>
@@ -238,7 +238,7 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-chart-bar me-2"></i>
-                        Thống kê nhanh
+                        Thá»‘ng kÃª nhanh
                     </h5>
                 </div>
                 <div class="card-body">
@@ -247,7 +247,7 @@
                             <i class="fas fa-shopping-cart text-success"></i>
                         </div>
                         <div class="stat-info">
-                            <div class="stat-label">Đơn hàng hôm nay</div>
+                            <div class="stat-label">ÄÆ¡n hÃ ng hÃ´m nay</div>
                             <div class="stat-value">-</div>
                         </div>
                     </div>
@@ -256,7 +256,7 @@
                             <i class="fas fa-dollar-sign text-warning"></i>
                         </div>
                         <div class="stat-info">
-                            <div class="stat-label">Doanh thu tháng</div>
+                            <div class="stat-label">Doanh thu thÃ¡ng</div>
                             <div class="stat-value">-</div>
                         </div>
                     </div>
@@ -265,7 +265,7 @@
                             <i class="fas fa-users text-info"></i>
                         </div>
                         <div class="stat-info">
-                            <div class="stat-label">Khách hàng thường xuyên</div>
+                            <div class="stat-label">KhÃ¡ch hÃ ng thÆ°á»ng xuyÃªn</div>
                             <div class="stat-value">-</div>
                         </div>
                     </div>
@@ -298,3 +298,4 @@
         }
     </script>
 } 
+
