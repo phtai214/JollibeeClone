@@ -1,0 +1,442 @@
+@model JollibeeClone.Models.PaginatedList<JollibeeClone.Models.Store>
+
+@{
+    ViewData["Title"] = "Quản lý cửa hàng";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/store-admin.css" asp-append-version="true" />
+}
+
+<div class="store-management">
+    <!-- Header với nút Thêm mới -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-store text-jollibee-red me-2"></i>
+                Quản lý cửa hàng
+            </h2>
+            <p class="text-muted">Quản lý tất cả các cửa hàng Jollibee</p>
+        </div>
+        <a href="@Url.Action("Create")" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus me-2"></i>
+            Thêm cửa hàng mới
+        </a>
+    </div>
+
+    <!-- Tìm kiếm và bộ lọc -->
+    <form method="get" id="filterForm">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" placeholder="Tìm kiếm cửa hàng...">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="city" class="form-select">
+                            <option value="">Tất cả thành phố</option>
+                            @if (ViewBag.Cities != null)
+                            {
+                                @foreach (var cityItem in (List<string>)ViewBag.Cities)
+                                {
+                                    @if (ViewBag.CurrentCity == cityItem)
+                                    {
+                                        <option value="@cityItem" selected="selected">@cityItem</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@cityItem">@cityItem</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="isActive" class="form-select">
+                            <option value="">Tất cả trạng thái</option>
+                            @if (ViewBag.CurrentActive?.ToString() == "True")
+                            {
+                                <option value="true" selected="selected">Hoạt động</option>
+                            }
+                            else
+                            {
+                                <option value="true">Hoạt động</option>
+                            }
+                            @if (ViewBag.CurrentActive?.ToString() == "False")
+                            {
+                                <option value="false" selected="selected">Đóng cửa</option>
+                            }
+                            else
+                            {
+                                <option value="false">Đóng cửa</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="sortOrder" class="form-select">
+                            @if (ViewBag.CurrentSort == null || ViewBag.CurrentSort == "")
+                            {
+                                <option value="" selected="selected">Tên A-Z</option>
+                            }
+                            else
+                            {
+                                <option value="">Tên A-Z</option>
+                            }
+                            @if (ViewBag.CurrentSort == "name_desc")
+                            {
+                                <option value="name_desc" selected="selected">Tên Z-A</option>
+                            }
+                            else
+                            {
+                                <option value="name_desc">Tên Z-A</option>
+                            }
+                            @if (ViewBag.CurrentSort == "city")
+                            {
+                                <option value="city" selected="selected">Thành phố A-Z</option>
+                            }
+                            else
+                            {
+                                <option value="city">Thành phố A-Z</option>
+                            }
+                            @if (ViewBag.CurrentSort == "city_desc")
+                            {
+                                <option value="city_desc" selected="selected">Thành phố Z-A</option>
+                            }
+                            else
+                            {
+                                <option value="city_desc">Thành phố Z-A</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-secondary me-2">
+                            <i class="fas fa-search"></i> Lọc
+                        </button>
+                        <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Xóa
+                        </a>
+                    </div>
+                    <div class="col-md-1 text-end">
+                        <div class="view-toggle-group">
+                            <button type="button" class="btn btn-outline-secondary view-btn active" data-view="grid" title="Dạng lưới">
+                                <i class="fas fa-th"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary view-btn" data-view="list" title="Dạng danh sách">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- ThÃ´ng tin káº¿t quáº£ -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="result-count">
+            Hiá»ƒn thá»‹ @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.PageIndex * Model.PageSize, Model.TotalCount)) cá»§a @Model.TotalCount cá»­a hÃ ng
+        </div>
+        <div class="pagination-info">
+            Trang @Model.PageIndex / @Model.TotalPages
+        </div>
+    </div>
+
+    <!-- Danh sÃ¡ch cá»­a hÃ ng -->
+    @if (Model.Any())
+    {
+        <!-- Grid View -->
+        <div id="gridView" class="view-container">
+            <div class="row">
+                @foreach (var store in Model)
+                {
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 store-item">
+                        <div class="modern-store-card @(store.IsActive ? "active" : "inactive")">
+                            <!-- Header Section -->
+                            <div class="card-header-section">
+                                <div class="store-image-wrapper">
+                                    @if (!string.IsNullOrEmpty(store.ImageUrl))
+                                    {
+                                        <img src="@store.ImageUrl" alt="@store.StoreName" class="store-image" 
+                                             onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<div class=&quot;store-placeholder&quot;><i class=&quot;fas fa-store&quot;></i></div>';" />
+                                    }
+                                    else
+                                    {
+                                        <div class="store-placeholder">
+                                            <i class="fas fa-store"></i>
+                                        </div>
+                                    }
+                                    <div class="image-overlay">
+                                        <div class="quick-actions">
+                                            <button class="action-btn view-btn" onclick="window.location.href='@Url.Action("Details", new { id = store.StoreID })'" title="Xem chi tiết">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="action-btn edit-btn" onclick="window.location.href='@Url.Action("Edit", new { id = store.StoreID })'" title="Chỉnh sửa">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="action-btn delete-btn" onclick="window.location.href='@Url.Action("Delete", new { id = store.StoreID })'" title="Xóa">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Status Indicator -->
+                                <div class="status-indicator">
+                                    <span class="status-dot @(store.IsActive ? "active" : "inactive")"></span>
+                                </div>
+                            </div>
+
+                            <!-- Body Section -->
+                            <div class="card-body-section">
+                                <div class="store-header">
+                                    <h3 class="store-title">@store.StoreName</h3>
+                                    <span class="store-id">#@store.StoreID</span>
+                                </div>
+                                
+                                <div class="store-location">
+                                    <div class="location-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>@store.StreetAddress</span>
+                                    </div>
+                                    <div class="location-item">
+                                        <i class="fas fa-city"></i>
+                                        <span>@store.Ward, @store.District, @store.City</span>
+                                    </div>
+                                </div>
+                                
+                                @if (!string.IsNullOrEmpty(store.PhoneNumber))
+                                {
+                                    <div class="store-contact">
+                                        <i class="fas fa-phone"></i>
+                                        <span>@store.PhoneNumber</span>
+                                    </div>
+                                }
+                                
+                                @if (!string.IsNullOrEmpty(store.OpeningHours))
+                                {
+                                    <div class="store-hours">
+                                        <i class="fas fa-clock"></i>
+                                        <span>@store.OpeningHours</span>
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Footer Section -->
+                            <div class="card-footer-section">
+                                <div class="status-text">
+                                    @if (store.IsActive)
+                                    {
+                                        <span class="status-active">
+                                            <i class="fas fa-check-circle"></i>
+                                            Đang hoạt động
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-inactive">
+                                            <i class="fas fa-times-circle"></i>
+                                            Đóng cửa
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- List View -->
+        <div id="listView" class="view-container" style="display: none;">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th width="80">Ảnh</th>
+                            <th>Tên cửa hàng</th>
+                            <th>Địa chỉ</th>
+                            <th width="150">Thành phố</th>
+                            <th width="120">Liên hệ</th>
+                            <th width="100">Trạng thái</th>
+                            <th width="150">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var store in Model)
+                        {
+                            <tr class="store-row">
+                                <td>
+                                    @if (!string.IsNullOrEmpty(store.ImageUrl))
+                                    {
+                                        <div class="table-store-image">
+                                            <img src="@store.ImageUrl" alt="@store.StoreName" 
+                                                 onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<div class=&quot;no-image-small&quot;><i class=&quot;fas fa-store&quot;></i></div>';" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="no-image-small">
+                                            <i class="fas fa-store"></i>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="store-info">
+                                        <h6 class="mb-1">@store.StoreName</h6>
+                                        <small class="text-muted">ID: #@store.StoreID</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div>@store.StreetAddress</div>
+                                        <small class="text-muted">@store.Ward, @store.District</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">@store.City</span>
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(store.PhoneNumber))
+                                    {
+                                        <small>@store.PhoneNumber</small>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">-</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (store.IsActive)
+                                    {
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check me-1"></i>
+                                            Hoạt động
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning">
+                                            <i class="fas fa-times me-1"></i>
+                                            Đóng cửa
+                                        </span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="@Url.Action("Details", new { id = store.StoreID })" 
+                                           class="btn btn-sm btn-outline-info" title="Chi tiết">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="@Url.Action("Edit", new { id = store.StoreID })" 
+                                           class="btn btn-sm btn-outline-warning" title="Chá»‰nh sá»­a">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id = store.StoreID })" 
+                                           class="btn btn-sm btn-outline-danger" title="XÃ³a">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        @if (Model.TotalPages > 1)
+        {
+            <nav aria-label="Store pagination" class="mt-4">
+                <ul class="pagination pagination-lg justify-content-center">
+                    @if (Model.HasPreviousPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { searchString = ViewBag.CurrentSearch, city = ViewBag.CurrentCity, isActive = ViewBag.CurrentActive, sortOrder = ViewBag.CurrentSort, page = 1 })">
+                                <i class="fas fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { searchString = ViewBag.CurrentSearch, city = ViewBag.CurrentCity, isActive = ViewBag.CurrentActive, sortOrder = ViewBag.CurrentSort, page = Model.PageIndex - 1 })">
+                                <i class="fas fa-angle-left"></i>
+                            </a>
+                        </li>
+                    }
+
+                    @{
+                        int startPage = Math.Max(1, Model.PageIndex - 2);
+                        int endPage = Math.Min(Model.TotalPages, Model.PageIndex + 2);
+                    }
+
+                    @for (int i = startPage; i <= endPage; i++)
+                    {
+                        <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { searchString = ViewBag.CurrentSearch, city = ViewBag.CurrentCity, isActive = ViewBag.CurrentActive, sortOrder = ViewBag.CurrentSort, page = i })">
+                                @i
+                            </a>
+                        </li>
+                    }
+
+                    @if (Model.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { searchString = ViewBag.CurrentSearch, city = ViewBag.CurrentCity, isActive = ViewBag.CurrentActive, sortOrder = ViewBag.CurrentSort, page = Model.PageIndex + 1 })">
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { searchString = ViewBag.CurrentSearch, city = ViewBag.CurrentCity, isActive = ViewBag.CurrentActive, sortOrder = ViewBag.CurrentSort, page = Model.TotalPages })">
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="fas fa-store"></i>
+            </div>
+            <h4>ChÆ°a cÃ³ cá»­a hÃ ng nÃ o</h4>
+            <p>Báº¯t Ä‘áº§u báº±ng cÃ¡ch Thêm cá»­a hÃ ng Ä‘áº§u tiÃªn</p>
+            <a href="@Url.Action("Create")" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>
+                Thêm cá»­a hÃ ng Ä‘áº§u tiÃªn
+            </a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+<script>
+$(document).ready(function() {
+    let currentView = 'grid';
+    
+    // View Toggle - only toggles between grid and list view
+    $('.view-btn').on('click', function() {
+        const view = $(this).data('view');
+        if (view === currentView) return;
+        
+        $('.view-btn').removeClass('active');
+        $(this).addClass('active');
+        
+        if (view === 'grid') {
+            $('#listView').hide();
+            $('#gridView').show();
+            currentView = 'grid';
+        } else {
+            $('#gridView').hide();
+            $('#listView').show();
+            currentView = 'list';
+        }
+    });
+});
+</script>
+} 
+

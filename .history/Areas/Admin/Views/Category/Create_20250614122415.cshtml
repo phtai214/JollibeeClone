@@ -1,0 +1,298 @@
+@model JollibeeClone.Models.Categories
+
+@{
+    ViewData["Title"] = "Thêm danh mục mới";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/category-admin.css" asp-append-version="true" />
+}
+
+<div class="create-category">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-plus-circle text-jollibee-red me-2"></i>
+                Thêm danh mục mới
+            </h2>
+            <p class="text-muted">Tạo danh mục sản phẩm mới cho cửa hàng</p>
+        </div>
+        <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>
+            Quay lại danh sách
+        </a>
+    </div>
+
+    <!-- Form tạo danh mục -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Thông tin danh mục
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post" enctype="multipart/form-data" id="createCategoryForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label asp-for="CategoryName" class="form-label required">Tên danh mục</label>
+                                    <input asp-for="CategoryName" class="form-control form-control-lg" placeholder="Nhập tên danh mục..." />
+                                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label asp-for="DisplayOrder" class="form-label">Thứ tự hiển thị</label>
+                                    <input asp-for="DisplayOrder" class="form-control" type="number" min="0" value="0" />
+                                    <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Mô tả</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Nhập mô tả cho danh mục..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ParentCategoryID" class="form-label">Danh mục cha</label>
+                            <select asp-for="ParentCategoryID" class="form-select" asp-items="ViewBag.ParentCategoryID">
+                                <option value="">-- Chọn danh mục cha (nếu có) --</option>
+                            </select>
+                            <div class="form-text">Để trống nếu đây là danh mục gốc</div>
+                            <span asp-validation-for="ParentCategoryID" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                <input asp-for="IsActive" class="form-check-input" type="checkbox" checked />
+                                <label asp-for="IsActive" class="form-check-label">
+                                    Kích hoạt danh mục
+                                </label>
+                            </div>
+                            <div class="form-text">Danh mục chỉ hiển thị khi được kích hoạt</div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>
+                                Tạo danh mục
+                            </button>
+                            <a href="@Url.Action("Index")" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-times me-2"></i>
+                                Hủy
+                            </a>
+                        </div>
+                        
+                        <!-- Hidden file input inside form to ensure file is submitted -->
+                        <input type="file" id="hiddenImageFile" name="imageFile" accept="image/*" style="display: none;" />
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Upload ảnh -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-image me-2"></i>
+                        Hình ảnh danh mục
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="image-upload-section">
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <div class="file-upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <p><strong>Kéo thả ảnh vào đây</strong></p>
+                            <p>hoặc</p>
+                            <label for="imageFile" class="btn btn-outline-primary">
+                                <i class="fas fa-folder-open me-2"></i>
+                                Chọn file
+                            </label>
+                            <input type="file" id="imageFile" name="imageFile" accept="image/*" style="display: none;" />
+                        </div>
+                        
+                        <div id="imagePreview" class="image-preview" style="display: none;">
+                            <img id="previewImg" src="#" alt="Preview" />
+                            <div class="image-actions">
+                                <button type="button" class="btn btn-sm btn-danger" id="removeImage">
+                                    <i class="fas fa-trash"></i>
+                                    XÃ³a áº£nh
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-guidelines">
+                        <h6><i class="fas fa-info-circle me-2"></i>HÆ°á»›ng dáº«n upload áº£nh:</h6>
+                        <ul>
+                            <li>KÃ­ch thÆ°á»›c tá»‘i Ä‘a: 5MB</li>
+                            <li>Äá»‹nh dáº¡ng: JPG, PNG, GIF</li>
+                            <li>KÃ­ch thÆ°á»›c khuyáº¿n nghá»‹: 400x300px</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HÆ°á»›ng dáº«n -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        Gá»£i Ã½
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="tips">
+                        <div class="tip-item">
+                            <i class="fas fa-check-circle text-success"></i>
+                            <span>Äáº·t tÃªn danh má»¥c rÃµ rÃ ng, dá»… hiá»ƒu</span>
+                        </div>
+                        <div class="tip-item">
+                            <i class="fas fa-check-circle text-success"></i>
+                            <span>Sá»­ dá»¥ng mÃ´ táº£ Ä‘á»ƒ giáº£i thÃ­ch chi tiáº¿t</span>
+                        </div>
+                        <div class="tip-item">
+                            <i class="fas fa-check-circle text-success"></i>
+                            <span>Thá»© tá»± hiá»ƒn thá»‹ giÃºp sáº¯p xáº¿p danh má»¥c</span>
+                        </div>
+                        <div class="tip-item">
+                            <i class="fas fa-check-circle text-success"></i>
+                            <span>áº¢nh nÃªn cÃ³ ná»n tráº¯ng hoáº·c trong suá»‘t</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Form validation vÃ  submission handling
+    $('#createCategoryForm').on('submit', function(e) {
+        // Sync file to hidden input inside form
+        var visibleImageFile = $('#imageFile')[0].files[0];
+        if (visibleImageFile) {
+            $('#hiddenImageFile')[0].files = $('#imageFile')[0].files;
+        }
+        
+        // Basic client-side validation
+        var isValid = true;
+        var categoryName = $('#CategoryName').val().trim();
+        
+        if (!categoryName) {
+            alert('Vui lÃ²ng nháº­p tÃªn danh má»¥c!');
+            $('#CategoryName').focus();
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Show loading state
+        var submitBtn = $(this).find('button[type="submit"]');
+        var originalText = submitBtn.html();
+        submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Äang táº¡o...');
+        
+        // Reset on error (failsafe)
+        setTimeout(function() {
+            submitBtn.prop('disabled', false).html(originalText);
+        }, 10000);
+    });
+
+    // Xá»­ lÃ½ upload áº£nh
+    $('#imageFile').on('change', function(e) {
+        var file = e.target.files[0];
+        
+        // Sync file to hidden input inside form
+        if (file) {
+            $('#hiddenImageFile')[0].files = this.files;
+        } else {
+            $('#hiddenImageFile').val('');
+        }
+        
+        handleImageSelect(file);
+    });
+
+    $('#fileUploadArea').on('dragover', function(e) {
+        e.preventDefault();
+        $(this).addClass('drag-over');
+    });
+
+    $('#fileUploadArea').on('dragleave', function(e) {
+        e.preventDefault();
+        $(this).removeClass('drag-over');
+    });
+
+    $('#fileUploadArea').on('drop', function(e) {
+        e.preventDefault();
+        $(this).removeClass('drag-over');
+        
+        var files = e.originalEvent.dataTransfer.files;
+        if (files.length > 0) {
+            $('#imageFile')[0].files = files;
+            $('#hiddenImageFile')[0].files = files; // Sync to hidden input
+            handleImageSelect(files[0]);
+        }
+    });
+
+    $('#fileUploadArea').on('click', function() {
+        $('#imageFile').click();
+    });
+
+    $('#removeImage').on('click', function() {
+        $('#imageFile').val('');
+        $('#hiddenImageFile').val(''); // Clear hidden input too
+        $('#imagePreview').hide();
+        $('#fileUploadArea').show();
+    });
+
+    function handleImageSelect(file) {
+        if (!file) {
+            return;
+        }
+
+        if (!file.type.match('image.*')) {
+            alert('Vui lÃ²ng chá»n file áº£nh!');
+            $('#imageFile').val('');
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            alert('File áº£nh quÃ¡ lá»›n! Vui lÃ²ng chá»n file nhá» hÆ¡n 5MB.');
+            $('#imageFile').val('');
+            return;
+        }
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#previewImg').attr('src', e.target.result);
+            $('#fileUploadArea').hide();
+            $('#imagePreview').show();
+        };
+        reader.onerror = function() {
+            alert('KhÃ´ng thá»ƒ Ä‘á»c file áº£nh!');
+        };
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+} 
+

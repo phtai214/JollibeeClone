@@ -1,0 +1,416 @@
+@model JollibeeClone.Models.User
+
+@{
+    ViewData["Title"] = "Chỉnh sửa người dùng";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/user-admin.css" />
+}
+
+<div class="user-management">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-user-edit text-jollibee-red me-2"></i>
+                Chỉnh sửa người dùng
+            </h2>
+            <p class="text-muted" style="margin-bottom: 2px;">Cập nhật thông tin người dùng: <strong>@Model.FullName</strong></p>
+        </div>
+        <div class="header-actions">
+            <a href="@Url.Action("Details", new { id = Model.UserID })" class="btn btn-outline-info me-2">
+                <i class="fas fa-eye me-2"></i>
+                Xem chi tiết
+            </a>
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại danh sách
+            </a>
+        </div>
+    </div>
+
+    <!-- Form chỉnh sửa người dùng -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="user-detail-card">
+                <form asp-action="Edit" method="post" id="editUserForm">
+                    <input type="hidden" asp-for="UserID" />
+                    
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="FullName" class="form-label">
+                                    <i class="fas fa-user me-2"></i>
+                                    Họ và tên <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên đầy đủ" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label">
+                                    <i class="fas fa-envelope me-2"></i>
+                                    Email <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="Email" type="email" class="form-control" placeholder="Nhập địa chỉ email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="NewPassword" class="form-label">
+                                    <i class="fas fa-lock me-2"></i>
+                                    Mật khẩu mới
+                                </label>
+                                <div class="input-group">
+                                    <input type="password" name="newPassword" id="NewPassword" class="form-control" placeholder="Để trống nếu không thay đổi" />
+                                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="form-text">Để trống nếu không muốn thay đổi mật khẩu</div>
+                                <span id="newPasswordValidation" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="PhoneNumber" class="form-label">
+                                    <i class="fas fa-phone me-2"></i>
+                                    Số điện thoại
+                                </label>
+                                <input asp-for="PhoneNumber" type="tel" class="form-control" placeholder="Nhập số điện thoại" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-toggle-on me-2"></i>
+                                    Trạng thái tài khoản
+                                </label>
+                                <div class="form-check form-switch">
+                                    <input asp-for="IsActive" class="form-check-input" type="checkbox" id="IsActiveSwitch" />
+                                    <label class="form-check-label" for="IsActiveSwitch" id="statusLabel">
+                                        @(Model.IsActive ? "Đang hoạt động" : "Đã vô hiệu hóa")
+                                    </label>
+                                </div>
+                                <div class="form-text" id="statusHelp">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="text-success">Tài khoản có thể đăng nhập bình thường</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger">Tài khoản đã bị vô hiệu hóa</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-id-card me-2"></i>
+                                    ID người dùng
+                                </label>
+                                <input type="text" class="form-control" value="#@Model.UserID" readonly />
+                                <div class="form-text">ID không thể thay đổi</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thông tin cảnh báo -->
+                    <div class="alert alert-warning" role="alert">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Lưu ý quan trọng
+                        </h6>
+                        <ul class="mb-0">
+                            <li>Thay đổi email phải đảm bảo là duy nhất trong hệ thống</li>
+                            <li>Vô hiệu hóa tài khoản sẽ ngăn người dùng đăng nhập</li>
+                            <li>Thay đổi mật khẩu sẽ yêu cầu người dùng đăng nhập lại</li>
+                            <li>Tất cả thay đổi sẽ có hiệu lực ngay lập tức</li>
+                        </ul>
+                    </div>
+
+                    <!-- Nút hành động -->
+                    <div class="d-flex gap-3 justify-content-end">
+                        <a href="@Url.Action("Details", new { id = Model.UserID })" class="btn btn-secondary">
+                            <i class="fas fa-times me-2"></i>
+                            Hủy
+                        </a>
+                        <button type="reset" class="btn btn-outline-secondary">
+                            <i class="fas fa-undo me-2"></i>
+                            KhÃ´i phá»¥c
+                        </button>
+                        <button type="submit" class="btn btn-jollibee" id="submitBtn">
+                            <i class="fas fa-save me-2"></i>
+                            LÆ°u thay Ä‘á»•i
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Preview Card -->
+        <div class="col-md-4">
+            <div class="user-detail-card">
+                <h5 class="mb-3">
+                    <i class="fas fa-eye me-2"></i>
+                    Xem trÆ°á»›c
+                </h5>
+                
+                <div class="text-center">
+                    <div class="user-detail-avatar" id="previewAvatar">
+                        @Model.FullName.Substring(0, 1)
+                    </div>
+                    <h6 id="previewName">@Model.FullName</h6>
+                    <div id="previewEmail" class="text-muted small">
+                        <i class="fas fa-envelope me-1"></i>
+                        @Model.Email
+                    </div>
+                    <div id="previewPhone" class="text-muted small">
+                        <i class="fas fa-phone me-1"></i>
+                        @(string.IsNullOrEmpty(Model.PhoneNumber) ? "ChÆ°a cÃ³ sá»‘ Ä‘iá»‡n thoáº¡i" : Model.PhoneNumber)
+                    </div>
+                    <div class="mt-2">
+                        <span id="previewStatus" class="badge status-badge @(Model.IsActive ? "status-active" : "status-inactive")">
+                            @(Model.IsActive ? "Äang hoáº¡t Ä‘á»™ng" : "ÄÃ£ vÃ´ hiá»‡u hÃ³a")
+                        </span>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="text-center">
+                    <small class="text-muted">
+                        <i class="fas fa-lightbulb me-1"></i>
+                        ThÃ´ng tin sáº½ Ä‘Æ°á»£c cáº­p nháº­t khi báº¡n nháº­p
+                    </small>
+                </div>
+            </div>
+
+            <!-- Change History Card -->
+            <div class="user-detail-card">
+                <h6 class="mb-3">
+                    <i class="fas fa-history me-2"></i>
+                    ThÃ´ng tin thay Ä‘á»•i
+                </h6>
+                <div id="changesList">
+                    <p class="text-muted small mb-0">
+                        <i class="fas fa-info-circle me-1"></i>
+                        ChÆ°a cÃ³ thay Ä‘á»•i nÃ o
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Actions Card -->
+            <div class="user-detail-card">
+                <h6 class="mb-3">
+                    <i class="fas fa-bolt me-2"></i>
+                    HÃ nh Ä‘á»™ng nhanh
+                </h6>
+                <div class="d-grid gap-2">
+                    @if (Model.IsActive)
+                    {
+                        <button type="button" class="btn btn-outline-danger btn-sm" id="quickDeactivate">
+                            <i class="fas fa-ban me-2"></i>
+                            VÃ´ hiá»‡u hÃ³a nhanh
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-outline-success btn-sm" id="quickActivate">
+                            <i class="fas fa-check me-2"></i>
+                            KÃ­ch hoáº¡t nhanh
+                        </button>
+                    }
+                    <a href="mailto:@Model.Email" class="btn btn-outline-info btn-sm">
+                        <i class="fas fa-envelope me-2"></i>
+                        Gá»­i email
+                    </a>
+                    @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                    {
+                        <a href="tel:@Model.PhoneNumber" class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-phone me-2"></i>
+                            Gá»i Ä‘iá»‡n
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            // Store original values for comparison
+            const originalValues = {
+                fullName: '@Model.FullName',
+                email: '@Model.Email',
+                phoneNumber: '@(Model.PhoneNumber ?? "")',
+                isActive: @Model.IsActive.ToString().ToLower()
+            };
+
+            // Toggle password visibility
+            $('#togglePassword').click(function() {
+                const passwordField = $('#NewPassword');
+                const icon = $(this).find('i');
+                
+                if (passwordField.attr('type') === 'password') {
+                    passwordField.attr('type', 'text');
+                    icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                } else {
+                    passwordField.attr('type', 'password');
+                    icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+            });
+
+            // Update status label and help text
+            $('#IsActiveSwitch').change(function() {
+                const label = $('#statusLabel');
+                const help = $('#statusHelp');
+                const previewStatus = $('#previewStatus');
+                
+                if ($(this).is(':checked')) {
+                    label.text('Äang hoáº¡t Ä‘á»™ng');
+                    help.html('<span class="text-success">TÃ i khoáº£n cÃ³ thá»ƒ Ä‘Äƒng nháº­p bÃ¬nh thÆ°á»ng</span>');
+                    previewStatus.removeClass('status-inactive').addClass('status-active').text('Äang hoáº¡t Ä‘á»™ng');
+                } else {
+                    label.text('ÄÃ£ vÃ´ hiá»‡u hÃ³a');
+                    help.html('<span class="text-danger">TÃ i khoáº£n Ä‘Ã£ bá»‹ vÃ´ hiá»‡u hÃ³a</span>');
+                    previewStatus.removeClass('status-active').addClass('status-inactive').text('ÄÃ£ vÃ´ hiá»‡u hÃ³a');
+                }
+                
+                updateChangesList();
+            });
+
+            // Live preview updates
+            $('#FullName').on('input', function() {
+                const value = $(this).val().trim();
+                $('#previewName').text(value || 'Nháº­p há» tÃªn');
+                $('#previewAvatar').text(value ? value.charAt(0).toUpperCase() : '?');
+                updateChangesList();
+            });
+
+            $('#Email').on('input', function() {
+                const value = $(this).val().trim();
+                $('#previewEmail').html('<i class="fas fa-envelope me-1"></i>' + (value || 'Nháº­p email'));
+                updateChangesList();
+            });
+
+            $('#PhoneNumber').on('input', function() {
+                const value = $(this).val().trim();
+                $('#previewPhone').html('<i class="fas fa-phone me-1"></i>' + (value || 'ChÆ°a cÃ³ sá»‘ Ä‘iá»‡n thoáº¡i'));
+                updateChangesList();
+            });
+
+            // Track changes
+            function updateChangesList() {
+                const changes = [];
+                const currentValues = {
+                    fullName: $('#FullName').val().trim(),
+                    email: $('#Email').val().trim(),
+                    phoneNumber: $('#PhoneNumber').val().trim(),
+                    isActive: $('#IsActiveSwitch').is(':checked')
+                };
+
+                if (currentValues.fullName !== originalValues.fullName) {
+                    changes.push('Há» tÃªn Ä‘Ã£ thay Ä‘á»•i');
+                }
+                if (currentValues.email !== originalValues.email) {
+                    changes.push('Email Ä‘Ã£ thay Ä‘á»•i');
+                }
+                if (currentValues.phoneNumber !== originalValues.phoneNumber) {
+                    changes.push('Sá»‘ Ä‘iá»‡n thoáº¡i Ä‘Ã£ thay Ä‘á»•i');
+                }
+                if (currentValues.isActive !== originalValues.isActive) {
+                    changes.push('Tráº¡ng thÃ¡i tÃ i khoáº£n Ä‘Ã£ thay Ä‘á»•i');
+                }
+                if ($('#NewPassword').val().trim() !== '') {
+                    changes.push('Máº­t kháº©u sáº½ Ä‘Æ°á»£c thay Ä‘á»•i');
+                }
+
+                const changesList = $('#changesList');
+                if (changes.length > 0) {
+                    let html = '<ul class="list-unstyled mb-0">';
+                    changes.forEach(change => {
+                        html += `<li class="small text-warning mb-1"><i class="fas fa-edit me-1"></i>${change}</li>`;
+                    });
+                    html += '</ul>';
+                    changesList.html(html);
+                } else {
+                    changesList.html('<p class="text-muted small mb-0"><i class="fas fa-info-circle me-1"></i>ChÆ°a cÃ³ thay Ä‘á»•i nÃ o</p>');
+                }
+            }
+
+            // Quick actions
+            $('#quickDeactivate').click(function() {
+                $('#IsActiveSwitch').prop('checked', false).trigger('change');
+            });
+
+            $('#quickActivate').click(function() {
+                $('#IsActiveSwitch').prop('checked', true).trigger('change');
+            });
+
+            // Form validation
+            $('#editUserForm').submit(function(e) {
+                const submitBtn = $('#submitBtn');
+                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Äang lÆ°u...');
+                
+                // Re-enable button after 3 seconds if form doesn't submit successfully
+                setTimeout(function() {
+                    submitBtn.prop('disabled', false).html('<i class="fas fa-save me-2"></i>LÆ°u thay Ä‘á»•i');
+                }, 3000);
+            });
+
+            // Reset form
+            $('button[type="reset"]').click(function() {
+                setTimeout(function() {
+                    $('#previewName').text(originalValues.fullName);
+                    $('#previewEmail').html('<i class="fas fa-envelope me-1"></i>' + originalValues.email);
+                    $('#previewPhone').html('<i class="fas fa-phone me-1"></i>' + (originalValues.phoneNumber || 'ChÆ°a cÃ³ sá»‘ Ä‘iá»‡n thoáº¡i'));
+                    $('#previewAvatar').text(originalValues.fullName.charAt(0).toUpperCase());
+                    
+                    const statusBadge = $('#previewStatus');
+                    if (originalValues.isActive) {
+                        statusBadge.removeClass('status-inactive').addClass('status-active').text('Äang hoáº¡t Ä‘á»™ng');
+                        $('#statusLabel').text('Äang hoáº¡t Ä‘á»™ng');
+                        $('#statusHelp').html('<span class="text-success">TÃ i khoáº£n cÃ³ thá»ƒ Ä‘Äƒng nháº­p bÃ¬nh thÆ°á»ng</span>');
+                    } else {
+                        statusBadge.removeClass('status-active').addClass('status-inactive').text('ÄÃ£ vÃ´ hiá»‡u hÃ³a');
+                        $('#statusLabel').text('ÄÃ£ vÃ´ hiá»‡u hÃ³a');
+                        $('#statusHelp').html('<span class="text-danger">TÃ i khoáº£n Ä‘Ã£ bá»‹ vÃ´ hiá»‡u hÃ³a</span>');
+                    }
+                    
+                    updateChangesList();
+                }, 10);
+            });
+
+            // Phone number formatting
+            $('#PhoneNumber').on('input', function() {
+                let value = $(this).val().replace(/\D/g, '');
+                if (value.length > 10) {
+                    value = value.substring(0, 10);
+                }
+                $(this).val(value);
+            });
+
+            // Initialize changes tracking
+            updateChangesList();
+        });
+    </script>
+} 
+

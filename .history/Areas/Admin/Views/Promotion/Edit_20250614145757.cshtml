@@ -1,0 +1,384 @@
+@model JollibeeClone.ViewModels.PromotionViewModel
+
+@{
+    ViewData["Title"] = "Chỉnh sửa Voucher";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/promotion-admin.css" asp-append-version="true" />
+}
+
+<div class="promotion-management">
+    <!-- Header -->
+    <div class="promotion-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="page-title">
+                    <i class="fas fa-edit text-jollibee-red me-2"></i>
+                    Chỉnh sửa Voucher
+                </h2>
+                <p class="text-muted mb-0">Chỉnh sửa thông tin voucher</p>
+            </div>
+            <a href="@Url.Action("Index")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại
+            </a>
+        </div>
+    </div>
+
+    <!-- Alert Messages -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Form -->
+    <form asp-action="Edit" method="post" class="promotion-form" id="promotionForm">
+        <input asp-for="PromotionID" type="hidden" />
+        <input asp-for="UsesCount" type="hidden" />
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+        <!-- Thông tin cơ bản -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-info-circle me-2"></i>
+                Thông tin cơ bản
+            </h3>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PromotionName" class="form-label"></label>
+                        <input asp-for="PromotionName" class="form-control" placeholder="Nhập tên voucher..." />
+                        <span asp-validation-for="PromotionName" class="invalid-feedback"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CouponCode" class="form-label">Mã voucher (tùy chọn)</label>
+                        <div class="input-group">
+                            <input asp-for="CouponCode" class="form-control" placeholder="VD: SUMMER2024" />
+                            <button class="btn btn-outline-secondary" type="button" onclick="generateCouponCode()">
+                                <i class="fas fa-magic me-1"></i>Tạo tự động
+                            </button>
+                        </div>
+                        <span asp-validation-for="CouponCode" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="form-label">Mô tả</label>
+                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Mô tả chi tiết về voucher..."></textarea>
+                <span asp-validation-for="Description" class="invalid-feedback"></span>
+            </div>
+
+            <div class="form-check">
+                <input asp-for="IsActive" class="form-check-input" />
+                <label asp-for="IsActive" class="form-check-label">Kích hoạt voucher</label>
+            </div>
+        </div>
+
+        <!-- Thông tin giảm giá -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-percentage me-2"></i>
+                Thông tin giảm giá
+            </h3>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="DiscountType" class="form-label">Loại giảm giá</label>
+                        <select asp-for="DiscountType" class="form-select">
+                            <option value="Percentage">Phần trăm (%)</option>
+                        </select>
+                        <span asp-validation-for="DiscountType" class="invalid-feedback"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="DiscountValue" class="form-label">Giá trị giảm</label>
+                        <div class="input-group">
+                            <input asp-for="DiscountValue" type="number" step="0.01" min="0.01" max="100" class="form-control" placeholder="VD: 20" />
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span asp-validation-for="DiscountValue" class="invalid-feedback"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="MinOrderValue" class="form-label">Giá trị đơn hàng tối thiểu</label>
+                        <div class="input-group">
+                            <input asp-for="MinOrderValue" type="number" step="1000" min="0" class="form-control" placeholder="VD: 100000" />
+                            <span class="input-group-text">VNĐ</span>
+                        </div>
+                        <span asp-validation-for="MinOrderValue" class="invalid-feedback"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thời gian hiệu lực -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-calendar me-2"></i>
+                Thời gian hiệu lực
+            </h3>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="StartDate" class="form-label">Ngày bắt đầu</label>
+                        <input asp-for="StartDate" type="date" class="form-control" />
+                        <span asp-validation-for="StartDate" class="invalid-feedback"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="EndDate" class="form-label">Ngày kết thúc</label>
+                        <input asp-for="EndDate" type="date" class="form-control" />
+                        <span asp-validation-for="EndDate" class="invalid-feedback"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Giới hạn sử dụng -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-limit me-2"></i>
+                Giới hạn sử dụng
+            </h3>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="MaxUses" class="form-label">Số lần sử dụng tối đa</label>
+                        <input asp-for="MaxUses" type="number" min="1" class="form-control" placeholder="VD: 100" />
+                        <span asp-validation-for="MaxUses" class="invalid-feedback"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="MaxUsesPerUser" class="form-label">Số lần sử dụng tối đa mỗi khách hàng</label>
+                        <input asp-for="MaxUsesPerUser" type="number" min="1" class="form-control" placeholder="VD: 1" />
+                        <span asp-validation-for="MaxUsesPerUser" class="invalid-feedback"></span>
+                    </div>
+                </div>
+            </div>
+            
+            @if (Model.UsesCount > 0)
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Voucher này đã được sử dụng <strong>@Model.UsesCount</strong> lần.
+                </div>
+            }
+        </div>
+
+        <!-- Phạm vi áp dụng -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-target me-2"></i>
+                Phạm vi áp dụng
+            </h3>
+            <p class="text-muted mb-3">
+                <strong>Yêu cầu:</strong> Bạn cần phải chọn ít nhất một sản phẩm Và một danh mục để áp dụng voucher.
+            </p>
+            
+            <!-- Products Selection -->
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Chọn sản phẩm</h5>
+                    <div class="selection-container border p-3" style="height: 300px; overflow-y: auto;">
+                        @foreach (var product in Model.AvailableProducts)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input product-checkbox" type="checkbox" value="@product.ProductID" id="product_@product.ProductID"
+                                       @(Model.SelectedProductIds.Contains(product.ProductID) ? "checked" : "")>
+                                <label class="form-check-label" for="product_@product.ProductID">
+                                    <strong>@product.ProductName</strong>
+                                    <div class="text-muted small">@product.Price.ToString("N0") VNĐ</div>
+                                </label>
+                            </div>
+                        }
+                    </div>
+                    <div class="mt-2">
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectAllProducts()">Chọn tất cả</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearAllProducts()">Bỏ chọn</button>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5>Chọn danh mục</h5>
+                    <div class="selection-container border p-3" style="height: 300px; overflow-y: auto;">
+                        @foreach (var category in Model.AvailableCategories)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input category-checkbox" type="checkbox" value="@category.CategoryID" id="category_@category.CategoryID"
+                                       @(Model.SelectedCategoryIds.Contains(category.CategoryID) ? "checked" : "")>
+                                <label class="form-check-label" for="category_@category.CategoryID">
+                                    <strong>@category.CategoryName</strong>
+                                    @if (!string.IsNullOrEmpty(category.Description))
+                                    {
+                                        <div class="text-muted small">@category.Description</div>
+                                    }
+                                </label>
+                            </div>
+                        }
+                    </div>
+                    <div class="mt-2">
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectAllCategories()">Chọn tất cả</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearAllCategories()">Bỏ chọn</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hidden inputs for selected items -->
+            <div id="hiddenInputs"></div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-section">
+            <div class="d-flex gap-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-2"></i>
+                    Cập nhật Voucher
+                </button>
+                <a href="@Url.Action("Index")" class="btn btn-secondary">
+                    <i class="fas fa-times me-2"></i>
+                    Hủy
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            $('input[type="date"]').attr('min', today);
+
+            // Form validation
+            $('#promotionForm').on('submit', function(e) {
+                updateHiddenInputs();
+                
+                const selectedProducts = $('.product-checkbox:checked').length;
+                const selectedCategories = $('.category-checkbox:checked').length;
+                
+                if (selectedProducts === 0 || selectedCategories === 0) {
+                    e.preventDefault();
+                    showAlert('danger', 'Vui lòng chọn ít nhất một sản phẩm Và một danh mục');
+                    return false;
+                }
+                
+                return true;
+            });
+
+            // Update hidden inputs when checkboxes change
+            $('.product-checkbox, .category-checkbox').on('change', function() {
+                updateHiddenInputs();
+            });
+            
+            // Initialize hidden inputs with current selections
+            updateHiddenInputs();
+        });
+
+        // Update hidden inputs for form submission
+        function updateHiddenInputs() {
+            const container = document.getElementById('hiddenInputs');
+            container.innerHTML = '';
+            
+            // Add selected products
+            $('.product-checkbox:checked').each(function(index) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = `SelectedProductIds[${index}]`;
+                input.value = this.value;
+                container.appendChild(input);
+            });
+            
+            // Add selected categories
+            $('.category-checkbox:checked').each(function(index) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = `SelectedCategoryIds[${index}]`;
+                input.value = this.value;
+                container.appendChild(input);
+            });
+        }
+
+        // Product selection functions
+        function selectAllProducts() {
+            $('.product-checkbox').prop('checked', true);
+            updateHiddenInputs();
+        }
+
+        function clearAllProducts() {
+            $('.product-checkbox').prop('checked', false);
+            updateHiddenInputs();
+        }
+
+        // Category selection functions
+        function selectAllCategories() {
+            $('.category-checkbox').prop('checked', true);
+            updateHiddenInputs();
+        }
+
+        function clearAllCategories() {
+            $('.category-checkbox').prop('checked', false);
+            updateHiddenInputs();
+        }
+
+        // Generate coupon code
+        function generateCouponCode() {
+            fetch('@Url.Action("GenerateCouponCode")')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.couponCode) {
+                        document.getElementById('CouponCode').value = data.couponCode;
+                        showAlert('success', 'Đã tạo mã voucher: ' + data.couponCode);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error generating coupon code:', error);
+                        showAlert('danger', 'Có lỗi xảy ra khi tạo mã voucher');
+                });
+        }
+
+        // Show alert messages
+        function showAlert(type, message) {
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            const container = document.querySelector('.promotion-management');
+            const existingAlerts = container.querySelectorAll('.alert');
+            existingAlerts.forEach(alert => alert.remove());
+            
+            const header = container.querySelector('.promotion-header');
+            header.insertAdjacentHTML('afterend', alertHtml);
+            
+            // Auto dismiss after 5 seconds
+            setTimeout(() => {
+                const alert = container.querySelector('.alert');
+                if (alert) {
+                    alert.remove();
+                }
+            }, 5000);
+        }
+    </script>
+} 
+

@@ -1,0 +1,301 @@
+@model JollibeeClone.Models.Store
+
+@{
+    ViewData["Title"] = "Chi tiết cửa hàng";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/store-admin.css" asp-append-version="true" />
+}
+
+<div class="store-details">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-store text-jollibee-red me-2"></i>
+                Chi tiết cửa hàng
+            </h2>
+            <p class="text-muted">Thông tin chi tiết về cửa hàng: <strong>@Model.StoreName</strong></p>
+        </div>
+        <div class="btn-group">
+            <a href="@Url.Action("Edit", new { id = Model.StoreID })" class="btn btn-warning">
+                <i class="fas fa-edit me-2"></i>
+                Chỉnh sửa
+            </a>
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại danh sách
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Store Information -->
+        <div class="col-lg-8">
+            <!-- Basic Information -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Thông tin cơ bản
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Tên cửa hàng:</label>
+                            <div class="info-value">
+                                <i class="fas fa-store text-jollibee-red me-2"></i>
+                                @Model.StoreName
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Trạng thái:</label>
+                            <div class="info-value">
+                                <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary") fs-6">
+                                    <i class="fas @(Model.IsActive ? "fa-check-circle" : "fa-pause-circle") me-1"></i>
+                                    @(Model.IsActive ? "Đang hoạt động" : "Tạm dừng hoạt động")
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address Information -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        Thông tin địa chỉ
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label fw-bold">Địa chỉ đường:</label>
+                            <div class="info-value">
+                                <i class="fas fa-road text-info me-2"></i>
+                                @Model.StreetAddress
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @if (!string.IsNullOrEmpty(Model.Ward))
+                        {
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Phường/Xã:</label>
+                                <div class="info-value">
+                                    <i class="fas fa-map-pin text-secondary me-2"></i>
+                                    @Model.Ward
+                                </div>
+                            </div>
+                        }
+                        <div class="col-md-@(!string.IsNullOrEmpty(Model.Ward) ? "4" : "6") mb-3">
+                            <label class="form-label fw-bold">Quận/Huyện:</label>
+                            <div class="info-value">
+                                <i class="fas fa-map text-warning me-2"></i>
+                                @Model.District
+                            </div>
+                        </div>
+                        <div class="col-md-@(!string.IsNullOrEmpty(Model.Ward) ? "4" : "6") mb-3">
+                            <label class="form-label fw-bold">Tỉnh/Thành phố:</label>
+                            <div class="info-value">
+                                <i class="fas fa-city text-primary me-2"></i>
+                                @Model.City
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Full Address Display -->
+                    <div class="full-address-display">
+                        <label class="form-label fw-bold">Địa chỉ đầy đủ:</label>
+                        <div class="address-card">
+                            <i class="fas fa-map-marker-alt text-jollibee-red me-2"></i>
+                            <span>@Model.StreetAddress@(!string.IsNullOrEmpty(Model.Ward) ? ", " + Model.Ward : ""), @Model.District, @Model.City</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-phone me-2"></i>
+                        Thông tin liên hệ
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Sá»‘ Ä‘iá»‡n thoáº¡i:</label>
+                            <div class="info-value">
+                                @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                                {
+                                    <i class="fas fa-phone text-success me-2"></i>
+                                    <a href="tel:@Model.PhoneNumber" class="text-decoration-none">@Model.PhoneNumber</a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">
+                                        <i class="fas fa-minus me-2"></i>
+                                        ChÆ°a cÃ³ thÃ´ng tin
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Giá» má»Ÿ cá»­a:</label>
+                            <div class="info-value">
+                                @if (!string.IsNullOrEmpty(Model.OpeningHours))
+                                {
+                                    <i class="fas fa-clock text-info me-2"></i>
+                                    @Model.OpeningHours
+                                }
+                                else
+                                {
+                                    <span class="text-muted">
+                                        <i class="fas fa-minus me-2"></i>
+                                        ChÆ°a cÃ³ thÃ´ng tin
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="col-lg-4">
+            <!-- Store Image -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-image me-2"></i>
+                        HÃ¬nh áº£nh cá»­a hÃ ng
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="store-image-container">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Model.ImageUrl" alt="@Model.StoreName" class="store-image-large" 
+                                 onerror="this.onerror=null; this.src='/assets/images/bee.png';" />
+                            <div class="image-actions">
+                                <button type="button" class="btn btn-sm btn-dark" onclick="viewImageFullscreen('@Model.ImageUrl')">
+                                    <i class="fas fa-expand me-1"></i>
+                                    Xem toÃ n mÃ n hÃ¬nh
+                                </button>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="no-image-placeholder">
+                                <i class="fas fa-store fa-4x text-muted mb-3"></i>
+                                <p class="text-muted">ChÆ°a cÃ³ hÃ¬nh áº£nh cá»­a hÃ ng</p>
+                                <a href="@Url.Action("Edit", new { id = Model.StoreID })" class="btn btn-outline-primary">
+                                    <i class="fas fa-plus me-1"></i>
+                                    Thêm áº£nh
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Store Actions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-tools me-2"></i>
+                        Thao tÃ¡c
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="@Url.Action("Edit", new { id = Model.StoreID })" class="btn btn-warning">
+                            <i class="fas fa-edit me-2"></i>
+                            Chá»‰nh sá»­a cá»­a hÃ ng
+                        </a>
+                        <a href="@Url.Action("Delete", new { id = Model.StoreID })" class="btn btn-outline-danger">
+                            <i class="fas fa-trash me-2"></i>
+                            XÃ³a cá»­a hÃ ng
+                        </a>
+                        <hr>
+                        <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                            <i class="fas fa-list me-2"></i>
+                            Danh sÃ¡ch cá»­a hÃ ng
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Thá»‘ng kÃª nhanh
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="quick-stat">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-cart text-success"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">ÄÆ¡n hÃ ng hÃ´m nay</div>
+                            <div class="stat-value">-</div>
+                        </div>
+                    </div>
+                    <div class="quick-stat">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign text-warning"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Doanh thu thÃ¡ng</div>
+                            <div class="stat-value">-</div>
+                        </div>
+                    </div>
+                    <div class="quick-stat">
+                        <div class="stat-icon">
+                            <i class="fas fa-users text-info"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">KhÃ¡ch hÃ ng thÆ°á»ng xuyÃªn</div>
+                            <div class="stat-value">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image Fullscreen Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">@Model.StoreName</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-0">
+                <img id="fullscreenImage" src="" alt="@Model.StoreName" class="img-fluid" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function viewImageFullscreen(imageUrl) {
+            $('#fullscreenImage').attr('src', imageUrl);
+            $('#imageModal').modal('show');
+        }
+    </script>
+} 
+

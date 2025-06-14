@@ -1,0 +1,270 @@
+@model JollibeeClone.Models.News
+
+@{
+    ViewData["Title"] = "Xóa tin tức";
+}
+
+<div class="news-delete">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-trash text-danger me-2"></i>
+                Xóa tin tức
+            </h2>
+            <p class="text-muted">Xác nhận xóa tin tức khỏi hệ thống</p>
+        </div>
+        <div class="header-actions">
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại danh sách
+            </a>
+        </div>
+    </div>
+
+    <!-- Warning Alert -->
+    <div class="alert alert-danger border-0 shadow-sm mb-4">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+            <div>
+                <h5 class="alert-heading mb-1">Cảnh báo!</h5>
+                <p class="mb-0">Hành động này sẽ xóa vĩnh viễn tin tức và không thể hoàn tác. Bạn có chắc chắn muốn tiếp tục?</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- News Preview -->
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-newspaper me-2"></i>
+                        Tin tức sẽ bị xóa
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <div class="col-md-4">
+                                <div class="news-image-preview">
+                                    <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid rounded" />
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="news-info">
+                                    <h4 class="fw-bold text-dark mb-3">@Model.Title</h4>
+                                    
+                                    @if (!string.IsNullOrEmpty(Model.ShortDescription))
+                                    {
+                                        <p class="text-muted mb-3">@Model.ShortDescription</p>
+                                    }
+                                    
+                                    <div class="meta-info">
+                                        <div class="row g-3">
+                                            <div class="col-sm-6">
+                                                <div class="info-item">
+                                                    <label class="text-muted small">ID:</label>
+                                                    <div class="fw-bold">#@Model.NewsID</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="info-item">
+                                                    <label class="text-muted small">Loại tin:</label>
+                                                    <div>
+                                                        <span class="badge @(Model.NewsType == "Tin tức" ? "bg-info" : "bg-success")">
+                                                            <i class="fas @(Model.NewsType == "Tin tức" ? "fa-newspaper" : "fa-tags") me-1"></i>
+                                                            @Model.NewsType
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="info-item">
+                                                    <label class="text-muted small">Trạng thái:</label>
+                                                    <div>
+                                                        <span class="badge @(Model.IsPublished ? "bg-success" : "bg-secondary")">
+                                                            <i class="fas @(Model.IsPublished ? "fa-check-circle" : "fa-clock") me-1"></i>
+                                                            @(Model.IsPublished ? "Đã xuất bản" : "Nháp")
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="info-item">
+                                                    <label class="text-muted small">Ngày tạo:</label>
+                                                    <div class="fw-bold">@Model.PublishedDate.ToString("dd/MM/yyyy HH:mm")</div>
+                                                </div>
+                                            </div>
+                                            @if (Model.Author != null)
+                                            {
+                                                <div class="col-sm-6">
+                                                    <div class="info-item">
+                                                        <label class="text-muted small">Tác giả:</label>
+                                                        <div class="fw-bold">@Model.Author.FullName</div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-12">
+                                <div class="news-info">
+                                    <h4 class="fw-bold text-dark mb-3">@Model.Title</h4>
+                                    
+                                    @if (!string.IsNullOrEmpty(Model.ShortDescription))
+                                    {
+                                        <p class="text-muted mb-3">@Model.ShortDescription</p>
+                                    }
+                                    
+                                    <div class="meta-info">
+                                        <div class="row g-3">
+                                            <div class="col-sm-6">
+                                                <div class="info-item">
+                                                    <label class="text-muted small">ID:</label>
+                                                    <div class="fw-bold">#@Model.NewsID</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="info-item">
+                                                    <label class="text-muted small">Loại tin:</label>
+                                                    <div>
+                                                        <span class="badge @(Model.NewsType == "Tin tức" ? "bg-info" : "bg-success")">
+                                                            <i class="fas @(Model.NewsType == "Tin tức" ? "fa-newspaper" : "fa-tags") me-1"></i>
+                                                            @Model.NewsType
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="info-item">
+                                                    <label class="text-muted small">Trạng thái:</label>
+                                                    <div>
+                                                        <span class="badge @(Model.IsPublished ? "bg-success" : "bg-secondary")">
+                                                            <i class="fas @(Model.IsPublished ? "fa-check-circle" : "fa-clock") me-1"></i>
+                                                            @(Model.IsPublished ? "Đã xuất bản" : "Nháp")
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="info-item">
+                                                    <label class="text-muted small">Ngày tạo:</label>
+                                                    <div class="fw-bold">@Model.PublishedDate.ToString("dd/MM/yyyy HH:mm")</div>
+                                                </div>
+                                            </div>
+                                            @if (Model.Author != null)
+                                            {
+                                                <div class="col-sm-6">
+                                                    <div class="info-item">
+                                                        <label class="text-muted small">Tác giả:</label>
+                                                        <div class="fw-bold">@Model.Author.FullName</div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center mt-4">
+                <form asp-action="Delete" method="post" class="d-inline">
+                    <input asp-for="NewsID" type="hidden" />
+                    
+                    <button type="submit" class="btn btn-danger btn-lg me-3" onclick="return confirmDelete()">
+                        <i class="fas fa-trash me-2"></i>
+                        Xác nhận xóa
+                    </button>
+                </form>
+                
+                <a href="@Url.Action("Details", new { id = Model.NewsID })" class="btn btn-outline-info btn-lg me-3">
+                    <i class="fas fa-eye me-2"></i>
+                    Xem chi tiết
+                </a>
+                
+                <a href="@Url.Action("Index")" class="btn btn-outline-secondary btn-lg">
+                    <i class="fas fa-times me-2"></i>
+                    Há»§y bá»
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete() {
+            var title = @Html.Raw(Json.Serialize(Model.Title));
+            return confirm('Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n xÃ³a tin tá»©c "' + title + '"?\n\nHÃ nh Ä‘á»™ng nÃ y khÃ´ng thá»ƒ hoÃ n tÃ¡c!');
+        }
+        
+        // Auto focus on delete button
+        $(document).ready(function() {
+            $('button[type="submit"]').focus();
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        .news-image-preview {
+            max-height: 200px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        
+        .news-image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .info-item {
+            padding: 8px 0;
+        }
+        
+        .info-item label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .meta-info {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .alert-danger {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+        }
+        
+        .card {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-lg {
+            padding: 12px 30px;
+            font-size: 16px;
+        }
+        
+        .news-info h4 {
+            line-height: 1.4;
+        }
+    </style>
+} 
+

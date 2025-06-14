@@ -1,0 +1,516 @@
+@model JollibeeClone.Models.Store
+
+@{
+    ViewData["Title"] = "Chỉnh sửa cửa hàng";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/store-admin.css" asp-append-version="true" />
+}
+
+<div class="store-edit">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-edit text-jollibee-red me-2"></i>
+                Chỉnh sửa cửa hàng
+            </h2>
+            <p class="text-muted">Cập nhật thông tin cửa hàng: <strong>@Model.StoreName</strong></p>
+        </div>
+        <div class="btn-group">
+            <a href="@Url.Action("Details", new { id = Model.StoreID })" class="btn btn-outline-info">
+                <i class="fas fa-eye me-2"></i>
+                Xem chi tiết
+            </a>
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại danh sách
+            </a>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Thông tin cửa hàng
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="storeForm" asp-action="Edit" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <input asp-for="StoreID" type="hidden" />
+                        <input asp-for="ImageUrl" type="hidden" />
+                        
+                        <!-- Tên cửa hàng -->
+                        <div class="mb-3">
+                            <label asp-for="StoreName" class="form-label required">Tên cửa hàng</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-store"></i>
+                                </span>
+                                <input asp-for="StoreName" class="form-control" placeholder="Nhập tên cửa hàng..." />
+                            </div>
+                            <span asp-validation-for="StoreName" class="text-danger"></span>
+                        </div>
+
+                        <!-- Địa chỉ -->
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label asp-for="StreetAddress" class="form-label required">Địa chỉ đường</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-road"></i>
+                                    </span>
+                                    <input asp-for="StreetAddress" class="form-control" placeholder="Số nhà, tên đường..." />
+                                </div>
+                                <span asp-validation-for="StreetAddress" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required">Tỉnh/Thành phố</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-city"></i>
+                                    </span>
+                                    <select id="citySelect" class="form-select">
+                                        <option value="">Chọn tỉnh/thành phố...</option>
+                                    </select>
+                                </div>
+                                <input type="hidden" asp-for="City" />
+                                <span asp-validation-for="City" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required">Quận/Huyện</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-map"></i>
+                                    </span>
+                                    <select id="districtSelect" class="form-select" disabled>
+                                        <option value="">Chọn quận/huyện...</option>
+                                    </select>
+                                </div>
+                                <input type="hidden" asp-for="District" />
+                                <span asp-validation-for="District" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">PhÆ°á»ng/XÃ£</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-map-pin"></i>
+                                    </span>
+                                    <select id="wardSelect" class="form-select" disabled>
+                                        <option value="">Chá»n phÆ°á»ng/xÃ£...</option>
+                                    </select>
+                                </div>
+                                <input type="hidden" asp-for="Ward" />
+                                <span asp-validation-for="Ward" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- ThÃ´ng tin liÃªn há»‡ -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PhoneNumber" class="form-label">Sá»‘ Ä‘iá»‡n thoáº¡i</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-phone"></i>
+                                    </span>
+                                    <input asp-for="PhoneNumber" class="form-control" placeholder="Sá»‘ Ä‘iá»‡n thoáº¡i liÃªn há»‡..." />
+                                </div>
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="OpeningHours" class="form-label">Giá» má»Ÿ cá»­a</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-clock"></i>
+                                    </span>
+                                    <input asp-for="OpeningHours" class="form-control" placeholder="VD: 6:00 - 22:00" />
+                                </div>
+                                <span asp-validation-for="OpeningHours" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Tráº¡ng thÃ¡i -->
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                <input asp-for="IsActive" class="form-check-input" />
+                                <label asp-for="IsActive" class="form-check-label">
+                                    Cá»­a hÃ ng Ä‘ang hoáº¡t Ä‘á»™ng
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit buttons -->
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>
+                                Há»§y bá»
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>
+                                Cáº­p nháº­t cá»­a hÃ ng
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview Panel -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-image me-2"></i>
+                        HÃ¬nh áº£nh cá»­a hÃ ng
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Image Upload Section -->
+                    <div class="image-upload-section">
+                        <!-- Current Image -->
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <div id="currentImageSection" class="current-image-section mb-3">
+                                <label class="form-label">áº¢nh hiá»‡n táº¡i:</label>
+                                <div class="current-image-container">
+                                    <img src="@Model.ImageUrl" alt="@Model.StoreName" class="current-image-display" 
+                                         onerror="this.onerror=null; this.src='/assets/images/bee.png';" />
+                                    <div class="image-overlay">
+                                        <button type="button" class="btn btn-sm btn-light" id="changeCurrentImage" title="Thay Ä‘á»•i áº£nh">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" id="removeCurrentImage" title="XÃ³a áº£nh">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Upload Area -->
+                        <div class="file-upload-area" id="fileUploadArea" style="@(!string.IsNullOrEmpty(Model.ImageUrl) ? "display: none;" : "")">
+                            <div class="file-upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <p><strong>KÃ©o tháº£ áº£nh vÃ o Ä‘Ã¢y</strong></p>
+                            <p>hoáº·c</p>
+                            <label for="imageFile" class="btn btn-outline-primary">
+                                <i class="fas fa-folder-open me-2"></i>
+                                Chá»n file áº£nh
+                            </label>
+                            <input type="file" id="imageFile" name="imageFile" accept="image/*" style="display: none;" />
+                        </div>
+                                                 
+                        <!-- New Image Preview -->
+                        <div id="imagePreview" class="image-preview" style="display: none;">
+                            <div class="image-preview-container">
+                                <img id="previewImg" src="#" alt="Preview" class="preview-image-full" />
+                                <div class="image-actions">
+                                    <button type="button" class="btn btn-sm btn-light" id="changeImage" title="Thay Ä‘á»•i áº£nh">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger" id="removeImage" title="XÃ³a áº£nh">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Äá»‹nh dáº¡ng: JPG, PNG, GIF. KÃ­ch thÆ°á»›c tá»‘i Ä‘a: 2MB
+                    </small>
+                </div>
+            </div>
+            
+            <!-- Store Preview -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-eye me-2"></i>
+                        Xem trÆ°á»›c
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="store-preview">
+                        <div class="preview-image" id="storePreviewImage">
+                            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                            {
+                                <img src="@Model.ImageUrl" alt="Store Preview" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px;" />
+                            }
+                            else
+                            {
+                                <div class="no-image">
+                                    <i class="fas fa-store fa-2x"></i>
+                                </div>
+                            }
+                        </div>
+                        <div class="preview-content">
+                            <h6 id="previewStoreName" class="text-muted">@Model.StoreName</h6>
+                            <p id="previewAddress" class="small text-muted">@($"{Model.StreetAddress}{(!string.IsNullOrEmpty(Model.Ward) ? ", " + Model.Ward : "")}, {Model.District}, {Model.City}")</p>
+                            <p id="previewPhone" class="small text-muted" style="@(string.IsNullOrEmpty(Model.PhoneNumber) ? "display: none;" : "")">
+                                <i class="fas fa-phone me-1"></i>
+                                <span>@Model.PhoneNumber</span>
+                            </p>
+                            <p id="previewHours" class="small text-muted" style="@(string.IsNullOrEmpty(Model.OpeningHours) ? "display: none;" : "")">
+                                <i class="fas fa-clock me-1"></i>
+                                <span>@Model.OpeningHours</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script src="~/js/address-selector.js" asp-append-version="true"></script>
+    
+    <script>
+        $(document).ready(function() {
+            let currentImageFile = null;
+            let removeCurrentImage = false;
+
+            // Store current values
+            const currentCity = '@Model.City';
+            const currentDistrict = '@Model.District';
+            const currentWard = '@Model.Ward';
+
+            // Image upload handling
+            $('#imageFile').on('change', function(e) {
+                handleImageSelection(e.target.files[0]);
+            });
+
+            // Drag and drop
+            $('#fileUploadArea').on('dragover', function(e) {
+                e.preventDefault();
+                $(this).addClass('drag-over');
+            });
+
+            $('#fileUploadArea').on('dragleave', function(e) {
+                e.preventDefault();
+                $(this).removeClass('drag-over');
+            });
+
+            $('#fileUploadArea').on('drop', function(e) {
+                e.preventDefault();
+                $(this).removeClass('drag-over');
+                const files = e.originalEvent.dataTransfer.files;
+                if (files.length > 0) {
+                    handleImageSelection(files[0]);
+                }
+            });
+
+            // Change current image button
+            $('#changeCurrentImage').on('click', function() {
+                $('#imageFile').click();
+            });
+
+            // Remove current image button
+            $('#removeCurrentImage').on('click', function() {
+                if (confirm('Báº¡n cÃ³ cháº¯c muá»‘n xÃ³a áº£nh hiá»‡n táº¡i?')) {
+                    $('#currentImageSection').hide();
+                    $('#fileUploadArea').show();
+                    removeCurrentImage = true;
+                    
+                    // Update store preview
+                    $('#storePreviewImage').html('<div class="no-image"><i class="fas fa-store fa-2x"></i></div>');
+                }
+            });
+
+            // Change new image button
+            $('#changeImage').on('click', function() {
+                $('#imageFile').click();
+            });
+
+            // Remove new image button
+            $('#removeImage').on('click', function() {
+                removeNewImage();
+            });
+
+            function handleImageSelection(file) {
+                if (!file) return;
+
+                // Validate file type
+                if (!file.type.startsWith('image/')) {
+                    alert('Vui lÃ²ng chá»n file áº£nh há»£p lá»‡.');
+                    return;
+                }
+
+                // Validate file size (2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('File áº£nh khÃ´ng Ä‘Æ°á»£c vÆ°á»£t quÃ¡ 2MB.');
+                    return;
+                }
+
+                currentImageFile = file;
+                
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    showNewImagePreview(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function showNewImagePreview(imageSrc) {
+                $('#previewImg').attr('src', imageSrc);
+                $('#fileUploadArea').hide();
+                $('#currentImageSection').hide();
+                $('#imagePreview').show();
+                
+                // Update store preview
+                $('#storePreviewImage').html('<img src="' + imageSrc + '" alt="Store Preview" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px;">');
+            }
+
+            function removeNewImage() {
+                currentImageFile = null;
+                $('#imageFile').val('');
+                $('#imagePreview').hide();
+                
+                // Show appropriate section
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <text>
+                    if (!removeCurrentImage) {
+                        $('#currentImageSection').show();
+                        $('#storePreviewImage').html('<img src="@Model.ImageUrl" alt="Store Preview" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px;">');
+                    } else {
+                        $('#fileUploadArea').show();
+                        $('#storePreviewImage').html('<div class="no-image"><i class="fas fa-store fa-2x"></i></div>');
+                    }
+                    </text>
+                }
+                else
+                {
+                    <text>
+                    $('#fileUploadArea').show();
+                    $('#storePreviewImage').html('<div class="no-image"><i class="fas fa-store fa-2x"></i></div>');
+                    </text>
+                }
+            }
+
+            // Form submission
+            $('#storeForm').on('submit', function(e) {
+                // Create FormData
+                const formData = new FormData(this);
+                
+                // Handle image file
+                if (currentImageFile) {
+                    formData.delete('imageFile');
+                    formData.append('imageFile', currentImageFile);
+                }
+                
+                // Handle remove image flag
+                if (removeCurrentImage) {
+                    formData.append('removeImage', 'true');
+                }
+                
+                // Update hidden address fields
+                const cityText = $('#citySelect option:selected').text();
+                const districtText = $('#districtSelect option:selected').text();
+                const wardValue = $('#wardSelect').val();
+                
+                if (cityText && cityText !== 'Chá»n tá»‰nh/thÃ nh phá»‘...' && cityText !== 'Äang táº£i...') {
+                    formData.set('City', cityText);
+                }
+                
+                if (districtText && districtText !== 'Chá»n quáº­n/huyá»‡n...' && districtText !== 'Äang táº£i...') {
+                    formData.set('District', districtText);
+                }
+                
+                if (wardValue && wardValue !== '') {
+                    formData.set('Ward', wardValue);
+                }
+
+                // Submit via AJAX if there are file changes
+                if (currentImageFile || removeCurrentImage) {
+                    e.preventDefault();
+                    
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response.success) {
+                                window.location.href = '@Url.Action("Index")';
+                            } else {
+                                // Handle validation errors
+                                if (response.errors) {
+                                    console.error('Validation errors:', response.errors);
+                                }
+                            }
+                        },
+                        error: function() {
+                            alert('CÃ³ lá»—i xáº£y ra khi cáº­p nháº­t cá»­a hÃ ng.');
+                        }
+                    });
+                }
+            });
+
+            // Live preview updates
+            $('#StoreName').on('input', function() {
+                const value = $(this).val() || '@Model.StoreName';
+                $('#previewStoreName').text(value);
+            });
+
+            $('#StreetAddress, #Ward, #District, #City').on('input change', function() {
+                updateAddressPreview();
+            });
+
+            $('#PhoneNumber').on('input', function() {
+                const value = $(this).val();
+                if (value) {
+                    $('#previewPhone span').text(value);
+                    $('#previewPhone').show();
+                } else {
+                    $('#previewPhone').hide();
+                }
+            });
+
+            $('#OpeningHours').on('input', function() {
+                const value = $(this).val();
+                if (value) {
+                    $('#previewHours span').text(value);
+                    $('#previewHours').show();
+                } else {
+                    $('#previewHours').hide();
+                }
+            });
+
+            function updateAddressPreview() {
+                const street = $('#StreetAddress').val();
+                const ward = $('#Ward').val();
+                const district = $('#District').val();
+                const city = $('#City').val();
+
+                let address = '';
+                if (street) address += street;
+                if (ward) address += (address ? ', ' : '') + ward;
+                if (district) address += (address ? ', ' : '') + district;
+                if (city) address += (address ? ', ' : '') + city;
+
+                $('#previewAddress').text(address || 'Äá»‹a chá»‰ sáº½ hiá»ƒn thá»‹ á»Ÿ Ä‘Ã¢y');
+            }
+
+            // Initialize address selectors and load current values
+            initializeAddressSelectors(currentCity, currentDistrict, currentWard);
+        });
+    </script>
+} 
+

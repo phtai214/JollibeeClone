@@ -1,0 +1,477 @@
+@model IEnumerable<JollibeeClone.Models.Categories>
+
+@{
+    ViewData["Title"] = "Quản lý danh mục";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/category-admin.css" asp-append-version="true" />
+}
+
+<div class="category-management">
+    <!-- Header với nút Thêm mới -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-list text-jollibee-red me-2"></i>
+                Quản lý danh mục
+            </h2>
+            <p class="text-muted">Quản lý tất cả danh mục sản phẩm của cửa hàng</p>
+        </div>
+        <a href="@Url.Action("Create")" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus me-2"></i>
+            Thêm danh mục mới
+        </a>
+    </div>
+
+    <!-- TÃ¬m kiáº¿m vÃ  bá»™ lá»c -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" class="form-control" placeholder="TÃ¬m kiáº¿m danh má»¥c...">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <select id="statusFilter" class="form-select">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="true">Hoạt động</option>
+                        <option value="false">Không hoạt động</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select id="parentFilter" class="form-select">
+                        <option value="">Tất cả loại</option>
+                        <option value="parent">Danh mục cha</option>
+                        <option value="child">Danh mục con</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select id="sortBy" class="form-select">
+                        <option value="name">Tên A-Z</option>
+                        <option value="name-desc">Tên Z-A</option>
+                        <option value="order">Thứ tự</option>
+                        <option value="created">Mới nhất</option>
+                    </select>
+                </div>
+                <div class="col-md-3 text-end">
+                    <div class="view-toggle-group">
+                        <button type="button" class="btn btn-outline-secondary view-btn active" data-view="grid" title="Dáº¡ng lÆ°á»›i">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary view-btn" data-view="list" title="Dáº¡ng danh sÃ¡ch">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ThÃ´ng tin káº¿t quáº£ -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="result-count">
+            <span id="categoryCount">@Model.Count()</span> danh mục được tìm thấy
+        </div>
+    </div>
+
+    <!-- Danh sách danh mục -->
+    @if (Model.Any())
+    {
+        <!-- Grid View -->
+        <div id="gridView" class="view-container">
+            <div class="row" id="categoryGrid">
+                @foreach (var category in Model)
+                {
+                    <div class="col-xl-3 col-lg-4 col-md-6 mb-4 category-item" 
+                         data-name="@category.CategoryName.ToLower()"
+                         data-status="@category.IsActive.ToString().ToLower()"
+                         data-type="@(category.ParentCategoryID.HasValue ? "child" : "parent")">
+                        <div class="modern-category-card @(category.IsActive ? "active" : "inactive")">
+                            <!-- Card Header with Image and Status -->
+                            <div class="card-header-section">
+                                <div class="category-image-wrapper">
+                                    @if (!string.IsNullOrEmpty(category.ImageUrl))
+                                    {
+                                        <img src="@category.ImageUrl" alt="@category.CategoryName" class="category-image" />
+                                    }
+                                    else
+                                    {
+                                        <div class="category-placeholder">
+                                            <i class="fas fa-layer-group"></i>
+                                        </div>
+                                    }
+                                    <div class="image-overlay">
+                                        <div class="quick-actions">
+                                            <button class="action-btn view-btn" onclick="window.location.href='@Url.Action("Details", new { id = category.CategoryID })'" title="Xem chi tiết">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="action-btn edit-btn" onclick="window.location.href='@Url.Action("Edit", new { id = category.CategoryID })'" title="Chỉnh sửa">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="action-btn delete-btn" onclick="window.location.href='@Url.Action("Delete", new { id = category.CategoryID })'" title="Xóa">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Status Badge -->
+                                <div class="status-indicator">
+                                    <span class="status-dot @(category.IsActive ? "active" : "inactive")"></span>
+                                </div>
+                                
+                                <!-- Type Badge -->
+                                <div class="type-badge">
+                                    @if (category.ParentCategoryID.HasValue)
+                                    {
+                                        <span class="badge-modern child">
+                                            <i class="fas fa-arrow-right"></i>
+                                            Sub
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge-modern parent">
+                                            <i class="fas fa-folder"></i>
+                                            Main
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Card Body -->
+                            <div class="card-body-section">
+                                <div class="category-header">
+                                    <h3 class="category-title">@category.CategoryName</h3>
+                                    <span class="category-order">#@category.DisplayOrder</span>
+                                </div>
+                                
+                                @if (!string.IsNullOrEmpty(category.Description))
+                                {
+                                    <p class="category-description">@category.Description</p>
+                                }
+                                
+                                @if (category.ParentCategory != null)
+                                {
+                                    <div class="parent-info">
+                                        <i class="fas fa-sitemap"></i>
+                                        <span>thuộc <strong>@category.ParentCategory.CategoryName</strong></span>
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Card Footer with Stats -->
+                            <div class="card-footer-section">
+                                <div class="stats-container">
+                                    <div class="stat-item">
+                                        <div class="stat-icon products">
+                                            <i class="fas fa-box"></i>
+                                        </div>
+                                        <div class="stat-content">
+                                            <span class="stat-number">@category.Products.Count()</span>
+                                            <span class="stat-label">Sản phẩm</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="stat-divider"></div>
+                                    
+                                    <div class="stat-item">
+                                        <div class="stat-icon subcategories">
+                                            <i class="fas fa-sitemap"></i>
+                                        </div>
+                                        <div class="stat-content">
+                                            <span class="stat-number">@category.SubCategories.Count()</span>
+                                            <span class="stat-label">Danh mục con</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-actions">
+                                    <div class="status-text">
+                                        @if (category.IsActive)
+                                        {
+                                            <span class="status-active">
+                                                <i class="fas fa-check-circle"></i>
+                                                Đang hoạt động
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="status-inactive">
+                                                <i class="fas fa-pause-circle"></i>
+                                                Tạm dừng
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Table View -->
+        <div id="tableView" class="view-container" style="display: none;">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th width="80">ảnh</th>
+                            <th>Tên danh mục</th>
+                            <th width="150">Loại</th>
+                            <th width="100">Thứ tự</th>
+                            <th width="120">Trạng thái</th>   
+                            <th width="100">Sản phẩm</th>
+                            <th width="120">Danh mục con</th>
+                            <th width="150">Thao tác</th>  
+                        </tr>
+                    </thead>
+                    <tbody id="categoryTableBody">
+                        @foreach (var category in Model)
+                        {
+                            <tr class="category-item" 
+                                data-name="@category.CategoryName.ToLower()"
+                                data-status="@category.IsActive.ToString().ToLower()"
+                                data-type="@(category.ParentCategoryID.HasValue ? "child" : "parent")">
+                                <td>
+                                    @if (!string.IsNullOrEmpty(category.ImageUrl))
+                                    {
+                                        <div class="table-category-image">
+                                            <img src="@category.ImageUrl" alt="@category.CategoryName" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="no-image-small">
+                                            <i class="fas fa-image"></i>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="category-info">
+                                        <h6 class="mb-1">@category.CategoryName</h6>
+                                        @if (!string.IsNullOrEmpty(category.Description))
+                                        {
+                                            <small class="text-muted">@category.Description</small>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    @if (category.ParentCategory != null)
+                                    {
+                                        <span class="badge bg-secondary">
+                                            <i class="fas fa-folder me-1"></i>
+                                            Con
+                                        </span>
+                                        <small class="d-block text-muted mt-1">@category.ParentCategory.CategoryName</small>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-info" >
+                                            <i class="fas fa-folder-open me-1"></i>
+                                            Cha
+                                        </span>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark">@category.DisplayOrder</span>
+                                </td>
+                                <td>
+                                    @if (category.IsActive)
+                                    {
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check me-1"></i>
+                                            Hoạt động
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning">
+                                            <i class="fas fa-exclamation me-1"></i>
+                                            Tạm dừng
+                                        </span>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">@category.Products.Count()</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">@category.SubCategories.Count()</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="@Url.Action("Details", new { id = category.CategoryID })" 
+                                           class="btn btn-sm btn-outline-info" title="Chi tiáº¿t" >
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="@Url.Action("Edit", new { id = category.CategoryID })" 
+                                           class="btn btn-sm btn-outline-warning" title="Chá»‰nh sá»­a">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id = category.CategoryID })" 
+                                           class="btn btn-sm btn-outline-danger" title="XÃ³a">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="fas fa-folder-open"></i>
+            </div>
+            <h4>Chưa có danh mục nào</h4>
+            <p>Bắt đầu bằng cách tạo danh mục đầu tiên cho cửa hàng của bạn</p>
+            <a href="@Url.Action("Create")" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>
+                Tạo danh mục đầu tiên
+            </a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+<script>
+$(document).ready(function() {
+    let currentView = 'grid';
+    
+    // View Toggle
+    $('.view-btn').on('click', function() {
+        const view = $(this).data('view');
+        if (view === currentView) return;
+        
+        $('.view-btn').removeClass('active');
+        $(this).addClass('active');
+        
+        if (view === 'grid') {
+            $('#tableView').hide();
+            $('#gridView').show();
+            currentView = 'grid';
+        } else {
+            $('#gridView').hide();
+            $('#tableView').show();
+            currentView = 'list';
+        }
+    });
+    
+    // Search functionality
+    $('#searchInput').on('input', function() {
+        filterCategories();
+    });
+
+    // Status filter
+    $('#statusFilter').on('change', function() {
+        filterCategories();
+    });
+
+    // Parent type filter
+    $('#parentFilter').on('change', function() {
+        filterCategories();
+    });
+    
+    // Sort functionality
+    $('#sortBy').on('change', function() {
+        sortCategories();
+    });
+
+    function filterCategories() {
+        var searchTerm = $('#searchInput').val().toLowerCase();
+        var statusFilter = $('#statusFilter').val();
+        var parentFilter = $('#parentFilter').val();
+        var visibleCount = 0;
+
+        $('.category-item').each(function() {
+            var item = $(this);
+            var name = item.data('name');
+            var status = item.data('status').toString();
+            var type = item.data('type');
+
+            var showItem = true;
+
+            // Check search term
+            if (searchTerm && name.indexOf(searchTerm) === -1) {
+                showItem = false;
+            }
+
+            // Check status filter
+            if (statusFilter && status !== statusFilter) {
+                showItem = false;
+            }
+
+            // Check type filter
+            if (parentFilter && type !== parentFilter) {
+                showItem = false;
+            }
+
+            if (showItem) {
+                item.removeClass('hidden').show();
+                visibleCount++;
+            } else {
+                item.addClass('hidden').hide();
+            }
+        });
+        
+        // Update result count
+        $('#categoryCount').text(visibleCount);
+    }
+    
+    function sortCategories() {
+        var sortBy = $('#sortBy').val();
+        var container = currentView === 'grid' ? $('#categoryGrid') : $('#categoryTableBody');
+        var items = container.find('.category-item');
+        
+        items.sort(function(a, b) {
+            var aVal, bVal;
+            
+            switch(sortBy) {
+                case 'name':
+                    aVal = $(a).data('name');
+                    bVal = $(b).data('name');
+                    return aVal.localeCompare(bVal);
+                    
+                case 'name-desc':
+                    aVal = $(a).data('name');
+                    bVal = $(b).data('name');
+                    return bVal.localeCompare(aVal);
+                    
+                case 'order':
+                    // Find display order from badge content
+                    var aBadgeText = $(a).find('.badge').filter(function() {
+                        var text = $(this).text();
+                        return text.indexOf('Thá»© tá»±') !== -1 || !isNaN(text);
+                    }).first().text();
+                    var bBadgeText = $(b).find('.badge').filter(function() {
+                        var text = $(this).text();
+                        return text.indexOf('Thá»© tá»±') !== -1 || !isNaN(text);
+                    }).first().text();
+                    
+                    aVal = parseInt(aBadgeText.replace(/[^0-9]/g, '')) || 0;
+                    bVal = parseInt(bBadgeText.replace(/[^0-9]/g, '')) || 0;
+                    return aVal - bVal;
+                    
+                case 'created':
+                    // Default order (newest first)
+                    return 0;
+                    
+                default:
+                    return 0;
+            }
+        });
+        
+        container.html(items);
+    }
+});
+</script>
+} 
+

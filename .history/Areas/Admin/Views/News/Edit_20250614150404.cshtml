@@ -1,0 +1,393 @@
+@model JollibeeClone.Models.News
+
+@{
+    ViewData["Title"] = "Chỉnh sửa tin tức";
+}
+
+<div class="news-edit">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-edit text-jollibee-red me-2"></i>
+                Chỉnh sửa tin tức
+            </h2>
+            <p class="text-muted">Cập nhật thông tin tin tức: <strong>@Model.Title</strong></p>
+        </div>
+        <div class="header-actions">
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại danh sách
+            </a>
+        </div>
+    </div>
+
+    <form asp-action="Edit" method="post" enctype="multipart/form-data" id="newsForm">
+        <input asp-for="NewsID" type="hidden" />
+        <input asp-for="ImageUrl" type="hidden" />
+        <input asp-for="PublishedDate" type="hidden" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        
+        <div class="row">
+            <!-- Form chính -->
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-edit me-2"></i>
+                            Thông tin tin tức
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Tiêu đề -->
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label required">Tiêu đề</label>
+                            <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề tin tức..." />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <!-- Mô tả ngắn -->
+                        <div class="mb-3">
+                            <label asp-for="ShortDescription" class="form-label">Mô tả ngắn</label>
+                            <textarea asp-for="ShortDescription" class="form-control" rows="3" placeholder="Nhập mô tả ngắn (tối đa 500 ký tự)..."></textarea>
+                            <span asp-validation-for="ShortDescription" class="text-danger"></span>
+                            <div class="form-text">Mô tả ngắn sẽ hiển thị trong danh sách tin tức</div>
+                        </div>
+
+                        <!-- Nội dung -->
+                        <div class="mb-3">
+                            <label asp-for="Content" class="form-label required">Nội dung</label>
+                            <textarea asp-for="Content" class="form-control" rows="10" id="contentEditor" placeholder="Nhập nội dung chi tiết..."></textarea>
+                            <span asp-validation-for="Content" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Hình ảnh -->
+                <!-- Upload ảnh -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="card-title mb-0">
+                            <i class="fas fa-image me-2"></i>
+                            Hình ảnh tin tức
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Ảnh hiện tại:</label>
+                                <div class="current-image-preview">
+                                    <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid rounded shadow" style="max-height: 250px; width: 100%; object-fit: cover;" />
+                                    <div class="image-overlay">
+                                        <button type="button" class="btn btn-sm btn-light" onclick="viewLargeImage('@Model.ImageUrl', '@Model.Title')">
+                                            <i class="fas fa-search-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mb-3">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Tin tức chưa có ảnh
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Upload áº£nh má»›i -->
+                        <div class="image-upload-section">
+                            <div class="file-upload-area" id="fileUploadArea">
+                                <div class="file-upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <p><strong>@(string.IsNullOrEmpty(Model.ImageUrl) ? "Táº£i áº£nh lÃªn" : "Thay Ä‘á»•i áº£nh")</strong></p>
+                                <p>KÃ©o tháº£ áº£nh vÃ o Ä‘Ã¢y hoáº·c</p>
+                                <label for="imageFile" class="btn btn-outline-primary">
+                                    <i class="fas fa-folder-open me-2"></i>
+                                    Chá»n file tá»« mÃ¡y
+                                </label>
+                                <input asp-for="ImageFile" type="file" id="imageFile" accept="image/*" style="display: none;" />
+                            </div>
+                            
+                            <div id="imagePreview" class="image-preview" style="display: none;">
+                                <label class="form-label">áº¢nh má»›i:</label>
+                                <img id="previewImg" src="#" alt="Preview" />
+                                <div class="image-actions">
+                                    <button type="button" class="btn btn-sm btn-danger" id="removeImage">
+                                        <i class="fas fa-trash"></i>
+                                        XÃ³a áº£nh má»›i
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="upload-guidelines">
+                            <h6><i class="fas fa-info-circle me-2"></i>HÆ°á»›ng dáº«n upload áº£nh:</h6>
+                            <ul>
+                                <li>KÃ­ch thÆ°á»›c tá»‘i Ä‘a: 5MB</li>
+                                <li>Äá»‹nh dáº¡ng: JPG, PNG, GIF, WEBP</li>
+                                <li>KÃ­ch thÆ°á»›c khuyáº¿n nghá»‹: 800x600px</li>
+                                <li>Äá»ƒ trá»‘ng náº¿u khÃ´ng muá»‘n thay Ä‘á»•i áº£nh</li>
+                            </ul>
+                        </div>
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Thiáº¿t láº­p -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="card-title mb-0">
+                            <i class="fas fa-cog me-2"></i>
+                            Thiáº¿t láº­p
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <!-- Loáº¡i tin tá»©c -->
+                        <div class="mb-3">
+                            <label class="form-label required">Loáº¡i tin tá»©c</label>
+                            <div class="news-type-options">
+                                <div class="form-check">
+                                    <input asp-for="NewsType" type="radio" value="News" class="form-check-input" id="newsTypeNews" />
+                                    <label class="form-check-label" for="newsTypeNews">
+                                        <i class="fas fa-newspaper text-info me-2"></i>
+                                        Tin tá»©c
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="NewsType" type="radio" value="Promotion" class="form-check-input" id="newsTypePromotion" />
+                                    <label class="form-check-label" for="newsTypePromotion">
+                                        <i class="fas fa-tags text-success me-2"></i>
+                                        Khuyáº¿n mÃ£i
+                                    </label>
+                                </div>
+                            </div>
+                            <span asp-validation-for="NewsType" class="text-danger"></span>
+                            <div class="form-text">
+                                <strong>Tin tá»©c:</strong> Hiá»ƒn thá»‹ á»Ÿ trang /tin-tuc<br>
+                                <strong>Khuyáº¿n mÃ£i:</strong> Hiá»ƒn thá»‹ á»Ÿ trang /khuyen-mai
+                            </div>
+                        </div>
+
+                        <!-- TÃ¡c giáº£ -->
+                        <div class="mb-3">
+                            <label asp-for="AuthorID" class="form-label">TÃ¡c giáº£</label>
+                            <select asp-for="AuthorID" asp-items="ViewBag.AuthorID" class="form-select">
+                                <option value="">-- Chá»n tÃ¡c giáº£ --</option>
+                            </select>
+                            <span asp-validation-for="AuthorID" class="text-danger"></span>
+                        </div>
+
+                        <!-- Tráº¡ng thÃ¡i xuáº¥t báº£n -->
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input asp-for="IsPublished" type="checkbox" class="form-check-input" id="isPublished" />
+                                <label class="form-check-label" for="isPublished">
+                                    <i class="fas fa-globe me-2"></i>
+                                    Xuáº¥t báº£n
+                                </label>
+                            </div>
+                            <div class="form-text">
+                                Bá» chá»n Ä‘á»ƒ lÆ°u dÆ°á»›i dáº¡ng nhÃ¡p
+                            </div>
+                        </div>
+
+                        <!-- ThÃ´ng tin ngÃ y táº¡o -->
+                        <div class="info-section">
+                            <hr>
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                <strong>NgÃ y táº¡o:</strong> @Model.PublishedDate.ToString("dd/MM/yyyy HH:mm")
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NÃºt lÆ°u -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>
+                                Cáº­p nháº­t tin tá»©c
+                            </button>
+                            <a href="@Url.Action("Details", new { id = Model.NewsID })" class="btn btn-outline-info">
+                                <i class="fas fa-eye me-2"></i>
+                                Xem chi tiáº¿t
+                            </a>
+                            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>
+                                Há»§y bá»
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    
+    <script>
+        $(document).ready(function() {
+            // Form validation vÃ  submission handling
+            $('#newsForm').on('submit', function(e) {
+                // Basic client-side validation
+                var isValid = true;
+                var title = $('#Title').val().trim();
+                var content = $('#Content').val().trim();
+                
+                if (!title) {
+                    alert('Vui lÃ²ng nháº­p tiÃªu Ä‘á» tin tá»©c!');
+                    $('#Title').focus();
+                    isValid = false;
+                } else if (!content) {
+                    alert('Vui lÃ²ng nháº­p ná»™i dung tin tá»©c!');
+                    $('#Content').focus();
+                    isValid = false;
+                }
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    return false;
+                }
+                
+                // Show loading state
+                var submitBtn = $(this).find('button[type="submit"]');
+                var originalText = submitBtn.html();
+                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Äang cáº­p nháº­t...');
+                
+                // Reset on error (failsafe)
+                setTimeout(function() {
+                    submitBtn.prop('disabled', false).html(originalText);
+                }, 10000);
+            });
+
+            // Xá»­ lÃ½ upload áº£nh
+            $('#imageFile').on('change', function(e) {
+                var file = e.target.files[0];
+                handleImageSelect(file);
+            });
+
+            $('#fileUploadArea').on('dragover', function(e) {
+                e.preventDefault();
+                $(this).addClass('drag-over');
+            });
+
+            $('#fileUploadArea').on('dragleave', function(e) {
+                e.preventDefault();
+                $(this).removeClass('drag-over');
+            });
+
+            $('#fileUploadArea').on('drop', function(e) {
+                e.preventDefault();
+                $(this).removeClass('drag-over');
+                
+                var files = e.originalEvent.dataTransfer.files;
+                if (files.length > 0) {
+                    $('#imageFile')[0].files = files;
+                    handleImageSelect(files[0]);
+                }
+            });
+
+            $('#fileUploadArea').on('click', function() {
+                $('#imageFile').click();
+            });
+
+            $('#removeImage').on('click', function() {
+                $('#imageFile').val('');
+                $('#imagePreview').hide();
+                $('#fileUploadArea').show();
+            });
+
+            function handleImageSelect(file) {
+                if (!file) {
+                    return;
+                }
+
+                if (!file.type.match('image.*')) {
+                    alert('Vui lÃ²ng chá»n file áº£nh!');
+                    $('#imageFile').val('');
+                    return;
+                }
+
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File áº£nh quÃ¡ lá»›n! Vui lÃ²ng chá»n file nhá» hÆ¡n 5MB.');
+                    $('#imageFile').val('');
+                    return;
+                }
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#previewImg').attr('src', e.target.result);
+                    $('#fileUploadArea').hide();
+                    $('#imagePreview').show();
+                };
+                reader.onerror = function() {
+                    alert('KhÃ´ng thá»ƒ Ä‘á»c file áº£nh!');
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // View large image function
+            window.viewLargeImage = function(imageUrl, title) {
+                var modal = $('<div class="modal fade" tabindex="-1">').html(`
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">${title}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img src="${imageUrl}" class="img-fluid" alt="${title}" />
+                            </div>
+                        </div>
+                    </div>
+                `);
+                modal.modal('show').on('hidden.bs.modal', function() {
+                    modal.remove();
+                });
+            };
+        });
+    </script>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/product-admin.css" />
+    <link rel="stylesheet" href="~/css/admin-news-service.css" />
+    <style>
+        .news-type-options .form-check {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .news-type-options .form-check:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .news-type-options .form-check-input:checked + .form-check-label {
+            font-weight: bold;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #dc3545;
+        }
+        
+        .info-section {
+            margin-top: 20px;
+        }
+    </style>
+} 
+

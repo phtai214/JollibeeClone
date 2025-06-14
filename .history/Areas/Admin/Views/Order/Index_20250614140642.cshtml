@@ -1,0 +1,326 @@
+@model JollibeeClone.Models.PaginatedList<JollibeeClone.Models.Orders>
+
+@{
+    ViewData["Title"] = "Quản lý đơn hàng"; 
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/order-admin.css" asp-append-version="true" />
+}
+
+<div class="order-management">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-shopping-cart text-jollibee-red me-2"></i>
+                Quản lý đơn hàng
+            </h2>
+            <p class="text-muted">Quản lý tất cả đơn hàng của khách hàng</p>
+        </div>
+        <div class="header-actions">
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                <i class="fas fa-sync-alt me-2"></i>
+                Làm mới
+            </a>
+        </div>
+    </div>
+
+    <!-- Tìm kiếm và bộ lọc -->
+    <form method="get" id="filterForm">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" placeholder="Tìm kiếm đơn hàng, tên khách hàng...">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="statusId" class="form-select">
+                            <option value="">Tất cả trạng thái</option>
+                            @if (ViewBag.OrderStatuses != null)
+                            {
+                                @foreach (var status in (List<JollibeeClone.Models.OrderStatuses>)ViewBag.OrderStatuses)
+                                {
+                                    @if (ViewBag.CurrentStatus?.ToString() == status.OrderStatusID.ToString())
+                                    {
+                                        <option value="@status.OrderStatusID" selected="selected">@status.StatusName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@status.OrderStatusID">@status.StatusName</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="date" name="fromDate" value="@ViewBag.CurrentFromDate" class="form-control" placeholder="Từ ngày">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="date" name="toDate" value="@ViewBag.CurrentToDate" class="form-control" placeholder="Đến ngày">
+                    </div>
+                    <div class="col-md-2">
+                        <select name="sortOrder" class="form-select">
+                            @if (ViewBag.CurrentSort == null || ViewBag.CurrentSort == "" || ViewBag.CurrentSort == "date_desc")
+                            {
+                                <option value="date_desc" selected="selected">Ngày mới nhất</option>
+                            }
+                            else
+                            {
+                                <option value="date_desc">Ngày mới nhất</option>
+                            }
+                            @if (ViewBag.CurrentSort == "date_asc")
+                            {
+                                <option value="date_asc" selected="selected">Ngày cũ nhất</option>
+                            }
+                            else
+                            {
+                                <option value="date_asc">Ngày cũ nhất</option>
+                            }
+                            @if (ViewBag.CurrentSort == "total_desc")
+                            {
+                                <option value="total_desc" selected="selected">Giá trị cao-thấp</option>
+                            }
+                            else
+                            {
+                                <option value="total_desc">Giá trị cao-thấp</option>
+                            }
+                            @if (ViewBag.CurrentSort == "total_asc")
+                            {
+                                <option value="total_asc" selected="selected">Giá trị thấp-cao</option>
+                            }
+                            else
+                            {
+                                <option value="total_asc">Giá trị thấp-cao</option>
+                            }
+                            @if (ViewBag.CurrentSort == "customer")
+                            {
+                                <option value="customer" selected="selected">Tên khách hàng</option>
+                            }
+                            else
+                            {
+                                <option value="customer">Tên khách hàng</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-secondary me-2">
+                            <i class="fas fa-search"></i> Lọc
+                        </button>
+                        @* <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> XÃ³a
+                        </a> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Thông tin kết quả -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="result-count">
+            Hiển thị @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.PageIndex * Model.PageSize, Model.TotalCount)) của @Model.TotalCount đơn hàng
+        </div>
+        <div class="pagination-info">
+            Trang @Model.PageIndex / @Model.TotalPages
+        </div>
+    </div>
+
+    <!-- Danh sách đơn hàng -->
+    @if (Model.Any())
+    {
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Mã đơn hàng</th>
+                                <th scope="col">Khách hàng</th>
+                                <th scope="col">Ngày đặt</th>
+                                <th scope="col">Tổng tiền</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Phương thức thanh toán</th>
+                                <th scope="col">Hình động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong class="text-primary">#@order.OrderCode</strong>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <strong>@order.CustomerFullName</strong>
+                                        </div>
+                                        <small class="text-muted">
+                                            <i class="fas fa-phone me-1"></i>@order.CustomerPhoneNumber
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <div>@order.OrderDate.ToString("dd/MM/yyyy")</div>
+                                        <small class="text-muted">@order.OrderDate.ToString("HH:mm")</small>
+                                    </td>
+                                    <td>
+                                        <strong class="text-success">@order.TotalAmount.ToString("N0") â‚«</strong> 
+                                        @if (order.DiscountAmount > 0)
+                                        {
+                                            <div>
+                                                <small class="text-info">
+                                                    <i class="fas fa-tag me-1"></i>
+                                                    Giáº£m: @order.DiscountAmount.ToString("N0") â‚«
+                                                </small>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                                            string statusClass = "secondary";
+                                            string statusIcon = "fas fa-clock";
+                                            switch (order.OrderStatusID)
+                                            {
+                                                case 1: // Chá» xÃ¡c nháº­n
+                                                    statusClass = "warning";
+                                                    statusIcon = "fas fa-clock";
+                                                    break;
+                                                case 2: // ÄÃ£ xÃ¡c nháº­n
+                                                    statusClass = "info";
+                                                    statusIcon = "fas fa-check-circle";
+                                                    break;
+                                                case 3: // Äang chuáº©n bá»‹
+                                                    statusClass = "primary";
+                                                    statusIcon = "fas fa-utensils";
+                                                    break;
+                                                case 4: // Äang giao
+                                                    statusClass = "warning";
+                                                    statusIcon = "fas fa-shipping-fast";
+                                                    break;
+                                                case 5: // ÄÃ£ giao
+                                                    statusClass = "success";
+                                                    statusIcon = "fas fa-check-double";
+                                                    break;
+                                                case 6: // ÄÃ£ há»§y
+                                                    statusClass = "danger";
+                                                    statusIcon = "fas fa-times-circle";
+                                                    break;
+                                            }
+                                        }
+                                        <span class="badge bg-@statusClass">
+                                            <i class="@statusIcon me-1"></i>
+                                            @order.OrderStatus?.StatusName
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <i class="fas fa-credit-card me-1"></i>
+                                        @order.PaymentMethod?.MethodName
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="@Url.Action("Details", new { id = order.OrderID })" class="btn btn-sm btn-outline-primary" title="Xem chi tiáº¿t">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            @if (order.OrderStatusID != 5 && order.OrderStatusID != 6) // KhÃ´ng pháº£i Ä‘Ã£ giao hoáº·c Ä‘Ã£ há»§y
+                                            {
+                                                <a href="@Url.Action("UpdateStatus", new { id = order.OrderID })" class="btn btn-sm btn-outline-warning" title="Cáº­p nháº­t tráº¡ng thÃ¡i">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        @if (Model.TotalPages > 1)
+        {
+            <nav aria-label="Order pagination" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    @if (Model.HasPreviousPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { 
+                                page = Model.PageIndex - 1, 
+                                searchString = ViewBag.CurrentSearch, 
+                                statusId = ViewBag.CurrentStatus,
+                                fromDate = ViewBag.CurrentFromDate,
+                                toDate = ViewBag.CurrentToDate,
+                                sortOrder = ViewBag.CurrentSort 
+                            })">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+                    }
+
+                    @for (int i = Math.Max(1, Model.PageIndex - 2); i <= Math.Min(Model.TotalPages, Model.PageIndex + 2); i++)
+                    {
+                        <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { 
+                                page = i, 
+                                searchString = ViewBag.CurrentSearch, 
+                                statusId = ViewBag.CurrentStatus,
+                                fromDate = ViewBag.CurrentFromDate,
+                                toDate = ViewBag.CurrentToDate,
+                                sortOrder = ViewBag.CurrentSort 
+                            })">@i</a>
+                        </li>
+                    }
+
+                    @if (Model.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { 
+                                page = Model.PageIndex + 1, 
+                                searchString = ViewBag.CurrentSearch, 
+                                statusId = ViewBag.CurrentStatus,
+                                fromDate = ViewBag.CurrentFromDate,
+                                toDate = ViewBag.CurrentToDate,
+                                sortOrder = ViewBag.CurrentSort 
+                            })">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <div class="mb-3">
+                <i class="fas fa-shopping-cart fa-3x text-muted"></i>
+            </div>
+            <h5 class="text-muted">KhÃ´ng tÃ¬m tháº¥y Ä‘Æ¡n hÃ ng nÃ o</h5>
+            <p class="text-muted">Thá»­ thay Ä‘á»•i bá»™ lá»c Ä‘á»ƒ xem káº¿t quáº£ khÃ¡c</p>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Auto submit form when filter changes
+            $('#filterForm select, #filterForm input[type="date"]').change(function() {
+                $('#filterForm').submit();
+            });
+
+            // Refresh page every 5 minutes to get latest order updates
+            setInterval(function() {
+                if (!$('input:focus, select:focus').length) {
+                    location.reload();
+                }
+            }, 300000); // 5 minutes
+        });
+    </script>
+} 
+

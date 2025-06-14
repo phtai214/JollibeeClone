@@ -1,0 +1,291 @@
+@model JollibeeClone.Models.Orders
+
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/order-admin.css" asp-append-version="true" />
+}
+
+<div class="order-details">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-receipt text-jollibee-red me-2"></i>
+                Chi tiết đơn hàng #@Model.OrderCode
+            </h2>
+            <p class="text-muted">Thông tin chi tiết về đơn hàng</p>
+        </div>
+        <div class="header-actions">
+            @if (Model.OrderStatusID != 5 && Model.OrderStatusID != 6) // Không phải đã giao hoặc đã hủy
+            {
+                <a href="@Url.Action("UpdateStatus", new { id = Model.OrderID })" class="btn btn-warning me-2">
+                    <i class="fas fa-edit me-2"></i>
+                    Cập nhật trạng thái
+                </a>
+            }
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Thông tin đơn hàng -->
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Thông tin đơn hàng
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label"><strong>Mã đơn hàng:</strong></label>
+                                <div class="form-control-plaintext">
+                                    <span class="badge bg-primary fs-6">#@Model.OrderCode</span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label"><strong>Ngày đặt hàng:</strong></label>
+                                <div class="form-control-plaintext">
+                                    @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label"><strong>Trạng thái:</strong></label>
+                                <div class="form-control-plaintext">
+                                    @{
+                                        string statusClass = "secondary";
+                                        string statusIcon = "fas fa-clock";
+                                        switch (Model.OrderStatusID)
+                                        {
+                                            case 1: // Chờ xác nhận
+                                                statusClass = "warning";
+                                                statusIcon = "fas fa-clock";
+                                                break;
+                                            case 2: // Đã xác nhận
+                                                statusClass = "info";
+                                                statusIcon = "fas fa-check-circle";
+                                                break;
+                                            case 3: // Đang chuẩn bị
+                                                statusClass = "primary";
+                                                statusIcon = "fas fa-utensils";
+                                                break;
+                                            case 4: // Đang giao
+                                                statusClass = "warning";
+                                                statusIcon = "fas fa-shipping-fast";
+                                                break;
+                                            case 5: // Đã giao
+                                                statusClass = "success";
+                                                statusIcon = "fas fa-check-double";
+                                                break;
+                                            case 6: // Đã hủy
+                                                statusClass = "danger";
+                                                statusIcon = "fas fa-times-circle";
+                                                break;
+                                        }
+                                    }
+                                    <span class="badge bg-@statusClass fs-6">
+                                        <i class="@statusIcon me-1"></i>
+                                        @Model.OrderStatus?.StatusName
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label"><strong>Phương thức thanh toán:</strong></label>
+                                <div class="form-control-plaintext">
+                                    <i class="fas fa-credit-card me-2"></i>
+                                    @Model.PaymentMethod?.MethodName
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label"><strong>Phương thức giao hàng:</strong></label>
+                                <div class="form-control-plaintext">
+                                    <i class="fas fa-shipping-fast me-2"></i>
+                                    @Model.DeliveryMethod?.MethodName
+                                </div>
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.NotesByCustomer))
+                            {
+                                <div class="mb-3">
+                                    <label class="form-label"><strong>Ghi chú từ khách hàng:</strong></label>
+                                    <div class="form-control-plaintext">
+                                        <div class="alert alert-light border">
+                                            <i class="fas fa-sticky-note me-2"></i>
+                                            @Model.NotesByCustomer
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sản phẩm trong đơn hàng -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-shopping-bag me-2"></i>
+                        Sản phẩm đã đặt (@Model.OrderItems?.Count() sản phẩm)
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.OrderItems != null && Model.OrderItems.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Sản phẩm</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="text-end">Đơn giá</th>
+                                        <th class="text-end">Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrderItems)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="product-image me-3">
+                                                        <i class="fas fa-hamburger fa-2x text-jollibee-red"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">@item.ProductNameSnapshot</h6>
+                                                        @if (!string.IsNullOrEmpty(item.SelectedConfigurationSnapshot))
+                                                        {
+                                                            <small class="text-muted">
+                                                                <i class="fas fa-cogs me-1"></i>
+                                                                Tùy chỉnh: @item.SelectedConfigurationSnapshot
+                                                            </small>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="badge bg-light text-dark border">
+                                                    @item.Quantity
+                                                </span>
+                                            </td>
+                                            <td class="text-end">
+                                                @item.UnitPrice.ToString("N0") Đ
+                                            </td>
+                                            <td class="text-end">
+                                                <strong>@item.Subtotal.ToString("N0") Đ</strong>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="fas fa-shopping-bag fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">Không có sản phẩm nào trong đơn hàng</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Thông tin khách hàng và tóm tắt -->
+        <div class="col-lg-4">
+            <!-- Thông tin khách hàng -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-user me-2"></i>
+                        Thông tin khách hàng
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Họ và tên:</strong></label>
+                        <div class="form-control-plaintext">
+                            <i class="fas fa-user-circle me-2"></i>
+                            @Model.CustomerFullName
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Email:</strong></label>
+                        <div class="form-control-plaintext">
+                            <i class="fas fa-envelope me-2"></i>
+                            <a href="mailto:@Model.CustomerEmail">@Model.CustomerEmail</a>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Số điện thoại:</strong></label>
+                        <div class="form-control-plaintext">
+                            <i class="fas fa-phone me-2"></i>
+                            <a href="tel:@Model.CustomerPhoneNumber">@Model.CustomerPhoneNumber</a>
+                        </div>
+                    </div>
+                    @if (Model.UserAddress != null)
+                    {
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Địa chỉ giao hàng:</strong></label>
+                            <div class="form-control-plaintext">
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                @Model.UserAddress.Address
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Tóm tắt đơn hàng -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-calculator me-2"></i>
+                        Tóm tắt đơn hàng
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="order-summary">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tạm tính:</span>
+                            <span>@Model.SubtotalAmount.ToString("N0") Đ</span>
+                        </div>
+                        @if (Model.ShippingFee > 0)
+                        {
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Phí giao hàng:</span>
+                                <span>@Model.ShippingFee.ToString("N0") Đ</span>
+                            </div>
+                        }
+                        @if (Model.DiscountAmount > 0)
+                        {
+                            <div class="d-flex justify-content-between mb-2 text-success">
+                                <span>
+                                    <i class="fas fa-tag me-1"></i>
+                                    Giảm giá:
+                                </span>
+                                <span>-@Model.DiscountAmount.ToString("N0") Đ</span>
+                            </div>
+                        }
+                        <hr>
+                        <div class="d-flex justify-content-between total-amount">
+                            <strong>Tá»•ng cá»™ng:</strong> 
+                            <strong class="text-success fs-5">@Model.TotalAmount.ToString("N0") â‚«</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+

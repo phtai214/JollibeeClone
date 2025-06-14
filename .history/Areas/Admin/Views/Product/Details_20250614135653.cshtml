@@ -1,0 +1,327 @@
+@model JollibeeClone.Models.Product
+
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/product-admin.css" asp-append-version="true" />
+}
+
+<div class="product-details">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-hamburger text-jollibee-red me-2"></i>
+                Chi tiết sản phẩm
+            </h2>
+            <p class="text-muted">Thông tin chi tiết về sản phẩm: <strong>@Model.ProductName</strong></p>
+        </div>
+        <div class="header-actions">
+            <a href="@Url.Action("Edit", new { id = Model.ProductID })" class="btn btn-warning">
+                <i class="fas fa-edit me-2"></i>
+                Chỉnh sửa
+            </a>
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại danh sách
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- ThÃ´ng tin chÃ­nh -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Thông tin sản phẩm
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">ID sản phẩm:</dt>
+                        <dd class="col-sm-9">
+                            <span class="badge bg-primary">#@Html.DisplayFor(model => model.ProductID)</span>
+                        </dd>
+
+                        <dt class="col-sm-3">Tên sản phẩm:</dt>
+                        <dd class="col-sm-9">
+                            <h5 class="mb-0">@Html.DisplayFor(model => model.ProductName)</h5>
+                        </dd>
+
+                        @if (!string.IsNullOrEmpty(Model.ShortDescription))
+                        {
+                            <dt class="col-sm-3">Mô tả ngắn:</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.ShortDescription)</dd>
+                        }
+
+                        <dt class="col-sm-3">Giá bán:</dt>
+                        <dd class="col-sm-9"> 
+                            <div class="price-display">
+                                <span class="current-price">@Model.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span>
+                                @if (Model.OriginalPrice.HasValue && Model.OriginalPrice > Model.Price)
+                                {
+                                    <span class="original-price ms-2">@Model.OriginalPrice.Value.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span>
+                                    <span class="discount-badge ms-2">
+                                        -@(Math.Round((decimal)(Model.OriginalPrice - Model.Price) / Model.OriginalPrice.Value * 100, 0))%
+                                    </span>
+                                }
+                            </div>
+                        </dd>
+
+                        <dt class="col-sm-3">Danh mục:</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.Category != null)
+                            {
+                                <span class="badge bg-secondary fs-6">
+                                    <i class="fas fa-folder me-1"></i>
+                                    @Html.DisplayFor(model => model.Category.CategoryName)
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Chưa phân loại</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">Tùy chỉnh:</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.IsConfigurable)
+                            {
+                                <span class="badge bg-info fs-6">
+                                    <i class="fas fa-cogs me-1"></i>
+                                    Có thể tùy chỉnh
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary fs-6">Không tùy chỉnh</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">Trạng thái:</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.IsAvailable)
+                            {
+                                <span class="badge bg-success fs-6">
+                                    <i class="fas fa-check me-1"></i>
+                                    Có sẵn
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning fs-6">
+                                    <i class="fas fa-exclamation me-1"></i>
+                                    Hết hàng
+                                </span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-cogs me-2"></i>
+                        Thao tác
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="@Url.Action("Edit", new { id = Model.ProductID })" class="btn btn-warning">
+                            <i class="fas fa-edit me-2"></i>
+                            Chỉnh sửa sản phẩm
+                        </a>
+                        <a href="@Url.Action("Delete", new { id = Model.ProductID })" class="btn btn-danger">
+                            <i class="fas fa-trash me-2"></i>
+                            Xóa sản phẩm
+                        </a>
+                        <button class="btn btn-info" onclick="copyProductInfo()">
+                            <i class="fas fa-copy me-2"></i>
+                            Sao chép thông tin
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- áº¢nh sáº£n pháº©m -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-image me-2"></i>
+                        HÃ¬nh áº£nh sáº£n pháº©m
+                    </h5>
+                </div>
+                <div class="card-body text-center">
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl" alt="@Model.ProductName" class="img-fluid rounded shadow" style="max-height: 300px;" />
+                        <div class="mt-2">
+                            <small class="text-muted">Nháº¥p Ä‘á»ƒ xem áº£nh lá»›n</small>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="image-upload-area">
+                            <div class="upload-content">
+                                <div class="upload-icon-wrapper">
+                                    <div class="upload-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <div class="upload-sparkles">
+                                        <i class="fas fa-sparkles spark-1"></i>
+                                        <i class="fas fa-sparkles spark-2"></i>
+                                        <i class="fas fa-sparkles spark-3"></i>
+                                    </div>
+                                </div>
+                                <h5 class="upload-title">ChÆ°a cÃ³ áº£nh sáº£n pháº©m</h5>
+                                <p class="upload-subtitle">Thêm áº£nh Ä‘á»ƒ sáº£n pháº©m trÃ´ng háº¥p dáº«n hÆ¡n</p>
+                                <a href="@Url.Action("Edit", new { id = Model.ProductID })" class="btn-upload">
+                                    <span class="btn-upload-text">
+                                        <i class="fas fa-image me-2"></i>
+                                        Thêm áº£nh ngay
+                                    </span>
+                                    <div class="btn-upload-bg"></div>
+                                </a>
+                            </div>
+                            <div class="upload-decoration">
+                                <div class="decoration-circle circle-1"></div>
+                                <div class="decoration-circle circle-2"></div>
+                                <div class="decoration-circle circle-3"></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Thá»‘ng kÃª nhanh -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Thá»‘ng kÃª nhanh
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="stat-item">
+                        <div class="stat-icon bg-info">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h6>Má»›i táº¡o</h6>
+                            <p>Sáº£n pháº©m vá»«a Ä‘Æ°á»£c Thêm</p>
+                        </div>
+                    </div>
+                    
+                    @if (Model.OriginalPrice.HasValue && Model.OriginalPrice > Model.Price)
+                    {
+                        <div class="stat-item">
+                            <div class="stat-icon bg-success">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h6>@(Math.Round((decimal)(Model.OriginalPrice - Model.Price) / Model.OriginalPrice.Value * 100, 0))% Giáº£m giÃ¡</h6>
+                                <p>Tiáº¿t kiá»‡m @((Model.OriginalPrice - Model.Price).Value.ToString("C0", new System.Globalization.CultureInfo("vi-VN")))</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Gá»£i Ã½ -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        Gá»£i Ã½ cáº£i thiá»‡n
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="improvement-tips">
+                        @if (string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <li><i class="fas fa-image text-warning"></i> Thêm áº£nh sáº£n pháº©m Ä‘á»ƒ tÄƒng tá»· lá»‡ bÃ¡n</li>
+                        }
+                        @if (string.IsNullOrEmpty(Model.ShortDescription))
+                        {
+                            <li><i class="fas fa-pencil-alt text-info"></i> Thêm mÃ´ táº£ ngáº¯n giÃºp khÃ¡ch hÃ ng hiá»ƒu rÃµ hÆ¡n</li>
+                        }
+                        @if (!Model.OriginalPrice.HasValue)
+                        {
+                            <li><i class="fas fa-tag text-success"></i> Thêm giÃ¡ gá»‘c Ä‘á»ƒ táº¡o cáº£m giÃ¡c Æ°u Ä‘Ã£i</li>
+                        }
+                        @if (!Model.IsConfigurable)
+                        {
+                            <li><i class="fas fa-cogs text-primary"></i> CÃ¢n nháº¯c cho phÃ©p tÃ¹y chá»‰nh sáº£n pháº©m</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+function copyProductInfo() {
+    var productInfo = `Sáº£n pháº©m: @Model.ProductName
+GiÃ¡: @Model.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))
+@(Model.Category != null ? "Danh má»¥c: " + Model.Category.CategoryName : "")
+@(!string.IsNullOrEmpty(Model.ShortDescription) ? "MÃ´ táº£: " + Model.ShortDescription : "")`;
+    
+    navigator.clipboard.writeText(productInfo).then(function() {
+        alert('ÄÃ£ sao chÃ©p thÃ´ng tin sáº£n pháº©m!');
+    }).catch(function() {
+        // Fallback for older browsers
+        var textArea = document.createElement('textarea');
+        textArea.value = productInfo;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('ÄÃ£ sao chÃ©p thÃ´ng tin sáº£n pháº©m!');
+    });
+}
+
+$(document).ready(function() {
+    // Click to view large image
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <text>
+        $('img[alt="@Model.ProductName"]').on('click', function() {
+            var modal = `
+                <div class="modal fade" id="imageModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">@Model.ProductName</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img src="@Model.ImageUrl" class="img-fluid" alt="@Model.ProductName">
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            
+            $('body').append(modal);
+            $('#imageModal').modal('show');
+            
+            $('#imageModal').on('hidden.bs.modal', function() {
+                $(this).remove();
+            });
+        });
+        </text>
+    }
+});
+</script>
+} 
+

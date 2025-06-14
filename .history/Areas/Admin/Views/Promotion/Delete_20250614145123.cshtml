@@ -1,0 +1,568 @@
+@model JollibeeClone.ViewModels.PromotionViewModel
+
+@{
+    ViewData["Title"] = "Xóa Voucher";
+    var statusClass = Model.EndDate < DateTime.Today ? "expired" : Model.StartDate > DateTime.Today ? "upcoming" : Model.IsActive ? "running" : "inactive";
+    var statusText = Model.EndDate < DateTime.Today ? "Đã hết hạn" : Model.StartDate > DateTime.Today ? "Sắp diễn ra" : Model.IsActive ? "Đang hoạt động" : "Không hoạt động";
+    var statusBadgeClass = Model.EndDate < DateTime.Today ? "expired" : Model.StartDate > DateTime.Today ? "upcoming" : Model.IsActive ? "active" : "inactive";
+    var usagePercentage = Model.MaxUses.HasValue ? (double)Model.UsesCount / Model.MaxUses.Value * 100 : 0;
+    var hasOrders = ViewData["HasOrders"] as bool? ?? false;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/promotion-admin.css" asp-append-version="true" />
+    <style>
+        .delete-warning {
+            border-left: 5px solid #dc3545;
+            background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .delete-summary {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .danger-zone {
+            background: linear-gradient(135deg, #fff 0%, #ffe6e6 100%);
+            border: 2px solid #dc3545;
+            border-radius: 8px;
+            padding: 25px;
+        }
+        
+        .promotion-preview {
+            opacity: 0.8;
+            position: relative;
+        }
+        
+        .promotion-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(220, 53, 69, 0.1);
+            border-radius: 8px;
+            z-index: 1;
+        }
+    </style>
+}
+
+<div class="promotion-management">
+    <!-- Header -->
+    <div class="promotion-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="page-title">
+                    <i class="fas fa-exclamation-triangle text-danger me-2"></i>
+                    Xác nhận xóa Voucher
+                </h2>
+                <p class="text-muted mb-0">Bạn có chắc chắn muốn xóa voucher: <strong class="text-danger">@Model.PromotionName</strong>?</p>
+            </div>
+            <a href="@Url.Action("Index")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại
+            </a>
+        </div>
+    </div>
+
+    <!-- Enhanced Warning Section -->
+    @if (ViewData["HasOrders"] != null && (bool)ViewData["HasOrders"])
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <div class="d-flex align-items-start">
+                <i class="fas fa-exclamation-triangle fa-2x text-danger me-3 mt-1"></i>
+                <div>
+                    <h5 class="alert-heading">
+                        <i class="fas fa-lock me-2"></i>
+                        Không thể xóa voucher này!
+                    </h5>   
+                    <p class="mb-2">
+                        Voucher này đã được sử dụng trong <strong>@Model.UsesCount</strong> đơn hàng và không thể xóa để đảm bảo tính toàn vẹn dữ liệu.
+                    </p>
+                    <hr>
+                    <p class="mb-0">
+                        <strong>Khuyến nghị:</strong> Bạn có thể tạm dừng voucher này thay vì xóa để ngừng sử dụng mà vẫn giữ lại lịch sử.
+                    </p>
+                    <div class="mt-3">
+                        <button onclick="togglePromotionStatus(@Model.PromotionID)" class="btn btn-warning btn-sm me-2">
+                            <i class="fas fa-@(Model.IsActive ? "pause" : "play") me-1"></i>
+                            @(Model.IsActive ? "Tạm dừng" : "Kích hoạt") voucher
+                        </button>
+                        <a href="@Url.Action("Edit", new { id = Model.PromotionID })" class="btn btn-info btn-sm">
+                            <i class="fas fa-edit me-1"></i>
+                            Chỉnh sửa thông tin
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    else if (Model.UsesCount > 0)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <div class="d-flex align-items-start">
+                <i class="fas fa-exclamation-circle fa-2x text-warning me-3 mt-1"></i>
+                <div>
+                    <h5 class="alert-heading">
+                        <i class="fas fa-shield-alt me-2"></i>
+                        Cảnh báo: Voucher đã được sử dụng
+                    </h5>
+                    <p class="mb-2">
+                        Voucher này đã được sử dụng <strong>@Model.UsesCount</strong> lần. 
+                        Việc xóa có thể ảnh hưởng đến dữ liệu báo cáo và lịch sử giao dịch.
+                    </p>
+                    <hr>
+                    <p class="mb-0">
+                        <strong>Lưu ý:</strong> Hãy cân nhắc kỹ trước khi xóa voucher đã có lượt sử dụng.
+                    </p>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="d-flex align-items-start">
+                <i class="fas fa-check-circle fa-2x text-success me-3 mt-1"></i>
+                <div>
+                    <h5 class="alert-heading">
+                        <i class="fas fa-trash-alt me-2"></i>
+                        Có thể xóa an toàn
+                    </h5>
+                    <p class="mb-0">
+                        Voucher này chưa được sử dụng lần nào và có thể xóa an toàn mà không ảnh hưởng đến dữ liệu hệ thống.
+                    </p>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Summary Information -->
+    <div class="delete-summary">
+        <h5 class="text-warning mb-3">
+            <i class="fas fa-info-circle me-2"></i>
+            Tóm tắt thông tin voucher sẽ bị xóa:
+        </h5>
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="list-unstyled">
+                    <li><strong>Tên voucher:</strong> @Model.PromotionName</li>
+                    <li><strong>Mã voucher:</strong> @(Model.CouponCode ?? "Không có")</li>
+                    <li><strong>Giảm giá:</strong> @Model.DiscountValue%</li>
+                    <li><strong>Trạng thái:</strong> <span class="status-badge @statusBadgeClass">@statusText</span></li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-unstyled">
+                    <li><strong>Đã sử dụng:</strong> @Model.UsesCount lần</li>
+                    <li><strong>Sản phẩm áp dụng:</strong> @Model.SelectedProducts.Count</li>
+                    <li><strong>Danh mục áp dụng:</strong> @Model.SelectedCategories.Count</li>
+                    <li><strong>Thời gian:</strong> @Model.StartDate.ToString("dd/MM/yyyy") - @Model.EndDate.ToString("dd/MM/yyyy")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Voucher Preview -->
+        <div class="col-lg-8">
+            <div class="promotion-card promotion-preview @statusClass mb-4">
+                <!-- Card Header -->
+                <div class="promotion-card-header">
+                    <div class="status-indicator">
+                        <span class="status-badge @statusBadgeClass">@statusText</span>
+                    </div>
+                    
+                    <h3 class="promotion-title">@Model.PromotionName</h3>
+                    
+                    @if (!string.IsNullOrEmpty(Model.CouponCode))
+                    {
+                        <div class="promotion-code">@Model.CouponCode</div>
+                    }
+                    
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <p class="promotion-description">@Model.Description</p>
+                    }
+                </div>
+
+                <!-- Card Body -->
+                <div class="promotion-card-body">
+                    <!-- Discount Display -->
+                    <div class="discount-display">
+                        <div class="discount-value">@Model.DiscountValue%</div>
+                        <div class="discount-type">Giảm @Model.DiscountType</div> 
+                    </div>
+
+                    <!-- Date Range -->
+                    <div class="date-range">
+                        <div class="date-item">
+                            <div class="date-label">Bắt đầu</div>
+                            <div class="date-value">@Model.StartDate.ToString("dd/MM/yyyy")</div>
+                        </div>
+                        <div class="date-separator">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <div class="date-item">
+                            <div class="date-label">Kết thúc</div>
+                            <div class="date-value">@Model.EndDate.ToString("dd/MM/yyyy")</div>
+                        </div>
+                    </div>
+
+                    <!-- Usage Progress -->
+                    @if (Model.MaxUses.HasValue)
+                    {
+                        <div class="usage-progress">
+                            <div class="usage-info">
+                                <span class="usage-label">Đã sử dụng: @Model.UsesCount/@Model.MaxUses</span>
+                                <span class="usage-percentage">@usagePercentage.ToString("F1")%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: @(usagePercentage)%"></div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Scope Info -->
+                    <div class="scope-info">
+                        <div class="scope-item">
+                            <span class="scope-count">@Model.SelectedProducts.Count</span>
+                            <span class="scope-label">Sản phẩm áp dụng</span>
+                        </div>
+                        <div class="scope-item">
+                            <span class="scope-count">@Model.SelectedCategories.Count</span>
+                            <span class="scope-label">Danh mục áp dụng</span>
+                        </div>
+                    </div>
+
+                    @if (Model.MinOrderValue.HasValue)
+                    {
+                        <div class="text-center mt-2">
+                            <small class="text-muted">
+                                <i class="fas fa-shopping-cart me-1"></i>
+                                Đơn tối thiểu: @Model.MinOrderValue.Value.ToString("N0") VNĐ
+                            </small>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Actions -->
+        <div class="col-lg-4">
+            <div class="danger-zone">
+                <h4 class="text-danger mb-3">
+                    <i class="fas fa-skull-crossbones me-2"></i>
+                    Vùng nguy hiểm
+                </h4>
+
+                @if (hasOrders)
+                {
+                    <div class="alert alert-danger mb-3">
+                        <i class="fas fa-lock me-2"></i>
+                        <strong>Voucher đã được sử dụng</strong><br>
+                        Không thể xóa voucher này.
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <a href="@Url.Action("Edit", new { id = Model.PromotionID })" class="btn btn-warning">
+                            <i class="fas fa-edit me-2"></i>
+                            Chỉnh sửa thay thế
+                        </a>
+                        <a href="@Url.Action("Details", new { id = Model.PromotionID })" class="btn btn-info">
+                            <i class="fas fa-eye me-2"></i>
+                            Xem chi tiết
+                        </a>
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Quay lại danh sách
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted mb-3">
+                        Xác nhận rằng bạn muốn xóa vĩnh viễn voucher này. 
+                        Hành động này không thể hoàn tác.
+                    </p>
+
+                    <form asp-action="Delete" method="post" id="deleteForm">
+                        @Html.AntiForgeryToken()
+                        <input asp-for="PromotionID" type="hidden" />
+                        
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="confirmDelete" required>
+                            <label class="form-check-label" for="confirmDelete">
+                                <strong>Tôi hiểu rằng hành động này không thể hoàn tác</strong>
+                            </label>
+                        </div>
+
+                        <div class="d-flex gap-3 justify-content-center">
+                            <button type="submit" class="btn btn-danger" id="deleteButton" disabled>
+                                <i class="fas fa-trash me-2"></i>
+                                XÓA VĨNH VIỄN
+                            </button>
+                            <button onclick="togglePromotionStatus(@Model.PromotionID)" type="button" class="btn btn-warning" id="toggle-@Model.PromotionID">
+                                <i class="fas fa-@(Model.IsActive ? "pause" : "play") me-2"></i>
+                                @(Model.IsActive ? "Tạm dừng" : "Kích hoạt")
+                            </button>
+                            <a href="@Url.Action("Edit", new { id = Model.PromotionID })" class="btn btn-info">
+                                <i class="fas fa-edit me-2"></i>
+                                Chỉnh sửa
+                            </a>
+                            <a href="@Url.Action("Index")" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i>
+                                Hủy bỏ
+                            </a>
+                        </div>
+                    </form>
+                }
+
+                <!-- Statistics -->
+                <div class="mt-4 pt-3 border-top">
+                    <h6 class="text-muted mb-3">Thống kê sử dụng</h6>
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <div class="text-danger fw-bold fs-4">@Model.UsesCount</div>
+                            <small class="text-muted">Lần sử dụng</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-warning fw-bold fs-4">
+                                @{
+                                    var daysActive = (DateTime.Today - Model.StartDate).Days;
+                                    if (daysActive < 0) daysActive = 0;
+                                }
+                                @daysActive
+                            </div>
+                            <small class="text-muted">Ngày hoạt động</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scope Information -->
+    @if (Model.SelectedProducts.Any() || Model.SelectedCategories.Any())
+    {
+        <div class="mt-4">
+            <div class="promotion-form">
+                <div class="form-section">
+                    <h3 class="section-title text-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Dữ liệu sẽ bị mất
+                    </h3>
+
+                    <!-- Tabs Navigation -->
+                    <ul class="nav nav-tabs" id="scopeTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab">
+                                <i class="fas fa-box me-2"></i>
+                                Sản phẩm (@Model.SelectedProducts.Count)
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="categories-tab" data-bs-toggle="tab" data-bs-target="#categories" type="button" role="tab">
+                                <i class="fas fa-tags me-2"></i>
+                                Danh mục (@Model.SelectedCategories.Count)
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Tabs Content -->
+                    <div class="tab-content" id="scopeTabsContent">
+                        <!-- Products Tab -->
+                        <div class="tab-pane fade show active" id="products" role="tabpanel">
+                            <div class="mt-3">
+                                @if (Model.SelectedProducts.Any())
+                                {
+                                    <div class="alert alert-warning mb-3">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <strong>@Model.SelectedProducts.Count sản phẩm</strong> sẽ mất liên kết với voucher này
+                                    </div>
+                                    <div class="row">
+                                        @foreach (var product in Model.SelectedProducts)
+                                        {
+                                            <div class="col-md-6 col-lg-4 mb-3">
+                                                <div class="card border-warning">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title">@product.ProductName</h6>
+                                                        <p class="card-text text-muted small">@product.Price.ToString("N0") VNĐ</p>
+                                                        @if (!string.IsNullOrEmpty(product.ShortDescription))
+                                                        {
+                                                            <p class="card-text small">@product.ShortDescription</p>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p class="text-muted">Không có sản phẩm nào được áp dụng.</p>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Categories Tab -->
+                        <div class="tab-pane fade" id="categories" role="tabpanel">
+                            <div class="mt-3">
+                                @if (Model.SelectedCategories.Any())
+                                {
+                                    <div class="alert alert-warning mb-3">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <strong>@Model.SelectedCategories.Count danh mục</strong> sẽ mất liên kết với voucher này
+                                    </div>
+                                    <div class="row">
+                                        @foreach (var category in Model.SelectedCategories)
+                                        {
+                                            <div class="col-md-6 col-lg-4 mb-3">
+                                                <div class="card border-warning">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title">@category.CategoryName</h6>
+                                                        @if (!string.IsNullOrEmpty(category.Description))
+                                                        {
+                                                            <p class="card-text small">@category.Description</p>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p class="text-muted">Không có danh mục nào được áp dụng.</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Enable/disable delete button based on confirmation checkbox
+            $('#confirmDelete').on('change', function() {
+                $('#deleteButton').prop('disabled', !this.checked);
+            });
+            
+            // Add visual feedback to delete button
+            $('#deleteButton').hover(
+                function() {
+                    if (!$(this).prop('disabled')) {
+                        $(this).removeClass('btn-danger').addClass('btn-outline-danger');
+                    }
+                },
+                function() {
+                    if (!$(this).prop('disabled')) {
+                        $(this).removeClass('btn-outline-danger').addClass('btn-danger');
+                    }
+                }
+            );
+        });
+
+        // Toggle promotion status
+        function togglePromotionStatus(promotionId) {
+            const toggleBtn = document.getElementById(`toggle-${promotionId}`);
+            const originalContent = toggleBtn.innerHTML;
+            
+            // Show loading state
+            toggleBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang xử lý...';
+            toggleBtn.disabled = true;
+
+            fetch(`@Url.Action("ToggleStatus")?id=${promotionId}`, {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert('success', data.message);
+                    
+                    // Update button UI
+                    if (data.isActive) {
+                        toggleBtn.innerHTML = '<i class="fas fa-pause me-2"></i>Tạm dừng';
+                        updateStatusBadges('active', 'Đang hoạt động');
+                    } else {
+                        toggleBtn.innerHTML = '<i class="fas fa-play me-2"></i>Kích hoạt';
+                        updateStatusBadges('inactive', 'Không hoạt động');
+                    }
+                } else {
+                    showAlert('danger', data.message);
+                    toggleBtn.innerHTML = originalContent;
+                }
+                toggleBtn.disabled = false;
+            })
+            .catch(error => {
+                    showAlert('danger', 'Có lỗi xảy ra khi thay đổi trạng thái');
+                toggleBtn.innerHTML = originalContent;
+                toggleBtn.disabled = false;
+            });
+        }
+
+        // Update status badges
+        function updateStatusBadges(status, text) {
+            const statusBadges = document.querySelectorAll('.status-badge');
+            statusBadges.forEach(badge => {
+                badge.className = `status-badge ${status}`;
+                badge.textContent = text;
+            });
+
+            // Update card classes
+            const promotionCards = document.querySelectorAll('.promotion-card');
+            promotionCards.forEach(card => {
+                card.className = card.className.replace(/\b(active|upcoming|expired|inactive|running)\b/g, '');
+                card.classList.add(status === 'active' ? 'running' : status);
+            });
+        }
+
+        // Show alert messages
+        function showAlert(type, message) {
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            const container = document.querySelector('.promotion-management');
+            const alertContainer = container.querySelector('.alert-container') || 
+                (() => {
+                    const div = document.createElement('div');
+                    div.className = 'alert-container';
+                    container.insertBefore(div, container.firstChild.nextSibling);
+                    return div;
+                })();
+            
+            alertContainer.innerHTML = alertHtml;
+            
+            // Auto dismiss after 5 seconds
+            setTimeout(() => {
+                const alert = alertContainer.querySelector('.alert');
+                if (alert) {
+                    alert.remove();
+                }
+            }, 5000);
+        }
+    </script>
+} 
+

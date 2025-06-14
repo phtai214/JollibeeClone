@@ -1,0 +1,298 @@
+@model JollibeeClone.Models.User
+
+@{
+    ViewData["Title"] = "Thêm người dùng mới";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/user-admin.css" />
+}
+
+<div class="user-management">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-user-plus text-jollibee-red me-2"></i>
+                Thêm người dùng mới
+            </h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index")">
+                            <i class="fas fa-users me-1"></i>
+                            Quản lý người dùng
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Thêm mới</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="header-actions">
+            <a href="@Url.Action("Index")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại
+            </a>
+        </div>
+    </div>
+
+    <!-- Form Thêm người dùng -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="user-detail-card">
+                <form asp-action="Create" method="post" id="createUserForm">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="FullName" class="form-label">
+                                    <i class="fas fa-user me-2"></i>
+                                    Họ và tên <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên đầy đủ" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label">
+                                    <i class="fas fa-envelope me-2"></i>
+                                    Email <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="Email" type="email" class="form-control" placeholder="Nhập địa chỉ email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="Password" class="form-label">
+                                    <i class="fas fa-lock me-2"></i>
+                                    Mật khẩu <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <input type="password" name="password" id="Password" class="form-control" placeholder="Nhập mật khẩu" />
+                                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="form-text">Mật khẩu phải có ít nhất 6 ký tự</div>
+                                <span id="passwordValidation" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="PhoneNumber" class="form-label">
+                                    <i class="fas fa-phone me-2"></i>
+                                    Số điện thoại
+                                </label>
+                                <input asp-for="PhoneNumber" type="tel" class="form-control" placeholder="Nhập số điện thoại" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-toggle-on me-2"></i>
+                                    Trạng thái tài khoản
+                                </label>
+                                <div class="form-check form-switch">
+                                    <input asp-for="IsActive" class="form-check-input" type="checkbox" id="IsActiveSwitch" checked />
+                                    <label class="form-check-label" for="IsActiveSwitch" id="statusLabel">
+                                        Đang hoạt động
+                                    </label>
+                                </div>
+                                <div class="form-text">Tài khoản sẽ có thể đăng nhập ngay khi được tạo</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thông tin bổ sung -->
+                    <div class="alert alert-info" role="alert">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Thông tin quan trọng
+                        </h6>
+                        <ul class="mb-0">
+                            <li>Email phải là duy nhất trong hệ thống</li>
+                            <li>Mật khẩu sẽ được mã hóa an toàn</li>
+                            <li>Người dùng có thể thay đổi thông tin sau khi đăng nhập</li>
+                            <li>Bạn có thể vô hiệu hóa tài khoản bất kỳ lúc nào</li>
+                        </ul>
+                    </div>
+
+                    <!-- NÃºt hÃ nh Ä‘á»™ng -->
+                    <div class="d-flex gap-3 justify-content-end">
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">
+                            <i class="fas fa-times me-2"></i>
+                            Hủy
+                        </a>
+                        <button type="reset" class="btn btn-outline-secondary">
+                            <i class="fas fa-undo me-2"></i>
+                            Đặt lại
+                        </button>
+                        <button type="submit" class="btn btn-jollibee" id="submitBtn">
+                            <i class="fas fa-save me-2"></i>
+                            Tạo người dùng
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Preview Card -->
+        <div class="col-md-4">
+            <div class="user-detail-card">
+                <h5 class="mb-3">
+                    <i class="fas fa-eye me-2"></i>
+                    Xem trước
+                </h5>
+                
+                <div class="text-center">
+                    <div class="user-detail-avatar" id="previewAvatar">
+                        ?
+                    </div>
+                    <h6 id="previewName" class="text-muted">Nhập họ tên</h6>
+                    <div id="previewEmail" class="text-muted small">
+                        <i class="fas fa-envelope me-1"></i>
+                        Nhập email
+                    </div>
+                    <div id="previewPhone" class="text-muted small">
+                        <i class="fas fa-phone me-1"></i>
+                        Chưa có số điện thoại
+                    </div>
+                    <div class="mt-2">
+                        <span id="previewStatus" class="badge status-badge status-active">
+                            Đang hoạt động
+                        </span>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="text-center">
+                    <small class="text-muted">
+                        <i class="fas fa-lightbulb me-1"></i>
+                        Thông tin sẽ được cập nhật khi bạn nhập
+                    </small>
+                </div>
+            </div>
+
+            <!-- Tips Card -->
+            <div class="user-detail-card">
+                <h6 class="mb-3">
+                    <i class="fas fa-tips me-2"></i>
+                    Gợi ý
+                </h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>Sử dụng email thật để liên lạc</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>Mật khẩu mạnh bảo vệ tài khoản</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>Kiểm tra thông tin trước khi lưu</small>
+                    </li>
+                    <li class="mb-0">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>Có thể chỉnh sửa sau khi tạo</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            // Toggle password visibility
+            $('#togglePassword').click(function() {
+                const passwordField = $('#Password');
+                const icon = $(this).find('i');
+                
+                if (passwordField.attr('type') === 'password') {
+                    passwordField.attr('type', 'text');
+                    icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                } else {
+                    passwordField.attr('type', 'password');
+                    icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+            });
+
+            // Update status label
+            $('#IsActiveSwitch').change(function() {
+                const label = $('#statusLabel');
+                const previewStatus = $('#previewStatus');
+                
+                if ($(this).is(':checked')) {
+                    label.text('Đang hoạt động');
+                    previewStatus.removeClass('status-inactive').addClass('status-active').text('Đang hoạt động');
+                } else {
+                    label.text('Đã vô hiệu hóa');
+                    previewStatus.removeClass('status-active').addClass('status-inactive').text('Đã vô hiệu hóa');
+                }
+            });
+
+            // Live preview updates
+            $('#FullName').on('input', function() {
+                const value = $(this).val().trim();
+                $('#previewName').text(value || 'Nhập họ tên');
+                $('#previewAvatar').text(value ? value.charAt(0).toUpperCase() : '?');
+            });
+
+            $('#Email').on('input', function() {
+                const value = $(this).val().trim();
+                $('#previewEmail').html('<i class="fas fa-envelope me-1"></i>' + (value || 'Nhập email'));
+            });
+
+            $('#PhoneNumber').on('input', function() {
+                const value = $(this).val().trim();
+                $('#previewPhone').html('<i class="fas fa-phone me-1"></i>' + (value || 'Chưa có số điện thoại'));
+            });
+
+            // Form validation
+            $('#createUserForm').submit(function(e) {
+                const submitBtn = $('#submitBtn');
+                submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Đang tạo...');
+                
+                // Re-enable button after 3 seconds if form doesn't submit successfully
+                setTimeout(function() {
+                    submitBtn.prop('disabled', false).html('<i class="fas fa-save me-2"></i>Tạo người dùng');
+                }, 3000);
+            });
+
+            // Reset form
+            $('button[type="reset"]').click(function() {
+                $('#previewName').text('Nháº­p há» tÃªn');
+                $('#previewEmail').html('<i class="fas fa-envelope me-1"></i>Nháº­p email');
+                $('#previewPhone').html('<i class="fas fa-phone me-1"></i>ChÆ°a cÃ³ sá»‘ Ä‘iá»‡n thoáº¡i');
+                $('#previewAvatar').text('?');
+                $('#previewStatus').removeClass('status-inactive').addClass('status-active').text('Äang hoáº¡t Ä‘á»™ng');
+                $('#statusLabel').text('Äang hoáº¡t Ä‘á»™ng');
+            });
+
+            // Phone number formatting
+            $('#PhoneNumber').on('input', function() {
+                let value = $(this).val().replace(/\D/g, '');
+                if (value.length > 10) {
+                    value = value.substring(0, 10);
+                }
+                $(this).val(value);
+            });
+        });
+    </script>
+} 
+

@@ -1,0 +1,483 @@
+@model JollibeeClone.Models.Categories
+
+@{
+    ViewData["Title"] = "Chi tiết danh mục";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/category-admin.css" asp-append-version="true" />
+}
+
+<div class="category-details">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-folder text-jollibee-yellow me-2"></i>
+                Chi tiết danh mục
+            </h2>
+            <p class="text-muted">Thông tin chi tiết về danh mục: <strong>@Model.CategoryName</strong></p>
+        </div>
+        <div class="header-actions">
+            <a href="@Url.Action("Edit", new { id = Model.CategoryID })" class="btn btn-warning">
+                <i class="fas fa-edit me-2"></i>
+                Chá»‰nh sá»­a
+            </a>
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại danh sách
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Thông tin chính -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Thông tin danh mục
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">ID danh mục:</dt>
+                        <dd class="col-sm-9">
+                            <span class="badge bg-primary">#@Html.DisplayFor(model => model.CategoryID)</span>
+                        </dd>
+
+                        <dt class="col-sm-3">Tên danh mục:</dt>
+                        <dd class="col-sm-9">
+                            <h5 class="mb-0">@Html.DisplayFor(model => model.CategoryName)</h5>
+                        </dd>
+
+                        @if (!string.IsNullOrEmpty(Model.Description))
+                        {
+                            <dt class="col-sm-3">Mô tả:</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+                        }
+
+                        <dt class="col-sm-3">Danh mục cha:</dt> 
+                        <dd class="col-sm-9">
+                            @if (Model.ParentCategoryID.HasValue && Model.ParentCategory != null)
+                            {
+                                <span class="badge bg-secondary fs-6">
+                                    <i class="fas fa-folder me-1"></i>
+                                    @Html.DisplayFor(model => model.ParentCategory.CategoryName)
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Danh mục gốc</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">Số thứ tự:</dt>
+                        <dd class="col-sm-9">
+                            <span class="badge bg-info">@Html.DisplayFor(model => model.DisplayOrder)</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Danh mục con -->
+            @if (Model.SubCategories != null && Model.SubCategories.Any())
+            {
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-sitemap me-2"></i>
+                            Danh mục con (@Model.SubCategories.Count())
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @foreach (var subCategory in Model.SubCategories.OrderBy(c => c.DisplayOrder))
+                            {
+                                <div class="col-md-6 col-lg-4 mb-3">
+                                    <div class="sub-category-item">
+                                        <div class="sub-category-header">
+                                            <h6>@subCategory.CategoryName</h6>
+                                            <span class="badge bg-secondary">#@subCategory.CategoryID</span>
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(subCategory.Description))
+                                        {
+                                            <p class="sub-category-desc">@subCategory.Description</p>
+                                        }
+                                        <div class="sub-category-actions">
+                                            <a href="@Url.Action("Details", new { id = subCategory.CategoryID })" class="btn btn-sm btn-outline-info">
+                                                Chi tiết
+                                            </a>
+                                            <a href="@Url.Action("Edit", new { id = subCategory.CategoryID })" class="btn btn-sm btn-outline-warning">
+                                                Sửa
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Sản phẩm trong danh mục -->
+            @if (Model.Products != null && Model.Products.Any())
+            {
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-hamburger me-2"></i>
+                            Sản phẩm trong danh mục (@Model.Products.Count())
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Ảnh</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Giá</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var product in Model.Products.Take(10))
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                                {
+                                                    <div class="table-category-image">
+                                                        <img src="@product.ImageUrl" alt="@product.ProductName" />
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="no-image-small">
+                                                        <i class="fas fa-hamburger"></i>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td>@product.ProductName</td>
+                                            <td>@product.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
+                                            <td>
+                                                @if (product.IsAvailable)
+                                                {
+                                                    <span class="badge bg-success">Có sẵn</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning">Hết hàng</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("Details", "Product", new { id = product.ProductID })" class="btn btn-sm btn-outline-info">
+                                                    Chi tiết
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        @if (Model.Products.Count() > 10)
+                        {
+                            <div class="text-center mt-3">
+                                <a href="@Url.Action("Index", "Product", new { categoryId = Model.CategoryID })" class="btn btn-outline-primary">
+                                    Xem tất cả @Model.Products.Count() sản phẩm
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- Actions -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-cogs me-2"></i>
+                        Thao tác
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="@Url.Action("Edit", new { id = Model.CategoryID })" class="btn btn-warning">
+                            <i class="fas fa-edit me-2"></i>
+                            Chỉnh sửa danh mục
+                        </a>
+                        <a href="@Url.Action("Delete", new { id = Model.CategoryID })" class="btn btn-danger">
+                            <i class="fas fa-trash me-2"></i>
+                            Xóa danh mục
+                        </a>
+                        <a href="@Url.Action("Create", new { parentId = Model.CategoryID })" class="btn btn-success">
+                            <i class="fas fa-plus me-2"></i>
+                            Thêm danh mục con
+                        </a>
+                        <button class="btn btn-info" onclick="copyCategoryInfo()">
+                            <i class="fas fa-copy me-2"></i>
+                            Sao chép thông tin
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- ảnh danh mục -->
+            <div class="card category-image-card">
+                <div class="card-header category-image-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-image me-2"></i>
+                        Hình ảnh danh mục
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="category-image-container">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <div class="current-image-preview" onclick="viewLargeImage('@Model.ImageUrl', '@Model.CategoryName')" style="cursor: pointer;">
+                                <img src="@Model.ImageUrl" alt="@Model.CategoryName" class="img-fluid rounded shadow" style="max-height: 300px; width: 100%; object-fit: cover;" />
+                                <div class="image-overlay">
+                                    <button type="button" class="btn btn-sm btn-light">
+                                        <i class="fas fa-search-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mt-2 text-center">
+                                <small class="text-muted">Nhấp để xem ảnh lớn</small>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="image-upload-area">
+                                <div class="upload-content">
+                                    <div class="upload-icon-wrapper">
+                                        <div class="upload-icon">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                        </div>
+                                        <div class="upload-sparkles">
+                                            <i class="fas fa-sparkles spark-1"></i>
+                                            <i class="fas fa-sparkles spark-2"></i>
+                                            <i class="fas fa-sparkles spark-3"></i>
+                                        </div>
+                                    </div>
+                                    <h5 class="upload-title">Chưa có ảnh danh mục</h5> 
+                                    <p class="upload-subtitle">Thêm ảnh để danh mục trở nên hấp dẫn hơn</p>
+                                    <a href="@Url.Action("Edit", new { id = Model.CategoryID })" class="btn-upload">
+                                        <span class="btn-upload-text">
+                                            <i class="fas fa-image me-2"></i>
+                                            Thêm ảnh ngay
+                                        </span>
+                                        <div class="btn-upload-bg"></div>
+                                    </a>
+                                </div>
+                                <div class="upload-decoration">
+                                    <div class="decoration-circle circle-1"></div>
+                                    <div class="decoration-circle circle-2"></div>
+                                    <div class="decoration-circle circle-3"></div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <div class="image-info-text">
+                            <small>
+                                <i class="fas fa-mouse-pointer"></i>
+                                Nhấp vào ảnh để xem kích thước lớn
+                            </small>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Thống kê nhanh -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Thống kê nhanh
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="stat-item">
+                        <div class="stat-icon bg-primary">
+                            <i class="fas fa-hamburger"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h6>@(Model.Products?.Count() ?? 0) Sản phẩm</h6>
+                            <p>Trong danh mục này</p>
+                        </div>
+                    </div>
+
+                    @if (Model.SubCategories != null && Model.SubCategories.Any())
+                    {
+                        <div class="stat-item">
+                            <div class="stat-icon bg-info">
+                                <i class="fas fa-sitemap"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h6>@Model.SubCategories.Count() Danh mục con</h6>
+                                <p>Phân cấp bên dưới</p>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="stat-item">
+                        <div class="stat-icon bg-success">
+                            <i class="fas fa-sort-numeric-down"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h6>Thứ tự: @Model.DisplayOrder</h6>
+                            <p>Vị trí hiển thị</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gợi ý -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        Gợi ý cải thiện
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="improvement-tips">
+                        @if (string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <li><i class="fas fa-image text-warning"></i> Thêm ảnh danh mục để trải nghiệm tốt hơn</li>
+                        }
+                        @if (string.IsNullOrEmpty(Model.Description))
+                        {
+                            <li><i class="fas fa-pencil-alt text-info"></i> Thêm mô tả giúp khách hàng hiểu rõ hơn</li>
+                        }
+                        @if (Model.Products == null || !Model.Products.Any())
+                        {
+                                <li><i class="fas fa-plus text-success"></i> Thêm sáº£n pháº©m vÃ o danh má»¥c</li>
+                        }
+                        @if (Model.SubCategories == null || !Model.SubCategories.Any())
+                        {
+                            <li><i class="fas fa-sitemap text-primary"></i> Táº¡o danh má»¥c con Ä‘á»ƒ tá»• chá»©c tá»‘t hÆ¡n</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+function copyCategoryInfo() {
+    var categoryInfo = `Danh má»¥c: @Model.CategoryName
+ID: @Model.CategoryID
+@(!string.IsNullOrEmpty(Model.Description) ? "MÃ´ táº£: " + Model.Description : "")
+@(Model.ParentCategory != null ? "Danh má»¥c cha: " + Model.ParentCategory.CategoryName : "Danh má»¥c gá»‘c")
+Sá»‘ sáº£n pháº©m: @(Model.Products?.Count() ?? 0)`;
+    
+    navigator.clipboard.writeText(categoryInfo).then(function() {
+        alert('ÄÃ£ sao chÃ©p thÃ´ng tin danh má»¥c!');
+    }).catch(function() {
+        // Fallback for older browsers
+        var textArea = document.createElement('textarea');
+        textArea.value = categoryInfo;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('ÄÃ£ sao chÃ©p thÃ´ng tin danh má»¥c!');
+    });
+}
+
+$(document).ready(function() {
+    // Click to view large image with improved modal
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <text>
+        $('.category-image-display').on('click', function() {
+            var modal = `
+                <div class="modal fade" id="imageModal" tabindex="-1">
+                    <div class="modal-dialog modal-xl modal-dialog-centered">
+                        <div class="modal-content border-0">
+                            <div class="modal-header bg-gradient" style="background: linear-gradient(135deg, var(--jollibee-red) 0%, var(--jollibee-orange) 100%);">
+                                <h5 class="modal-title text-white">
+                                    <i class="fas fa-image me-2"></i>
+                                    @Model.CategoryName
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body text-center p-4" style="background: #f8f9fa;">
+                                <img src="@Model.ImageUrl" class="img-fluid rounded shadow-lg" alt="@Model.CategoryName" style="max-height: 70vh; transition: all 0.3s ease;">
+                                <div class="mt-3">
+                                    <small class="text-muted d-block">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        áº¢nh danh má»¥c: @Model.CategoryName
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-0" style="background: #f8f9fa;">
+                                <a href="@Url.Action("Edit", new { id = Model.CategoryID })" class="btn btn-warning">
+                                    <i class="fas fa-edit me-2"></i>
+                                    Thay Ä‘á»•i áº£nh
+                                </a>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    <i class="fas fa-times me-2"></i>
+                                    ÄÃ³ng
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            
+            $('body').append(modal);
+            $('#imageModal').modal('show');
+            
+            // Add entrance animation
+            $('#imageModal').on('shown.bs.modal', function() {
+                $(this).find('img').css('transform', 'scale(0.9)').animate({
+                    opacity: 1
+                }, 300, function() {
+                    $(this).css('transform', 'scale(1)');
+                });
+            });
+            
+            $('#imageModal').on('hidden.bs.modal', function() {
+                $(this).remove();
+            });
+        });
+        </text>
+    }
+    
+    // Add hover effect for no-image state
+    $('.no-image').hover(
+        function() {
+            $(this).find('.no-image-icon').addClass('animated-bounce');
+        },
+        function() {
+            $(this).find('.no-image-icon').removeClass('animated-bounce');
+        }
+    );
+    
+    // Add loading state for "Thêm áº£nh" button
+    $('.add-image-btn').on('click', function(e) {
+        var $btn = $(this);
+        var originalText = $btn.html();
+        
+        $btn.html('<i class="fas fa-spinner fa-spin me-2"></i>Äang chuyá»ƒn hÆ°á»›ng...');
+        
+        // Allow normal navigation after showing loading state
+        setTimeout(function() {
+            // This allows the normal link to proceed
+        }, 100);
+    });
+});
+</script>
+} 
+

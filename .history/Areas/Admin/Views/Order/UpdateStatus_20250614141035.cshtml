@@ -1,0 +1,303 @@
+@model JollibeeClone.Models.Orders
+
+@{
+    ViewData["Title"] = "Cập nhật trạng thái đơn hàng";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/order-admin.css" asp-append-version="true" />
+}
+
+<div class="update-status">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-edit text-jollibee-red me-2"></i>
+                Cập nhật trạng thái đơn hàng #@Model.OrderCode
+            </h2>
+            <p class="text-muted">Thay đổi trạng thái xử lý đơn hàng</p>
+        </div>
+        <div class="header-actions">
+            <a href="@Url.Action("Details", new { id = Model.OrderID })" class="btn btn-outline-secondary me-2">
+                <i class="fas fa-eye me-2"></i>
+                Xem chi tiết
+            </a>
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại danh sách
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Form cập nhật trạng thái -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-sync-alt me-2"></i>
+                        Cập nhật trạng thái
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="UpdateStatus" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="OrderID" value="@Model.OrderID" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label"><strong>Trạng thái hiện tại:</strong></label>
+                                    <div class="current-status">
+                                        @{
+                                            string currentStatusClass = "secondary";
+                                            string currentStatusIcon = "fas fa-clock";
+                                            switch (Model.OrderStatusID)
+                                            {
+                                                case 1: // Chờ xác nhận
+                                                    currentStatusClass = "warning";
+                                                    currentStatusIcon = "fas fa-clock";
+                                                    break;
+                                                case 2: // Đã xác nhận
+                                                    currentStatusClass = "info";
+                                                    currentStatusIcon = "fas fa-check-circle";
+                                                    break;
+                                                case 3: // Đang chuẩn bị
+                                                    currentStatusClass = "primary";
+                                                    currentStatusIcon = "fas fa-utensils";
+                                                    break;
+                                                case 4: // Đang giao
+                                                    currentStatusClass = "warning";
+                                                    currentStatusIcon = "fas fa-shipping-fast";
+                                                    break;
+                                                case 5: // Đã giao
+                                                    currentStatusClass = "success";
+                                                    currentStatusIcon = "fas fa-check-double";
+                                                    break;
+                                                case 6: // Đã hủy
+                                                    currentStatusClass = "danger";
+                                                    currentStatusIcon = "fas fa-times-circle";
+                                                    break;
+                                            }
+                                        }
+                                        <span class="badge bg-@currentStatusClass fs-6">
+                                            <i class="@currentStatusIcon me-1"></i>
+                                            @Model.OrderStatus?.StatusName
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="NewOrderStatusID" class="form-label"><strong>Trạng thái mới:</strong> <span class="text-danger">*</span></label>
+                                    <select name="NewOrderStatusID" class="form-select" required>
+                                        <option value="">-- Chọn trạng thái mới --</option>
+                                        @if (ViewBag.OrderStatuses != null)
+                                        {
+                                            @foreach (var status in (IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.OrderStatuses)
+                                            {
+                                                <option value="@status.Value">@status.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                    <div class="form-text">
+                                        Chỉ có thể chuyển sang các trạng thái được phép theo quy trình xử lý đơn hàng.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="alert alert-info">
+                                <h6 class="alert-heading">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Quy trình xử lý đơn hàng:
+                                </h6>
+                                <div class="status-flow">
+                                    <div class="status-step">
+                                        <span class="badge bg-warning">
+                                            <i class="fas fa-clock me-1"></i>
+                                            Chờ xác nhận
+                                        </span>
+                                        <i class="fas fa-arrow-right mx-2 text-muted"></i>
+                                    </div>
+                                    <div class="status-step">
+                                        <span class="badge bg-info">
+                                            <i class="fas fa-check-circle me-1"></i>
+                                            Đã xác nhận
+                                        </span>
+                                        <i class="fas fa-arrow-right mx-2 text-muted"></i>
+                                    </div>
+                                    <div class="status-step">
+                                        <span class="badge bg-primary">
+                                            <i class="fas fa-utensils me-1"></i>
+                                            Đang chuẩn bị
+                                        </span>
+                                        <i class="fas fa-arrow-right mx-2 text-muted"></i>
+                                    </div>
+                                    <div class="status-step">
+                                        <span class="badge bg-warning">
+                                            <i class="fas fa-shipping-fast me-1"></i>
+                                            Đang giao
+                                        </span>
+                                        <i class="fas fa-arrow-right mx-2 text-muted"></i>
+                                    </div>
+                                    <div class="status-step">
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check-double me-1"></i>
+                                            Đã giao
+                                        </span>
+                                    </div>
+                                </div>
+                                <hr class="my-2">
+                                <small class="text-muted">
+                                    <strong>LÆ°u Ã½:</strong> CÃ³ thá»ƒ há»§y Ä‘Æ¡n hÃ ng á»Ÿ cÃ¡c bÆ°á»›c trÆ°á»›c khi giao. KhÃ´ng thá»ƒ há»§y khi Ä‘ang giao hÃ ng.
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="@Url.Action("Details", new { id = Model.OrderID })" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>
+                                Há»§y bá»
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>
+                                Cáº­p nháº­t tráº¡ng thÃ¡i
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- ThÃ´ng tin Ä‘Æ¡n hÃ ng tÃ³m táº¯t -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        ThÃ´ng tin Ä‘Æ¡n hÃ ng
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label"><strong>MÃ£ Ä‘Æ¡n hÃ ng:</strong></label>
+                        <div class="form-control-plaintext">
+                            <span class="badge bg-primary">#@Model.OrderCode</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>KhÃ¡ch hÃ ng:</strong></label>
+                        <div class="form-control-plaintext">
+                            <i class="fas fa-user me-2"></i>
+                            @Model.CustomerFullName
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>NgÃ y Ä‘áº·t:</strong></label>
+                        <div class="form-control-plaintext">
+                            <i class="fas fa-calendar me-2"></i>
+                            @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Tá»•ng tiá»n:</strong></label>
+                        <div class="form-control-plaintext">
+                            <i class="fas fa-money-bill me-2"></i>
+                            <strong class="text-success">@Model.TotalAmount.ToString("N0") â‚«</strong>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>PhÆ°Æ¡ng thá»©c thanh toÃ¡n:</strong></label>
+                        <div class="form-control-plaintext">
+                            <i class="fas fa-credit-card me-2"></i>
+                            @Model.PaymentMethod?.MethodName
+                        </div>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.NotesByCustomer))
+                    {
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Ghi chÃº:</strong></label>
+                            <div class="form-control-plaintext">
+                                <div class="alert alert-light border small">
+                                    <i class="fas fa-sticky-note me-2"></i>
+                                    @Model.NotesByCustomer
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Sáº£n pháº©m trong Ä‘Æ¡n hÃ ng -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-shopping-bag me-2"></i>
+                        Sáº£n pháº©m (@Model.OrderItems?.Count())
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.OrderItems != null && Model.OrderItems.Any())
+                    {
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            <div class="order-item mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6 class="mb-1">@item.ProductNameSnapshot</h6>
+                                        <small class="text-muted">
+                                            Sá»‘ lÆ°á»£ng: @item.Quantity x @item.UnitPrice.ToString("N0")â‚«
+                                        </small>
+                                    </div>
+                                    <div class="text-end">
+                                        <strong>@item.Subtotal.ToString("N0") â‚«</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Confirmation before status update
+            $('form').on('submit', function(e) {
+                var newStatus = $('select[name="NewOrderStatusID"] option:selected').text();
+                var orderCode = '@Model.OrderCode';
+                
+                if (!newStatus || newStatus === '-- Chá»n tráº¡ng thÃ¡i má»›i --') {
+                    e.preventDefault();
+                    alert('Vui lÃ²ng chá»n tráº¡ng thÃ¡i má»›i cho Ä‘Æ¡n hÃ ng.');
+                    return false;
+                }
+                
+                var confirmed = confirm(`Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n cáº­p nháº­t tráº¡ng thÃ¡i Ä‘Æ¡n hÃ ng #${orderCode} thÃ nh "${newStatus}"?`);
+                if (!confirmed) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            // Status selection change event
+            $('select[name="NewOrderStatusID"]').change(function() {
+                var selectedValue = $(this).val();
+                var selectedText = $(this).find('option:selected').text();
+                
+                if (selectedValue) {
+                    $(this).removeClass('is-invalid');
+                } else {
+                    $(this).addClass('is-invalid');
+                }
+            });
+        });
+    </script>
+} 
+

@@ -1,0 +1,262 @@
+@model JollibeeClone.Models.News
+
+@{
+    ViewData["Title"] = "Chi tiết tin tức";
+}
+
+<div class="news-details">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title">
+                <i class="fas fa-eye text-jollibee-red me-2"></i>
+                Chi tiết tin tức
+            </h2>
+            <p class="text-muted">Xem thông tin chi tiết tin tức</p>
+        </div>
+        <div class="header-actions">
+            <a href="@Url.Action("Edit", new { id = Model.NewsID })" class="btn btn-warning me-2">
+                <i class="fas fa-edit me-2"></i>
+                Chỉnh sửa
+            </a>
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Quay lại danh sách
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Nội dung chính -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <!-- Tiêu đề -->
+                    <div class="mb-4">
+                        <h1 class="display-6 fw-bold text-dark">@Model.Title</h1>
+                        
+                        <!-- Meta info -->
+                        <div class="meta-info d-flex flex-wrap align-items-center gap-3 mt-3">
+                            <span class="badge @(Model.NewsType == "Tin tức" ? "bg-info" : "bg-success") fs-6">
+                                <i class="fas @(Model.NewsType == "Tin tức" ? "fa-newspaper" : "fa-tags") me-1"></i>
+                                @Model.NewsType
+                            </span>
+                            <span class="badge @(Model.IsPublished ? "bg-success" : "bg-secondary") fs-6">
+                                <i class="fas @(Model.IsPublished ? "fa-check-circle" : "fa-clock") me-1"></i>
+                                @(Model.IsPublished ? "Đã xuất bản" : "Nháp")
+                            </span>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar me-1"></i>
+                                @Model.PublishedDate.ToString("dd/MM/yyyy 'lúc' HH:mm")
+                            </small>
+                            @if (Model.Author != null)
+                            {
+                                <small class="text-muted">
+                                    <i class="fas fa-user me-1"></i>
+                                    @Model.Author.FullName
+                                </small>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Hình ảnh -->
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <div class="mb-4">
+                            <div class="news-image-container">
+                                <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid rounded shadow-sm" />
+                            </div>
+                        </div>
+                    }
+
+                    <!-- MÃ´ táº£ ngáº¯n -->
+                    @if (!string.IsNullOrEmpty(Model.ShortDescription))
+                    {
+                        <div class="mb-4">
+                            <div class="alert alert-light border-start border-5 border-info">
+                                <h6 class="fw-bold mb-2">
+                                    <i class="fas fa-quote-left text-info me-2"></i>
+                                    Tóm tắt
+                                </h6>
+                                <p class="mb-0 fs-6 text-muted">@Model.ShortDescription</p>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Nội dung -->
+                    <div class="news-content">
+                        <h6 class="fw-bold mb-3">
+                            <i class="fas fa-align-left text-primary me-2"></i>
+                            Nội dung chi tiết
+                        </h6>
+                        <div class="content-text">
+                            @Html.Raw(Html.Encode(Model.Content).Replace("\n", "<br/>"))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Thông tin tóm tắt -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Thông tin tóm tắt
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="info-row">
+                        <label class="fw-bold">ID:</label>
+                        <span>#@Model.NewsID</span>
+                    </div>
+                    <div class="info-row">
+                        <label class="fw-bold">Loại tin:</label>
+                        <span class="badge @(Model.NewsType == "Tin tức" ? "bg-info" : "bg-success")">
+                            @Model.NewsType
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <label class="fw-bold">Trạng thái:</label>
+                        <span class="badge @(Model.IsPublished ? "bg-success" : "bg-secondary")">
+                            @(Model.IsPublished ? "Đã xuất bản" : "Nháp")
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <label class="fw-bold">Ngày tạo:</label>
+                        <span>@Model.PublishedDate.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+                    @if (Model.Author != null)
+                    {
+                        <div class="info-row">
+                            <label class="fw-bold">Tác giả:</label>
+                            <span>@Model.Author.FullName</span>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <div class="info-row">
+                            <label class="fw-bold">Có hình ảnh:</label>
+                            <span class="text-success">
+                                <i class="fas fa-check me-1"></i>
+                                Có
+                            </span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="info-row">
+                            <label class="fw-bold">Có hình ảnh:</label>
+                            <span class="text-muted">
+                                <i class="fas fa-times me-1"></i>
+                                Không
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Hành động -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-tools me-2"></i>
+                        Hành động
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="@Url.Action("Edit", new { id = Model.NewsID })" class="btn btn-warning">
+                            <i class="fas fa-edit me-2"></i>
+                            Chỉnh sửa tin tức
+                        </a>
+                        
+                        @if (Model.NewsType == "Tin tá»©c")
+                        {
+                            <a href="/tin-tuc" target="_blank" class="btn btn-outline-info">
+                                <i class="fas fa-external-link-alt me-2"></i>
+                                Xem trÃªn trang tin tá»©c
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="/khuyen-mai" target="_blank" class="btn btn-outline-success">
+                                <i class="fas fa-external-link-alt me-2"></i>
+                                Xem trÃªn trang khuyáº¿n mÃ£i
+                            </a>
+                        }
+                        
+                        <hr>
+                        
+                        <a href="@Url.Action("Delete", new { id = Model.NewsID })" class="btn btn-outline-danger" 
+                           onclick="return confirm('Báº¡n cÃ³ cháº¯c muá»‘n xÃ³a tin tá»©c nÃ y?')">
+                            <i class="fas fa-trash me-2"></i>
+                            XÃ³a tin tá»©c
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .news-image-container {
+            text-align: center;
+            max-height: 400px;
+            overflow: hidden;
+        }
+        
+        .news-image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        .content-text {
+            line-height: 1.8;
+            font-size: 16px;
+            color: #444;
+        }
+        
+        .meta-info {
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 15px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f3f4;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-row label {
+            color: #6c757d;
+            margin-bottom: 0;
+        }
+        
+        .alert {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .card {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            border: 1px solid rgba(0, 0, 0, 0.125);
+        }
+        
+        .display-6 {
+            color: #2c3e50;
+            line-height: 1.4;
+        }
+    </style>
+} 
+
