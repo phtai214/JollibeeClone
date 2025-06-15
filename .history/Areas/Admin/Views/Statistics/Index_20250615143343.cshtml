@@ -1,0 +1,360 @@
+@{
+    ViewData["Title"] = "Thống kê doanh thu";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/statistics.css" asp-append-version="true" />
+}
+
+<div class="content-area">
+    <!-- Statistics Header -->
+    <div class="statistics-header">
+        <h1>
+            <i class="fas fa-chart-line header-icon"></i>
+            Thống kê doanh thu
+        </h1>
+        <p class="mb-0">Tổng quan doanh thu và hiệu suất kinh doanh</p>
+    </div>
+
+    <!-- Date Filter Section -->
+    <div class="date-filter-section">
+        <div class="date-filter-group">
+            <label for="dateRange" class="date-filter-label">
+                <i class="fas fa-calendar-alt me-2"></i>Khoảng thời gian:
+            </label>
+            <select id="dateRange" class="date-range-select form-select">
+                <option value="today">Hôm nay</option>
+                <option value="week" selected>7 ngày qua</option>
+                <option value="month">Tháng này</option>
+                <option value="quarter">Quý này</option>
+                <option value="year">Năm nay</option>
+                <option value="custom">Tùy chọn</option>
+            </select>
+        </div>
+        <form method="post" action="@Url.Action("ExportReport", "Statistics")" class="d-inline">
+            <input type="hidden" name="dateRange" id="exportDateRange" value="week">
+            <button type="submit" class="export-btn">
+                <i class="fas fa-file-excel"></i>
+                Xuất báo cáo Excel
+            </button>
+        </form>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="stats-overview">
+        <div class="stat-card revenue">
+            <div class="stat-card-header">
+                <h6 class="stat-card-title">Tổng doanh thu</h6>
+                <div class="stat-card-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+            </div>
+            <h2 class="stat-card-value">70,000,000 VNĐ</h2>
+            <div class="stat-card-trend">
+                <i class="fas fa-arrow-up"></i>
+                <span>+12.5% so với tuần trước</span>
+            </div>
+        </div>
+
+        <div class="stat-card paid">
+            <div class="stat-card-header">
+                <h6 class="stat-card-title">Đã thanh toán</h6>
+                <div class="stat-card-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+            <h2 class="stat-card-value">65,000,000 VNĐ</h2>
+            <div class="stat-card-trend">
+                <i class="fas fa-arrow-up"></i>
+                <span>+8.3% so với tuần trước</span>
+            </div>
+        </div>
+
+        <div class="stat-card orders">
+            <div class="stat-card-header">
+                <h6 class="stat-card-title">Tổng đơn hàng</h6>
+                <div class="stat-card-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+            </div>
+            <h2 class="stat-card-value">120</h2>
+            <div class="stat-card-trend">
+                <i class="fas fa-arrow-up"></i>
+                <span>+15.2% so với tuần trước</span>
+            </div>
+        </div>
+
+        <div class="stat-card paid-orders">
+            <div class="stat-card-header">
+                <h6 class="stat-card-title">Đơn đã thanh toán</h6>
+                <div class="stat-card-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+            </div>
+            <h2 class="stat-card-value">108</h2>
+            <div class="stat-card-trend">
+                <i class="fas fa-arrow-up"></i>
+                <span>+10.8% so với tuần trước</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+        <!-- Revenue Chart -->
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <div>
+                    <h3 class="chart-card-title">
+                        <i class="fas fa-chart-bar text-primary"></i>
+                        Doanh thu theo ngày
+                    </h3>
+                    <p class="chart-card-subtitle">Biểu đồ doanh thu và sản phẩm bán chạy trong tháng</p>
+                </div>
+                <div class="chart-actions">
+                    <button class="chart-btn active" data-type="revenue">Doanh thu</button>
+                    <button class="chart-btn" data-type="orders">Đơn hàng</button>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Order Status Pie Chart -->
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <div>
+                    <h3 class="chart-card-title">
+                        <i class="fas fa-chart-pie text-warning"></i>
+                        Trạng thái đơn hàng
+                    </h3>
+                    <p class="chart-card-subtitle">Tỉ lệ đơn hàng theo trạng thái</p>
+                </div>
+            </div>
+            <div class="pie-chart-container">
+                <canvas id="orderStatusChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Fake data cho biểu đồ
+        const revenueData = {
+            labels: ['01/12', '02/12', '03/12', '04/12', '05/12', '06/12', '07/12', '08/12', '09/12', '10/12', '11/12', '12/12', '13/12', '14/12', '15/12'],
+            datasets: [{
+                label: 'Doanh thu (VNĐ)',
+                data: [2100000, 1900000, 2500000, 2200000, 2800000, 2400000, 2600000, 2300000, 2700000, 2900000, 2450000, 2650000, 2850000, 2750000, 3100000],
+                borderColor: '#DC143C',
+                backgroundColor: 'rgba(220, 20, 60, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#DC143C',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 8
+            }]
+        };
+
+        const orderData = {
+            labels: ['01/12', '02/12', '03/12', '04/12', '05/12', '06/12', '07/12', '08/12', '09/12', '10/12', '11/12', '12/12', '13/12', '14/12', '15/12'],
+            datasets: [{
+                label: 'Số đơn hàng',
+                data: [7, 6, 9, 8, 11, 9, 10, 8, 10, 12, 9, 10, 11, 10, 13],
+                borderColor: '#007bff',
+                backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#007bff',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 8
+            }]
+        };
+
+        // Fake data cho sản phẩm bán chạy
+        const bestSellingProducts = [
+            'Burger Tôm', 'Gà Rán', 'Gà Sốt Cay', 'Mì Ý', 'Burger Bò', 
+            'Burger Gà', 'Cơm Gà', 'Salad', 'Nước ngọt', 'Kem Vani',
+            'Khoai tây chiên', 'Kem Socola', 'Súp', '', 'Combo Gà Cay'
+        ];
+        
+        const productSales = [45, 38, 42, 35, 40, 33, 37, 28, 50, 25, 48, 30, 22, 44, 36];
+
+        // Biểu đồ doanh thu
+        const ctx1 = document.getElementById('revenueChart').getContext('2d');
+        let currentChart = new Chart(ctx1, {
+            type: 'line',
+            data: revenueData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                plugins: {
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: '#DC143C',
+                        borderWidth: 1,
+                        cornerRadius: 8,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.parsed.y;
+                                const productIndex = context.dataIndex;
+                                const product = bestSellingProducts[productIndex];
+                                const sales = productSales[productIndex];
+                                
+                                return [
+                                    `Doanh thu: ${value.toLocaleString('vi-VN')} VNĐ`,
+                                    `Sản phẩm bán chạy: ${product}`,
+                                    `Đã bán: ${sales} phần`
+                                ];
+                            }
+                        }
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#6c757d'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            color: '#6c757d',
+                            callback: function(value) {
+                                return (value / 1000000).toFixed(1) + 'M';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Biểu đồ trạng thái đơn hàng
+        const ctx2 = document.getElementById('orderStatusChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['Đã giao', 'Đang xử lý', 'Đang giao', 'Đã hủy'],
+                datasets: [{
+                    data: [108, 8, 3, 1],
+                    backgroundColor: [
+                        '#28a745',
+                        '#ffc107', 
+                        '#17a2b8',
+                        '#dc3545'
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: '#DC143C',
+                        borderWidth: 1,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                return `${context.label}: ${context.parsed} đơn (${percentage}%)`;
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            color: '#212529'
+                        }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+
+        // Chuyển đổi giữa biểu đồ doanh thu và đơn hàng
+        const chartButtons = document.querySelectorAll('.chart-btn');
+        chartButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                chartButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const type = this.dataset.type;
+                if (type === 'revenue') {
+                    currentChart.data = revenueData;
+                    currentChart.options.plugins.tooltip.callbacks.label = function(context) {
+                        const value = context.parsed.y;
+                        const productIndex = context.dataIndex;
+                        const product = bestSellingProducts[productIndex];
+                        const sales = productSales[productIndex];
+                        
+                        return [
+                            `Doanh thu: ${value.toLocaleString('vi-VN')} VNĐ`,
+                            `Sản phẩm bán chạy: ${product}`,
+                            `Đã bán: ${sales} phần`
+                        ];
+                    };
+                } else {
+                    currentChart.data = orderData;
+                    currentChart.options.plugins.tooltip.callbacks.label = function(context) {
+                        const value = context.parsed.y;
+                        const productIndex = context.dataIndex;
+                        const product = bestSellingProducts[productIndex];
+                        const sales = productSales[productIndex];
+                        
+                        return [
+                            `Số đơn hàng: ${value}`,
+                            `Sản phẩm bán chạy: ${product}`,
+                            `Đã bán: ${sales} phần`
+                        ];
+                    };
+                }
+                currentChart.update();
+            });
+        });
+
+        // Cập nhật hidden input khi thay đổi date range
+        document.getElementById('dateRange').addEventListener('change', function() {
+            document.getElementById('exportDateRange').value = this.value;
+        });
+
+        // Custom date range (có thể mở rộng sau)
+        document.getElementById('dateRange').addEventListener('change', function() {
+            if (this.value === 'custom') {
+                // Có thể thêm date picker tùy chỉnh ở đây
+                console.log('Custom date range selected');
+            }
+        });
+    </script>
+} 

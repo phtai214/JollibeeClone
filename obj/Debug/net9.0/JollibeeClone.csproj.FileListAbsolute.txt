@@ -268,10 +268,8 @@ D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\scopedcss\bundl
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\scopedcss\projectbundle\JollibeeClone.bundle.scp.css
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\67sx4hbebf-el1lefhifu.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\ephoqmx41z-vjvx8jogwt.gz
-D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\6d982ixlzi-bwas4d7o83.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\ad6btsnk9o-xf3ha8xuox.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\75g80ml5f8-vwto6ktobl.gz
-D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\r0zavgvgdi-bl7hy2hnh0.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\7wxcatl926-ibjeyyi4x7.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\0c78uss5to-lsdrefhkbu.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\19p3xqgd1o-b9sayid5wm.gz
@@ -359,3 +357,13 @@ D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\refint\Jollibee
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\JollibeeClone.pdb
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\JollibeeClone.genruntimeconfig.cache
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\ref\JollibeeClone.dll
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\ClosedXML.dll
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\DocumentFormat.OpenXml.dll
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\ExcelNumberFormat.dll
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\Irony.dll
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\SixLabors.Fonts.dll
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\System.IO.Packaging.dll
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\XLParser.dll
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\r0zavgvgdi-pfckubaa0u.gz
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\8ib73944g5-g1bzjdepoz.gz
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\6d982ixlzi-vejv0mkk0q.gz

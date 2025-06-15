@@ -501,6 +501,10 @@
       "PackagePath": "staticwebassets\\css\\smart-search.css"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\statistics.css",
+      "PackagePath": "staticwebassets\\css\\statistics.css"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\store-admin.css",
       "PackagePath": "staticwebassets\\css\\store-admin.css"
     },
@@ -511,6 +515,10 @@
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\images\\categories\\3c9e2406-9b88-4cd3-bbe3-9107abe8332d_ga_gion_vui_ve.png",
+      "PackagePath": "staticwebassets\\images\\categories\\3c9e2406-9b88-4cd3-bbe3-9107abe8332d_ga_gion_vui_ve.png"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\images\\categories\\84f6db57-bb44-45a0-84f5-75930ad09f34_mon_trang_mieng.png",
