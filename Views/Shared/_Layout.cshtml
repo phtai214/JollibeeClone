@@ -15,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap" rel="stylesheet">
     <style>
       .navbar { 
         background: #e31937 !important; 
@@ -80,129 +81,346 @@
       .navbar, .navbar-nav, .navbar .dropdown-menu, .navbar .dropdown-item, .jolli-footer, .jolli-footer * {
         font-family: 'Roboto', sans-serif !important;
       }
+      .jolli-header-top {
+        background: #ffc627;
+        min-height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0 36px 0 0;
+        font-family: 'Roboto', Arial, sans-serif;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .jolli-header-top .jolli-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        margin-left: auto;
+      }
+      .jolli-header-top .jolli-header-actions span,
+      .jolli-header-top .jolli-header-actions a {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .jolli-header-top .jolli-header-actions img {
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+      }
+      .jolli-header-top .jolli-auth-icons {
+        display: flex;
+        gap: 10px;
+      }
+      .jolli-header-top .jolli-auth-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #222;
+        color: #ffc627;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        border: 2px solid #ffc627;
+        transition: background 0.2s, color 0.2s, border 0.2s;
+        cursor: pointer;
+      }
+      .jolli-header-top .jolli-auth-icon:hover {
+        background: #ffc627;
+        color: #222;
+        border: 2px solid #222;
+      }
+      .jolli-header-main {
+        background: #e31937;
+        border-bottom: 3px solid #fff;
+        min-height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 0 0 0;
+        position: relative !important;
+        z-index: 1000 !important;
+      }
+      .jolli-header-main .jolli-col {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+      }
+      .jolli-header-main .jolli-col.logo {
+        justify-content: flex-start;
+        padding-left: 32px;
+        min-width: 200px;
+      }
+      .jolli-header-main .jolli-logo {
+        display: flex;
+        align-items: center;
+      }
+      .jolli-header-main .jolli-logo img {
+        height: 80px;
+        width: 120px;
+        margin-right: 10px;
+      }
+      .jolli-header-main .jolli-logo span {
+        font-family: 'Baloo 2', Arial, sans-serif;
+        font-size: 32px;
+        color: #fff;
+        letter-spacing: 1px;
+        font-weight: 700;
+      }
+      .jolli-header-main .jolli-col.menu {
+        flex: 1 1 0;
+        justify-content: center;
+        min-width: 0;
+        overflow-x: hidden;
+        padding: 0 12px;
+      }
+      .jolli-header-main .jolli-menu {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        margin: 0 auto;
+        padding: 0;
+        list-style: none;
+        max-width: 100%;
+        overflow-x: hidden;
+        white-space: nowrap;
+      }
+      .jolli-header-main .jolli-menu li a {
+        font-family: 'Baloo 2', Arial, sans-serif;
+        font-size: 15px;
+        color: #fff;
+        text-decoration: none;
+        padding: 6px 10px;
+        border-radius: 10px;
+        transition: background 0.2s, color 0.2s;
+        display: inline-block;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+      .jolli-header-main .jolli-menu li:first-child a {
+        background: #fff3f3;
+        color: #e31937;
+      }
+      .jolli-header-main .jolli-menu li a:hover {
+        background: #ffc627;
+        color: #e31937;
+      }
+      .jolli-header-main .jolli-col.right {
+        justify-content: flex-end;
+        padding-right: 32px;
+        min-width: 220px;
+        gap: 18px;
+      }
+      .jolli-header-main .jolli-header-right {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        min-width: 120px;
+      }
+      .jolli-header-main .jolli-pickup-btn {
+        background: #ffc627;
+        color: #111;
+        font-family: 'Baloo 2', Arial, sans-serif;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        border-radius: 20px;
+        padding: 6px 18px;
+        box-shadow: 0 2px 8px #0002;
+        margin-bottom: 0;
+        transition: background 0.2s, color 0.2s;
+        min-width: 80px;
+        letter-spacing: 1px;
+      }
+      .jolli-header-main .jolli-pickup-btn:hover {
+        background: #fff3f3;
+        color: #e31937;
+      }
+      .jolli-header-main .jolli-hotline {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        margin-left: 0;
+        gap: 2px;
+      }
+      .jolli-header-main .jolli-hotline .hotline-number {
+        color: #fff;
+        font-size: 13px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-bottom: 0;
+        letter-spacing: 1px;
+      }
+      .jolli-header-main .jolli-hotline .hotline-number i {
+        color: #ffc627;
+        font-size: 12px;
+        margin-right: 2px;
+      }
+      .jolli-header-main .jolli-hotline .hotline-label {
+        background: #ffc627;
+        color: #e31937;
+        font-size: 10px;
+        font-weight: bold;
+        border-radius: 5px;
+        padding: 1px 6px;
+        margin-top: 0;
+        margin-bottom: 0;
+        box-shadow: 0 2px 8px #0002;
+        letter-spacing: 1px;
+      }
+      @* @media (max-width: 1200px) {
+        .jolli-header-main .jolli-menu li a {
+          font-size: 14px;
+          padding: 5px 8px;
+        }
+        .jolli-header-main .jolli-col.menu {
+          padding: 0 4px;
+        }
+      } *@
+      /* --- Dropdown menu hover fix for Jollibee menu --- */
+      .menu-hover-parent { position: relative !important; }
+      .menu-hover-parent > .dropdown-menu {
+        display: none !important;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+      }
+      .menu-hover-parent:hover > .dropdown-menu,
+      .menu-hover-parent:focus-within > .dropdown-menu {
+        display: flex !important;
+        opacity: 1;
+        pointer-events: auto;
+      }
+      #menuDropdown {
+        z-index: 2000 !important;
+      }
     </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg">
-          <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap">
-            <!-- Left: Logo -->
-            <div class="d-flex align-items-center">
-              <a class="navbar-brand p-0" href="https://jollibee.com.vn/" title="Logo Jollibee">
-                <img src="https://jollibee.com.vn/static/version1748361891/frontend/Jollibee/default/vi_VN/images/logo.png" alt="Logo Jollibee" width="70" height="70">
-              </a>
+        <div class="jolli-header-top">
+            <div class="jolli-header-actions">
+                <span><img src="https://cdn.countryflags.com/thumbs/vietnam/flag-400.png" alt="VN"> VN</span>
+                <span><img src="https://cdn.countryflags.com/thumbs/united-kingdom/flag-400.png" alt="EN"> EN</span>
+                <span><i class="fas fa-map-marker-alt"></i> Hồ Chí Minh</span>
+                <span class="jolli-auth-icons">
+                  <a class="jolli-auth-icon" title="Đăng ký"><i class="fas fa-user-plus"></i></a>
+                  <a class="jolli-auth-icon" title="Đăng nhập"><i class="fas fa-sign-in-alt"></i></a>
+                </span>
             </div>
-            <!-- Toggler for mobile -->
-            <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#jollibeeNavbar" aria-controls="jollibeeNavbar" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Center: Menu -->
-            <div class="collapse navbar-collapse justify-content-center" id="jollibeeNavbar">
-              <ul class="navbar-nav mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link text-white fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
-                <li class="nav-item"><a class="nav-link text-white fw-bold" asp-area="" asp-controller="Home" asp-action="About">Về Jollibee</a></li>
-                <li class="nav-item dropdown position-static menu-hover-parent">
-                  <a class="nav-link dropdown-toggle text-white fw-bold d-flex align-items-center" href="#" id="menuDropdown" role="button">
-                    Thực Đơn <i class="fas fa-chevron-down ms-1"></i>
-                  </a>
-                  <ul class="dropdown-menu menu-dropdown-wide p-3" aria-labelledby="menuDropdown">
-                    <li class="d-inline-block text-center mx-2">
-                      <a class="dropdown-item p-2" asp-area="" asp-controller="Menu" asp-action="MonNgonPhaiThu">
-                        <img src="/assets/images/mon_ngon_phai_thu.png" alt="Món Ngon Phải Thử" class="menu-img mb-2" width="70" height="70">
-                        <div class="fw-bold text-uppercase small">Món Ngon Phải Thử</div>
-                      </a>
-                    </li>
-                    <li class="d-inline-block text-center mx-2">
-                      <a class="dropdown-item p-2" asp-area="" asp-controller="Menu" asp-action="GaGionVuiVe">
-                        <img src="/assets/images/ga_gion_vui_ve.png" alt="Gà Giòn Vui Vẻ" class="menu-img mb-2" width="70" height="70">
-                        <div class="fw-bold text-uppercase small">Gà Giòn Vui Vẻ</div>
-                      </a>
-                    </li>
-                    <li class="d-inline-block text-center mx-2">
-                      <a class="dropdown-item p-2" asp-area="" asp-controller="Menu" asp-action="MiYJolly">
-                        <img src="/assets/images/mi_y_jolly.png" alt="Mì Ý Jolly" class="menu-img mb-2" width="70" height="70">
-                        <div class="fw-bold text-uppercase small">Mì Ý Jolly</div>
-                      </a>
-                    </li>
-                    <li class="d-inline-block text-center mx-2">
-                      <a class="dropdown-item p-2" asp-area="" asp-controller="Menu" asp-action="GaSotCay">
-                        <img src="/assets/images/ga_sot_cay.png" alt="Gà Sốt Cay" class="menu-img mb-2" width="70" height="70">
-                        <div class="fw-bold text-uppercase small">Gà Sốt Cay</div>
-                      </a>
-                    </li>
-                    <li class="d-inline-block text-center mx-2">
-                      <a class="dropdown-item p-2" asp-area="" asp-controller="Menu" asp-action="BurgerCom">
-                        <img src="/assets/images/burger_com.png" alt="Burger/Cơm" class="menu-img mb-2" width="70" height="70">
-                        <div class="fw-bold text-uppercase small">Burger/Cơm</div>
-                      </a>
-                    </li>
-                    <li class="d-inline-block text-center mx-2">
-                      <a class="dropdown-item p-2" asp-area="" asp-controller="Menu" asp-action="PhanAnPhu">
-                        <img src="/assets/images/phan_an_phu.png" alt="Phần Ăn Phụ" class="menu-img mb-2" width="70" height="70">
-                        <div class="fw-bold text-uppercase small">Phần Ăn Phụ</div>
-                      </a>
-                    </li>
-                    <li class="d-inline-block text-center mx-2">
-                      <a class="dropdown-item p-2" asp-area="" asp-controller="Menu" asp-action="MonTrangMieng">
-                        <img src="/assets/images/mon_trang_mieng.png" alt="Món Tráng Miệng" class="menu-img mb-2" width="70" height="70">
-                        <div class="fw-bold text-uppercase small">Món Tráng Miệng</div>
-                      </a>
-                    </li>
-                    <li class="d-inline-block text-center mx-2">
-                      <a class="dropdown-item p-2" asp-area="" asp-controller="Menu" asp-action="ThucUong">
-                        <img src="/assets/images/thuc_uong.png" alt="Thức Uống" class="menu-img mb-2" width="70" height="70">
-                        <div class="fw-bold text-uppercase small">Thức Uống</div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item"><a class="nav-link text-white fw-bold" asp-area="" asp-controller="Promotion" asp-action="Index">Khuyến mãi</a></li>
-                <li class="nav-item"><a class="nav-link text-white fw-bold" asp-area="" asp-controller="Service" asp-action="Index">Dịch Vụ</a></li>
-                <li class="nav-item"><a class="nav-link text-white fw-bold" asp-area="" asp-controller="News" asp-action="Index">Tin Tức</a></li>
-                <li class="nav-item"><a class="nav-link text-white fw-bold" asp-area="" asp-controller="Store" asp-action="Index">Cửa hàng</a></li>
-                <li class="nav-item"><a class="nav-link text-white fw-bold" asp-area="" asp-controller="Contact" asp-action="Index">Liên Hệ</a></li>
-                <li class="nav-item"><a class="nav-link text-white fw-bold" href="https://jollibee.talent.vn/">Tuyển dụng</a></li>
-              </ul>
-              <!-- Right: Actions (mobile) -->
-              <div class="d-lg-none mt-3">
-                <div class="user-actions d-flex gap-3 mb-3">
-                  <a href="#" class="icon-btn" title="Đăng nhập" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                    <i class="fas fa-user"></i>
-                  </a>
-                  <a href="#" class="icon-btn" title="Đăng ký" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                    <i class="fas fa-user-plus"></i>
-                  </a>
+        </div>
+        <div class="jolli-header-main">
+            <div class="jolli-col logo">
+                <div class="jolli-logo">
+                    <img src="/assets/images/logo_jollibee.png" alt="Jollibee Logo">
                 </div>
-                <span class="text-white mx-2"><i class="fas fa-map-marker-alt"></i> Hồ Chí Minh</span>
-                <a href="tel:19001533" class="btn btn-danger fw-bold my-1">
-                  <i class="fas fa-phone-alt"></i> 1900-1533
-                </a>
-                <a href="mon-moi-mon-ngon.html" class="btn btn-warning fw-bold ms-2 my-1">PICK UP</a>
-              </div>
             </div>
-            <!-- Right: Actions (desktop) -->
-            <div class="d-none d-lg-flex align-items-center gap-3">
-              <div class="user-actions d-flex gap-3">
-                <a href="#" class="icon-btn" title="Đăng nhập" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                  <i class="fas fa-user"></i>
-                </a>
-                <a href="#" class="icon-btn" title="Đăng ký" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                  <i class="fas fa-user-plus"></i>
-                </a>
-              </div>
-              <span class="text-white mx-2"><i class="fas fa-map-marker-alt"></i> Hồ Chí Minh</span>
-              <a href="tel:19001533" class="btn btn-danger fw-bold">
-                <i class="fas fa-phone-alt"></i> 1900-1533
-              </a>
-              <a href="mon-moi-mon-ngon.html" class="btn btn-warning fw-bold ms-2">PICK UP</a>
+            <div class="jolli-col menu">
+                <ul class="jolli-menu">
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">TRANG CHỦ</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">VỀ JOLLIBEE</a></li>
+                    <li>
+                        <a href="#" id="menuDropdownToggle" onclick="showGlobalDropdown(event)" style="display:inline-flex;align-items:center;gap:6px;">
+                            THỰC ĐƠN <i class="fas fa-chevron-down" id="menuDropdownArrow" style="transition:transform 0.2s;"></i>
+                        </a>
+                    </li>
+                    <li><a asp-area="" asp-controller="Promotion" asp-action="Index">KHUYẾN MÃI</a></li>
+                    <li><a asp-area="" asp-controller="Service" asp-action="Index">DỊCH VỤ</a></li>
+                    <li><a asp-area="" asp-controller="News" asp-action="Index">TIN TỨC</a></li>
+                    <li><a asp-area="" asp-controller="Store" asp-action="Index">CỬA HÀNG</a></li>
+                    <li><a asp-area="" asp-controller="Contact" asp-action="Index">LIÊN HỆ</a></li>
+                    <li><a href="https://jollibee.talent.vn/">TUYỂN DỤNG</a></li>
+                </ul>
             </div>
-          </div>
-        </nav>
+            <div class="jolli-col right">
+                <div class="jolli-header-right">
+                    <button class="jolli-pickup-btn">PICK UP</button>
+                    <div class="jolli-hotline">
+                        <span class="hotline-number"><i class="fas fa-clock"></i> 1900-1533</span>
+                        <span class="hotline-label">GIAO HÀNG TẬN NƠI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+    </div>
+
+    <!-- Global Dropdown Menu for 'THỰC ĐƠN' -->
+    <div id="globalMenuDropdown" style="
+        display:none;
+        min-width:700px;
+        background:#ffe5eb;
+        border:2px solid #e31937;
+        position:fixed;
+        z-index:99999;
+        box-shadow:0 8px 32px rgba(0,0,0,0.10);
+        border-radius:20px;
+        padding:24px 0 8px 0;
+        transition:left 0.2s,top 0.2s;
+        overflow:visible;
+    ">
+        <ul style="display:flex;justify-content:center;align-items:flex-start;gap:28px;margin:0;padding:0;list-style:none;">
+            <li style="text-align:center;min-width:90px;max-width:120px;flex:1 1 0;display:flex;flex-direction:column;align-items:center;">
+                <a class="dropdown-item" href="#" style="display:flex;flex-direction:column;align-items:center;">
+                    <img class="menu-img" src="/assets/images/1comgacay1sup1nuoc_menu.jpg" alt="Món Ngon Phải Thử" style="width:64px;height:64px;object-fit:cover;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;">
+                    <span style="font-size:15px;font-weight:700;color:#e31937;white-space:normal;word-break:break-word;">MÓN NGON<br>PHẢI THỬ</span>
+                </a>
+            </li>
+            <li style="text-align:center;min-width:90px;max-width:120px;flex:1 1 0;display:flex;flex-direction:column;align-items:center;">
+                <a class="dropdown-item" href="#" style="display:flex;flex-direction:column;align-items:center;">
+                    <img class="menu-img" src="/assets/images/1ga1sup1nuoc_menu.png" alt="Gà Giòn Vui Vẻ" style="width:64px;height:64px;object-fit:cover;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;">
+                    <span style="font-size:15px;font-weight:700;color:#222;white-space:normal;word-break:break-word;">GÀ GIÒN VUI VẺ</span>
+                </a>
+            </li>
+            <li style="text-align:center;min-width:90px;max-width:120px;flex:1 1 0;display:flex;flex-direction:column;align-items:center;">
+                <a class="dropdown-item" href="#" style="display:flex;flex-direction:column;align-items:center;">
+                    <img class="menu-img" src="/assets/images/mi_y_jolly.png" alt="Mì Ý Jolly" style="width:64px;height:64px;object-fit:cover;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;">
+                    <span style="font-size:15px;font-weight:700;color:#222;white-space:normal;word-break:break-word;">MÌ Ý JOLLY</span>
+                </a>
+            </li>
+            <li style="text-align:center;min-width:90px;max-width:120px;flex:1 1 0;display:flex;flex-direction:column;align-items:center;">
+                <a class="dropdown-item" href="#" style="display:flex;flex-direction:column;align-items:center;">
+                    <img class="menu-img" src="/assets/images/ga_sot_cay.png" alt="Gà Sốt Cay" style="width:64px;height:64px;object-fit:cover;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;">
+                    <span style="font-size:15px;font-weight:700;color:#e31937;white-space:normal;word-break:break-word;">GÀ SỐT CAY</span>
+                </a>
+            </li>
+            <li style="text-align:center;min-width:90px;max-width:120px;flex:1 1 0;display:flex;flex-direction:column;align-items:center;">
+                <a class="dropdown-item" href="#" style="display:flex;flex-direction:column;align-items:center;">
+                    <img class="menu-img" src="/assets/images/burger_com.png" alt="Burger/Cơm" style="width:64px;height:64px;object-fit:cover;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;">
+                    <span style="font-size:15px;font-weight:700;color:#222;white-space:normal;word-break:break-word;">BURGER/CƠM</span>
+                </a>
+            </li>
+            <li style="text-align:center;min-width:90px;max-width:120px;flex:1 1 0;display:flex;flex-direction:column;align-items:center;">
+                <a class="dropdown-item" href="#" style="display:flex;flex-direction:column;align-items:center;">
+                    <img class="menu-img" src="/assets/images/phan_an_phu.png" alt="Phần Ăn Phụ" style="width:64px;height:64px;object-fit:cover;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;">
+                    <span style="font-size:15px;font-weight:700;color:#222;white-space:normal;word-break:break-word;">PHẦN ĂN<br>PHỤ</span>
+                </a>
+            </li>
+            <li style="text-align:center;min-width:90px;max-width:120px;flex:1 1 0;display:flex;flex-direction:column;align-items:center;">
+                <a class="dropdown-item" href="#" style="display:flex;flex-direction:column;align-items:center;">
+                    <img class="menu-img" src="/assets/images/mon_trang_mieng.png" alt="Món Tráng Miệng" style="width:64px;height:64px;object-fit:cover;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;">
+                    <span style="font-size:15px;font-weight:700;color:#222;white-space:normal;word-break:break-word;">MÓN TRÁNG<br>MIỆNG</span>
+                </a>
+            </li>
+            <li style="text-align:center;min-width:90px;max-width:120px;flex:1 1 0;display:flex;flex-direction:column;align-items:center;">
+                <a class="dropdown-item" href="#" style="display:flex;flex-direction:column;align-items:center;">
+                    <img class="menu-img" src="/assets/images/thuc_uong.png" alt="Thức Uống" style="width:64px;height:64px;object-fit:cover;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;">
+                    <span style="font-size:15px;font-weight:700;color:#222;white-space:normal;word-break:break-word;">THỨC UỐNG</span>
+                </a>
+            </li>
+        </ul>
     </div>
 
     <footer class="jolli-footer mt-5 pt-5">
@@ -288,11 +506,11 @@
             .jolli-footer .footer-links a:not(:last-child):after { content: '|'; color: #fff; margin-left: 0.5rem; }
             .jolli-footer .footer-info { line-height: 1.7; }
             .jolli-footer .footer-apps img { border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-            @@media (max-width: 991.98px) {
+            @* @media (max-width: 991.98px) {
                 .jolli-footer .container-fluid { padding: 1rem !important; }
                 .jolli-footer .row > div { text-align: center !important; }
                 .jolli-footer .footer-links { flex-direction: column !important; gap: 0.5rem !important; }
-            }
+            } *@
             .footer-hotline-group {
                 width: 100%;
             }
@@ -343,11 +561,11 @@
                 color: #ffc627;
                 text-decoration: underline;
             }
-            @@media (max-width: 991.98px) {
+            @* @media (max-width: 991.98px) {
                 .footer-links-modern {
                     align-items: center;
                     margin-left: 0;
-                }
+                } *@
             }
         </style>
     </footer>
@@ -359,6 +577,35 @@
       var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
       });
+    </script>
+    <script>
+    function showGlobalDropdown(e) {
+        e.preventDefault();
+        var btn = document.getElementById('menuDropdownToggle');
+        var rect = btn.getBoundingClientRect();
+        var dropdown = document.getElementById('globalMenuDropdown');
+        var dropdownWidth = dropdown.offsetWidth || 900;
+        var left = rect.left + rect.width/2 - dropdownWidth/2;
+        left = Math.max(12, Math.min(left, window.innerWidth - dropdownWidth - 12));
+        dropdown.style.display = 'flex';
+        dropdown.style.left = left + 'px';
+        dropdown.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+        dropdown.style.minWidth = dropdownWidth + 'px';
+        document.getElementById('menuDropdownArrow').style.transform = 'rotate(180deg)';
+        // Căn lại mũi tên
+        var arrow = document.getElementById('dropdownArrow');
+        var btnCenter = rect.left + rect.width/2;
+        var arrowLeft = btnCenter - left - 18; // 18 = arrow width/2
+        arrow.style.left = arrowLeft + 'px';
+    }
+    document.addEventListener('click', function(e) {
+        var dropdown = document.getElementById('globalMenuDropdown');
+        var btn = document.getElementById('menuDropdownToggle');
+        if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
+            dropdown.style.display = 'none';
+            document.getElementById('menuDropdownArrow').style.transform = '';
+        }
+    });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
