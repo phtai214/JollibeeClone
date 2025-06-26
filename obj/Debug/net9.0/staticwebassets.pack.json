@@ -2,7 +2,7 @@
   "Files": [
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\JollibeeClone.bundle.scp.css",
-      "PackagePath": "staticwebassets\\JollibeeClone.fdksstme51.bundle.scp.css"
+      "PackagePath": "staticwebassets\\JollibeeClone.clk443y3we.bundle.scp.css"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\assets\\images\\1burger1khoai1nuoc_menu.png",
@@ -473,12 +473,20 @@
       "PackagePath": "staticwebassets\\css\\adminpanel.css"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\banner-welcome.css",
+      "PackagePath": "staticwebassets\\css\\banner-welcome.css"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\category-admin.css",
       "PackagePath": "staticwebassets\\css\\category-admin.css"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\modern-dashboard.css",
       "PackagePath": "staticwebassets\\css\\modern-dashboard.css"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\news-section.css",
+      "PackagePath": "staticwebassets\\css\\news-section.css"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\order-admin.css",
@@ -491,6 +499,10 @@
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\promotion-admin.css",
       "PackagePath": "staticwebassets\\css\\promotion-admin.css"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\service-section.css",
+      "PackagePath": "staticwebassets\\css\\service-section.css"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\site.css",
@@ -507,6 +519,14 @@
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\store-admin.css",
       "PackagePath": "staticwebassets\\css\\store-admin.css"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\store-locator.css",
+      "PackagePath": "staticwebassets\\css\\store-locator.css"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\today-menu.css",
+      "PackagePath": "staticwebassets\\css\\today-menu.css"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\user-admin.css",
@@ -547,6 +567,10 @@
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\smart-search.js",
       "PackagePath": "staticwebassets\\js\\smart-search.js"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\store-locator.js",
+      "PackagePath": "staticwebassets\\js\\store-locator.js"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\lib\\bootstrap\\LICENSE",

@@ -1,0 +1,161 @@
+@{
+    ViewData["Title"] = "Hướng dẫn Admin cho Team";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-danger text-white text-center">
+                    <h2 class="mb-0"><i class="fas fa-users-cog"></i> Hướng dẫn Admin cho Team</h2>
+                    <p class="mb-0">Jollibee Clone Project - Admin Account Setup</p>
+                </div>
+                <div class="card-body p-5">
+                    
+                    <!-- Thông tin Admin -->
+                    <div class="alert alert-success border-0 mb-4">
+                        <h4 class="alert-heading"><i class="fas fa-key"></i> Thông tin Admin chung cho cả Team</h4>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <strong>📧 Email:</strong> <code>admin@jollibee.com</code>
+                            </div>
+                            <div class="col-md-6">
+                                <strong>🔐 Password:</strong> <code>admin123</code>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <strong>🌐 Link đăng nhập:</strong> 
+                            <a href="/admin" target="_blank" class="btn btn-sm btn-outline-success ms-2">
+                                <i class="fas fa-external-link-alt"></i> /admin
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Hướng dẫn sử dụng -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card border-warning mb-4">
+                                <div class="card-header bg-warning text-dark">
+                                    <h5 class="mb-0"><i class="fas fa-play-circle"></i> Cách chạy dự án</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ol class="mb-0">
+                                        <li>Clone dự án từ Git</li>
+                                        <li>Mở terminal và chạy <code>dotnet run</code></li>
+                                        <li>Ứng dụng sẽ tự động:
+                                            <ul class="mt-2">
+                                                <li>Tạo database (nếu chưa có)</li>
+                                                <li>Seed admin account</li>
+                                                <li>Tạo dữ liệu mẫu</li>
+                                            </ul>
+                                        </li>
+                                        <li>Truy cập <code>/admin</code> để đăng nhập</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card border-info mb-4">
+                                <div class="card-header bg-info text-white">
+                                    <h5 class="mb-0"><i class="fas fa-tools"></i> API hỗ trợ Team</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <strong>Kiểm tra trạng thái Admin:</strong>
+                                        <br>
+                                        <a href="/Admin/Auth/CheckAdminStatus" target="_blank" class="btn btn-sm btn-outline-info mt-1">
+                                            <i class="fas fa-check-circle"></i> Check Admin Status
+                                        </a>
+                                    </div>
+                                    <div class="mb-3">
+                                        <strong>Reset mật khẩu Admin:</strong>
+                                        <br>
+                                        <a href="/Admin/Auth/ResetAdminPassword" target="_blank" class="btn btn-sm btn-outline-warning mt-1">
+                                            <i class="fas fa-redo"></i> Reset Password
+                                        </a>
+                                    </div>
+                                    <div class="mb-0">
+                                        <strong>Tạo lại dữ liệu:</strong>
+                                        <br>
+                                        <a href="/Admin/Auth/SeedTeamData" target="_blank" class="btn btn-sm btn-outline-success mt-1">
+                                            <i class="fas fa-database"></i> Seed Data
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cấu trúc dự án -->
+                    <div class="card border-secondary mb-4">
+                        <div class="card-header bg-secondary text-white">
+                            <h5 class="mb-0"><i class="fas fa-sitemap"></i> Cấu trúc Navigation</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-primary"><i class="fas fa-user"></i> Phía User (Khách hàng)</h6>
+                                    <ul class="list-unstyled ms-3">
+                                        <li><a href="/" target="_blank">/ → Trang chủ</a></li>
+                                        <li><a href="/Menu/MonNgonPhaiThu" target="_blank">/Menu/* → Thực đơn</a></li>
+                                        <li><a href="/Service" target="_blank">/Service → Dịch vụ</a></li>
+                                        <li><a href="/Promotion" target="_blank">/Promotion → Khuyến mãi</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-danger"><i class="fas fa-cog"></i> Phía Admin (Quản trị)</h6>
+                                    <ul class="list-unstyled ms-3">
+                                        <li><a href="/admin" target="_blank">/admin → Đăng nhập</a></li>
+                                        <li><a href="/Admin/Home" target="_blank">/Admin/Home → Dashboard</a></li>
+                                        <li><a href="/Admin/Product" target="_blank">/Admin/Product → Quản lý sản phẩm</a></li>
+                                        <li><a href="/Admin/Category" target="_blank">/Admin/Category → Quản lý danh mục</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lưu ý quan trọng -->
+                    <div class="alert alert-danger border-0">
+                        <h5 class="alert-heading"><i class="fas fa-exclamation-triangle"></i> Lưu ý quan trọng</h5>
+                        <hr>
+                        <ul class="mb-0">
+                            <li><strong>Database:</strong> Đảm bảo cùng connection string trong <code>appsettings.json</code></li>
+                            <li><strong>Admin Account:</strong> Được tự động tạo khi chạy ứng dụng, password luôn là <code>admin123</code></li>
+                            <li><strong>Dữ liệu mẫu:</strong> Categories, OrderStatuses, PaymentMethods được tự động tạo</li>
+                            <li><strong>Đồng bộ:</strong> Nếu có lỗi đăng nhập, chạy API Reset Password</li>
+                        </ul>
+                    </div>
+
+                    <!-- Liên kết hữu ích -->
+                    <div class="text-center mt-4">
+                        <a href="/admin" class="btn btn-danger btn-lg me-3">
+                            <i class="fas fa-sign-in-alt"></i> Đăng nhập Admin
+                        </a>
+                        <a href="/" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-home"></i> Về trang chủ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+    }
+    code {
+        background-color: #f8f9fa;
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: #d63384;
+        font-weight: 500;
+    }
+</style> 

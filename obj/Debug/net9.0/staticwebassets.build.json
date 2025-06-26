@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Ut3JnSs5tkmakbUauHiWXZXE/oGVSkiiEN4KSw5q+Aw=",
+  "Hash": "CZ1q4hnIBZpQQ5rKjL29dCM/MVbC4rZn00XTYhIiyHM=",
   "Source": "JollibeeClone",
   "BasePath": "_content/JollibeeClone",
   "Mode": "Default",
@@ -143,6 +143,27 @@
       "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
     },
     {
+      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\24jdyoalz8-tq2q6uu836.gz",
+      "SourceId": "JollibeeClone",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/JollibeeClone",
+      "RelativePath": "js/store-locator#[.{fingerprint=tq2q6uu836}]?.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\store-locator.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "pa15ql9hst",
+      "Integrity": "L8x4C1aub4fhlA0BEnid3cmFymM1kgGg3MR+y8TBN6E=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\store-locator.js"
+    },
+    {
       "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\2tgpjmzlr9-jd9uben2k1.gz",
       "SourceId": "JollibeeClone",
       "SourceType": "Discovered",
@@ -246,6 +267,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\5d24uxjrw3-qmvznyi2xe.gz",
+      "SourceId": "JollibeeClone",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/JollibeeClone",
+      "RelativePath": "css/service-section#[.{fingerprint=qmvznyi2xe}]?.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\service-section.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "6zykknu3xc",
+      "Integrity": "7iEM/PRV03Lt6X738PmnTkJMIUOL3vEMlL0IDnRjp9A=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\service-section.css"
     },
     {
       "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\5x1sw1mvf6-lzl9nlhx6b.gz",
@@ -395,12 +437,12 @@
       "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
     },
     {
-      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\7fezb0de36-fdksstme51.gz",
+      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\7fezb0de36-clk443y3we.gz",
       "SourceId": "JollibeeClone",
       "SourceType": "Computed",
       "ContentRoot": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/JollibeeClone",
-      "RelativePath": "JollibeeClone#[.{fingerprint=fdksstme51}]?.styles.css.gz",
+      "RelativePath": "JollibeeClone#[.{fingerprint=clk443y3we}]?.styles.css.gz",
       "AssetKind": "All",
       "AssetMode": "CurrentProject",
       "AssetRole": "Alternative",
@@ -409,8 +451,8 @@
       "RelatedAsset": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\scopedcss\\bundle\\JollibeeClone.styles.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "kxqsaxsuin",
-      "Integrity": "WCVzzIrfJD11kJ4XRkRp51FucQ4qZRwp94ErT0QKrQg=",
+      "Fingerprint": "2ieadabf2i",
+      "Integrity": "6mxUru3WFiVo3BWgsugsMFoJE7F/xdqc5jd/OrqcXgo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\scopedcss\\bundle\\JollibeeClone.styles.css"
@@ -710,6 +752,27 @@
       "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
     },
     {
+      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\hk7os3xt4t-6224bvqk9u.gz",
+      "SourceId": "JollibeeClone",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/JollibeeClone",
+      "RelativePath": "css/banner-welcome#[.{fingerprint=6224bvqk9u}]?.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\banner-welcome.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "a81dx62889",
+      "Integrity": "egDj+qCKVCMF40sdExdD7H2WwEEK8bilGYv4qkBrpbQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\banner-welcome.css"
+    },
+    {
       "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\hl3yp6rl43-aexeepp0ev.gz",
       "SourceId": "JollibeeClone",
       "SourceType": "Discovered",
@@ -920,12 +983,12 @@
       "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js"
     },
     {
-      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\l937hje909-fdksstme51.gz",
+      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\l937hje909-clk443y3we.gz",
       "SourceId": "JollibeeClone",
       "SourceType": "Computed",
       "ContentRoot": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/JollibeeClone",
-      "RelativePath": "JollibeeClone#[.{fingerprint=fdksstme51}]!.bundle.scp.css.gz",
+      "RelativePath": "JollibeeClone#[.{fingerprint=clk443y3we}]!.bundle.scp.css.gz",
       "AssetKind": "All",
       "AssetMode": "Reference",
       "AssetRole": "Alternative",
@@ -934,8 +997,8 @@
       "RelatedAsset": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\JollibeeClone.bundle.scp.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "kxqsaxsuin",
-      "Integrity": "WCVzzIrfJD11kJ4XRkRp51FucQ4qZRwp94ErT0QKrQg=",
+      "Fingerprint": "2ieadabf2i",
+      "Integrity": "6mxUru3WFiVo3BWgsugsMFoJE7F/xdqc5jd/OrqcXgo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\JollibeeClone.bundle.scp.css"
@@ -1065,6 +1128,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+    },
+    {
+      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\nvk2egodo5-4q05zxgtzn.gz",
+      "SourceId": "JollibeeClone",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/JollibeeClone",
+      "RelativePath": "css/today-menu#[.{fingerprint=4q05zxgtzn}]?.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\today-menu.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "gfgtcadswv",
+      "Integrity": "bLwRCxBY35UI98RQeI2306IV8AUzKJoVXkWeCfklM6o=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\today-menu.css"
     },
     {
       "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\nxzu36litw-pj5nd1wqec.gz",
@@ -1212,6 +1296,48 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+    },
+    {
+      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\qsunwrcs4t-d8mouno2ej.gz",
+      "SourceId": "JollibeeClone",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/JollibeeClone",
+      "RelativePath": "css/news-section#[.{fingerprint=d8mouno2ej}]?.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\news-section.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "9we51ue1gw",
+      "Integrity": "VyxiWZXtwp7fD/g1E2X57Q2e5XufcOeAoPSoK4QfI8Q=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\news-section.css"
+    },
+    {
+      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\qz7b7wam7v-sk8rw6fb18.gz",
+      "SourceId": "JollibeeClone",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/JollibeeClone",
+      "RelativePath": "css/store-locator#[.{fingerprint=sk8rw6fb18}]?.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\store-locator.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "50rmqc8qce",
+      "Integrity": "y8PGTCt/+C6rBXAPfYH+bLdlVq0CoW6uphbt56IaV10=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\store-locator.css"
     },
     {
       "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\r0zavgvgdi-pfckubaa0u.gz",
@@ -1690,8 +1816,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ApplicationBundle",
-      "Fingerprint": "fdksstme51",
-      "Integrity": "3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE=",
+      "Fingerprint": "clk443y3we",
+      "Integrity": "wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\scopedcss\\bundle\\JollibeeClone.styles.css"
@@ -1711,8 +1837,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ProjectBundle",
-      "Fingerprint": "fdksstme51",
-      "Integrity": "3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE=",
+      "Fingerprint": "clk443y3we",
+      "Integrity": "wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\JollibeeClone.bundle.scp.css"
@@ -4175,6 +4301,27 @@
       "OriginalItemSpec": "wwwroot\\css\\adminpanel.css"
     },
     {
+      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\banner-welcome.css",
+      "SourceId": "JollibeeClone",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\",
+      "BasePath": "_content/JollibeeClone",
+      "RelativePath": "css/banner-welcome#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "6224bvqk9u",
+      "Integrity": "krUDXVvIkI7Go55zsLX3EhTeoTK8bHUpFhuDGCYVcuU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\banner-welcome.css"
+    },
+    {
       "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\category-admin.css",
       "SourceId": "JollibeeClone",
       "SourceType": "Discovered",
@@ -4215,6 +4362,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\modern-dashboard.css"
+    },
+    {
+      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\news-section.css",
+      "SourceId": "JollibeeClone",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\",
+      "BasePath": "_content/JollibeeClone",
+      "RelativePath": "css/news-section#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "d8mouno2ej",
+      "Integrity": "c9+IFqSep5HreJZhX50iED1RXSXkaapWyXsJg3EXbgs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\news-section.css"
     },
     {
       "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\order-admin.css",
@@ -4278,6 +4446,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\promotion-admin.css"
+    },
+    {
+      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\service-section.css",
+      "SourceId": "JollibeeClone",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\",
+      "BasePath": "_content/JollibeeClone",
+      "RelativePath": "css/service-section#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "qmvznyi2xe",
+      "Integrity": "HpaqKk6F96j3WcCsuKTqcZ+vWS7mygP8Xbc3WI8WERw=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\service-section.css"
     },
     {
       "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\site.css",
@@ -4362,6 +4551,48 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\store-admin.css"
+    },
+    {
+      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\store-locator.css",
+      "SourceId": "JollibeeClone",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\",
+      "BasePath": "_content/JollibeeClone",
+      "RelativePath": "css/store-locator#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "sk8rw6fb18",
+      "Integrity": "LAxnsr/rYOdsJ1KEaqlwCzx4/xAs5RTOZ5UlXVjrO90=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\store-locator.css"
+    },
+    {
+      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\today-menu.css",
+      "SourceId": "JollibeeClone",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\",
+      "BasePath": "_content/JollibeeClone",
+      "RelativePath": "css/today-menu#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "4q05zxgtzn",
+      "Integrity": "FAYP7d8S7wPZpvNpi6q64T0OZkcmITbZwdggedc5up8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\today-menu.css"
     },
     {
       "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\user-admin.css",
@@ -4572,6 +4803,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\smart-search.js"
+    },
+    {
+      "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\store-locator.js",
+      "SourceId": "JollibeeClone",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\",
+      "BasePath": "_content/JollibeeClone",
+      "RelativePath": "js/store-locator#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "tq2q6uu836",
+      "Integrity": "m5FDPBZRSySTyXofb28kB6r7aHBA8B4QH7iSJY0Uv1Y=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\store-locator.js"
     },
     {
       "Identity": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
@@ -19732,6 +19984,304 @@
       ]
     },
     {
+      "Route": "css/banner-welcome.6224bvqk9u.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\hk7os3xt4t-6224bvqk9u.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001329787234"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "751"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"egDj+qCKVCMF40sdExdD7H2WwEEK8bilGYv4qkBrpbQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Jun 2025 09:10:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"krUDXVvIkI7Go55zsLX3EhTeoTK8bHUpFhuDGCYVcuU=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "6224bvqk9u"
+        },
+        {
+          "Name": "label",
+          "Value": "css/banner-welcome.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-krUDXVvIkI7Go55zsLX3EhTeoTK8bHUpFhuDGCYVcuU="
+        }
+      ]
+    },
+    {
+      "Route": "css/banner-welcome.6224bvqk9u.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\banner-welcome.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2303"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"krUDXVvIkI7Go55zsLX3EhTeoTK8bHUpFhuDGCYVcuU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Jun 2025 09:10:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "6224bvqk9u"
+        },
+        {
+          "Name": "label",
+          "Value": "css/banner-welcome.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-krUDXVvIkI7Go55zsLX3EhTeoTK8bHUpFhuDGCYVcuU="
+        }
+      ]
+    },
+    {
+      "Route": "css/banner-welcome.6224bvqk9u.css.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\hk7os3xt4t-6224bvqk9u.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "751"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"egDj+qCKVCMF40sdExdD7H2WwEEK8bilGYv4qkBrpbQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Jun 2025 09:10:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "6224bvqk9u"
+        },
+        {
+          "Name": "label",
+          "Value": "css/banner-welcome.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-egDj+qCKVCMF40sdExdD7H2WwEEK8bilGYv4qkBrpbQ="
+        }
+      ]
+    },
+    {
+      "Route": "css/banner-welcome.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\hk7os3xt4t-6224bvqk9u.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001329787234"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "751"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"egDj+qCKVCMF40sdExdD7H2WwEEK8bilGYv4qkBrpbQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Jun 2025 09:10:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"krUDXVvIkI7Go55zsLX3EhTeoTK8bHUpFhuDGCYVcuU=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-krUDXVvIkI7Go55zsLX3EhTeoTK8bHUpFhuDGCYVcuU="
+        }
+      ]
+    },
+    {
+      "Route": "css/banner-welcome.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\banner-welcome.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2303"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"krUDXVvIkI7Go55zsLX3EhTeoTK8bHUpFhuDGCYVcuU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Jun 2025 09:10:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-krUDXVvIkI7Go55zsLX3EhTeoTK8bHUpFhuDGCYVcuU="
+        }
+      ]
+    },
+    {
+      "Route": "css/banner-welcome.css.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\hk7os3xt4t-6224bvqk9u.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "751"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"egDj+qCKVCMF40sdExdD7H2WwEEK8bilGYv4qkBrpbQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Jun 2025 09:10:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-egDj+qCKVCMF40sdExdD7H2WwEEK8bilGYv4qkBrpbQ="
+        }
+      ]
+    },
+    {
       "Route": "css/category-admin.css",
       "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\ad6btsnk9o-xf3ha8xuox.gz",
       "Selectors": [
@@ -20324,6 +20874,304 @@
         {
           "Name": "integrity",
           "Value": "sha256-M9xalHLLBfJ55FAK4kYk6pOXwEIQmsHaMCH1llNjfAc="
+        }
+      ]
+    },
+    {
+      "Route": "css/news-section.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\qsunwrcs4t-d8mouno2ej.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000692520776"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1443"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"VyxiWZXtwp7fD/g1E2X57Q2e5XufcOeAoPSoK4QfI8Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 05 Jun 2025 09:16:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"c9+IFqSep5HreJZhX50iED1RXSXkaapWyXsJg3EXbgs=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-c9+IFqSep5HreJZhX50iED1RXSXkaapWyXsJg3EXbgs="
+        }
+      ]
+    },
+    {
+      "Route": "css/news-section.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\news-section.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6603"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"c9+IFqSep5HreJZhX50iED1RXSXkaapWyXsJg3EXbgs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 05 Jun 2025 09:16:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-c9+IFqSep5HreJZhX50iED1RXSXkaapWyXsJg3EXbgs="
+        }
+      ]
+    },
+    {
+      "Route": "css/news-section.css.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\qsunwrcs4t-d8mouno2ej.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1443"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"VyxiWZXtwp7fD/g1E2X57Q2e5XufcOeAoPSoK4QfI8Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 05 Jun 2025 09:16:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-VyxiWZXtwp7fD/g1E2X57Q2e5XufcOeAoPSoK4QfI8Q="
+        }
+      ]
+    },
+    {
+      "Route": "css/news-section.d8mouno2ej.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\qsunwrcs4t-d8mouno2ej.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000692520776"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1443"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"VyxiWZXtwp7fD/g1E2X57Q2e5XufcOeAoPSoK4QfI8Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 05 Jun 2025 09:16:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"c9+IFqSep5HreJZhX50iED1RXSXkaapWyXsJg3EXbgs=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "d8mouno2ej"
+        },
+        {
+          "Name": "label",
+          "Value": "css/news-section.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-c9+IFqSep5HreJZhX50iED1RXSXkaapWyXsJg3EXbgs="
+        }
+      ]
+    },
+    {
+      "Route": "css/news-section.d8mouno2ej.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\news-section.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6603"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"c9+IFqSep5HreJZhX50iED1RXSXkaapWyXsJg3EXbgs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 05 Jun 2025 09:16:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "d8mouno2ej"
+        },
+        {
+          "Name": "label",
+          "Value": "css/news-section.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-c9+IFqSep5HreJZhX50iED1RXSXkaapWyXsJg3EXbgs="
+        }
+      ]
+    },
+    {
+      "Route": "css/news-section.d8mouno2ej.css.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\qsunwrcs4t-d8mouno2ej.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1443"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"VyxiWZXtwp7fD/g1E2X57Q2e5XufcOeAoPSoK4QfI8Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 05 Jun 2025 09:16:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "d8mouno2ej"
+        },
+        {
+          "Name": "label",
+          "Value": "css/news-section.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-VyxiWZXtwp7fD/g1E2X57Q2e5XufcOeAoPSoK4QfI8Q="
         }
       ]
     },
@@ -21218,6 +22066,304 @@
         {
           "Name": "integrity",
           "Value": "sha256-FyUrlopB45k9OXOlVUNa5gnD6TK3WZIddLGmbJksc6k="
+        }
+      ]
+    },
+    {
+      "Route": "css/service-section.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\5d24uxjrw3-qmvznyi2xe.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000882612533"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1132"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"7iEM/PRV03Lt6X738PmnTkJMIUOL3vEMlL0IDnRjp9A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Jun 2025 08:28:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"HpaqKk6F96j3WcCsuKTqcZ+vWS7mygP8Xbc3WI8WERw=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-HpaqKk6F96j3WcCsuKTqcZ+vWS7mygP8Xbc3WI8WERw="
+        }
+      ]
+    },
+    {
+      "Route": "css/service-section.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\service-section.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4312"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HpaqKk6F96j3WcCsuKTqcZ+vWS7mygP8Xbc3WI8WERw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Jun 2025 08:28:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-HpaqKk6F96j3WcCsuKTqcZ+vWS7mygP8Xbc3WI8WERw="
+        }
+      ]
+    },
+    {
+      "Route": "css/service-section.css.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\5d24uxjrw3-qmvznyi2xe.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1132"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"7iEM/PRV03Lt6X738PmnTkJMIUOL3vEMlL0IDnRjp9A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Jun 2025 08:28:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-7iEM/PRV03Lt6X738PmnTkJMIUOL3vEMlL0IDnRjp9A="
+        }
+      ]
+    },
+    {
+      "Route": "css/service-section.qmvznyi2xe.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\5d24uxjrw3-qmvznyi2xe.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000882612533"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1132"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"7iEM/PRV03Lt6X738PmnTkJMIUOL3vEMlL0IDnRjp9A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Jun 2025 08:28:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"HpaqKk6F96j3WcCsuKTqcZ+vWS7mygP8Xbc3WI8WERw=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "qmvznyi2xe"
+        },
+        {
+          "Name": "label",
+          "Value": "css/service-section.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-HpaqKk6F96j3WcCsuKTqcZ+vWS7mygP8Xbc3WI8WERw="
+        }
+      ]
+    },
+    {
+      "Route": "css/service-section.qmvznyi2xe.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\service-section.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4312"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HpaqKk6F96j3WcCsuKTqcZ+vWS7mygP8Xbc3WI8WERw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Jun 2025 08:28:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "qmvznyi2xe"
+        },
+        {
+          "Name": "label",
+          "Value": "css/service-section.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-HpaqKk6F96j3WcCsuKTqcZ+vWS7mygP8Xbc3WI8WERw="
+        }
+      ]
+    },
+    {
+      "Route": "css/service-section.qmvznyi2xe.css.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\5d24uxjrw3-qmvznyi2xe.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1132"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"7iEM/PRV03Lt6X738PmnTkJMIUOL3vEMlL0IDnRjp9A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Jun 2025 08:28:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "qmvznyi2xe"
+        },
+        {
+          "Name": "label",
+          "Value": "css/service-section.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-7iEM/PRV03Lt6X738PmnTkJMIUOL3vEMlL0IDnRjp9A="
         }
       ]
     },
@@ -22414,6 +23560,602 @@
       ]
     },
     {
+      "Route": "css/store-locator.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\qz7b7wam7v-sk8rw6fb18.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001132502831"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "882"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"y8PGTCt/+C6rBXAPfYH+bLdlVq0CoW6uphbt56IaV10=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 04 Jun 2025 02:47:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"LAxnsr/rYOdsJ1KEaqlwCzx4/xAs5RTOZ5UlXVjrO90=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-LAxnsr/rYOdsJ1KEaqlwCzx4/xAs5RTOZ5UlXVjrO90="
+        }
+      ]
+    },
+    {
+      "Route": "css/store-locator.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\store-locator.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2517"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"LAxnsr/rYOdsJ1KEaqlwCzx4/xAs5RTOZ5UlXVjrO90=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 04 Jun 2025 02:47:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-LAxnsr/rYOdsJ1KEaqlwCzx4/xAs5RTOZ5UlXVjrO90="
+        }
+      ]
+    },
+    {
+      "Route": "css/store-locator.css.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\qz7b7wam7v-sk8rw6fb18.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "882"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"y8PGTCt/+C6rBXAPfYH+bLdlVq0CoW6uphbt56IaV10=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 04 Jun 2025 02:47:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-y8PGTCt/+C6rBXAPfYH+bLdlVq0CoW6uphbt56IaV10="
+        }
+      ]
+    },
+    {
+      "Route": "css/store-locator.sk8rw6fb18.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\qz7b7wam7v-sk8rw6fb18.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001132502831"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "882"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"y8PGTCt/+C6rBXAPfYH+bLdlVq0CoW6uphbt56IaV10=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 04 Jun 2025 02:47:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"LAxnsr/rYOdsJ1KEaqlwCzx4/xAs5RTOZ5UlXVjrO90=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "sk8rw6fb18"
+        },
+        {
+          "Name": "label",
+          "Value": "css/store-locator.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-LAxnsr/rYOdsJ1KEaqlwCzx4/xAs5RTOZ5UlXVjrO90="
+        }
+      ]
+    },
+    {
+      "Route": "css/store-locator.sk8rw6fb18.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\store-locator.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2517"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"LAxnsr/rYOdsJ1KEaqlwCzx4/xAs5RTOZ5UlXVjrO90=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 04 Jun 2025 02:47:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "sk8rw6fb18"
+        },
+        {
+          "Name": "label",
+          "Value": "css/store-locator.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-LAxnsr/rYOdsJ1KEaqlwCzx4/xAs5RTOZ5UlXVjrO90="
+        }
+      ]
+    },
+    {
+      "Route": "css/store-locator.sk8rw6fb18.css.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\qz7b7wam7v-sk8rw6fb18.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "882"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"y8PGTCt/+C6rBXAPfYH+bLdlVq0CoW6uphbt56IaV10=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 04 Jun 2025 02:47:08 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "sk8rw6fb18"
+        },
+        {
+          "Name": "label",
+          "Value": "css/store-locator.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-y8PGTCt/+C6rBXAPfYH+bLdlVq0CoW6uphbt56IaV10="
+        }
+      ]
+    },
+    {
+      "Route": "css/today-menu.4q05zxgtzn.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\nvk2egodo5-4q05zxgtzn.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001015228426"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "984"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"bLwRCxBY35UI98RQeI2306IV8AUzKJoVXkWeCfklM6o=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 31 May 2025 13:42:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"FAYP7d8S7wPZpvNpi6q64T0OZkcmITbZwdggedc5up8=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4q05zxgtzn"
+        },
+        {
+          "Name": "label",
+          "Value": "css/today-menu.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-FAYP7d8S7wPZpvNpi6q64T0OZkcmITbZwdggedc5up8="
+        }
+      ]
+    },
+    {
+      "Route": "css/today-menu.4q05zxgtzn.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\today-menu.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3636"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"FAYP7d8S7wPZpvNpi6q64T0OZkcmITbZwdggedc5up8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 31 May 2025 13:42:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4q05zxgtzn"
+        },
+        {
+          "Name": "label",
+          "Value": "css/today-menu.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-FAYP7d8S7wPZpvNpi6q64T0OZkcmITbZwdggedc5up8="
+        }
+      ]
+    },
+    {
+      "Route": "css/today-menu.4q05zxgtzn.css.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\nvk2egodo5-4q05zxgtzn.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "984"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"bLwRCxBY35UI98RQeI2306IV8AUzKJoVXkWeCfklM6o=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 31 May 2025 13:42:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4q05zxgtzn"
+        },
+        {
+          "Name": "label",
+          "Value": "css/today-menu.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-bLwRCxBY35UI98RQeI2306IV8AUzKJoVXkWeCfklM6o="
+        }
+      ]
+    },
+    {
+      "Route": "css/today-menu.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\nvk2egodo5-4q05zxgtzn.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001015228426"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "984"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"bLwRCxBY35UI98RQeI2306IV8AUzKJoVXkWeCfklM6o=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 31 May 2025 13:42:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"FAYP7d8S7wPZpvNpi6q64T0OZkcmITbZwdggedc5up8=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-FAYP7d8S7wPZpvNpi6q64T0OZkcmITbZwdggedc5up8="
+        }
+      ]
+    },
+    {
+      "Route": "css/today-menu.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\today-menu.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3636"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"FAYP7d8S7wPZpvNpi6q64T0OZkcmITbZwdggedc5up8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 31 May 2025 13:42:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-FAYP7d8S7wPZpvNpi6q64T0OZkcmITbZwdggedc5up8="
+        }
+      ]
+    },
+    {
+      "Route": "css/today-menu.css.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\nvk2egodo5-4q05zxgtzn.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "984"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"bLwRCxBY35UI98RQeI2306IV8AUzKJoVXkWeCfklM6o=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 31 May 2025 13:42:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-bLwRCxBY35UI98RQeI2306IV8AUzKJoVXkWeCfklM6o="
+        }
+      ]
+    },
+    {
       "Route": "css/user-admin.css",
       "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\i4izaz07xf-pxhbo679qe.gz",
       "Selectors": [
@@ -23339,12 +25081,12 @@
     },
     {
       "Route": "JollibeeClone.bundle.scp.css",
-      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\l937hje909-fdksstme51.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\l937hje909-clk443y3we.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001845018450"
+          "Quality": "0.000625390869"
         }
       ],
       "ResponseHeaders": [
@@ -23354,15 +25096,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "541"
+          "Value": "1598"
         },
         {
           "Name": "ETag",
-          "Value": "\"WCVzzIrfJD11kJ4XRkRp51FucQ4qZRwp94ErT0QKrQg=\""
+          "Value": "\"6mxUru3WFiVo3BWgsugsMFoJE7F/xdqc5jd/OrqcXgo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 13 Jun 2025 18:57:05 GMT"
+          "Value": "Thu, 26 Jun 2025 07:36:34 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -23382,13 +25124,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE=\""
+          "Value": "W/\"wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE="
+          "Value": "sha256-wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA="
         }
       ]
     },
@@ -23403,7 +25145,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1131"
+          "Value": "5715"
         },
         {
           "Name": "Content-Type",
@@ -23411,11 +25153,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE=\""
+          "Value": "\"wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 13 Jun 2025 18:57:05 GMT"
+          "Value": "Thu, 26 Jun 2025 07:36:34 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -23425,13 +25167,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE="
+          "Value": "sha256-wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA="
         }
       ]
     },
     {
       "Route": "JollibeeClone.bundle.scp.css.gz",
-      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\l937hje909-fdksstme51.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\l937hje909-clk443y3we.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -23440,7 +25182,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "541"
+          "Value": "1598"
         },
         {
           "Name": "Content-Type",
@@ -23448,11 +25190,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"WCVzzIrfJD11kJ4XRkRp51FucQ4qZRwp94ErT0QKrQg=\""
+          "Value": "\"6mxUru3WFiVo3BWgsugsMFoJE7F/xdqc5jd/OrqcXgo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 13 Jun 2025 18:57:05 GMT"
+          "Value": "Thu, 26 Jun 2025 07:36:34 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -23470,18 +25212,18 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-WCVzzIrfJD11kJ4XRkRp51FucQ4qZRwp94ErT0QKrQg="
+          "Value": "sha256-6mxUru3WFiVo3BWgsugsMFoJE7F/xdqc5jd/OrqcXgo="
         }
       ]
     },
     {
-      "Route": "JollibeeClone.fdksstme51.bundle.scp.css",
-      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\l937hje909-fdksstme51.gz",
+      "Route": "JollibeeClone.clk443y3we.bundle.scp.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\l937hje909-clk443y3we.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001845018450"
+          "Quality": "0.000625390869"
         }
       ],
       "ResponseHeaders": [
@@ -23491,15 +25233,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "541"
+          "Value": "1598"
         },
         {
           "Name": "ETag",
-          "Value": "\"WCVzzIrfJD11kJ4XRkRp51FucQ4qZRwp94ErT0QKrQg=\""
+          "Value": "\"6mxUru3WFiVo3BWgsugsMFoJE7F/xdqc5jd/OrqcXgo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 13 Jun 2025 18:57:05 GMT"
+          "Value": "Thu, 26 Jun 2025 07:36:34 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -23519,13 +25261,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE=\""
+          "Value": "W/\"wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "fdksstme51"
+          "Value": "clk443y3we"
         },
         {
           "Name": "label",
@@ -23533,12 +25275,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE="
+          "Value": "sha256-wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA="
         }
       ]
     },
     {
-      "Route": "JollibeeClone.fdksstme51.bundle.scp.css",
+      "Route": "JollibeeClone.clk443y3we.bundle.scp.css",
       "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\JollibeeClone.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -23548,7 +25290,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1131"
+          "Value": "5715"
         },
         {
           "Name": "Content-Type",
@@ -23556,11 +25298,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE=\""
+          "Value": "\"wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 13 Jun 2025 18:57:05 GMT"
+          "Value": "Thu, 26 Jun 2025 07:36:34 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -23570,7 +25312,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "fdksstme51"
+          "Value": "clk443y3we"
         },
         {
           "Name": "label",
@@ -23578,13 +25320,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE="
+          "Value": "sha256-wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA="
         }
       ]
     },
     {
-      "Route": "JollibeeClone.fdksstme51.bundle.scp.css.gz",
-      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\l937hje909-fdksstme51.gz",
+      "Route": "JollibeeClone.clk443y3we.bundle.scp.css.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\l937hje909-clk443y3we.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -23593,7 +25335,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "541"
+          "Value": "1598"
         },
         {
           "Name": "Content-Type",
@@ -23601,11 +25343,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"WCVzzIrfJD11kJ4XRkRp51FucQ4qZRwp94ErT0QKrQg=\""
+          "Value": "\"6mxUru3WFiVo3BWgsugsMFoJE7F/xdqc5jd/OrqcXgo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 13 Jun 2025 18:57:05 GMT"
+          "Value": "Thu, 26 Jun 2025 07:36:34 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -23623,7 +25365,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "fdksstme51"
+          "Value": "clk443y3we"
         },
         {
           "Name": "label",
@@ -23631,18 +25373,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-WCVzzIrfJD11kJ4XRkRp51FucQ4qZRwp94ErT0QKrQg="
+          "Value": "sha256-6mxUru3WFiVo3BWgsugsMFoJE7F/xdqc5jd/OrqcXgo="
         }
       ]
     },
     {
-      "Route": "JollibeeClone.fdksstme51.styles.css",
-      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\7fezb0de36-fdksstme51.gz",
+      "Route": "JollibeeClone.clk443y3we.styles.css",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\7fezb0de36-clk443y3we.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001845018450"
+          "Quality": "0.000625390869"
         }
       ],
       "ResponseHeaders": [
@@ -23652,15 +25394,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "541"
+          "Value": "1598"
         },
         {
           "Name": "ETag",
-          "Value": "\"WCVzzIrfJD11kJ4XRkRp51FucQ4qZRwp94ErT0QKrQg=\""
+          "Value": "\"6mxUru3WFiVo3BWgsugsMFoJE7F/xdqc5jd/OrqcXgo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 13 Jun 2025 18:57:05 GMT"
+          "Value": "Thu, 26 Jun 2025 07:36:34 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -23680,13 +25422,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE=\""
+          "Value": "W/\"wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "fdksstme51"
+          "Value": "clk443y3we"
         },
         {
           "Name": "label",
@@ -23694,12 +25436,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE="
+          "Value": "sha256-wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA="
         }
       ]
     },
     {
-      "Route": "JollibeeClone.fdksstme51.styles.css",
+      "Route": "JollibeeClone.clk443y3we.styles.css",
       "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\scopedcss\\bundle\\JollibeeClone.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -23709,7 +25451,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1131"
+          "Value": "5715"
         },
         {
           "Name": "Content-Type",
@@ -23717,11 +25459,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE=\""
+          "Value": "\"wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 13 Jun 2025 18:57:05 GMT"
+          "Value": "Thu, 26 Jun 2025 07:36:34 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -23731,7 +25473,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "fdksstme51"
+          "Value": "clk443y3we"
         },
         {
           "Name": "label",
@@ -23739,13 +25481,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE="
+          "Value": "sha256-wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA="
         }
       ]
     },
     {
-      "Route": "JollibeeClone.fdksstme51.styles.css.gz",
-      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\7fezb0de36-fdksstme51.gz",
+      "Route": "JollibeeClone.clk443y3we.styles.css.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\7fezb0de36-clk443y3we.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -23754,7 +25496,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "541"
+          "Value": "1598"
         },
         {
           "Name": "Content-Type",
@@ -23762,11 +25504,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"WCVzzIrfJD11kJ4XRkRp51FucQ4qZRwp94ErT0QKrQg=\""
+          "Value": "\"6mxUru3WFiVo3BWgsugsMFoJE7F/xdqc5jd/OrqcXgo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 13 Jun 2025 18:57:05 GMT"
+          "Value": "Thu, 26 Jun 2025 07:36:34 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -23784,7 +25526,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "fdksstme51"
+          "Value": "clk443y3we"
         },
         {
           "Name": "label",
@@ -23792,18 +25534,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-WCVzzIrfJD11kJ4XRkRp51FucQ4qZRwp94ErT0QKrQg="
+          "Value": "sha256-6mxUru3WFiVo3BWgsugsMFoJE7F/xdqc5jd/OrqcXgo="
         }
       ]
     },
     {
       "Route": "JollibeeClone.styles.css",
-      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\7fezb0de36-fdksstme51.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\7fezb0de36-clk443y3we.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001845018450"
+          "Quality": "0.000625390869"
         }
       ],
       "ResponseHeaders": [
@@ -23813,15 +25555,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "541"
+          "Value": "1598"
         },
         {
           "Name": "ETag",
-          "Value": "\"WCVzzIrfJD11kJ4XRkRp51FucQ4qZRwp94ErT0QKrQg=\""
+          "Value": "\"6mxUru3WFiVo3BWgsugsMFoJE7F/xdqc5jd/OrqcXgo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 13 Jun 2025 18:57:05 GMT"
+          "Value": "Thu, 26 Jun 2025 07:36:34 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -23841,13 +25583,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE=\""
+          "Value": "W/\"wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE="
+          "Value": "sha256-wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA="
         }
       ]
     },
@@ -23862,7 +25604,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1131"
+          "Value": "5715"
         },
         {
           "Name": "Content-Type",
@@ -23870,11 +25612,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE=\""
+          "Value": "\"wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 13 Jun 2025 18:57:05 GMT"
+          "Value": "Thu, 26 Jun 2025 07:36:34 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -23884,13 +25626,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-3ZntrT5Xf3yVaGDj4//HaHaTju6G39B1tOxko2LTpZE="
+          "Value": "sha256-wG5DtOAry9XXj6B8OMiklqM/HEk3iCzxLRMDFamHNCA="
         }
       ]
     },
     {
       "Route": "JollibeeClone.styles.css.gz",
-      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\7fezb0de36-fdksstme51.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\7fezb0de36-clk443y3we.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -23899,7 +25641,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "541"
+          "Value": "1598"
         },
         {
           "Name": "Content-Type",
@@ -23907,11 +25649,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"WCVzzIrfJD11kJ4XRkRp51FucQ4qZRwp94ErT0QKrQg=\""
+          "Value": "\"6mxUru3WFiVo3BWgsugsMFoJE7F/xdqc5jd/OrqcXgo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 13 Jun 2025 18:57:05 GMT"
+          "Value": "Thu, 26 Jun 2025 07:36:34 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -23929,7 +25671,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-WCVzzIrfJD11kJ4XRkRp51FucQ4qZRwp94ErT0QKrQg="
+          "Value": "sha256-6mxUru3WFiVo3BWgsugsMFoJE7F/xdqc5jd/OrqcXgo="
         }
       ]
     },
@@ -25122,6 +26864,304 @@
         {
           "Name": "integrity",
           "Value": "sha256-fqE+Uv6jpVPR8DHPz8NCYlKBHTz7Up4E3Lr5fUE3gGE="
+        }
+      ]
+    },
+    {
+      "Route": "js/store-locator.js",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\24jdyoalz8-tq2q6uu836.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000760456274"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1314"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L8x4C1aub4fhlA0BEnid3cmFymM1kgGg3MR+y8TBN6E=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Jun 2025 07:33:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"m5FDPBZRSySTyXofb28kB6r7aHBA8B4QH7iSJY0Uv1Y=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-m5FDPBZRSySTyXofb28kB6r7aHBA8B4QH7iSJY0Uv1Y="
+        }
+      ]
+    },
+    {
+      "Route": "js/store-locator.js",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\store-locator.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4801"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"m5FDPBZRSySTyXofb28kB6r7aHBA8B4QH7iSJY0Uv1Y=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Jun 2025 07:33:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-m5FDPBZRSySTyXofb28kB6r7aHBA8B4QH7iSJY0Uv1Y="
+        }
+      ]
+    },
+    {
+      "Route": "js/store-locator.js.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\24jdyoalz8-tq2q6uu836.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1314"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L8x4C1aub4fhlA0BEnid3cmFymM1kgGg3MR+y8TBN6E=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Jun 2025 07:33:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-L8x4C1aub4fhlA0BEnid3cmFymM1kgGg3MR+y8TBN6E="
+        }
+      ]
+    },
+    {
+      "Route": "js/store-locator.tq2q6uu836.js",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\24jdyoalz8-tq2q6uu836.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000760456274"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1314"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L8x4C1aub4fhlA0BEnid3cmFymM1kgGg3MR+y8TBN6E=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Jun 2025 07:33:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"m5FDPBZRSySTyXofb28kB6r7aHBA8B4QH7iSJY0Uv1Y=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "tq2q6uu836"
+        },
+        {
+          "Name": "label",
+          "Value": "js/store-locator.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-m5FDPBZRSySTyXofb28kB6r7aHBA8B4QH7iSJY0Uv1Y="
+        }
+      ]
+    },
+    {
+      "Route": "js/store-locator.tq2q6uu836.js",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\store-locator.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4801"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"m5FDPBZRSySTyXofb28kB6r7aHBA8B4QH7iSJY0Uv1Y=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Jun 2025 07:33:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "tq2q6uu836"
+        },
+        {
+          "Name": "label",
+          "Value": "js/store-locator.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-m5FDPBZRSySTyXofb28kB6r7aHBA8B4QH7iSJY0Uv1Y="
+        }
+      ]
+    },
+    {
+      "Route": "js/store-locator.tq2q6uu836.js.gz",
+      "AssetFile": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\compressed\\24jdyoalz8-tq2q6uu836.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1314"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"L8x4C1aub4fhlA0BEnid3cmFymM1kgGg3MR+y8TBN6E=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Jun 2025 07:33:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "tq2q6uu836"
+        },
+        {
+          "Name": "label",
+          "Value": "js/store-locator.js.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-L8x4C1aub4fhlA0BEnid3cmFymM1kgGg3MR+y8TBN6E="
         }
       ]
     },

@@ -212,12 +212,32 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Home/AdminGuide.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBZG1pbkd1aWRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Menu/MonNgonPhaiThu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVudVxNb25OZ29uUGhhaVRodS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Service/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Service/Promotions.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVxQcm9tb3Rpb25zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Service/Stores.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVxTdG9yZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Shared/Error.cshtml]
