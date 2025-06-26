@@ -1,0 +1,154 @@
+@model JollibeeClone.Models.UserAddress
+@{
+    ViewData["Title"] = Model.AddressID == 0 ? "Thêm địa chỉ mới" : "Chỉnh sửa địa chỉ";
+    bool isEdit = Model.AddressID > 0;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/delivery-address.css" asp-append-version="true" />
+}
+
+<!-- Account Management Section -->
+<div class="account-management-container">
+    <div class="container-fluid px-4 py-5">
+        <div class="row">
+            <!-- Sidebar Menu -->
+            <div class="col-lg-3 col-md-4 mb-4">
+                <div class="account-sidebar">
+                    <div class="sidebar-header">
+                        <h5 class="sidebar-title">TÀI KHOẢN CỦA TÔI</h5>
+                    </div>
+                    <div class="sidebar-menu">
+                        <a href="@Url.Action("Profile", "Account")" class="sidebar-item">
+                            <span class="sidebar-text">QUẢN LÝ TÀI KHOẢN</span>
+                        </a>
+                        <a href="#" class="sidebar-item">
+                            <span class="sidebar-text">ĐƠN HÀNG CỦA TÔI</span>
+                        </a>
+                        <a href="@Url.Action("DeliveryAddresses", "Account")" class="sidebar-item active">
+                            <span class="sidebar-text">ĐỊA CHỈ GIAO HÀNG</span>
+                        </a>
+                        <a href="#" class="sidebar-item">
+                            <span class="sidebar-text">DANH SÁCH ƯU ĐÃI</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9 col-md-8">
+                <div class="edit-address-content">
+                    <!-- Page Header -->
+                    <div class="content-header">
+                        <h4 class="content-title" style="color: #e31937;">
+                            @(isEdit ? "CHỈNH SỬA ĐỊA CHỈ" : "THÊM ĐỊA CHỈ MỚI")
+                        </h4>
+                    </div>
+
+                    <!-- Display Messages -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <!-- Address Form -->
+                    <form asp-action="EditAddress" method="post" class="address-form">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="AddressID" />
+                        <input type="hidden" asp-for="UserID" />
+
+                        <div class="form-sections">
+                            <!-- Contact Information -->
+                            <div class="form-section">
+                                <h6 class="form-section-title">THÔNG TIN LIÊN HỆ</h6>
+                                
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label asp-for="FullName" class="form-label required">Họ tên *</label>
+                                        <input asp-for="FullName" class="form-control @(!Html.ViewData.ModelState.ContainsKey("FullName") || Html.ViewData.ModelState["FullName"]!.Errors.Count == 0 ? "" : "is-invalid")" 
+                                               placeholder="Nhập họ tên đầy đủ" />
+                                        <span asp-validation-for="FullName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="PhoneNumber" class="form-label required">Số điện thoại *</label>
+                                        <input asp-for="PhoneNumber" class="form-control @(!Html.ViewData.ModelState.ContainsKey("PhoneNumber") || Html.ViewData.ModelState["PhoneNumber"]!.Errors.Count == 0 ? "" : "is-invalid")" 
+                                               placeholder="Nhập số điện thoại" />
+                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <label asp-for="Address" class="form-label required">Nhập địa chỉ của bạn *</label>
+                                        <textarea asp-for="Address" class="form-control address-textarea @(!Html.ViewData.ModelState.ContainsKey("Address") || Html.ViewData.ModelState["Address"]!.Errors.Count == 0 ? "" : "is-invalid")" 
+                                                  rows="3" placeholder="Nhập địa chỉ chi tiết"></textarea>
+                                        <span asp-validation-for="Address" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <label asp-for="Note" class="form-label">Ghi chú</label>
+                                        <textarea asp-for="Note" class="form-control" rows="2" 
+                                                  placeholder="Ghi chú đặc biệt (tùy chọn)"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Default Address Checkbox -->
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <div class="form-check">
+                                            <input asp-for="IsDefault" class="form-check-input" type="checkbox" />
+                                            <label asp-for="IsDefault" class="form-check-label">
+                                                Đặt làm địa chỉ giao hàng mặc định
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Warning Notice -->
+                                @if (isEdit && Model.IsDefault)
+                                {
+                                    <div class="alert alert-warning d-flex align-items-center mt-3" role="alert">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <div>
+                                            Đây là địa chỉ giao hàng mặc định
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="form-actions">
+                                <a href="@Url.Action("DeliveryAddresses", "Account")" class="btn btn-secondary btn-cancel">
+                                    QUAY LẠI
+                                </a>
+                                <button type="submit" class="btn btn-primary btn-save">
+                                    @(isEdit ? "LƯU ĐỊA CHỈ" : "LƯU ĐỊA CHỈ")
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

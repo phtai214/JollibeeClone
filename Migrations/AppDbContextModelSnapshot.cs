@@ -22,7 +22,7 @@ namespace JollibeeClone.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Cart", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Cart", b =>
                 {
                     b.Property<Guid>("CartID")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.CartItem", b =>
+            modelBuilder.Entity("JollibeeClone.Models.CartItem", b =>
                 {
                     b.Property<int>("CartItemID")
                         .ValueGeneratedOnAdd()
@@ -93,7 +93,7 @@ namespace JollibeeClone.Migrations
                         });
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Categories", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Categories", b =>
                 {
                     b.Property<int>("CategoryID")
                         .ValueGeneratedOnAdd()
@@ -136,7 +136,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.ContactSubmissions", b =>
+            modelBuilder.Entity("JollibeeClone.Models.ContactSubmissions", b =>
                 {
                     b.Property<int>("SubmissionID")
                         .ValueGeneratedOnAdd()
@@ -173,7 +173,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("ContactSubmissions");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.DeliveryMethods", b =>
+            modelBuilder.Entity("JollibeeClone.Models.DeliveryMethods", b =>
                 {
                     b.Property<int>("DeliveryMethodID")
                         .ValueGeneratedOnAdd()
@@ -203,7 +203,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("DeliveryMethods");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.News", b =>
+            modelBuilder.Entity("JollibeeClone.Models.News", b =>
                 {
                     b.Property<int>("NewsID")
                         .ValueGeneratedOnAdd()
@@ -262,7 +262,7 @@ namespace JollibeeClone.Migrations
                         });
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.OrderItems", b =>
+            modelBuilder.Entity("JollibeeClone.Models.OrderItems", b =>
                 {
                     b.Property<int>("OrderItemID")
                         .ValueGeneratedOnAdd()
@@ -305,7 +305,7 @@ namespace JollibeeClone.Migrations
                         });
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.OrderStatuses", b =>
+            modelBuilder.Entity("JollibeeClone.Models.OrderStatuses", b =>
                 {
                     b.Property<int>("OrderStatusID")
                         .ValueGeneratedOnAdd()
@@ -330,7 +330,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("OrderStatuses");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Orders", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Orders", b =>
                 {
                     b.Property<int>("OrderID")
                         .ValueGeneratedOnAdd()
@@ -431,7 +431,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.PaymentMethods", b =>
+            modelBuilder.Entity("JollibeeClone.Models.PaymentMethods", b =>
                 {
                     b.Property<int>("PaymentMethodID")
                         .ValueGeneratedOnAdd()
@@ -457,7 +457,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("PaymentMethods");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Payments", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Payments", b =>
                 {
                     b.Property<int>("PaymentID")
                         .ValueGeneratedOnAdd()
@@ -500,7 +500,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Product", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Product", b =>
                 {
                     b.Property<int>("ProductID")
                         .ValueGeneratedOnAdd()
@@ -546,7 +546,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.ProductConfigurationGroup", b =>
+            modelBuilder.Entity("JollibeeClone.Models.ProductConfigurationGroup", b =>
                 {
                     b.Property<int>("ConfigGroupID")
                         .ValueGeneratedOnAdd()
@@ -584,7 +584,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("ProductConfigurationGroups");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.ProductConfigurationOption", b =>
+            modelBuilder.Entity("JollibeeClone.Models.ProductConfigurationOption", b =>
                 {
                     b.Property<int>("ConfigOptionID")
                         .ValueGeneratedOnAdd()
@@ -622,7 +622,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("ProductConfigurationOptions");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Promotion", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Promotion", b =>
                 {
                     b.Property<int>("PromotionID")
                         .ValueGeneratedOnAdd()
@@ -687,7 +687,7 @@ namespace JollibeeClone.Migrations
                         });
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.PromotionCategoryScope", b =>
+            modelBuilder.Entity("JollibeeClone.Models.PromotionCategoryScope", b =>
                 {
                     b.Property<int>("PromotionID")
                         .HasColumnType("int");
@@ -702,7 +702,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("PromotionCategoryScopes", (string)null);
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.PromotionProductScope", b =>
+            modelBuilder.Entity("JollibeeClone.Models.PromotionProductScope", b =>
                 {
                     b.Property<int>("PromotionID")
                         .HasColumnType("int");
@@ -717,7 +717,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("PromotionProductScopes", (string)null);
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Role", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Role", b =>
                 {
                     b.Property<int>("RoleID")
                         .ValueGeneratedOnAdd()
@@ -738,7 +738,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Service", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Service", b =>
                 {
                     b.Property<int>("ServiceID")
                         .ValueGeneratedOnAdd()
@@ -776,7 +776,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Store", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Store", b =>
                 {
                     b.Property<int>("StoreID")
                         .ValueGeneratedOnAdd()
@@ -835,13 +835,20 @@ namespace JollibeeClone.Migrations
                     b.ToTable("Stores");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.User", b =>
+            modelBuilder.Entity("JollibeeClone.Models.User", b =>
                 {
                     b.Property<int>("UserID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
+
+                    b.Property<string>("City")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -852,6 +859,10 @@ namespace JollibeeClone.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Gender")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -874,7 +885,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.UserAddress", b =>
+            modelBuilder.Entity("JollibeeClone.Models.UserAddress", b =>
                 {
                     b.Property<int>("AddressID")
                         .ValueGeneratedOnAdd()
@@ -883,6 +894,7 @@ namespace JollibeeClone.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressID"));
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -915,7 +927,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("UserAddresses");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.UserPromotion", b =>
+            modelBuilder.Entity("JollibeeClone.Models.UserPromotion", b =>
                 {
                     b.Property<int>("UserPromotionID")
                         .ValueGeneratedOnAdd()
@@ -952,7 +964,7 @@ namespace JollibeeClone.Migrations
                     b.ToTable("UserPromotions");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.UserRole", b =>
+            modelBuilder.Entity("JollibeeClone.Models.UserRole", b =>
                 {
                     b.Property<int>("UserID")
                         .HasColumnType("int");
@@ -967,9 +979,9 @@ namespace JollibeeClone.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Cart", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Cart", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.User", "User")
+                    b.HasOne("JollibeeClone.Models.User", "User")
                         .WithMany("Carts")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -977,15 +989,15 @@ namespace JollibeeClone.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.CartItem", b =>
+            modelBuilder.Entity("JollibeeClone.Models.CartItem", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Cart", "Cart")
+                    b.HasOne("JollibeeClone.Models.Cart", "Cart")
                         .WithMany("CartItems")
                         .HasForeignKey("CartID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Product", "Product")
+                    b.HasOne("JollibeeClone.Models.Product", "Product")
                         .WithMany("CartItems")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -996,9 +1008,9 @@ namespace JollibeeClone.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Categories", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Categories", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Categories", "ParentCategory")
+                    b.HasOne("JollibeeClone.Models.Categories", "ParentCategory")
                         .WithMany("SubCategories")
                         .HasForeignKey("ParentCategoryID")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1006,29 +1018,29 @@ namespace JollibeeClone.Migrations
                     b.Navigation("ParentCategory");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.News", b =>
+            modelBuilder.Entity("JollibeeClone.Models.News", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.User", "Author")
+                    b.HasOne("JollibeeClone.Models.User", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorID")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.User", null)
+                    b.HasOne("JollibeeClone.Models.User", null)
                         .WithMany("News")
                         .HasForeignKey("UserID");
 
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.OrderItems", b =>
+            modelBuilder.Entity("JollibeeClone.Models.OrderItems", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Orders", "Order")
+                    b.HasOne("JollibeeClone.Models.Orders", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Product", "Product")
+                    b.HasOne("JollibeeClone.Models.Product", "Product")
                         .WithMany("OrderItems")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1039,41 +1051,41 @@ namespace JollibeeClone.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Orders", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Orders", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.DeliveryMethods", "DeliveryMethod")
+                    b.HasOne("JollibeeClone.Models.DeliveryMethods", "DeliveryMethod")
                         .WithMany("Orders")
                         .HasForeignKey("DeliveryMethodID")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.OrderStatuses", "OrderStatus")
+                    b.HasOne("JollibeeClone.Models.OrderStatuses", "OrderStatus")
                         .WithMany("Orders")
                         .HasForeignKey("OrderStatusID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.PaymentMethods", "PaymentMethod")
+                    b.HasOne("JollibeeClone.Models.PaymentMethods", "PaymentMethod")
                         .WithMany("Orders")
                         .HasForeignKey("PaymentMethodID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Promotion", "Promotion")
+                    b.HasOne("JollibeeClone.Models.Promotion", "Promotion")
                         .WithMany("Orders")
                         .HasForeignKey("PromotionID")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Store", "Store")
+                    b.HasOne("JollibeeClone.Models.Store", "Store")
                         .WithMany("Orders")
                         .HasForeignKey("StoreID")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.UserAddress", "UserAddress")
+                    b.HasOne("JollibeeClone.Models.UserAddress", "UserAddress")
                         .WithMany("Orders")
                         .HasForeignKey("UserAddressID")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.User", "User")
+                    b.HasOne("JollibeeClone.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -1093,15 +1105,15 @@ namespace JollibeeClone.Migrations
                     b.Navigation("UserAddress");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Payments", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Payments", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Orders", "Order")
+                    b.HasOne("JollibeeClone.Models.Orders", "Order")
                         .WithMany("Payments")
                         .HasForeignKey("OrderID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.PaymentMethods", "PaymentMethod")
+                    b.HasOne("JollibeeClone.Models.PaymentMethods", "PaymentMethod")
                         .WithMany("Payments")
                         .HasForeignKey("PaymentMethodID")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1112,9 +1124,9 @@ namespace JollibeeClone.Migrations
                     b.Navigation("PaymentMethod");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Product", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Product", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Categories", "Category")
+                    b.HasOne("JollibeeClone.Models.Categories", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryID")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1123,9 +1135,9 @@ namespace JollibeeClone.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.ProductConfigurationGroup", b =>
+            modelBuilder.Entity("JollibeeClone.Models.ProductConfigurationGroup", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Product", "MainProduct")
+                    b.HasOne("JollibeeClone.Models.Product", "MainProduct")
                         .WithMany("ProductConfigurationGroups")
                         .HasForeignKey("MainProductID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1134,15 +1146,15 @@ namespace JollibeeClone.Migrations
                     b.Navigation("MainProduct");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.ProductConfigurationOption", b =>
+            modelBuilder.Entity("JollibeeClone.Models.ProductConfigurationOption", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.ProductConfigurationGroup", "ConfigGroup")
+                    b.HasOne("JollibeeClone.Models.ProductConfigurationGroup", "ConfigGroup")
                         .WithMany("ProductConfigurationOptions")
                         .HasForeignKey("ConfigGroupID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Product", "OptionProduct")
+                    b.HasOne("JollibeeClone.Models.Product", "OptionProduct")
                         .WithMany("ProductConfigurationOptions")
                         .HasForeignKey("OptionProductID")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1153,15 +1165,15 @@ namespace JollibeeClone.Migrations
                     b.Navigation("OptionProduct");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.PromotionCategoryScope", b =>
+            modelBuilder.Entity("JollibeeClone.Models.PromotionCategoryScope", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Categories", "Category")
+                    b.HasOne("JollibeeClone.Models.Categories", "Category")
                         .WithMany("PromotionCategoryScopes")
                         .HasForeignKey("CategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Promotion", "Promotion")
+                    b.HasOne("JollibeeClone.Models.Promotion", "Promotion")
                         .WithMany("PromotionCategoryScopes")
                         .HasForeignKey("PromotionID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1172,15 +1184,15 @@ namespace JollibeeClone.Migrations
                     b.Navigation("Promotion");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.PromotionProductScope", b =>
+            modelBuilder.Entity("JollibeeClone.Models.PromotionProductScope", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Product", "Product")
+                    b.HasOne("JollibeeClone.Models.Product", "Product")
                         .WithMany("PromotionProductScopes")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Promotion", "Promotion")
+                    b.HasOne("JollibeeClone.Models.Promotion", "Promotion")
                         .WithMany("PromotionProductScopes")
                         .HasForeignKey("PromotionID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1191,9 +1203,9 @@ namespace JollibeeClone.Migrations
                     b.Navigation("Promotion");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.UserAddress", b =>
+            modelBuilder.Entity("JollibeeClone.Models.UserAddress", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.User", "User")
+                    b.HasOne("JollibeeClone.Models.User", "User")
                         .WithMany("UserAddresses")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1202,20 +1214,20 @@ namespace JollibeeClone.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.UserPromotion", b =>
+            modelBuilder.Entity("JollibeeClone.Models.UserPromotion", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Orders", "Order")
+                    b.HasOne("JollibeeClone.Models.Orders", "Order")
                         .WithMany("UserPromotions")
                         .HasForeignKey("OrderID")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Promotion", "Promotion")
+                    b.HasOne("JollibeeClone.Models.Promotion", "Promotion")
                         .WithMany("UserPromotions")
                         .HasForeignKey("PromotionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.User", "User")
+                    b.HasOne("JollibeeClone.Models.User", "User")
                         .WithMany("UserPromotions")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1228,15 +1240,15 @@ namespace JollibeeClone.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.UserRole", b =>
+            modelBuilder.Entity("JollibeeClone.Models.UserRole", b =>
                 {
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.Role", "Role")
+                    b.HasOne("JollibeeClone.Models.Role", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JollibeeClone.Areas.Admin.Models.User", "User")
+                    b.HasOne("JollibeeClone.Models.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1247,12 +1259,12 @@ namespace JollibeeClone.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Cart", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Cart", b =>
                 {
                     b.Navigation("CartItems");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Categories", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Categories", b =>
                 {
                     b.Navigation("Products");
 
@@ -1261,17 +1273,17 @@ namespace JollibeeClone.Migrations
                     b.Navigation("SubCategories");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.DeliveryMethods", b =>
+            modelBuilder.Entity("JollibeeClone.Models.DeliveryMethods", b =>
                 {
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.OrderStatuses", b =>
+            modelBuilder.Entity("JollibeeClone.Models.OrderStatuses", b =>
                 {
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Orders", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Orders", b =>
                 {
                     b.Navigation("OrderItems");
 
@@ -1280,14 +1292,14 @@ namespace JollibeeClone.Migrations
                     b.Navigation("UserPromotions");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.PaymentMethods", b =>
+            modelBuilder.Entity("JollibeeClone.Models.PaymentMethods", b =>
                 {
                     b.Navigation("Orders");
 
                     b.Navigation("Payments");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Product", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Product", b =>
                 {
                     b.Navigation("CartItems");
 
@@ -1300,12 +1312,12 @@ namespace JollibeeClone.Migrations
                     b.Navigation("PromotionProductScopes");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.ProductConfigurationGroup", b =>
+            modelBuilder.Entity("JollibeeClone.Models.ProductConfigurationGroup", b =>
                 {
                     b.Navigation("ProductConfigurationOptions");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Promotion", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Promotion", b =>
                 {
                     b.Navigation("Orders");
 
@@ -1316,17 +1328,17 @@ namespace JollibeeClone.Migrations
                     b.Navigation("UserPromotions");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Role", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Role", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.Store", b =>
+            modelBuilder.Entity("JollibeeClone.Models.Store", b =>
                 {
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.User", b =>
+            modelBuilder.Entity("JollibeeClone.Models.User", b =>
                 {
                     b.Navigation("Carts");
 
@@ -1341,7 +1353,7 @@ namespace JollibeeClone.Migrations
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Areas.Admin.Models.UserAddress", b =>
+            modelBuilder.Entity("JollibeeClone.Models.UserAddress", b =>
                 {
                     b.Navigation("Orders");
                 });
@@ -1349,4 +1361,3 @@ namespace JollibeeClone.Migrations
         }
     }
 }
-

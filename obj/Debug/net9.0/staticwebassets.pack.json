@@ -2,7 +2,7 @@
   "Files": [
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\JollibeeClone.bundle.scp.css",
-      "PackagePath": "staticwebassets\\JollibeeClone.clk443y3we.bundle.scp.css"
+      "PackagePath": "staticwebassets\\JollibeeClone.1ortg2be6w.bundle.scp.css"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\assets\\images\\1burger1khoai1nuoc_menu.png",
@@ -473,12 +473,20 @@
       "PackagePath": "staticwebassets\\css\\adminpanel.css"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\auth.css",
+      "PackagePath": "staticwebassets\\css\\auth.css"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\banner-welcome.css",
       "PackagePath": "staticwebassets\\css\\banner-welcome.css"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\category-admin.css",
       "PackagePath": "staticwebassets\\css\\category-admin.css"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\delivery-address.css",
+      "PackagePath": "staticwebassets\\css\\delivery-address.css"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\modern-dashboard.css",
@@ -495,6 +503,10 @@
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\product-admin.css",
       "PackagePath": "staticwebassets\\css\\product-admin.css"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\profile.css",
+      "PackagePath": "staticwebassets\\css\\profile.css"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\promotion-admin.css",
@@ -559,6 +571,10 @@
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\admin.js",
       "PackagePath": "staticwebassets\\js\\admin.js"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\profile.js",
+      "PackagePath": "staticwebassets\\js\\profile.js"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\js\\site.js",

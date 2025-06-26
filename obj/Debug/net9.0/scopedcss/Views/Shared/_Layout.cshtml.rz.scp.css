@@ -256,3 +256,69 @@ button.accept-policy[b-rferl1ndzp] {
 .icon-btn i[b-rferl1ndzp] {
   pointer-events: none;
 }
+
+/* Auth Button Styles */
+.auth-btn[b-rferl1ndzp] {
+  background: #fbc11f !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 8px 14px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  transition: all 0.3s ease !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 8px rgba(255, 198, 39, 0.3) !important;
+}
+
+.auth-btn i[b-rferl1ndzp] {
+  color: #fff !important;
+}
+
+.auth-btn:hover[b-rferl1ndzp] {
+  background: #ffb000 !important;
+  color: #fff !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(255, 198, 39, 0.4) !important;
+}
+
+.auth-btn:focus[b-rferl1ndzp] {
+  background: #ffb000 !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 198, 39, 0.25) !important;
+}
+
+.auth-btn[b-rferl1ndzp]::after {
+  border-top-color: #fff !important;
+}
+
+/* Auth Dropdown Menu */
+.auth-dropdown-menu[b-rferl1ndzp] {
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  padding: 8px 0 !important;
+  margin-top: 8px !important;
+  min-width: 200px !important;
+}
+
+.auth-dropdown-menu .dropdown-item[b-rferl1ndzp] {
+  padding: 12px 20px !important;
+  color: #495057 !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+.auth-dropdown-menu .dropdown-item:hover[b-rferl1ndzp] {
+  background: #f8f9fa !important;
+  color: #e31937 !important;
+}
+
+.auth-dropdown-menu .dropdown-item i[b-rferl1ndzp] {
+  color: #6c757d !important;
+  font-size: 14px !important;
+}
+
+.auth-dropdown-menu .dropdown-item:hover i[b-rferl1ndzp] {
+  color: #e31937 !important;
+}

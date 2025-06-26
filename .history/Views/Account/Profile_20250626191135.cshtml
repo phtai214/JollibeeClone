@@ -1,0 +1,228 @@
+@model JollibeeClone.ViewModels.UserProfileViewModel
+@{
+    ViewData["Title"] = "Quản lý tài khoản";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+}
+
+<!-- Account Management Section -->
+<div class="account-management-container">
+    <div class="container-fluid px-4 py-5">
+        <div class="row">
+            <!-- Sidebar Menu -->
+            <div class="col-lg-3 col-md-4 mb-4">
+                <div class="account-sidebar">
+                    <div class="sidebar-header">
+                        <h5 class="sidebar-title">TÀI KHOẢN CỦA TÔI</h5>
+                    </div>
+                    <div class="sidebar-menu">
+                        <a href="@Url.Action("Profile", "Account")" class="sidebar-item active">
+                            <span class="sidebar-text">QUẢN LÝ TÀI KHOẢN</span>
+                        </a>
+                        <a href="#" class="sidebar-item">
+                            <span class="sidebar-text">ĐƠN HÀNG CỦA TÔI</span>
+                        </a>
+                        <a href="#" class="sidebar-item">
+                            <span class="sidebar-text">ĐỊA CHỈ GIAO HÀNG</span>
+                        </a>
+                        <a href="#" class="sidebar-item">
+                            <span class="sidebar-text">THÔNG TIN TÀI KHOẢN</span>
+                        </a>
+                        <a href="#" class="sidebar-item">
+                            <span class="sidebar-text">DANH SÁCH ƯU ĐÃI</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9 col-md-8">
+                <div class="account-content">
+                    <!-- Page Header -->
+                    <div class="content-header">
+                        <h4 class="content-title">QUẢN LÝ TÀI KHOẢN</h4>
+                        <p class="content-subtitle">Xin chào, @Model.FullName. Với trang này, bạn sẽ quản lý được tất cả thông tin tài khoản của mình.</p>
+                    </div>
+
+                    <!-- Account Info Section -->
+                    <div class="account-info-section">
+                        <div class="section-header">
+                            <h5 class="section-title">THÔNG TIN TÀI KHOẢN</h5>
+                        </div>
+
+                        <!-- Display Messages -->
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+
+                        <!-- Profile Form -->
+                        <form asp-action="UpdateProfile" method="post" class="profile-form">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" asp-for="UserID" />
+
+                            <div class="form-sections">
+                                <!-- Contact Information -->
+                                <div class="form-section">
+                                    <h6 class="form-section-title">THÔNG TIN LIÊN HỆ</h6>
+                                    <div class="form-section-subtitle">ĐĂNG KÝ NHẬN TIN</div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="FullName" class="form-label">@Html.DisplayNameFor(m => m.FullName)</label>
+                                            <input asp-for="FullName" class="form-control @(!Html.ViewData.ModelState.ContainsKey("FullName") || Html.ViewData.ModelState["FullName"]!.Errors.Count == 0 ? "" : "is-invalid")" />
+                                            <span asp-validation-for="FullName" class="text-danger"></span>
+                                        </div>
+                                        
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="Email" class="form-label">@Html.DisplayNameFor(m => m.Email)</label>
+                                            <input asp-for="Email" class="form-control @(!Html.ViewData.ModelState.ContainsKey("Email") || Html.ViewData.ModelState["Email"]!.Errors.Count == 0 ? "" : "is-invalid")" />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="PhoneNumber" class="form-label">@Html.DisplayNameFor(m => m.PhoneNumber)</label>
+                                            <input asp-for="PhoneNumber" class="form-control @(!Html.ViewData.ModelState.ContainsKey("PhoneNumber") || Html.ViewData.ModelState["PhoneNumber"]!.Errors.Count == 0 ? "" : "is-invalid")" />
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="Gender" class="form-label">@Html.DisplayNameFor(m => m.Gender)</label>
+                                            <select asp-for="Gender" class="form-select @(!Html.ViewData.ModelState.ContainsKey("Gender") || Html.ViewData.ModelState["Gender"]!.Errors.Count == 0 ? "" : "is-invalid")">
+                                                <option value="">-- Chọn giới tính --</option>
+                                                <option value="Nam">Nam</option>
+                                                <option value="Nữ">Nữ</option>
+                                                <option value="Khác">Khác</option>
+                                            </select>
+                                            <span asp-validation-for="Gender" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="City" class="form-label">@Html.DisplayNameFor(m => m.City)</label>
+                                            <select asp-for="City" class="form-select @(!Html.ViewData.ModelState.ContainsKey("City") || Html.ViewData.ModelState["City"]!.Errors.Count == 0 ? "" : "is-invalid")">
+                                                <option value="">-- Chọn thành phố --</option>
+                                                <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                                                <option value="Hà Nội">Hà Nội</option>
+                                                <option value="Đà Nẵng">Đà Nẵng</option>
+                                                <option value="Cần Thơ">Cần Thơ</option>
+                                                <option value="Hải Phòng">Hải Phòng</option>
+                                                <option value="Bình Dương">Bình Dương</option>
+                                                <option value="Đồng Nai">Đồng Nai</option>
+                                                <option value="Khác">Khác</option>
+                                            </select>
+                                            <span asp-validation-for="City" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary btn-update">
+                                        <i class="fas fa-save me-2"></i>Cập nhật thông tin
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-change-password ms-3" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                        <i class="fas fa-key me-2"></i>Đổi mật khẩu
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Address Information Section -->
+                    <div class="address-info-section mt-5">
+                        <div class="section-header">
+                            <h5 class="section-title">ĐỊA CHỈ GIAO HÀNG</h5>
+                            <button type="button" class="btn btn-outline-primary btn-manage-address">
+                                <i class="fas fa-plus me-2"></i>Quản lý địa chỉ
+                            </button>
+                        </div>
+
+                        <div class="address-default-info">
+                            <div class="address-item">
+                                <div class="address-details">
+                                    <div class="address-name">@Model.FullName</div>
+                                    <div class="address-text">
+                                        @if (!string.IsNullOrEmpty(Model.City))
+                                        {
+                                            <span>@Model.City, Việt Nam</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Chưa cập nhật địa chỉ</span>
+                                        }
+                                    </div>
+                                    <div class="address-phone">@Model.PhoneNumber</div>
+                                </div>
+                                <div class="address-actions">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Chỉnh sửa</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">
+                    <i class="fas fa-key me-2"></i>Đổi mật khẩu
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="changePasswordForm">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
+                        <input type="password" class="form-control" id="currentPassword" name="CurrentPassword" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                        <input type="password" class="form-control" id="newPassword" name="NewPassword" required minlength="6">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Xác nhận mật khẩu mới</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="ConfirmPassword" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Đổi mật khẩu
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/profile.js" asp-append-version="true"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 
