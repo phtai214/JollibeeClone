@@ -1,0 +1,212 @@
+@model IEnumerable<JollibeeClone.Models.Product>
+
+@{
+    ViewData["Title"] = "Quản lý Combo";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/admin-combo.css" />
+
+<div class="container-fluid py-4">
+    <!-- Header Section -->
+    <div class="combo-header fade-in">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1><i class="fas fa-layer-group me-3"></i>Quản lý Combo</h1>
+                <p>Tạo và quản lý combo sản phẩm với tùy chọn cấu hình linh hoạt</p>
+            </div>
+            <div>
+                <a href="@Url.Action("Create", "Combo")" class="btn btn-light btn-lg" style="background-color: #FFEE31FF; color: rgb(81, 81, 81);">
+                    <i class="fas fa-plus me-2"></i>Tạo combo mới
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="combo-card">
+                <div class="card-header">
+                    <div class="d-lg-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0"><i class="fas fa-list me-2"></i>Danh sách Combo</h6>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-light btn-sm" onclick="refreshTable()">
+                                <i class="fas fa-sync-alt me-1"></i>Làm mới
+                            </button>
+                            <div class="dropdown">
+                                <button class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                    <i class="fas fa-filter me-1"></i>Lọc
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#" onclick="filterStatus('all')">Tất cả</a>
+                                    <a class="dropdown-item" href="#" onclick="filterStatus('available')">Có sẵn</a>
+                                    <a class="dropdown-item" href="#" onclick="filterStatus('unavailable')">Không có sẵn</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body px-0 pb-0">
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show mx-3" role="alert">
+                            @TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <div class="table-responsive">
+                        <table class="combo-table table table-flush" id="comboTable">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Ảnh</th>
+                                    <th>Tên combo</th>
+                                    <th>Danh mục</th>
+                                    <th>Giá</th>
+                                    <th>Số nhóm</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var combo in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                @if (!string.IsNullOrEmpty(combo.ThumbnailUrl))
+                                                {
+                                                    <img src="@combo.ThumbnailUrl" class="combo-image me-2" alt="@combo.ProductName">
+                                                }
+                                                else if (!string.IsNullOrEmpty(combo.ImageUrl))
+                                                {
+                                                    <img src="@combo.ImageUrl" class="combo-image me-2" alt="@combo.ProductName">
+                                                }
+                                                else
+                                                {
+                                                    <div class="combo-image bg-secondary me-2 d-flex align-items-center justify-content-center">
+                                                        <i class="fas fa-layer-group text-white"></i>
+                                                    </div>
+                                                }
+                                                @if (!string.IsNullOrEmpty(combo.ThumbnailUrl) && !string.IsNullOrEmpty(combo.ImageUrl) && combo.ThumbnailUrl != combo.ImageUrl)
+                                                {
+                                                    <img src="@combo.ThumbnailUrl" class="combo-thumbnail" alt="Thumbnail">
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm">@combo.ProductName</h6>
+                                                @if (!string.IsNullOrEmpty(combo.ShortDescription))
+                                                {
+                                                    <p class="text-xs text-secondary mb-0">
+                                                        @(combo.ShortDescription.Length > 50 ? combo.ShortDescription.Substring(0, 50) + "..." : combo.ShortDescription)
+                                                    </p>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="text-xs">@combo.Category?.CategoryName</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-xs font-weight-bold">@combo.Price.ToString("N0") ₫</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-sm bg-info">
+                                                @combo.ProductConfigurationGroups.Count nhóm
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if (combo.IsAvailable)
+                                            {
+                                                <span class="badge badge-sm bg-success">Có sẵn</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-sm bg-secondary">Không có sẵn</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <a href="@Url.Action("Details", "Combo", new { id = combo.ProductID })" 
+                                                   class="action-btn view" 
+                                                   data-bs-toggle="tooltip" title="Xem chi tiết">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="@Url.Action("Edit", "Combo", new { id = combo.ProductID })" 
+                                                   class="action-btn edit" 
+                                                   data-bs-toggle="tooltip" title="Chỉnh sửa">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="@Url.Action("Delete", "Combo", new { id = combo.ProductID })" 
+                                                   class="action-btn delete" 
+                                                   data-bs-toggle="tooltip" title="Xóa">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        
+                        @if (!Model.Any())
+                        {
+                            <div class="text-center py-4">
+                                <img src="~/images/empty-state.svg" alt="No data" class="img-fluid mb-3" style="max-width: 200px;">
+                                <h6 class="text-muted">Chưa có combo nào</h6>
+                                <p class="text-sm text-muted">Bắt đầu tạo combo đầu tiên để quản lý sản phẩm combo của bạn.</p>
+                                <a href="@Url.Action("Create", "Combo")" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-plus"></i> Tạo combo mới
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            $('#comboTable').DataTable({
+                "pageLength": 10,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Vietnamese.json"
+                }
+            });
+
+            // Initialize tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+
+        // Refresh table function
+        function refreshTable() {
+            location.reload();
+        }
+
+        // Filter by status
+        function filterStatus(status) {
+            const table = $('#comboTable').DataTable();
+            
+            if (status === 'all') {
+                table.column(5).search('').draw();
+            } else if (status === 'available') {
+                table.column(5).search('Có sẵn').draw();
+            } else if (status === 'unavailable') {
+                table.column(5).search('Không có sẵn').draw();
+            }
+        }
+    </script>
+} 

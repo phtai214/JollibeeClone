@@ -1,0 +1,256 @@
+@model JollibeeClone.ViewModels.ComboDetailViewModel
+
+@{
+    ViewData["Title"] = "Chi tiết Combo";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/admin-combo.css" />
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <div class="d-lg-flex">
+                        <div>
+                            <h5 class="mb-0">@ViewData["Title"]</h5>
+                            <p class="text-sm mb-0">
+                                Xem chi tiết combo và cấu hình
+                            </p>
+                        </div>
+                        <div class="ms-auto my-auto mt-lg-0 mt-4">
+                            <div class="ms-auto my-auto">
+                                <a href="@Url.Action("Edit", "Combo", new { id = Model.ProductID })" class="btn btn-warning btn-sm mb-0 me-2">
+                                    <i class="fas fa-edit"></i> Chỉnh sửa
+                                </a>
+                                <a href="@Url.Action("Index", "Combo")" class="btn btn-secondary btn-sm mb-0">
+                                    <i class="fas fa-arrow-left"></i> Quay lại
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Thông tin combo cơ bản -->
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <h4 class="mb-3">@Model.ComboName</h4>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <strong>Giá combo:</strong>
+                                    <span class="text-success fs-5">@Model.ComboProduct.Price.ToString("N0") ₫</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Danh mục:</strong>
+                                    <span class="badge bg-info">@Model.ComboProduct.Category?.CategoryName</span>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <strong>Trạng thái:</strong>
+                                    @if (Model.ComboProduct.IsAvailable)
+                                    {
+                                        <span class="badge bg-success">Có sẵn</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Không có sẵn</span>
+                                    }
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Loại:</strong>
+                                    <span class="badge bg-primary">Combo</span>
+                                </div>
+                            </div>
+                            
+                            @if (!string.IsNullOrEmpty(Model.ComboProduct.ShortDescription))
+                            {
+                                <div class="mb-3">
+                                    <strong>Mô tả:</strong>
+                                    <p class="text-muted">@Model.ComboProduct.ShortDescription</p>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                @if (!string.IsNullOrEmpty(Model.ComboProduct.ImageUrl))
+                                {
+                                    <img src="@Model.ComboProduct.ImageUrl" alt="@Model.ComboProduct.ProductName" class="img-fluid rounded-3 mb-2" style="max-height: 200px;">
+                                }
+                                else
+                                {
+                                    <div class="bg-light rounded-3 d-flex align-items-center justify-content-center mb-2" style="height: 200px;">
+                                        <i class="fas fa-image text-muted fa-3x"></i>
+                                    </div>
+                                }
+                                
+                                @if (!string.IsNullOrEmpty(Model.ComboProduct.ThumbnailUrl))
+                                {
+                                    <div class="mt-2">
+                                        <small class="text-muted d-block">Thumbnail:</small>
+                                        <img src="@Model.ComboProduct.ThumbnailUrl" alt="Thumbnail" class="img-thumbnail" style="max-width: 80px;">
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Chi tiết cấu hình -->
+                    <h5 class="mb-3">Cấu hình combo (@Model.Groups.Count nhóm)</h5>
+                    
+                    @foreach (var group in Model.Groups.OrderBy(g => g.Group.DisplayOrder))
+                    {
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-layer-group text-primary me-2"></i>
+                                        @group.Group.GroupName
+                                    </h6>
+                                    <div>
+                                        <span class="badge bg-info">
+                                            @group.Group.MinSelections - @group.Group.MaxSelections lựa chọn
+                                        </span>
+                                        <span class="badge bg-secondary">
+                                            @group.Options.Count món
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    @foreach (var option in group.Options.OrderBy(o => o.Option.DisplayOrder))
+                                    {
+                                        <div class="col-md-6 col-lg-4 mb-3">
+                                            <div class="border rounded p-3 h-100 @(option.Option.IsDefault ? "border-success bg-light" : "")">
+                                                <div class="d-flex align-items-center mb-2">
+                                                    @if (!string.IsNullOrEmpty(option.DisplayImageUrl))
+                                                    {
+                                                        <img src="@option.DisplayImageUrl" alt="@option.Product.ProductName" class="rounded me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="bg-secondary rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                            <i class="fas fa-utensils text-white"></i>
+                                                        </div>
+                                                    }
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="mb-0">@option.Product.ProductName</h6>
+                                                        @if (option.Variant != null)
+                                                        {
+                                                            <small class="text-muted">@option.Variant.VariantName</small>
+                                                        }
+                                                    </div>
+                                                    @if (option.Option.IsDefault)
+                                                    {
+                                                        <span class="badge bg-success">Mặc định</span>
+                                                    }
+                                                </div>
+                                                
+                                                <div class="row text-sm">
+                                                    <div class="col-6">
+                                                        <strong>Số lượng:</strong>
+                                                        <span class="badge bg-primary">@option.Option.Quantity</span>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <strong>Giá cộng:</strong>
+                                                        @if (option.Option.PriceAdjustment > 0)
+                                                        {
+                                                            <span class="text-success">+@option.Option.PriceAdjustment.ToString("N0") ₫</span>
+                                                        }
+                                                        else if (option.Option.PriceAdjustment < 0)
+                                                        {
+                                                            <span class="text-danger">@option.Option.PriceAdjustment.ToString("N0") ₫</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="text-muted">Miễn phí</span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                
+                                                @if (option.Variant != null && option.Variant.PriceAdjustment != 0)
+                                                {
+                                                    <div class="mt-2">
+                                                        <small class="text-muted">
+                                                            Biến thể: 
+                                                            @if (option.Variant.PriceAdjustment > 0)
+                                                            {
+                                                                <span class="text-success">+@option.Variant.PriceAdjustment.ToString("N0") ₫</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="text-danger">@option.Variant.PriceAdjustment.ToString("N0") ₫</span>
+                                                            }
+                                                        </small>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @if (!Model.Groups.Any())
+                    {
+                        <div class="text-center py-4">
+                            <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+                            <h6 class="text-muted">Combo chưa có cấu hình</h6>
+                            <p class="text-sm text-muted">Combo này chưa được cấu hình các nhóm và lựa chọn.</p>
+                            <a href="@Url.Action("Edit", "Combo", new { id = Model.ComboProduct.ProductID })" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Cấu hình ngay
+                            </a>
+                        </div>
+                    }
+
+                    <!-- Tổng kết combo -->
+                    @if (Model.Groups.Any())
+                    {
+                        <div class="card bg-light mt-4">
+                            <div class="card-body">
+                                <h6 class="mb-3">
+                                    <i class="fas fa-calculator text-success me-2"></i>
+                                    Tổng kết combo
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <strong>Tổng nhóm:</strong>
+                                        <span class="badge bg-info">@Model.Groups.Count</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <strong>Tổng món:</strong>
+                                        <span class="badge bg-primary">@Model.Groups.Sum(g => g.Options.Count)</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <strong>Món mặc định:</strong>
+                                        <span class="badge bg-success">@Model.Groups.Sum(g => g.Options.Count(o => o.Option.IsDefault))</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <strong>Giá cơ bản:</strong>
+                                        <span class="text-success fw-bold">@Model.ComboProduct.Price.ToString("N0") ₫</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Khởi tạo tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+    </script>
+} 

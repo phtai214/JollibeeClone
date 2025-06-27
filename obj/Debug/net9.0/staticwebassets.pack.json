@@ -461,6 +461,10 @@
       "PackagePath": "staticwebassets\\assets\\images\\tuideocheo_mini.jpg"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\admin-combo.css",
+      "PackagePath": "staticwebassets\\css\\admin-combo.css"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\css\\admin-login.css",
       "PackagePath": "staticwebassets\\css\\admin-login.css"
     },
@@ -549,8 +553,16 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\images\\categories\\1b66ed66-ecfd-44e7-8531-8e1cf5b7805d_phan_an_phu.png",
+      "PackagePath": "staticwebassets\\images\\categories\\1b66ed66-ecfd-44e7-8531-8e1cf5b7805d_phan_an_phu.png"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\images\\categories\\3c9e2406-9b88-4cd3-bbe3-9107abe8332d_ga_gion_vui_ve.png",
       "PackagePath": "staticwebassets\\images\\categories\\3c9e2406-9b88-4cd3-bbe3-9107abe8332d_ga_gion_vui_ve.png"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\images\\categories\\4b62d18a-0587-4ebd-8491-f281caf62189_mon_ngon_phai_thu.png",
+      "PackagePath": "staticwebassets\\images\\categories\\4b62d18a-0587-4ebd-8491-f281caf62189_mon_ngon_phai_thu.png"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\images\\categories\\84f6db57-bb44-45a0-84f5-75930ad09f34_mon_trang_mieng.png",
@@ -559,6 +571,10 @@
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\images\\categories\\8a37ac17-bdd7-4665-9ef3-0153f240d1c7_ga_sot_cay.png",
       "PackagePath": "staticwebassets\\images\\categories\\8a37ac17-bdd7-4665-9ef3-0153f240d1c7_ga_sot_cay.png"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\images\\categories\\9fd32978-a55a-40f8-af22-7328b8edc864_mi_y_jolly.png",
+      "PackagePath": "staticwebassets\\images\\categories\\9fd32978-a55a-40f8-af22-7328b8edc864_mi_y_jolly.png"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\images\\categories\\c5b83887-831b-4541-944a-7cff298c2efd_thuc_uong.png",
@@ -1489,24 +1505,304 @@
       "PackagePath": "staticwebassets\\uploads\\news\\ffbc61b5-6fc5-482c-8dcf-3ae99799a3f7.jpg"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\0065b017-d2b8-46fd-9779-9c860440d87e.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\0065b017-d2b8-46fd-9779-9c860440d87e.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\0132355e-9cba-4c39-9938-acfe46f4163c.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\0132355e-9cba-4c39-9938-acfe46f4163c.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\07d6ab9b-e42e-480d-8526-a42d872fefd1.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\07d6ab9b-e42e-480d-8526-a42d872fefd1.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\08c03ee7-3c56-4020-adda-0b617ee58f28.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\08c03ee7-3c56-4020-adda-0b617ee58f28.jpg"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\0b389aa1-2a81-4d04-af77-e7be9758b843.png",
       "PackagePath": "staticwebassets\\uploads\\products\\0b389aa1-2a81-4d04-af77-e7be9758b843.png"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\0d553c9c-0bda-4a46-922d-5596b8f4398a.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\0d553c9c-0bda-4a46-922d-5596b8f4398a.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\0dd94edc-7d86-4b0a-bd7a-45e8638f3f9f.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\0dd94edc-7d86-4b0a-bd7a-45e8638f3f9f.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\0f12564a-667c-4ac2-9a40-534aa17bf4d1.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\0f12564a-667c-4ac2-9a40-534aa17bf4d1.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\0ff8fa92-acb9-467e-8c89-4e8f65590620.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\0ff8fa92-acb9-467e-8c89-4e8f65590620.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\13de5d19-44fb-4a64-b63f-2f877ee0e118.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\13de5d19-44fb-4a64-b63f-2f877ee0e118.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\1613eb06-fd7e-44cd-8c95-0d7ac62d47e7.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\1613eb06-fd7e-44cd-8c95-0d7ac62d47e7.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\17d8b874-8ad6-4a25-92b4-ed22d644d810.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\17d8b874-8ad6-4a25-92b4-ed22d644d810.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\19503c82-f93d-4445-9573-fea811e00353.png",
+      "PackagePath": "staticwebassets\\uploads\\products\\19503c82-f93d-4445-9573-fea811e00353.png"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\1983d143-9f73-44d1-b00f-7fc5ea23930a.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\1983d143-9f73-44d1-b00f-7fc5ea23930a.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\1b4e6b89-8340-45dc-948f-3ca5ebd5490d.png",
+      "PackagePath": "staticwebassets\\uploads\\products\\1b4e6b89-8340-45dc-948f-3ca5ebd5490d.png"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\1bcd8ab5-b2c9-4a9f-9763-91615873a3b5.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\1bcd8ab5-b2c9-4a9f-9763-91615873a3b5.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\1dad1bdb-d33f-4a73-b981-da968e9ed53b.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\1dad1bdb-d33f-4a73-b981-da968e9ed53b.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\1e36dff1-2281-4648-891d-7f65b8ded7c1.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\1e36dff1-2281-4648-891d-7f65b8ded7c1.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\22626567-1906-4071-95db-544f17c3810c.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\22626567-1906-4071-95db-544f17c3810c.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\2a7835b6-ffcf-49d4-b82f-e97549c17a0d.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\2a7835b6-ffcf-49d4-b82f-e97549c17a0d.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\2adb0da2-f571-480a-8016-bce8f119d3ec.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\2adb0da2-f571-480a-8016-bce8f119d3ec.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\2c3311b6-4992-4129-bdbe-783eab3d48ba.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\2c3311b6-4992-4129-bdbe-783eab3d48ba.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\346b6095-2382-44c4-aa09-704b5e1befb8.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\346b6095-2382-44c4-aa09-704b5e1befb8.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\348c49d0-63ad-4892-9ee2-0ffe9312b275.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\348c49d0-63ad-4892-9ee2-0ffe9312b275.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\39f777a9-f95e-4b4a-a594-93d7e8c034a3.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\39f777a9-f95e-4b4a-a594-93d7e8c034a3.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\3e28b963-321c-44b9-bc58-6366aad48f1d.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\3e28b963-321c-44b9-bc58-6366aad48f1d.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\4ad641ba-8f8b-483b-bce1-d9f5e0faefa3.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\4ad641ba-8f8b-483b-bce1-d9f5e0faefa3.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\4bfbc7be-a6c9-4cb7-bb9c-a8655d5f6b9f.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\4bfbc7be-a6c9-4cb7-bb9c-a8655d5f6b9f.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\4ea12c90-f798-4f67-ac01-9a16cc4f21ea.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\4ea12c90-f798-4f67-ac01-9a16cc4f21ea.jpg"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\567efebd-1615-4fad-b106-a96ab721d588.png",
       "PackagePath": "staticwebassets\\uploads\\products\\567efebd-1615-4fad-b106-a96ab721d588.png"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\5accaaa0-066a-497f-9de6-52c48ecccda6.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\5accaaa0-066a-497f-9de6-52c48ecccda6.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\5c2c34de-46dd-431a-8aa3-07aa2370b257.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\5c2c34de-46dd-431a-8aa3-07aa2370b257.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\5c7be6e2-2d76-47b7-bb8b-7525cb3f917e.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\5c7be6e2-2d76-47b7-bb8b-7525cb3f917e.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\5e8e4eda-8390-433a-9484-f84c90c94996.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\5e8e4eda-8390-433a-9484-f84c90c94996.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\5ee00358-a29f-436e-8400-15bdcf40c8b9.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\5ee00358-a29f-436e-8400-15bdcf40c8b9.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\5f967f45-c890-4ad4-91e7-2afb630cd56c.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\5f967f45-c890-4ad4-91e7-2afb630cd56c.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\6aedbbcf-a5ac-4e32-9aa4-7775aea389c0.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\6aedbbcf-a5ac-4e32-9aa4-7775aea389c0.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\6beaf520-f2e5-4c05-913f-2572ec74dd5d.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\6beaf520-f2e5-4c05-913f-2572ec74dd5d.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\6c36acf9-cdf3-460a-ac01-87be16a24d17.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\6c36acf9-cdf3-460a-ac01-87be16a24d17.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\6d358b3f-1652-490f-b310-36562ebf51b4.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\6d358b3f-1652-490f-b310-36562ebf51b4.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\6d717ae7-f0d2-4801-9cb5-b6f1364eeb53.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\6d717ae7-f0d2-4801-9cb5-b6f1364eeb53.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\6dd3e21e-2868-4aa8-85e9-24a8b75798ff.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\6dd3e21e-2868-4aa8-85e9-24a8b75798ff.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\6e2d4689-8c81-40ac-9de1-5d3d0e82438f.png",
+      "PackagePath": "staticwebassets\\uploads\\products\\6e2d4689-8c81-40ac-9de1-5d3d0e82438f.png"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\6eae3f1c-d1b2-4aa5-9022-8f9a095aa931.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\6eae3f1c-d1b2-4aa5-9022-8f9a095aa931.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\7219cfb5-0808-4b3c-b9f7-888d1070d10c.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\7219cfb5-0808-4b3c-b9f7-888d1070d10c.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\730d7e2e-41b6-4b4e-965c-a9edfd0acd03.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\730d7e2e-41b6-4b4e-965c-a9edfd0acd03.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\7444db0b-dd9d-4059-b218-64d43ffac25f.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\7444db0b-dd9d-4059-b218-64d43ffac25f.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\745a6894-228f-4d8a-aa25-ec0b6f6a20d2.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\745a6894-228f-4d8a-aa25-ec0b6f6a20d2.jpg"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\7e87911e-6c2f-4939-8c9c-d178768c8ee5.jpg",
       "PackagePath": "staticwebassets\\uploads\\products\\7e87911e-6c2f-4939-8c9c-d178768c8ee5.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\7ef5dceb-aa81-451f-9ee8-2a6e7eafe1e6.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\7ef5dceb-aa81-451f-9ee8-2a6e7eafe1e6.jpg"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\8534494f-2ad0-4695-95c9-54e06a8099ac.png",
       "PackagePath": "staticwebassets\\uploads\\products\\8534494f-2ad0-4695-95c9-54e06a8099ac.png"
     },
     {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\8637873b-b11d-431b-9582-b13776870ffb.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\8637873b-b11d-431b-9582-b13776870ffb.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\86e34abf-d491-4ada-9a17-bf3fef8bff68.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\86e34abf-d491-4ada-9a17-bf3fef8bff68.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\8c86f8ce-ff37-4866-b6e9-5f62b6a957d6.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\8c86f8ce-ff37-4866-b6e9-5f62b6a957d6.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\8eb2625e-9cee-4481-9268-846a800cbdde.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\8eb2625e-9cee-4481-9268-846a800cbdde.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\95cbc299-5b58-497b-bd3a-de661beb768a.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\95cbc299-5b58-497b-bd3a-de661beb768a.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\9f8cc00b-9aca-442a-afff-991c13c00d68.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\9f8cc00b-9aca-442a-afff-991c13c00d68.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\aaf6e8d6-6549-4442-ac24-a7adc69ba92f.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\aaf6e8d6-6549-4442-ac24-a7adc69ba92f.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\b1de9292-8206-4842-b353-82600e765c77.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\b1de9292-8206-4842-b353-82600e765c77.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\b4b2a012-ed59-4789-ad24-20fe2491c35f.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\b4b2a012-ed59-4789-ad24-20fe2491c35f.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\b942d316-4ce3-425c-8af8-d136f26f4674.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\b942d316-4ce3-425c-8af8-d136f26f4674.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\b9ff1c0d-9ad6-46d7-8c69-c104eb146509.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\b9ff1c0d-9ad6-46d7-8c69-c104eb146509.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\ba20743c-229c-4a21-87cb-25d100a3d689.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\ba20743c-229c-4a21-87cb-25d100a3d689.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\bae7f542-f31b-4195-9349-767f8121529e.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\bae7f542-f31b-4195-9349-767f8121529e.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\c1f76195-b88b-495e-93ab-16974a0d386a.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\c1f76195-b88b-495e-93ab-16974a0d386a.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\c9545808-eb66-427a-b5a6-8508de4d787a.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\c9545808-eb66-427a-b5a6-8508de4d787a.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\ca340bff-cf66-4bc0-8920-205cdbbbb58a.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\ca340bff-cf66-4bc0-8920-205cdbbbb58a.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\cf2d53d1-b396-41e5-82a8-15f6abe58107.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\cf2d53d1-b396-41e5-82a8-15f6abe58107.jpg"
+    },
+    {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\d87b3412-76fa-4e6b-9c06-65f510399a57.png",
       "PackagePath": "staticwebassets\\uploads\\products\\d87b3412-76fa-4e6b-9c06-65f510399a57.png"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\e22c36a9-0b73-4cb1-9a52-93de18d17958.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\e22c36a9-0b73-4cb1-9a52-93de18d17958.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\ee6921c4-fb24-4393-bb42-b7403c4f2271.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\ee6921c4-fb24-4393-bb42-b7403c4f2271.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\ef51d43e-313c-4576-91ec-935033a763d2.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\ef51d43e-313c-4576-91ec-935033a763d2.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\f7a66b4a-923f-49d5-adfc-dfcabcfc15c2.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\f7a66b4a-923f-49d5-adfc-dfcabcfc15c2.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\fd7b9007-e8c1-4c54-81d7-43d3bdfd0a21.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\fd7b9007-e8c1-4c54-81d7-43d3bdfd0a21.jpg"
+    },
+    {
+      "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\products\\ffc00e65-32b5-4b7e-b291-51c623fa60f6.jpg",
+      "PackagePath": "staticwebassets\\uploads\\products\\ffc00e65-32b5-4b7e-b291-51c623fa60f6.jpg"
     },
     {
       "Id": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\wwwroot\\uploads\\services\\7de87de1-4014-4a43-b8a6-8275e8a20bc8.png",

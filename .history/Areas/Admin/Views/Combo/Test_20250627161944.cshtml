@@ -1,0 +1,151 @@
+@{
+    ViewData["Title"] = "Test Combo Data";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <h1>Test Combo Data</h1>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Products (@ViewBag.Products.Count)</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in ViewBag.Products)
+                                {
+                                    <tr>
+                                        <td>@product.ProductID</td>
+                                        <td>@product.ProductName</td>
+                                        <td>@product.Price.ToString("N0")₫</td>
+                                        <td>@product.CategoryID</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Product Variants (@ViewBag.Variants.Count)</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Variant</th>
+                                    <th>Type</th>
+                                    <th>Price +</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var variant in ViewBag.Variants)
+                                {
+                                    <tr>
+                                        <td>@variant.Product?.ProductName</td>
+                                        <td>@variant.VariantName</td>
+                                        <td>@variant.VariantType</td>
+                                        <td>@variant.PriceAdjustment.ToString("N0")₫</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Test API GetProductVariants</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Select Product to Test:</label>
+                        <select id="testProductSelect" class="form-control">
+                            <option value="">-- Chọn sản phẩm --</option>
+                            @foreach (var product in ViewBag.Products)
+                            {
+                                <option value="@product.ProductID">@product.ProductName</option>
+                            }
+                        </select>
+                    </div>
+                    
+                    <div id="variantResults" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#testProductSelect').change(function() {
+                const productId = $(this).val();
+                const resultsDiv = $('#variantResults');
+                
+                if (!productId) {
+                    resultsDiv.empty();
+                    return;
+                }
+                
+                resultsDiv.html('<p>Loading variants...</p>');
+                
+                $.get('@Url.Action("GetProductVariants", "Combo")', { productId: productId })
+                    .done(function(variants) {
+                        console.log('API Response:', variants);
+                        
+                        let html = '<h5>API Response:</h5>';
+                        html += '<pre>' + JSON.stringify(variants, null, 2) + '</pre>';
+                        
+                        if (variants && variants.length > 0) {
+                            html += '<h5>Variants Found:</h5>';
+                            html += '<ul>';
+                            variants.forEach(function(variant) {
+                                html += '<li>' + variant.variantName + ' (+' + variant.priceAdjustment.toLocaleString() + '₫)</li>';
+                            });
+                            html += '</ul>';
+                        } else {
+                            html += '<p class="text-warning">No variants found for this product</p>';
+                        }
+                        
+                        resultsDiv.html(html);
+                    })
+                    .fail(function(xhr, status, error) {
+                        console.error('API Error:', status, error);
+                        const html = '<div class="alert alert-danger">' +
+                            '<h5>API Error:</h5>' +
+                            '<p>Status: ' + status + '</p>' +
+                            '<p>Error: ' + error + '</p>' +
+                            '<p>Response: ' + xhr.responseText + '</p>' +
+                            '</div>';
+                        resultsDiv.html(html);
+                    });
+            });
+        });
+    </script>
+} 

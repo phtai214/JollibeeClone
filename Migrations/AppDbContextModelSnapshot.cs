@@ -539,6 +539,9 @@ namespace JollibeeClone.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("ThumbnailUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ProductID");
 
                     b.HasIndex("CategoryID");
@@ -595,6 +598,9 @@ namespace JollibeeClone.Migrations
                     b.Property<int>("ConfigGroupID")
                         .HasColumnType("int");
 
+                    b.Property<string>("CustomImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("DisplayOrder")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -613,13 +619,73 @@ namespace JollibeeClone.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasDefaultValue(0.00m);
 
+                    b.Property<int>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<int?>("VariantID")
+                        .HasColumnType("int");
+
                     b.HasKey("ConfigOptionID");
 
                     b.HasIndex("ConfigGroupID");
 
                     b.HasIndex("OptionProductID");
 
-                    b.ToTable("ProductConfigurationOptions");
+                    b.HasIndex("VariantID");
+
+                    b.ToTable("ProductConfigurationOptions", t =>
+                        {
+                            t.HasCheckConstraint("CK_ProductConfigurationOption_Quantity", "Quantity > 0");
+                        });
+                });
+
+            modelBuilder.Entity("JollibeeClone.Models.ProductVariant", b =>
+                {
+                    b.Property<int>("VariantID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VariantID"));
+
+                    b.Property<int>("DisplayOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<bool>("IsAvailable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<decimal>("PriceAdjustment")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0.00m);
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VariantName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("VariantType")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("VariantID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("ProductVariants");
                 });
 
             modelBuilder.Entity("JollibeeClone.Models.Promotion", b =>
@@ -1160,9 +1226,27 @@ namespace JollibeeClone.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("JollibeeClone.Models.ProductVariant", "Variant")
+                        .WithMany("ProductConfigurationOptions")
+                        .HasForeignKey("VariantID")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.Navigation("ConfigGroup");
 
                     b.Navigation("OptionProduct");
+
+                    b.Navigation("Variant");
+                });
+
+            modelBuilder.Entity("JollibeeClone.Models.ProductVariant", b =>
+                {
+                    b.HasOne("JollibeeClone.Models.Product", "Product")
+                        .WithMany("ProductVariants")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("JollibeeClone.Models.PromotionCategoryScope", b =>
@@ -1309,10 +1393,17 @@ namespace JollibeeClone.Migrations
 
                     b.Navigation("ProductConfigurationOptions");
 
+                    b.Navigation("ProductVariants");
+
                     b.Navigation("PromotionProductScopes");
                 });
 
             modelBuilder.Entity("JollibeeClone.Models.ProductConfigurationGroup", b =>
+                {
+                    b.Navigation("ProductConfigurationOptions");
+                });
+
+            modelBuilder.Entity("JollibeeClone.Models.ProductVariant", b =>
                 {
                     b.Navigation("ProductConfigurationOptions");
                 });

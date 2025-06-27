@@ -1,0 +1,153 @@
+@{
+    ViewData["Title"] = "Test Product Variants";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="card">
+        <div class="card-header">
+            <h5>🧪 Test Product Variants API</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Select Product:</label>
+                    <select id="productSelect" class="form-control">
+                        <option value="">-- Loading products... --</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label>Variants Result:</label>
+                    <select id="variantSelect" class="form-control">
+                        <option value="">-- Select product first --</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mt-3">
+                <h6>API Response:</h6>
+                <pre id="apiResponse" style="background: #f8f9fa; padding: 10px; border-radius: 5px; min-height: 100px;">
+Select a product to see API response
+                </pre>
+            </div>
+            
+            <div class="mt-3">
+                <button id="testBtn" class="btn btn-primary">Test Random Product</button>
+                <button id="clearBtn" class="btn btn-secondary">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            loadProducts();
+            
+            $('#productSelect').change(function() {
+                const productId = $(this).val();
+                if (productId) {
+                    testProductVariants(productId);
+                } else {
+                    clearResults();
+                }
+            });
+            
+            $('#testBtn').click(function() {
+                const options = $('#productSelect option');
+                if (options.length > 1) {
+                    const randomIndex = Math.floor(Math.random() * (options.length - 1)) + 1;
+                    const randomProductId = options.eq(randomIndex).val();
+                    $('#productSelect').val(randomProductId).trigger('change');
+                }
+            });
+            
+            $('#clearBtn').click(function() {
+                $('#productSelect').val('');
+                clearResults();
+            });
+        });
+        
+        function loadProducts() {
+            $.get('/Admin/Combo/GetProducts')
+                .done(function(products) {
+                    const select = $('#productSelect');
+                    select.html('<option value="">-- Choose product --</option>');
+                    
+                    if (products && products.length > 0) {
+                        products.forEach(function(product) {
+                            select.append(new Option(product.productName + ' (' + product.price.toLocaleString() + '₫)', product.productID));
+                        });
+                        
+                        $('#apiResponse').text('✅ Loaded ' + products.length + ' products successfully');
+                    } else {
+                        $('#apiResponse').text('❌ No products found');
+                    }
+                })
+                .fail(function(xhr, status, error) {
+                    $('#apiResponse').text('❌ Failed to load products: ' + error);
+                    
+                    // Fallback: manually add some test data
+                    const select = $('#productSelect');
+                    select.html(`
+                        <option value="">-- Choose product --</option>
+                        <option value="1">Test Product 1</option>
+                        <option value="2">Test Product 2</option>
+                        <option value="3">Test Product 3</option>
+                    `);
+                });
+        }
+        
+        function testProductVariants(productId) {
+            $('#apiResponse').text('🔄 Loading variants for product ' + productId + '...');
+            $('#variantSelect').html('<option value="">-- Loading... --</option>');
+            
+            const startTime = Date.now();
+            
+            $.get('@Url.Action("GetProductVariants", "Combo")', { productId: productId })
+                .done(function(variants) {
+                    const endTime = Date.now();
+                    const duration = endTime - startTime;
+                    
+                    // Update response display
+                    let responseText = '✅ API SUCCESS (' + duration + 'ms)\n\n';
+                    responseText += 'URL: /Admin/Combo/GetProductVariants?productId=' + productId + '\n';
+                    responseText += 'Response: ' + JSON.stringify(variants, null, 2);
+                    $('#apiResponse').text(responseText);
+                    
+                    // Update variant select
+                    const variantSelect = $('#variantSelect');
+                    variantSelect.html('<option value="">-- Choose variant --</option>');
+                    
+                    if (variants && variants.length > 0) {
+                        variants.forEach(function(variant) {
+                            const priceText = variant.priceAdjustment > 0 
+                                ? ' (+' + variant.priceAdjustment.toLocaleString() + '₫)'
+                                : ' (+0₫)';
+                            const optionText = variant.variantName + priceText + ' [' + variant.variantType + ']';
+                            variantSelect.append(new Option(optionText, variant.variantID));
+                        });
+                    } else {
+                        variantSelect.append(new Option('No variants available', ''));
+                    }
+                })
+                .fail(function(xhr, status, error) {
+                    const endTime = Date.now();
+                    const duration = endTime - startTime;
+                    
+                    let responseText = '❌ API ERROR (' + duration + 'ms)\n\n';
+                    responseText += 'Status: ' + status + '\n';
+                    responseText += 'Error: ' + error + '\n';
+                    responseText += 'Response: ' + xhr.responseText;
+                    $('#apiResponse').text(responseText);
+                    
+                    $('#variantSelect').html('<option value="">-- API Error --</option>');
+                });
+        }
+        
+        function clearResults() {
+            $('#variantSelect').html('<option value="">-- Select product first --</option>');
+            $('#apiResponse').text('Select a product to see API response');
+        }
+    </script>
+} 
