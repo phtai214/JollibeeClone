@@ -45,11 +45,11 @@ namespace JollibeeClone.ViewModels
         [Display(Name = "Tên nhóm")]
         public string GroupName { get; set; } = string.Empty;
 
-        [Range(1, int.MaxValue, ErrorMessage = "Số lựa chọn tối thiểu phải lớn hơn 0")]
+        [Range(1, 50, ErrorMessage = "Số lựa chọn tối thiểu phải từ 1 đến 50")]
         [Display(Name = "Số lựa chọn tối thiểu")]
         public int MinSelections { get; set; } = 1;
 
-        [Range(1, int.MaxValue, ErrorMessage = "Số lựa chọn tối đa phải lớn hơn 0")]
+        [Range(1, 50, ErrorMessage = "Số lựa chọn tối đa phải từ 1 đến 50")]
         [Display(Name = "Số lựa chọn tối đa")]
         public int MaxSelections { get; set; } = 1;
 

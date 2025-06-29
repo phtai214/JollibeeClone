@@ -44,8 +44,8 @@ builder.Services.AddScoped<IPromotionService, PromotionService>();
 // Thêm các service khác
 builder.Services.AddControllersWithViews(options =>
 {
-    // EXTREME CONFIG: Support 15 groups x 10 options (150 total options)
-    options.MaxModelBindingCollectionSize = 20480; // Tăng lên 20K để support mega combos
+    // MEGA COMBO CONFIG: Support 50 groups x 50 options (2500 total options)
+    options.MaxModelBindingCollectionSize = 102400; // Tăng lên 100K để support mega combos với 50 groups
 })
 .ConfigureApiBehaviorOptions(options =>
 {
@@ -56,23 +56,23 @@ builder.Services.AddControllersWithViews(options =>
 // Cấu hình MVC options để hỗ trợ mega combo forms
 builder.Services.Configure<Microsoft.AspNetCore.Mvc.MvcOptions>(options =>
 {
-    // MEGA COMBO SUPPORT: 15 groups x 10 options = 150+ total options
-    options.MaxModelBindingCollectionSize = 20480; // 20K collection limit
+    // MEGA COMBO SUPPORT: 50 groups x 50 options = 2500+ total options
+    options.MaxModelBindingCollectionSize = 102400; // 100K collection limit for mega combos
     options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(value => "Trường này là bắt buộc.");
 });
 
-// Cấu hình Form Options cho MEGA COMBO với 15 groups x 10 options
+// Cấu hình Form Options cho MEGA COMBO với 50 groups x 50 options
 builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>
 {
-    // Tính toán: 15 groups x 10 options x ~8 fields per option = ~1200 fields
-    // Thêm các fields khác: combo info, images, etc = ~200 fields
-    // Total estimate: ~1400 fields, safe margin x3 = ~4200
-    options.ValueCountLimit = 25600; // 25K values cho safety margin
-    options.KeyLengthLimit = 16384; // 16KB key length cho deep nesting
-    options.ValueLengthLimit = 4 * 1024 * 1024; // 4MB cho large form values
-    options.MultipartBodyLengthLimit = 512 * 1024 * 1024; // 512MB cho file uploads
-    options.MultipartHeadersCountLimit = 4096; // 4K headers
-    options.MultipartHeadersLengthLimit = 131072; // 128KB headers length
+    // Tính toán: 50 groups x 50 options x ~10 fields per option = ~25,000 fields
+    // Thêm các fields khác: combo info, images, etc = ~500 fields
+    // Total estimate: ~25,500 fields, safe margin x2 = ~51,000
+    options.ValueCountLimit = 102400; // 100K values cho mega combo safety margin
+    options.KeyLengthLimit = 32768; // 32KB key length cho deep nesting với 50 levels
+    options.ValueLengthLimit = 8 * 1024 * 1024; // 8MB cho large form values
+    options.MultipartBodyLengthLimit = 1024 * 1024 * 1024; // 1GB cho file uploads với mega combo
+    options.MultipartHeadersCountLimit = 8192; // 8K headers
+    options.MultipartHeadersLengthLimit = 262144; // 256KB headers length
 });
 
 var app = builder.Build();

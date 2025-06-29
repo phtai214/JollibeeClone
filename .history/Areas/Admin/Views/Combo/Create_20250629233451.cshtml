@@ -1,0 +1,585 @@
+@model JollibeeClone.ViewModels.ComboCreateViewModel
+
+@{
+    ViewData["Title"] = "Tạo Combo Mới";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="~/css/admin-combo.css" />
+
+<style>
+    /* Optimized styles for mega combos */
+    .config-group {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        background: #f9f9f9;
+    }
+    
+    .option-item {
+        background: white;
+        transition: none; /* Remove transitions for better performance with many items */
+    }
+    
+    .options-container {
+        max-height: 500px;
+        overflow-y: auto;
+        padding: 10px;
+    }
+    
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        z-index: 9999;
+    }
+    
+    .group-counter, .option-counter {
+        display: inline-block;
+        background: #007bff;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        margin-left: 10px;
+    }
+    
+    /* Improve performance by reducing repaints */
+    .product-select, .variant-select {
+        will-change: contents;
+    }
+    
+    /* Responsive design for mega forms */
+    @@media (max-width: 768px) {
+        .options-container {
+            max-height: 300px;
+        }
+        
+        .col-md-3, .col-md-2 {
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <div class="d-lg-flex">
+                        <div>
+                            <h5 class="mb-0">@ViewData["Title"]</h5>
+                            <p class="text-sm mb-0">
+                                Tạo combo sản phẩm với tùy chọn cấu hình
+                            </p>
+                        </div>
+                        <div class="ms-auto my-auto mt-lg-0 mt-4">
+                            <div class="ms-auto my-auto">
+                                <a href="@Url.Action("Index", "Combo")" class="btn btn-secondary btn-sm mb-0">
+                                    <i class="fas fa-arrow-left"></i> Quay lại
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post" enctype="multipart/form-data" id="comboForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <!-- Thông tin combo cơ bản -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ComboName" class="form-control-label"></label>
+                                    <input asp-for="ComboName" class="form-control" placeholder="Nhập tên combo">
+                                    <span asp-validation-for="ComboName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ComboPrice" class="form-control-label"></label>
+                                    <input asp-for="ComboPrice" class="form-control" type="number" step="0.01" placeholder="0">
+                                    <span asp-validation-for="ComboPrice" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="CategoryID" class="form-control-label"></label>
+                                    <select asp-for="CategoryID" class="form-control">
+                                        <option value="">-- Chọn danh mục --</option>
+                                        @foreach (var category in Model.Categories)
+                                        {
+                                            <option value="@category.CategoryID">@category.CategoryName</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="CategoryID" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ShortDescription" class="form-control-label"></label>
+                                    <textarea asp-for="ShortDescription" class="form-control" rows="3" placeholder="Mô tả ngắn về combo"></textarea>
+                                    <span asp-validation-for="ShortDescription" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ImageFile" class="form-control-label"></label>
+                                    <input asp-for="ImageFile" type="file" class="form-control" accept="image/*">
+                                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ThumbnailFile" class="form-control-label"></label>
+                                    <input asp-for="ThumbnailFile" type="file" class="form-control" accept="image/*">
+                                    <span asp-validation-for="ThumbnailFile" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Nhóm cấu hình -->
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0"><i class="fas fa-layer-group me-2"></i>Nhóm tùy chọn</h6>
+                            <button type="button" class="btn btn-add-group" id="addGroupBtn">
+                                <i class="fas fa-plus"></i> Thêm nhóm
+                            </button>
+                        </div>
+
+                        <div id="configGroups">
+                            <!-- Groups sẽ được thêm bằng JavaScript -->
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Tạo combo
+                                </button>
+                                <a href="@Url.Action("Index", "Combo")" class="btn btn-secondary">
+                                    <i class="fas fa-times"></i> Hủy
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Template cho Group -->
+<template id="groupTemplate">
+    <div class="card mb-3 config-group">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="mb-0">Nhóm {groupIndex}</h6>
+                <button type="button" class="btn btn-remove removeGroupBtn">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-control-label">Tên nhóm</label>
+                    <input name="ConfigGroups[{groupIndex}].GroupName" class="form-control" placeholder="VD: Chọn gà" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-control-label">Min</label>
+                    <input name="ConfigGroups[{groupIndex}].MinSelections" type="number" class="form-control" value="1" min="1">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-control-label">Max</label>
+                    <input name="ConfigGroups[{groupIndex}].MaxSelections" type="number" class="form-control" value="1" min="1">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-control-label">Thứ tự</label>
+                    <input name="ConfigGroups[{groupIndex}].DisplayOrder" type="number" class="form-control" value="0">
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-add-option mt-4 addOptionBtn">
+                        <i class="fas fa-plus"></i> Thêm món
+                    </button>
+                </div>
+            </div>
+            
+            <div class="options-container">
+                <!-- Options sẽ được thêm ở đây -->
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- Template cho Option -->
+<template id="optionTemplate">
+    <div class="border rounded p-3 mb-3 option-item">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="mb-0">Món {optionIndex}</h6>
+            <button type="button" class="btn btn-remove removeOptionBtn">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-3">
+                <label class="form-control-label">Sản phẩm</label>
+                <select name="ConfigGroups[{groupIndex}].Options[{optionIndex}].ProductID" class="form-control product-select" required>
+                    <option value="">-- Chọn sản phẩm --</option>
+                    @foreach (var product in Model.AvailableProducts)
+                    {
+                        <option value="@product.ProductID" data-price="@product.Price" data-image="@product.ImageUrl" data-thumbnail="@product.ThumbnailUrl">
+                            @product.ProductName
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-control-label">Biến thể</label>
+                <select name="ConfigGroups[{groupIndex}].Options[{optionIndex}].VariantID" class="form-control variant-select">
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-control-label">Số lượng</label>
+                <input name="ConfigGroups[{groupIndex}].Options[{optionIndex}].Quantity" type="number" class="form-control" value="1" min="1">
+            </div>
+            <div class="col-md-2">
+                <label class="form-control-label">Giá cộng thêm</label>
+                <input name="ConfigGroups[{groupIndex}].Options[{optionIndex}].PriceAdjustment" type="number" step="0.01" class="form-control" value="0">
+            </div>
+            <div class="col-md-2">
+                <label class="form-control-label">Thứ tự</label>
+                <input name="ConfigGroups[{groupIndex}].Options[{optionIndex}].DisplayOrder" type="number" class="form-control" value="0">
+            </div>
+            <div class="col-md-1">
+                <label class="form-control-label">Mặc định</label>
+                <div class="form-check mt-1">
+                    <input name="ConfigGroups[{groupIndex}].Options[{optionIndex}].IsDefault" type="checkbox" class="form-check-input">
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <label class="form-control-label">Ảnh custom</label>
+                <input name="ConfigGroups[{groupIndex}].Options[{optionIndex}].CustomImageFile" type="file" class="form-control" accept="image/*">
+            </div>
+            <div class="col-md-6">
+                <div class="product-preview d-none">
+                    <small class="text-muted">Preview:</small>
+                    <div class="d-flex align-items-center">
+                        <img class="product-preview-img me-2" style="width: 30px; height: 30px; object-fit: cover; border-radius: 4px;">
+                        <span class="product-preview-name"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+@section Scripts {
+    <script>
+        let groupIndex = 0;
+        const MAX_GROUPS = 50;
+        const MAX_OPTIONS_PER_GROUP = 50;
+        
+        $(document).ready(function() {
+            // Validation functions
+            function validateForm() {
+                let isValid = true;
+                let errorMessages = [];
+                
+                // Validate number of groups
+                const groupCount = $('#configGroups .config-group').length;
+                if (groupCount > MAX_GROUPS) {
+                    errorMessages.push(`Số lượng nhóm không được vượt quá ${MAX_GROUPS}.`);
+                    isValid = false;
+                }
+                
+                // Validate options per group
+                $('#configGroups .config-group').each(function(index) {
+                    const optionCount = $(this).find('.option-item').length;
+                    if (optionCount > MAX_OPTIONS_PER_GROUP) {
+                        errorMessages.push(`Nhóm ${index + 1} có quá ${MAX_OPTIONS_PER_GROUP} sản phẩm.`);
+                        isValid = false;
+                    }
+                    
+                    // Validate that all products and variants are selected
+                    $(this).find('.option-item').each(function(optIdx) {
+                        const productId = $(this).find('.product-select').val();
+                        const variantId = $(this).find('.variant-select').val();
+                        
+                        if (!productId) {
+                            errorMessages.push(`Vui lòng chọn sản phẩm cho món ${optIdx + 1} trong nhóm ${index + 1}.`);
+                            isValid = false;
+                        }
+                        
+                        if (!variantId) {
+                            errorMessages.push(`Vui lòng chọn biến thể cho món ${optIdx + 1} trong nhóm ${index + 1}.`);
+                            isValid = false;
+                        }
+                    });
+                });
+                
+                if (!isValid) {
+                    alert('Lỗi validation:\n' + errorMessages.join('\n'));
+                }
+                
+                return isValid;
+            }
+            
+            // Enhanced form submission with validation
+            $('#comboForm').submit(function(e) {
+                console.log('=== FORM SUBMIT DEBUG ===');
+                
+                if (!validateForm()) {
+                    e.preventDefault();
+                    return false;
+                }
+                
+                // Show loading indicator for large forms
+                const totalOptions = $('.option-item').length;
+                if (totalOptions > 100) {
+                    $('<div class="loading-overlay">Đang xử lý combo lớn, vui lòng đợi...</div>').appendTo('body');
+                }
+                
+                const formData = new FormData(this);
+                let configCount = 0;
+                for (let [key, value] of formData.entries()) {
+                    if (key.includes('ConfigGroups')) {
+                        configCount++;
+                    }
+                }
+                console.log('Total config fields:', configCount);
+            });
+            
+            // Thêm nhóm đầu tiên
+            addGroup();
+            
+            // Event handlers
+            $('#addGroupBtn').click(function() {
+                if ($('#configGroups .config-group').length >= MAX_GROUPS) {
+                    alert(`Không thể thêm quá ${MAX_GROUPS} nhóm.`);
+                    return;
+                }
+                addGroup();
+            });
+            
+            $(document).on('click', '.removeGroupBtn', function() {
+                $(this).closest('.config-group').remove();
+                reindexGroups();
+            });
+            
+            $(document).on('click', '.addOptionBtn', function() {
+                const groupContainer = $(this).closest('.config-group');
+                const optionCount = groupContainer.find('.option-item').length;
+                
+                if (optionCount >= MAX_OPTIONS_PER_GROUP) {
+                    alert(`Không thể thêm quá ${MAX_OPTIONS_PER_GROUP} sản phẩm vào một nhóm.`);
+                    return;
+                }
+                
+                const currentGroupIndex = getCurrentGroupIndex(groupContainer);
+                addOption(groupContainer, currentGroupIndex);
+            });
+            
+            $(document).on('click', '.removeOptionBtn', function() {
+                const groupContainer = $(this).closest('.config-group');
+                $(this).closest('.option-item').remove();
+                reindexOptions(groupContainer);
+            });
+            
+            $(document).on('change', '.product-select', function() {
+                const selectedOption = $(this).find('option:selected');
+                const optionContainer = $(this).closest('.option-item');
+                const variantSelect = optionContainer.find('.variant-select');
+                const productId = $(this).val();
+                
+                // Clear tất cả options và reset về trạng thái ban đầu
+                variantSelect.empty();
+                variantSelect.append('<option value="">-- Chọn biến thể --</option>');
+                
+                // Update preview
+                updateProductPreview(optionContainer, selectedOption);
+                
+                // Load variants if product selected
+                if (productId) {
+                    loadProductVariants(productId, variantSelect);
+                }
+            });
+        });
+        
+        function addGroup() {
+            const template = $('#groupTemplate').html();
+            const groupHtml = template.replace(/{groupIndex}/g, groupIndex);
+            $('#configGroups').append(groupHtml);
+            
+            // Thêm option đầu tiên cho group mới
+            const newGroup = $('#configGroups .config-group').last();
+            addOption(newGroup, groupIndex);
+            
+            groupIndex++;
+            updateCounters();
+        }
+        
+        function updateCounters() {
+            const totalGroups = $('#configGroups .config-group').length;
+            const totalOptions = $('.option-item').length;
+            
+            // Update page title or add counter display
+            document.title = `Tạo Combo (${totalGroups} nhóm, ${totalOptions} món) - Admin`;
+            
+            // Update button text to show current count
+            $('#addGroupBtn').html(`<i class="fas fa-plus"></i> Thêm nhóm <span class="group-counter">${totalGroups}/${MAX_GROUPS}</span>`);
+        }
+        
+        function addOption(groupContainer, currentGroupIndex) {
+            const optionsContainer = groupContainer.find('.options-container');
+            const optionCount = optionsContainer.find('.option-item').length;
+            
+            const template = $('#optionTemplate').html();
+            const optionHtml = template.replace(/{groupIndex}/g, currentGroupIndex)
+                                     .replace(/{optionIndex}/g, optionCount);
+            
+            optionsContainer.append(optionHtml);
+            
+            // Set default option cho variant select mới tạo
+            const newOption = optionsContainer.find('.option-item').last();
+            const variantSelect = newOption.find('.variant-select');
+            variantSelect.append('<option value="">-- Chọn biến thể --</option>');
+            
+            // Update add option button for this group
+            const groupOptionsCount = optionsContainer.find('.option-item').length;
+            groupContainer.find('.addOptionBtn').html(`<i class="fas fa-plus"></i> Thêm món <span class="option-counter">${groupOptionsCount}/${MAX_OPTIONS_PER_GROUP}</span>`);
+            
+            updateCounters();
+        }
+        
+        function getCurrentGroupIndex(groupContainer) {
+            return $('#configGroups .config-group').index(groupContainer);
+        }
+        
+        function reindexGroups() {
+            $('#configGroups .config-group').each(function(index) {
+                const group = $(this);
+                
+                // Update group title
+                group.find('.card-header h6').text('Nhóm ' + (index + 1));
+                
+                // Update all input names in this group
+                group.find('input, select').each(function() {
+                    const name = $(this).attr('name');
+                    if (name && name.includes('ConfigGroups[')) {
+                        const newName = name.replace(/ConfigGroups\[\d+\]/, 'ConfigGroups[' + index + ']');
+                        $(this).attr('name', newName);
+                    }
+                });
+                
+                // Reindex options in this group
+                reindexOptions(group);
+            });
+            updateCounters();
+        }
+        
+        function reindexOptions(groupContainer) {
+            const currentGroupIndex = getCurrentGroupIndex(groupContainer);
+            
+            groupContainer.find('.option-item').each(function(index) {
+                const option = $(this);
+                
+                // Update option title
+                option.find('h6').text('Món ' + (index + 1));
+                
+                // Update input names với group index đúng
+                option.find('input, select').each(function() {
+                    const name = $(this).attr('name');
+                    if (name && name.includes('ConfigGroups[') && name.includes('.Options[')) {
+                        // Replace both group index and option index
+                        const newName = name.replace(/ConfigGroups\[\d+\]\.Options\[\d+\]\./, 'ConfigGroups[' + currentGroupIndex + '].Options[' + index + '].');
+                        $(this).attr('name', newName);
+                    }
+                });
+            });
+            
+            // Update add option button for this group
+            const optionsContainer = groupContainer.find('.options-container');
+            const groupOptionsCount = optionsContainer.find('.option-item').length;
+            groupContainer.find('.addOptionBtn').html(`<i class="fas fa-plus"></i> Thêm món <span class="option-counter">${groupOptionsCount}/${MAX_OPTIONS_PER_GROUP}</span>`);
+        }
+        
+        function updateProductPreview(optionContainer, selectedOption) {
+            const preview = optionContainer.find('.product-preview');
+            const img = preview.find('.product-preview-img');
+            const name = preview.find('.product-preview-name');
+            
+            if (selectedOption.val()) {
+                const productName = selectedOption.text();
+                const thumbnail = selectedOption.data('thumbnail');
+                const image = selectedOption.data('image');
+                
+                name.text(productName);
+                
+                if (thumbnail) {
+                    img.attr('src', thumbnail);
+                } else if (image) {
+                    img.attr('src', image);
+                } else {
+                    img.attr('src', '/images/no-image.png');
+                }
+                
+                preview.removeClass('d-none');
+            } else {
+                preview.addClass('d-none');
+            }
+        }
+        
+        function loadProductVariants(productId, variantSelect) {
+            console.log('Loading variants for product:', productId);
+            
+            $.get('@Url.Action("GetProductVariants", "Combo")', { productId: productId })
+                .done(function(variants) {
+                    console.log('Received variants:', variants);
+                    console.log('Current select options before adding:', variantSelect.find('option').length);
+                    
+                    if (variants && variants.length > 0) {
+                        variants.forEach(function(variant) {
+                            // Sử dụng trực tiếp variant name vì đã có format sẵn
+                            console.log('Adding variant option:', variant.variantName);
+                            
+                            // Sử dụng jQuery để tránh encoding issues
+                            const option = $('<option></option>').attr('value', variant.variantID).text(variant.variantName);
+                            variantSelect.append(option);
+                        });
+                        
+                        console.log('Final select options count:', variantSelect.find('option').length);
+                    } else {
+                        console.log('No variants found for product:', productId);
+                    }
+                })
+                .fail(function(xhr, status, error) {
+                    console.error('Không thể tải variants:', status, error);
+                    console.error('Response:', xhr.responseText);
+                });
+        }
+        
+
+    </script>
+} 

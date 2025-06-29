@@ -147,7 +147,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
                 }
                 
                 // Show sample field names for debugging
-                var configFields = Request.Form.Keys.Where(k => k.Contains("ConfigGroups")).Take(5);
+                var configFields = Request.Form.Keys.Where(k => k.Contains("ConfigGroups")).Take(50);
                 System.Diagnostics.Debug.WriteLine($"Sample ConfigGroups fields:");
                 foreach (var field in configFields)
                 {
@@ -156,9 +156,9 @@ namespace JollibeeClone.Areas.Admin.Controllers
                     System.Diagnostics.Debug.WriteLine($"  {field} = {value}");
                 }
                 
-                if (configGroupsFields > 5)
+                if (configGroupsFields > 50)
                 {
-                    System.Diagnostics.Debug.WriteLine($"  ... and {configGroupsFields - 5} more ConfigGroups fields");
+                    System.Diagnostics.Debug.WriteLine($"  ... and {configGroupsFields - 50} more ConfigGroups fields");
                 }
             }
             
