@@ -78,6 +78,7 @@ namespace JollibeeClone.Controllers
                 .Select(p => new {
                     p.ProductID,
                     p.ProductName,
+                    BasePrice = p.Price,
                     Groups = p.ProductConfigurationGroups.Select(g => new {
                         g.ConfigGroupID,
                         g.GroupName,

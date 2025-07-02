@@ -99,7 +99,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-danger">Thêm vào giỏ hàng</button>
+        <button type="button" class="btn btn-danger" id="addToCartBtn">Thêm vào giỏ hàng</button>
       </div>
     </div>
   </div>
@@ -155,6 +155,9 @@
         box-shadow: 0 4px 32px rgba(255, 195, 0, 0.10), 0 1.5px 8px rgba(227, 25, 55, 0.07);
         margin-bottom: 32px;
         position: relative;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
     .menu-card:hover {
         transform: translateY(-6px) scale(1.03);
@@ -168,6 +171,9 @@
         background: #fffbe7;
     }
     .menu-content {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
         padding: 2rem 1.5rem 1.5rem 1.5rem;
     }
     .menu-content h3 {
@@ -183,6 +189,14 @@
         line-height: 1.7;
         margin-bottom: 1.1rem;
         font-weight: 400;
+        min-height: 3.4em;
+        max-height: 3.4em;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
     }
     .menu-price {
         color: #ff9800;
@@ -192,6 +206,7 @@
         letter-spacing: 0.5px;
     }
     .btn-order {
+        margin-top: auto;
         background: linear-gradient(90deg, #e31937 0%, #ff9800 100%);
         color: #fff;
         border-radius: 30px;
@@ -270,6 +285,23 @@
         background: #ffe082;
         color: #e31937;
     }
+    .btn-success {
+        background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 30px;
+        padding: 10px 32px;
+        font-size: 1.1rem;
+        box-shadow: 0 2px 8px rgba(40, 167, 69, 0.15);
+        transition: all 0.3s ease;
+    }
+    .btn-success:hover {
+        background: linear-gradient(90deg, #20c997 0%, #28a745 100%);
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(40, 167, 69, 0.25);
+    }
     .input-group .form-control {
         border-radius: 20px;
         border: 1.5px solid #ffe082;
@@ -289,6 +321,35 @@
     .input-group .btn-outline-secondary:hover {
         background: #ff9800;
         color: #fff;
+    }
+    /* Tổng giá combo nổi bật */
+    #comboTotalPrice {
+        background: linear-gradient(90deg, #fffbe7 0%, #ffe082 100%);
+        border-radius: 18px;
+        padding: 18px 0;
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #e31937;
+        box-shadow: 0 2px 8px rgba(255, 195, 0, 0.10);
+        margin-top: 10px;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+        border: 2px solid #ffe082;
+        transition: background 0.3s, color 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    #comboTotalPrice:before {
+        content: '';
+        display: inline-block;
+        width: 36px;
+        height: 36px;
+        background: url('/assets/images/ga_gion_vui_ve.png') no-repeat center center/contain;
+        vertical-align: middle;
+        margin-right: 12px;
     }
     @@media (max-width: 768px) {
         .menu-hero {
@@ -310,8 +371,8 @@
         function renderMenuList(menuItems) {
             const menuList = document.getElementById('menuList');
             menuList.innerHTML = menuItems.map(item => `
-                <div class="col-md-6 col-lg-4">
-                    <div class="menu-card">
+                <div class="col-md-6 col-lg-4 h-100">
+                    <div class="menu-card h-100">
                         <img src="${item.imageUrl || item.thumbnailUrl || '/assets/images/default.png'}" alt="${item.productName}" class="menu-img">
                         <div class="menu-content">
                             <h3>${item.productName}</h3>
@@ -350,7 +411,7 @@
                     const inputId = `group${group.configGroupID}-option${option.configOptionID}`;
                     const checked = option.isDefault || optIdx === 0 ? 'checked' : '';
                     html += `
-                        <input type="radio" class="btn-check" name="group${group.configGroupID}" id="${inputId}" autocomplete="off" ${checked}>
+                        <input type="radio" class="btn-check" name="group${group.configGroupID}" id="${inputId}" autocomplete="off" ${checked} data-price="${option.priceAdjustment || 0}">
                         <label class="btn btn-outline-danger mb-2" for="${inputId}">
                             ${option.productImage ? `<img src="${option.productImage}" alt="${option.productName}" width="50">` : ''}
                             ${option.productName}
@@ -369,21 +430,88 @@
                   <button class="btn btn-outline-secondary" type="button" id="qtyPlus">+</button>
                 </div>
               </div>`;
+            // Tổng giá
+            html += `<div class="mb-3">
+                <label class="form-label fw-bold">Tổng giá:</label>
+                <div id="comboTotalPrice" class="fs-4 text-danger"></div>
+            </div>`;
             form.innerHTML = html;
+
+            // Hàm tính tổng giá
+            function calculateTotalPrice() {
+                let total = combo.basePrice || combo.BasePrice || 0;
+                combo.groups.forEach((group) => {
+                    const checked = document.querySelector(`input[name='group${group.configGroupID}']:checked`);
+                    if (checked) {
+                        total += parseInt(checked.getAttribute('data-price') || '0');
+                    }
+                });
+                const qty = parseInt(document.getElementById('orderQty').value) || 1;
+                document.getElementById('comboTotalPrice').innerText = (total * qty).toLocaleString() + ' đ';
+            }
+            // Gọi khi render lần đầu
+            calculateTotalPrice();
+            // Lắng nghe thay đổi option và số lượng
+            form.querySelectorAll('input[type=radio]').forEach(el => {
+                el.addEventListener('change', calculateTotalPrice);
+            });
+            form.querySelector('#orderQty').addEventListener('input', calculateTotalPrice);
         }
 
         // Lắng nghe sự kiện bấm Đặt Hàng để load option động
         document.addEventListener('click', function(e) {
             if (e.target && e.target.classList.contains('btn-order')) {
                 const productId = e.target.getAttribute('data-product-id');
+                const productName = e.target.closest('.menu-card').querySelector('h3').textContent;
+                
+                // Lưu trữ thông tin combo hiện tại
+                window.currentComboId = productId;
+                window.currentComboName = productName;
+                
+                // Reset modal về trạng thái ban đầu
+                resetModalToInitialState();
+                
                 fetch(`/Menu/GetComboOptions?productId=${productId}`)
                     .then(res => res.json())
                     .then(data => {
+                        // Lưu trữ dữ liệu combo để sử dụng sau
+                        window.currentCombo = data;
                         renderComboOptions(data);
                     })
                     .catch(err => {
                         document.getElementById('orderOptionsForm').innerHTML = '<div class="text-danger">Không thể tải tùy chọn combo!</div>';
                     });
+            }
+        });
+
+        // Hàm reset modal về trạng thái ban đầu
+        function resetModalToInitialState() {
+            // Reset modal body về form ban đầu
+            const modalBody = document.querySelector('.modal-body');
+            modalBody.innerHTML = '<form id="orderOptionsForm"><div class="text-center"><i class="fas fa-spinner fa-spin"></i> Đang tải tùy chọn...</div></form>';
+            
+            // Reset modal footer về nút ban đầu
+            const modalFooter = document.querySelector('.modal-footer');
+            modalFooter.innerHTML = `
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-danger" id="addToCartBtn">Thêm vào giỏ hàng</button>
+            `;
+            
+            // Reset modal title
+            const modalTitle = document.querySelector('.modal-title');
+            if (modalTitle) {
+                modalTitle.textContent = 'Tùy chọn combo';
+            }
+        }
+
+        // Reset modal khi modal được đóng
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('orderOptionsModal');
+            if (modal) {
+                modal.addEventListener('hidden.bs.modal', function() {
+                    // Reset modal về trạng thái ban đầu khi đóng
+                    resetModalToInitialState();
+                });
             }
         });
 
@@ -393,11 +521,134 @@
                 const qtyInput = document.getElementById('orderQty');
                 let val = parseInt(qtyInput.value);
                 if (val > 1) qtyInput.value = val - 1;
+                qtyInput.dispatchEvent(new Event('input'));
             }
             if (e.target && e.target.id === 'qtyPlus') {
                 const qtyInput = document.getElementById('orderQty');
                 let val = parseInt(qtyInput.value);
                 qtyInput.value = val + 1;
+                qtyInput.dispatchEvent(new Event('input'));
+            }
+        });
+
+        // Xử lý nút "Thêm vào giỏ hàng"
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'addToCartBtn') {
+                const form = document.getElementById('orderOptionsForm');
+                const qty = parseInt(document.getElementById('orderQty').value) || 1;
+                
+                // Thu thập tất cả thông tin đã chọn
+                const selectedOptions = {};
+                let totalPrice = 0;
+                
+                // Lấy thông tin combo hiện tại (cần lưu trữ khi load)
+                if (window.currentCombo) {
+                    totalPrice = window.currentCombo.basePrice || window.currentCombo.BasePrice || 0;
+                    
+                    window.currentCombo.groups.forEach((group) => {
+                        const checked = document.querySelector(`input[name='group${group.configGroupID}']:checked`);
+                        if (checked) {
+                            const optionId = checked.id;
+                            const optionName = checked.nextElementSibling.textContent.trim();
+                            const priceAdjustment = parseInt(checked.getAttribute('data-price') || '0');
+                            
+                            selectedOptions[group.groupName] = {
+                                optionId: optionId,
+                                optionName: optionName,
+                                priceAdjustment: priceAdjustment
+                            };
+                            
+                            totalPrice += priceAdjustment;
+                        }
+                    });
+                }
+                
+                const orderData = {
+                    comboId: window.currentComboId,
+                    comboName: window.currentComboName,
+                    selectedOptions: selectedOptions,
+                    quantity: qty,
+                    totalPrice: totalPrice * qty,
+                    basePrice: totalPrice
+                };
+                
+                // Hiển thị thông tin trong console
+                console.log('=== THÔNG TIN ĐƠN HÀNG ===');
+                console.log('Combo ID:', orderData.comboId);
+                console.log('Tên Combo:', orderData.comboName);
+                console.log('Số lượng:', orderData.quantity);
+                console.log('Giá cơ bản:', orderData.basePrice.toLocaleString() + ' đ');
+                console.log('Tổng giá:', orderData.totalPrice.toLocaleString() + ' đ');
+                console.log('Các tùy chọn đã chọn:');
+                Object.keys(orderData.selectedOptions).forEach(groupName => {
+                    const option = orderData.selectedOptions[groupName];
+                    console.log(`  - ${groupName}: ${option.optionName} ${option.priceAdjustment > 0 ? `(+${option.priceAdjustment.toLocaleString()}đ)` : ''}`);
+                });
+                console.log('========================');
+                
+                // Hiển thị thông báo thành công và nút kiểm tra giỏ hàng
+                const modalBody = document.querySelector('.modal-body');
+                modalBody.innerHTML = `
+                    <div class="text-center py-4">
+                        <div class="mb-4">
+                            <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                        </div>
+                        <h4 class="text-success mb-3">✅ Đã thêm vào giỏ hàng thành công!</h4>
+                        <div class="alert alert-success">
+                            <h5>🍔 ${orderData.comboName}</h5>
+                            <p class="mb-2">📦 Số lượng: ${orderData.quantity}</p>
+                            <p class="mb-2">💰 Giá: ${orderData.totalPrice.toLocaleString()} đ</p>
+                            <div class="text-start">
+                                <small class="text-muted">📋 Các tùy chọn đã chọn:</small>
+                                <ul class="list-unstyled ms-3">
+                                    ${Object.keys(orderData.selectedOptions).map(groupName => {
+                                        const option = orderData.selectedOptions[groupName];
+                                        return `<li>• ${groupName}: ${option.optionName}${option.priceAdjustment > 0 ? ` (+${option.priceAdjustment.toLocaleString()}đ)` : ''}</li>`;
+                                    }).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Thay đổi nút footer
+                const modalFooter = document.querySelector('.modal-footer');
+                modalFooter.innerHTML = `
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tiếp tục mua sắm</button>
+                    <a href="/Cart" class="btn btn-success">
+                        <i class="fas fa-shopping-cart me-2"></i>
+                        Kiểm tra giỏ hàng
+                    </a>
+                `;
+                
+                // Lưu vào localStorage để hiển thị trong giỏ hàng
+                const cartItem = {
+                    ProductID: orderData.comboId,
+                    ProductNameSnapshot: orderData.comboName,
+                    UnitPrice: orderData.basePrice,
+                    Quantity: orderData.quantity,
+                    Subtotal: orderData.totalPrice,
+                    SelectedConfigurationSnapshot: JSON.stringify(orderData.selectedOptions),
+                    // Thêm timestamp để tránh trùng lặp
+                    timestamp: new Date().getTime()
+                };
+                
+                // Lấy giỏ hàng hiện tại từ localStorage
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                console.log('Giỏ hàng hiện tại trước khi thêm:', cart);
+                
+                cart.push(cartItem);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                
+                console.log('Đã lưu vào giỏ hàng:', cartItem);
+                console.log('Tổng số món trong giỏ hàng sau khi thêm:', cart.length);
+                console.log('localStorage cart sau khi lưu:', localStorage.getItem('cart'));
+                
+                // Kiểm tra ngay lập tức xem có lưu được không
+                setTimeout(() => {
+                    const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+                    console.log('Kiểm tra localStorage sau 1 giây:', savedCart);
+                }, 1000);
             }
         });
     </script>

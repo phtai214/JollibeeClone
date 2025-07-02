@@ -1,0 +1,417 @@
+@{
+    ViewData["Title"] = "Giỏ hàng";
+}
+
+<style>
+body {
+    background: #fff8e1;
+}
+.cart-hero {
+    background: linear-gradient(120deg, #ffe082 0%, #ff9800 100%);
+    color: #e31937;
+    padding: 2.5rem 0 2rem 0;
+    margin-bottom: 2rem;
+    border-radius: 0 0 32px 32px;
+    box-shadow: 0 8px 32px rgba(255, 195, 0, 0.10);
+    text-align: center;
+}
+.cart-hero h1 {
+    font-family: 'Merge Black W00 Regular', 'Roboto', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+.cart-hero p {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #e31937;
+}
+.cart-table {
+    background: #fff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(255, 195, 0, 0.10), 0 1.5px 8px rgba(227, 25, 55, 0.07);
+    margin-bottom: 2rem;
+}
+.cart-table th {
+    background: #fffbe7;
+    border: none;
+    padding: 1.2rem;
+    font-weight: 700;
+    color: #e31937;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+.cart-table td {
+    padding: 1.2rem 1rem;
+    border: none;
+    border-bottom: 1px solid #ffe082;
+    vertical-align: middle;
+}
+.cart-item-name {
+    font-weight: 700;
+    color: #e31937;
+    font-size: 1.15rem;
+    margin-bottom: 0.25rem;
+}
+.cart-options {
+    font-size: 0.98rem;
+    color: #ff9800;
+    background: #fffbe7;
+    padding: 0.4rem 0.8rem;
+    border-radius: 12px;
+    margin: 0.15rem 0;
+    display: inline-block;
+}
+.cart-price {
+    font-weight: 700;
+    color: #ff9800;
+    font-size: 1.1rem;
+}
+.cart-total {
+    background: linear-gradient(90deg, #ffe082 0%, #ff9800 100%);
+    color: #e31937;
+    padding: 1.5rem 2rem;
+    border-radius: 24px;
+    margin-top: 2rem;
+    font-size: 1.3rem;
+    font-weight: 800;
+    box-shadow: 0 2px 8px rgba(255, 195, 0, 0.10);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.btn-remove {
+    background: #fff;
+    border: 2px solid #e31937;
+    border-radius: 16px;
+    padding: 0.5rem 1rem;
+    color: #e31937;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+.btn-remove:hover {
+    background: #e31937;
+    color: #fff;
+    border-color: #ff9800;
+    transform: scale(1.08);
+}
+.btn-order {
+    background: linear-gradient(90deg, #e31937 0%, #ff9800 100%);
+    border: none;
+    border-radius: 32px;
+    padding: 1rem 2.5rem;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(227, 25, 55, 0.10);
+    transition: all 0.2s;
+    margin-bottom: 1rem;
+}
+.btn-order:hover {
+    background: linear-gradient(90deg, #ff9800 0%, #e31937 100%);
+    color: #fffbe7;
+    transform: scale(1.04);
+}
+.btn-outline-danger {
+    border-radius: 32px;
+    font-weight: 600;
+    border: 2px solid #e31937;
+    color: #e31937;
+    background: #fff;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-outline-danger:hover {
+    background: #e31937;
+    color: #fff;
+}
+.input-group.input-group-sm .form-control {
+    min-width: 40px;
+    max-width: 60px;
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #e31937;
+    background: #fffbe7;
+}
+.input-group.input-group-sm .btn {
+    border-radius: 0 !important;
+}
+.input-group.input-group-sm {
+    width: 110px;
+}
+.input-group .btn-outline-secondary {
+    border-color: #ff9800;
+    color: #ff9800;
+    background: #fff;
+    font-weight: 700;
+}
+.input-group .btn-outline-secondary:hover {
+    background-color: #ff9800;
+    border-color: #ff9800;
+    color: #fff;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+@@media (max-width: 768px) {
+    .cart-hero {
+        font-size: 1rem;
+        border-radius: 0 0 18px 18px;
+        padding: 1.2rem 0 1rem 0;
+    }
+    .cart-table {
+        border-radius: 12px;
+    }
+    .cart-total {
+        border-radius: 12px;
+        font-size: 1.1rem;
+        padding: 1rem 1rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .btn-order, .btn-outline-danger {
+        font-size: 1rem;
+        padding: 0.7rem 1.2rem;
+        border-radius: 20px;
+    }
+}
+</style>
+
+<div class="cart-hero">
+    <div class="container">
+        <h1 class="mb-2">🛒 Giỏ hàng của bạn</h1>
+        <p class="mb-0">Kiểm tra và hoàn tất đơn hàng của bạn</p>
+    </div>
+</div>
+
+<div class="container">
+    <div id="cartContainer"></div>
+</div>
+@section Scripts {
+<script>
+function renderCart() {
+    console.log('=== DEBUG GIỎ HÀNG ===');
+    console.log('localStorage.getItem("cart"):', localStorage.getItem('cart'));
+    
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    console.log('Cart parsed:', cart);
+    console.log('Cart length:', cart.length);
+    console.log('Cart type:', typeof cart);
+    console.log('=== END DEBUG ===');
+    
+    let html = '';
+    
+    if (cart.length === 0) {
+        html = `
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-shopping-cart" style="font-size: 4rem; color: #ccc;"></i>
+                </div>
+                <h3 class="text-muted mb-3">Giỏ hàng của bạn đang trống</h3>
+                <p class="text-muted mb-4">Hãy thêm một số món ăn ngon vào giỏ hàng nhé!</p>
+                <a href="/Menu/MonNgonPhaiThu" class="btn btn-danger btn-lg">
+                    <i class="fas fa-utensils me-2"></i>
+                    Xem thực đơn
+                </a>
+            </div>`;
+        document.getElementById('cartContainer').innerHTML = html;
+        return;
+    }
+    
+    let total = 0;
+    html += `<div class="cart-table">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th style="width: 30%;">🍔 Sản phẩm</th>
+                    <th style="width: 35%;">⚙️ Tùy chọn</th>
+                    <th style="width: 12%;">💰 Đơn giá</th>
+                    <th style="width: 10%;">📦 Số lượng</th>
+                    <th style="width: 13%;">💵 Thành tiền</th>
+                    <th style="width: 10%;">🗑️</th>
+                </tr>
+            </thead>
+            <tbody>`;
+    
+    cart.forEach((item, idx) => {
+        let itemName, itemPrice, itemQuantity, itemSubtotal, optionsHtml;
+        
+        // Xử lý dữ liệu mới (từ code hiện tại)
+        if (item.ProductNameSnapshot) {
+            itemName = item.ProductNameSnapshot;
+            itemPrice = item.UnitPrice;
+            itemQuantity = item.Quantity;
+            itemSubtotal = item.Subtotal;
+            
+            try {
+                const options = JSON.parse(item.SelectedConfigurationSnapshot);
+                optionsHtml = Object.entries(options).map(([groupName, option]) => {
+                    if (typeof option === 'object' && option.optionName) {
+                        return `<div class="cart-options">• ${groupName}: ${option.optionName}${option.priceAdjustment > 0 ? ` (+${option.priceAdjustment.toLocaleString()}đ)` : ''}</div>`;
+                    } else {
+                        return `<div class="cart-options">• ${groupName}: ${option}</div>`;
+                    }
+                }).join('');
+            } catch (e) {
+                optionsHtml = '<div class="cart-options text-muted">Không có tùy chọn</div>';
+            }
+        }
+        // Xử lý dữ liệu cũ (từ API)
+        else if (item.productName) {
+            itemName = item.productName;
+            itemPrice = item.basePrice;
+            itemQuantity = item.quantity;
+            itemSubtotal = item.totalPrice;
+            
+            if (item.options && item.options.length > 0) {
+                optionsHtml = item.options.map(option => {
+                    const variantText = option.variantName ? ` (${option.variantName})` : '';
+                    const priceText = option.priceAdjustment > 0 ? ` (+${option.priceAdjustment.toLocaleString()}đ)` : '';
+                    return `<div class="cart-options">• ${option.productName}${variantText}${priceText}</div>`;
+                }).join('');
+            } else {
+                optionsHtml = '<div class="cart-options text-muted">Không có tùy chọn</div>';
+            }
+        }
+        // Dữ liệu không hợp lệ
+        else {
+            console.warn('Dữ liệu giỏ hàng không hợp lệ:', item);
+            return; // Bỏ qua item này
+        }
+        
+        // Tính tổng tiền cho item này
+        if (item.Subtotal !== undefined) {
+            total += item.Subtotal;
+        } else if (item.totalPrice !== undefined) {
+            total += item.totalPrice;
+        } else {
+            total += itemSubtotal;
+        }
+        
+        html += `<tr>
+            <td>
+                <div class="cart-item-name">${itemName}</div>
+            </td>
+            <td>
+                ${optionsHtml}
+            </td>
+            <td class="cart-price">${itemPrice.toLocaleString()} đ</td>
+            <td class="text-center">
+                <div class="input-group input-group-sm" style="max-width: 120px; margin: 0 auto;">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="updateQuantity(${idx}, -1)" type="button">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <input type="number" class="form-control text-center" value="${itemQuantity}" min="1" 
+                           onchange="updateQuantity(${idx}, 0, this.value)" style="border-left: 0; border-right: 0;">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="updateQuantity(${idx}, 1)" type="button">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </td>
+            <td class="cart-price fw-bold">${itemSubtotal.toLocaleString()} đ</td>
+            <td class="text-center">
+                <button class="btn btn-remove" onclick="removeCartItem(${idx})" title="Xóa món này">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>`;
+    });
+    
+    html += `</tbody></table></div>`;
+    
+    html += `<div class="cart-total">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h4 class="mb-0">📋 Tổng cộng ${cart.length} món</h4>
+            </div>
+            <div class="col-md-6 text-end">
+                <h3 class="mb-0">💵 ${total.toLocaleString()} đ</h3>
+            </div>
+        </div>
+    </div>`;
+    
+    html += `<div class="text-center mt-4">
+        <button class="btn btn-order me-3" onclick="placeOrderDemo()">
+            <i class="fas fa-credit-card me-2"></i>
+            Đặt hàng ngay
+        </button>
+        <button class="btn btn-outline-danger" onclick="clearCart()">
+            <i class="fas fa-trash me-2"></i>
+            Xóa toàn bộ giỏ hàng
+        </button>
+    </div>`;
+    
+    document.getElementById('cartContainer').innerHTML = html;
+}
+function removeCartItem(idx) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.splice(idx, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+}
+function placeOrderDemo() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart.length === 0) return;
+    alert('Đặt hàng thành công! (Demo)');
+    localStorage.removeItem('cart');
+    renderCart();
+}
+
+function clearCart() {
+    if (confirm('Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng?')) {
+        localStorage.removeItem('cart');
+        renderCart();
+    }
+}
+
+function updateQuantity(index, change, newValue = null) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    if (index >= 0 && index < cart.length) {
+        let item = cart[index];
+        let currentQty = item.Quantity || item.quantity || 1;
+        
+        if (newValue !== null) {
+            // Cập nhật từ input field
+            currentQty = parseInt(newValue) || 1;
+        } else {
+            // Cập nhật từ nút +/- 
+            currentQty = Math.max(1, currentQty + change);
+        }
+        
+        // Cập nhật số lượng và tổng tiền
+        if (item.Quantity !== undefined) {
+            // Dữ liệu mới
+            item.Quantity = currentQty;
+            item.Subtotal = item.UnitPrice * currentQty;
+        } else if (item.quantity !== undefined) {
+            // Dữ liệu cũ
+            item.quantity = currentQty;
+            item.totalPrice = item.basePrice * currentQty;
+        }
+        
+        // Lưu lại vào localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // Re-render giỏ hàng
+        renderCart();
+        
+        console.log(`Đã cập nhật số lượng item ${index} thành ${currentQty}`);
+    }
+}
+document.addEventListener('DOMContentLoaded', renderCart);
+</script>
+} 
