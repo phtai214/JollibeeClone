@@ -17,305 +17,305 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = JollibeeClone
 build_property.RootNamespace = JollibeeClone
-build_property.ProjectDir = D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\
+build_property.ProjectDir = /Users/daobao/Documents/WEBAD/JollibeeClone/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone
+build_property.MSBuildProjectDirectory = /Users/daobao/Documents/WEBAD/JollibeeClone
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Auth/CreateFirstAdmin.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQXV0aFxDcmVhdGVGaXJzdEFkbWluLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Auth/CreateFirstAdmin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQXV0aC9DcmVhdGVGaXJzdEFkbWluLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Auth/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Auth/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQXV0aC9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Category/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2F0ZWdvcnlcQ3JlYXRlLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Category/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQ2F0ZWdvcnkvQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Category/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2F0ZWdvcnlcRGVsZXRlLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Category/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQ2F0ZWdvcnkvRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Category/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2F0ZWdvcnlcRGV0YWlscy5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Category/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQ2F0ZWdvcnkvRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Category/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2F0ZWdvcnlcRWRpdC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Category/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQ2F0ZWdvcnkvRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Category/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2F0ZWdvcnlcSW5kZXguY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Category/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQ2F0ZWdvcnkvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Combo/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ29tYm9cQ3JlYXRlLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Combo/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQ29tYm8vQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Combo/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ29tYm9cRGVsZXRlLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Combo/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQ29tYm8vRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Combo/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ29tYm9cRGV0YWlscy5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Combo/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQ29tYm8vRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Combo/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ29tYm9cRWRpdC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Combo/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQ29tYm8vRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Combo/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ29tYm9cSW5kZXguY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Combo/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQ29tYm8vSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Combo/Test.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ29tYm9cVGVzdC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Combo/Test.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQ29tYm8vVGVzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Combo/VariantTest.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ29tYm9cVmFyaWFudFRlc3QuY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Combo/VariantTest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQ29tYm8vVmFyaWFudFRlc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/News/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTmV3c1xDcmVhdGUuY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/News/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvTmV3cy9DcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/News/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTmV3c1xEZWxldGUuY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/News/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvTmV3cy9EZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/News/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTmV3c1xEZXRhaWxzLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/News/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvTmV3cy9EZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/News/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTmV3c1xFZGl0LmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/News/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvTmV3cy9FZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/News/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTmV3c1xJbmRleC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/News/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvTmV3cy9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Order/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcT3JkZXJcRGV0YWlscy5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Order/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvT3JkZXIvRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Order/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcT3JkZXJcSW5kZXguY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Order/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvT3JkZXIvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Order/UpdateStatus.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcT3JkZXJcVXBkYXRlU3RhdHVzLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Order/UpdateStatus.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvT3JkZXIvVXBkYXRlU3RhdHVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Product/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdFxDcmVhdGUuY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Product/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvUHJvZHVjdC9DcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Product/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdFxEZWxldGUuY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Product/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvUHJvZHVjdC9EZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Product/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdFxEZXRhaWxzLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Product/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvUHJvZHVjdC9EZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Product/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdFxFZGl0LmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Product/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvUHJvZHVjdC9FZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Product/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdFxJbmRleC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Product/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvUHJvZHVjdC9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Promotion/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvbW90aW9uXENyZWF0ZS5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Promotion/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvUHJvbW90aW9uL0NyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Promotion/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvbW90aW9uXERlbGV0ZS5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Promotion/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvUHJvbW90aW9uL0RlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Promotion/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvbW90aW9uXERldGFpbHMuY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Promotion/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvUHJvbW90aW9uL0RldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Promotion/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvbW90aW9uXEVkaXQuY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Promotion/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvUHJvbW90aW9uL0VkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Promotion/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvbW90aW9uXEluZGV4LmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Promotion/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvUHJvbW90aW9uL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Service/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2VydmljZVxDcmVhdGUuY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Service/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU2VydmljZS9DcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Service/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2VydmljZVxEZWxldGUuY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Service/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU2VydmljZS9EZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Service/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2VydmljZVxEZXRhaWxzLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Service/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU2VydmljZS9EZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Service/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2VydmljZVxFZGl0LmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Service/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU2VydmljZS9FZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Service/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2VydmljZVxJbmRleC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Service/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU2VydmljZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Shared/_AdminLayout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Shared/_AdminLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU2hhcmVkL19BZG1pbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Statistics/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU3RhdGlzdGljc1xJbmRleC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Statistics/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU3RhdGlzdGljcy9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Store/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU3RvcmVcQ3JlYXRlLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Store/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU3RvcmUvQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Store/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU3RvcmVcRGVsZXRlLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Store/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU3RvcmUvRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Store/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU3RvcmVcRGV0YWlscy5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Store/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU3RvcmUvRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Store/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU3RvcmVcRWRpdC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Store/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU3RvcmUvRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/Store/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU3RvcmVcSW5kZXguY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/Store/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU3RvcmUvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/User/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlclxDcmVhdGUuY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/User/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvVXNlci9DcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/User/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlclxEZWxldGUuY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/User/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvVXNlci9EZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/User/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlclxEZXRhaWxzLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/User/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvVXNlci9EZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/User/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlclxFZGl0LmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/User/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvVXNlci9FZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/User/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlclxJbmRleC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/User/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvVXNlci9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Areas/Admin/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Areas/Admin/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Account/DeliveryAddresses.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxEZWxpdmVyeUFkZHJlc3Nlcy5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Account/DeliveryAddresses.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9EZWxpdmVyeUFkZHJlc3Nlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Account/EditAddress.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxFZGl0QWRkcmVzcy5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Account/EditAddress.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9FZGl0QWRkcmVzcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Account/EditProfile.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxFZGl0UHJvZmlsZS5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Account/EditProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9FZGl0UHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Account/ForgotPassword.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxGb3Jnb3RQYXNzd29yZC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Account/ForgotPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Gb3Jnb3RQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Account/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Account/Profile.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQcm9maWxlLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Account/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Qcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Account/Register.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Account/ResetPassword.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Account/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZXNldFBhc3N3b3JkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Home/AdminGuide.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBZG1pbkd1aWRlLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Home/AdminGuide.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9BZG1pbkd1aWRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Menu/MonNgonPhaiThu.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVudVxNb25OZ29uUGhhaVRodS5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Menu/MonNgonPhaiThu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWVudS9Nb25OZ29uUGhhaVRodS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Service/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVxJbmRleC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Service/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VydmljZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Service/Promotions.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVxQcm9tb3Rpb25zLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Service/Promotions.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VydmljZS9Qcm9tb3Rpb25zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Service/Stores.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVxTdG9yZXMuY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Service/Stores.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VydmljZS9TdG9yZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Shared/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.HK3_2025/LapTrinhWeb_NC/DoAn/JollibeeClone/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = b-rferl1ndzp
+[/Users/daobao/Documents/WEBAD/JollibeeClone/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-lqdzia3k79
