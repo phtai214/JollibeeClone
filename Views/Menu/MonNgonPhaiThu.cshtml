@@ -307,60 +307,98 @@
 
 @section Scripts {
     <script>
-        const menuItems = [
-            {
-                id: 1,
-                name: "Sinh Nhật Thả Ga, Teen Quẩy Siêu Đã 1",
-                desc: "Combo gồm gà rán, mì Ý, khoai tây chiên, nước ngọt và quà tặng hấp dẫn.",
-                price: 329000,
-                img: "/assets/images/sinhnhatsieuda1_menu.jpg"
-            },
-            {
-                id: 2,
-                name: "Sinh Nhật Thả Ga, Teen Quẩy Siêu Đã 2",
-                desc: "Combo gồm burger, gà rán, mì Ý, khoai tây chiên, nước ngọt và quà tặng.",
-                price: 399000,
-                img: "/assets/images/sinhnhatsieuda2_menu.jpg"
-            },
-            {
-                id: 3,
-                name: "Sinh Nhật Thả Ga, Teen Quẩy Siêu Đã 3",
-                desc: "Combo siêu lớn với nhiều phần ăn, nước ngọt và quà tặng đặc biệt.",
-                price: 449000,
-                img: "/assets/images/sinhnhatsieuda3_menu.jpg"
-            }
-        ];
-
-        function renderMenuList() {
+        function renderMenuList(menuItems) {
             const menuList = document.getElementById('menuList');
             menuList.innerHTML = menuItems.map(item => `
                 <div class="col-md-6 col-lg-4">
                     <div class="menu-card">
-                        <img src="${item.img}" alt="${item.name}" class="menu-img">
+                        <img src="${item.imageUrl || item.thumbnailUrl || '/assets/images/default.png'}" alt="${item.productName}" class="menu-img">
                         <div class="menu-content">
-                            <h3>${item.name}</h3>
-                            <div class="menu-info">${item.desc}</div>
+                            <h3>${item.productName}</h3>
+                            <div class="menu-info">${item.shortDescription || ''}</div>
                             <div class="menu-price">${item.price.toLocaleString()} đ</div>
-                            <button class="btn btn-order" data-bs-toggle="modal" data-bs-target="#orderOptionsModal">Đặt Hàng</button>
+                            <button class="btn btn-order" data-product-id="${item.productID}" data-bs-toggle="modal" data-bs-target="#orderOptionsModal">Đặt Hàng</button>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        renderMenuList();
+        // Lấy danh sách combo từ API
+        fetch('/Menu/GetCombos')
+            .then(res => res.json())
+            .then(data => {
+                renderMenuList(data);
+            })
+            .catch(err => {
+                document.getElementById('menuList').innerHTML = '<div class="text-danger">Không thể tải danh sách combo!</div>';
+            });
 
-        // Quantity plus/minus logic for modal
-        document.addEventListener('DOMContentLoaded', function() {
-          const qtyInput = document.getElementById('orderQty');
-          document.getElementById('qtyMinus').onclick = function() {
-            let val = parseInt(qtyInput.value);
-            if (val > 1) qtyInput.value = val - 1;
-          };
-          document.getElementById('qtyPlus').onclick = function() {
-            let val = parseInt(qtyInput.value);
-            qtyInput.value = val + 1;
-          };
+        // Render động các nhóm cấu hình và option vào modal
+        function renderComboOptions(combo) {
+            const form = document.getElementById('orderOptionsForm');
+            if (!combo || !combo.groups || combo.groups.length === 0) {
+                form.innerHTML = '<div class="text-danger">Không có tùy chọn cho combo này.</div>';
+                return;
+            }
+            let html = '';
+            combo.groups.forEach((group, groupIdx) => {
+                html += `<div class="mb-3">
+                    <label class="form-label fw-bold">${group.groupName}</label>
+                    <div>`;
+                group.options.forEach((option, optIdx) => {
+                    const inputId = `group${group.configGroupID}-option${option.configOptionID}`;
+                    const checked = option.isDefault || optIdx === 0 ? 'checked' : '';
+                    html += `
+                        <input type="radio" class="btn-check" name="group${group.configGroupID}" id="${inputId}" autocomplete="off" ${checked}>
+                        <label class="btn btn-outline-danger mb-2" for="${inputId}">
+                            ${option.productImage ? `<img src="${option.productImage}" alt="${option.productName}" width="50">` : ''}
+                            ${option.productName}
+                            ${option.variantName ? `(${option.variantName})` : ''}
+                            ${option.priceAdjustment && option.priceAdjustment > 0 ? `(+${option.priceAdjustment.toLocaleString()}đ)` : ''}
+                        </label>`;
+                });
+                html += '</div></div>';
+            });
+            // Số lượng
+            html += `<div class="mb-3">
+                <label class="form-label fw-bold">Số lượng</label>
+                <div class="input-group" style="max-width: 150px;">
+                  <button class="btn btn-outline-secondary" type="button" id="qtyMinus">-</button>
+                  <input type="number" class="form-control text-center" id="orderQty" value="1" min="1">
+                  <button class="btn btn-outline-secondary" type="button" id="qtyPlus">+</button>
+                </div>
+              </div>`;
+            form.innerHTML = html;
+        }
+
+        // Lắng nghe sự kiện bấm Đặt Hàng để load option động
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('btn-order')) {
+                const productId = e.target.getAttribute('data-product-id');
+                fetch(`/Menu/GetComboOptions?productId=${productId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        renderComboOptions(data);
+                    })
+                    .catch(err => {
+                        document.getElementById('orderOptionsForm').innerHTML = '<div class="text-danger">Không thể tải tùy chọn combo!</div>';
+                    });
+            }
+        });
+
+        // Quantity plus/minus logic for modal (gắn lại sau khi render)
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'qtyMinus') {
+                const qtyInput = document.getElementById('orderQty');
+                let val = parseInt(qtyInput.value);
+                if (val > 1) qtyInput.value = val - 1;
+            }
+            if (e.target && e.target.id === 'qtyPlus') {
+                const qtyInput = document.getElementById('orderQty');
+                let val = parseInt(qtyInput.value);
+                qtyInput.value = val + 1;
+            }
         });
     </script>
 } 
