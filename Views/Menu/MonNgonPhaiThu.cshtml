@@ -640,6 +640,8 @@
                 cart.push(cartItem);
                 localStorage.setItem('cart', JSON.stringify(cart));
                 
+                updateCartBadge(); // Gọi cập nhật badge ngay sau khi thêm
+                
                 console.log('Đã lưu vào giỏ hàng:', cartItem);
                 console.log('Tổng số món trong giỏ hàng sau khi thêm:', cart.length);
                 console.log('localStorage cart sau khi lưu:', localStorage.getItem('cart'));
@@ -649,6 +651,35 @@
                     const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
                     console.log('Kiểm tra localStorage sau 1 giây:', savedCart);
                 }, 1000);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Đã thêm vào giỏ hàng!',
+                    html: `
+                        <div style="font-size:1.1rem;">
+                          <b>🍔 Combo 1 Mì Ý Jolly vừa + 1 Nước ngọt</b><br>
+                          Số lượng: <b>1</b> <br>
+                          Giá: <b>55.000 đ</b> <br>
+                          <div style="margin-top:8px; text-align:left;">
+                            <b>Các tuỳ chọn đã chọn:</b>
+                            <ul style="margin:0 0 0 18px;">
+                              <li>Chọn mì: Mì Ý Jolly vừa (Vừa)</li>
+                              <li>Chọn nước: PEPSI LỚN (Lớn) (+10.000đ)</li>
+                            </ul>
+                          </div>
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: '🛒 Kiểm tra giỏ hàng',
+                    cancelButtonText: 'Tiếp tục mua sắm',
+                    customClass: {
+                        popup: 'swal2-border-radius'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/Cart/Index';
+                    }
+                });
             }
         });
     </script>

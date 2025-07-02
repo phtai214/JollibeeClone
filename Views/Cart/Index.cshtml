@@ -361,6 +361,7 @@ function removeCartItem(idx) {
     cart.splice(idx, 1);
     localStorage.setItem('cart', JSON.stringify(cart));
     renderCart();
+    updateCartBadge();
 }
 function placeOrderDemo() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -368,12 +369,14 @@ function placeOrderDemo() {
     alert('Đặt hàng thành công! (Demo)');
     localStorage.removeItem('cart');
     renderCart();
+    updateCartBadge();
 }
 
 function clearCart() {
     if (confirm('Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng?')) {
         localStorage.removeItem('cart');
         renderCart();
+        updateCartBadge();
     }
 }
 

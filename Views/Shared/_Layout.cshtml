@@ -585,6 +585,23 @@
         return new bootstrap.Tooltip(tooltipTriggerEl);
       });
     </script>
+    <script>
+      // Hàm cập nhật badge số lượng giỏ hàng cho cả desktop và mobile
+      function updateCartBadge() {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let total = 0;
+        cart.forEach(item => {
+          total += item.Quantity || item.quantity || 1;
+        });
+        // Desktop badge
+        const badgeDesktop = document.getElementById('cart-count-desktop');
+        if (badgeDesktop) badgeDesktop.textContent = total;
+        // Mobile badge
+        const badgeMobile = document.getElementById('cart-count-mobile');
+        if (badgeMobile) badgeMobile.textContent = total;
+      }
+      document.addEventListener('DOMContentLoaded', updateCartBadge);
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
     <div id="globalMenuDropdown" ...> ... </div>
     <script>
