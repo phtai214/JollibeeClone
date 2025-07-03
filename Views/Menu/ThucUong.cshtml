@@ -1,0 +1,64 @@
+@{
+    ViewData["Title"] = "Thức Uống";
+}
+
+<div class="menu-hero">
+    <div class="menu-hero-content">
+        <h1>Thức Uống</h1>
+        <p>Thưởng thức các loại thức uống mát lạnh tại Jollibee!</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row" id="menuList">
+        <!-- Menu items will be dynamically populated -->
+    </div>
+</div>
+
+<style>
+    body { background: #f8f9fa; }
+    .menu-hero { background: linear-gradient(120deg, #ffb347 0%, #ffcc33 100%), url('/assets/images/thuc_uong.png'); background-blend-mode: multiply; background-size: cover; background-position: center; background-repeat: no-repeat; height: 350px; display: flex; align-items: center; justify-content: center; text-align: center; color: white; position: relative; margin: 0 -15px; width: calc(100% + 30px); border-radius: 0 0 32px 32px; box-shadow: 0 8px 32px rgba(255, 195, 0, 0.15); }
+    .menu-hero-content { position: relative; z-index: 2; max-width: 800px; padding: 0 20px; }
+    .menu-hero h1 { font-size: 3.2rem; font-weight: 800; margin-bottom: 1rem; text-shadow: 2px 2px 8px rgba(0,0,0,0.18); letter-spacing: 1px; }
+    .menu-hero p { font-size: 1.35rem; margin-bottom: 2rem; text-shadow: 1px 1px 4px rgba(0,0,0,0.12); font-weight: 500; }
+    .menu-card { background: #fff; border-radius: 24px; overflow: hidden; transition: box-shadow 0.3s, transform 0.3s; border: none; box-shadow: 0 4px 32px rgba(255, 195, 0, 0.10), 0 1.5px 8px rgba(227, 25, 55, 0.07); margin-bottom: 32px; position: relative; }
+    .menu-card:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 12px 40px rgba(227, 25, 55, 0.18), 0 2px 12px rgba(255, 195, 0, 0.12); }
+    .menu-img { width: 100%; height: 220px; object-fit: cover; border-bottom: 2px solid #ffe082; background: #fffbe7; }
+    .menu-content { padding: 2rem 1.5rem 1.5rem 1.5rem; }
+    .menu-content h3 { color: #e31937; font-size: 1.35rem; margin-bottom: 0.75rem; font-weight: 700; letter-spacing: 0.5px; }
+    .menu-info { color: #555; font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.1rem; font-weight: 400; }
+    .menu-price { color: #ff9800; font-size: 1.3rem; font-weight: bold; margin-bottom: 1.2rem; letter-spacing: 0.5px; }
+    .btn-order { background: linear-gradient(90deg, #e31937 0%, #ff9800 100%); color: #fff; border-radius: 30px; padding: 12px 36px; font-weight: bold; border: none; font-size: 1.1rem; box-shadow: 0 2px 8px rgba(227, 25, 55, 0.10); transition: background 0.3s, color 0.3s, box-shadow 0.3s; }
+    .btn-order:hover { background: linear-gradient(90deg, #ff9800 0%, #e31937 100%); color: #fffbe7; box-shadow: 0 4px 16px rgba(255, 195, 0, 0.18); }
+    @@media (max-width: 768px) { .menu-hero { height: 220px; font-size: 1.2rem; border-radius: 0 0 18px 18px; } .menu-card { border-radius: 16px; } }
+</style>
+
+@section Scripts {
+    <script>
+        const menuItems = [
+            { id: 1, name: "Pepsi lớn", desc: "Pepsi mát lạnh, giải khát tuyệt vời.", price: 15000, img: "/assets/images/pepsi_to.png" },
+            { id: 2, name: "7Up lớn", desc: "7Up tươi mát, sảng khoái.", price: 15000, img: "/assets/images/7up_menu.png" },
+            { id: 3, name: "Mirinda lớn", desc: "Mirinda cam thơm ngon.", price: 15000, img: "/assets/images/mirinda_menu.png" },
+            { id: 4, name: "Nước suối", desc: "Nước suối tinh khiết.", price: 10000, img: "/assets/images/nuocsuoi_menu.png" },
+            { id: 5, name: "Cacao sữa đá lớn", desc: "Cacao sữa đá thơm ngon, mát lạnh.", price: 20000, img: "/assets/images/cacao_menu.png" },
+            { id: 6, name: "Nước ép xoài đào", desc: "Nước ép xoài đào tươi mát.", price: 20000, img: "/assets/images/epxoaidao_menu.png" }
+        ];
+        function renderMenuList() {
+            const menuList = document.getElementById('menuList');
+            menuList.innerHTML = menuItems.map(item => `
+                <div class="col-md-6 col-lg-4">
+                    <div class="menu-card">
+                        <img src="${item.img}" alt="${item.name}" class="menu-img">
+                        <div class="menu-content">
+                            <h3>${item.name}</h3>
+                            <div class="menu-info">${item.desc}</div>
+                            <div class="menu-price">${item.price.toLocaleString()} đ</div>
+                            <button class="btn btn-order">Đặt Hàng</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        renderMenuList();
+    </script>
+} 

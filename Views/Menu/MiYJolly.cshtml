@@ -1,0 +1,389 @@
+@{
+    ViewData["Title"] = "Mì Ý Jolly";
+}
+
+<div class="menu-hero">
+    <div class="menu-hero-content">
+        <h1>Mì Ý Jolly</h1>
+        <p>Thưởng thức các món mì Ý thơm ngon, hấp dẫn tại Jollibee!</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row" id="menuList">
+        <!-- Menu items will be dynamically populated -->
+    </div>
+</div>
+
+<!-- Modal for product options -->
+<div class="modal fade" id="orderOptionsModal" tabindex="-1" aria-labelledby="orderOptionsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="orderOptionsModalLabel">Tùy chọn Mì Ý</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="orderOptionsForm">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Chọn loại mì</label>
+            <div>
+              <input type="radio" class="btn-check" name="spaghettiType" id="spaghetti1" autocomplete="off" checked>
+              <label class="btn btn-outline-danger mb-2" for="spaghetti1">
+                <img src="/assets/images/mi_y_jolly.png" alt="Mì Ý Jolly vừa" width="50"> Mì Ý Jolly vừa
+              </label>
+              <input type="radio" class="btn-check" name="spaghettiType" id="spaghetti2" autocomplete="off">
+              <label class="btn btn-outline-danger mb-2" for="spaghetti2">
+                <img src="/assets/images/mi_y_jolly.png" alt="Mì Ý Jolly lớn" width="50"> Mì Ý Jolly lớn (+10,000đ)
+              </label>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Chọn gà</label>
+            <div>
+              <input type="radio" class="btn-check" name="chickenType" id="chicken1" autocomplete="off" checked>
+              <label class="btn btn-outline-danger mb-2" for="chicken1">
+                <img src="/assets/images/ga_gion_vui_ve.png" alt="Gà Giòn Vui Vẻ" width="50"> 1 miếng Gà Giòn Vui Vẻ
+              </label>
+              <input type="radio" class="btn-check" name="chickenType" id="chicken2" autocomplete="off">
+              <label class="btn btn-outline-danger mb-2" for="chicken2">
+                <img src="/assets/images/ga_sot_cay.png" alt="Gà Sốt Cay" width="50"> Miếng gà sốt cay (up)
+              </label>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Chọn khoai</label>
+            <div>
+              <input type="radio" class="btn-check" name="friesType" id="fries1" autocomplete="off" checked>
+              <label class="btn btn-outline-danger mb-2" for="fries1">
+                <img src="/assets/images/khoai_menu.jpg" alt="Khoai tây chiên vừa" width="50"> Khoai tây chiên vừa
+              </label>
+              <input type="radio" class="btn-check" name="friesType" id="fries2" autocomplete="off">
+              <label class="btn btn-outline-danger mb-2" for="fries2">
+                <img src="/assets/images/khoaitaychien_mini.png" alt="Khoai tây lắc BBQ vừa" width="50"> Khoai tây lắc vị BBQ vừa (up)
+              </label>
+              <input type="radio" class="btn-check" name="friesType" id="fries3" autocomplete="off">
+              <label class="btn btn-outline-danger mb-2" for="fries3">
+                <img src="/assets/images/khoai_menu.jpg" alt="Khoai tây chiên lớn" width="50"> Khoai tây chiên lớn (up)
+              </label>
+              <input type="radio" class="btn-check" name="friesType" id="fries4" autocomplete="off">
+              <label class="btn btn-outline-danger mb-2" for="fries4">
+                <img src="/assets/images/khoaitaychien_mini.png" alt="Khoai tây lắc BBQ lớn" width="50"> Khoai tây lắc vị BBQ lớn (up)
+              </label>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Chọn nước</label>
+            <div>
+              <input type="radio" class="btn-check" name="drinkType" id="drink1" autocomplete="off" checked>
+              <label class="btn btn-outline-danger mb-2" for="drink1">
+                <img src="/assets/images/pepsi_to.png" alt="Pepsi lớn" width="50"> Pepsi lớn (up)
+              </label>
+              <input type="radio" class="btn-check" name="drinkType" id="drink2" autocomplete="off">
+              <label class="btn btn-outline-danger mb-2" for="drink2">
+                <img src="/assets/images/7up_menu.png" alt="7Up lớn" width="50"> 7Up (up)
+              </label>
+              <input type="radio" class="btn-check" name="drinkType" id="drink3" autocomplete="off">
+              <label class="btn btn-outline-danger mb-2" for="drink3">
+                <img src="/assets/images/mirinda_menu.png" alt="Mirinda lớn" width="50"> Mirinda lớn (up)
+              </label>
+              <input type="radio" class="btn-check" name="drinkType" id="drink4" autocomplete="off">
+              <label class="btn btn-outline-danger mb-2" for="drink4">
+                <img src="/assets/images/pepsi_nho.png" alt="Pepsi vừa" width="50"> Pepsi vừa
+              </label>
+              <input type="radio" class="btn-check" name="drinkType" id="drink5" autocomplete="off">
+              <label class="btn btn-outline-danger mb-2" for="drink5">
+                <img src="/assets/images/7up_mini.png" alt="7Up vừa" width="50"> 7Up vừa
+              </label>
+              <input type="radio" class="btn-check" name="drinkType" id="drink6" autocomplete="off">
+              <label class="btn btn-outline-danger mb-2" for="drink6">
+                <img src="/assets/images/mirinda_mini.png" alt="Mirinda vừa" width="50"> Mirinda vừa
+              </label>
+              <input type="radio" class="btn-check" name="drinkType" id="drink7" autocomplete="off">
+              <label class="btn btn-outline-danger mb-2" for="drink7">
+                <img src="/assets/images/nuocsuoi_menu.png" alt="Nước suối" width="50"> Nước suối (up)
+              </label>
+              <input type="radio" class="btn-check" name="drinkType" id="drink8" autocomplete="off">
+              <label class="btn btn-outline-danger mb-2" for="drink8">
+                <img src="/assets/images/cacao_mini.png" alt="Cacao sữa đá vừa" width="50"> Cacao sữa đá vừa (up)
+              </label>
+              <input type="radio" class="btn-check" name="drinkType" id="drink9" autocomplete="off">
+              <label class="btn btn-outline-danger mb-2" for="drink9">
+                <img src="/assets/images/cacao_menu.png" alt="Cacao sữa đá lớn" width="50"> Cacao sữa đá lớn (up)
+              </label>
+              <input type="radio" class="btn-check" name="drinkType" id="drink10" autocomplete="off">
+              <label class="btn btn-outline-danger mb-2" for="drink10">
+                <img src="/assets/images/epxoaidao_menu.png" alt="Nước ép xoài đào" width="50"> Nước ép xoài đào (up)
+              </label>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Số lượng</label>
+            <div class="input-group" style="max-width: 150px;">
+              <button class="btn btn-outline-secondary" type="button" id="qtyMinus">-</button>
+              <input type="number" class="form-control text-center" id="orderQty" value="1" min="1">
+              <button class="btn btn-outline-secondary" type="button" id="qtyPlus">+</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-danger">Thêm vào giỏ hàng</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    body {
+        background: #f8f9fa;
+    }
+    .menu-hero {
+        background: linear-gradient(120deg, #ffb347 0%, #ffcc33 100%), url('/assets/images/mi_y_jolly.png');
+        background-blend-mode: multiply;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 350px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        position: relative;
+        margin: 0 -15px;
+        width: calc(100% + 30px);
+        border-radius: 0 0 32px 32px;
+        box-shadow: 0 8px 32px rgba(255, 195, 0, 0.15);
+    }
+    .menu-hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        padding: 0 20px;
+    }
+    .menu-hero h1 {
+        font-size: 3.2rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.18);
+        letter-spacing: 1px;
+    }
+    .menu-hero p {
+        font-size: 1.35rem;
+        margin-bottom: 2rem;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.12);
+        font-weight: 500;
+    }
+    .menu-card {
+        background: #fff;
+        border-radius: 24px;
+        overflow: hidden;
+        transition: box-shadow 0.3s, transform 0.3s;
+        border: none;
+        box-shadow: 0 4px 32px rgba(255, 195, 0, 0.10), 0 1.5px 8px rgba(227, 25, 55, 0.07);
+        margin-bottom: 32px;
+        position: relative;
+    }
+    .menu-card:hover {
+        transform: translateY(-6px) scale(1.03);
+        box-shadow: 0 12px 40px rgba(227, 25, 55, 0.18), 0 2px 12px rgba(255, 195, 0, 0.12);
+    }
+    .menu-img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-bottom: 2px solid #ffe082;
+        background: #fffbe7;
+    }
+    .menu-content {
+        padding: 2rem 1.5rem 1.5rem 1.5rem;
+    }
+    .menu-content h3 {
+        color: #e31937;
+        font-size: 1.35rem;
+        margin-bottom: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+    .menu-info {
+        color: #555;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        margin-bottom: 1.1rem;
+        font-weight: 400;
+    }
+    .menu-price {
+        color: #ff9800;
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 1.2rem;
+        letter-spacing: 0.5px;
+    }
+    .btn-order {
+        background: linear-gradient(90deg, #e31937 0%, #ff9800 100%);
+        color: #fff;
+        border-radius: 30px;
+        padding: 12px 36px;
+        font-weight: bold;
+        border: none;
+        font-size: 1.1rem;
+        box-shadow: 0 2px 8px rgba(227, 25, 55, 0.10);
+        transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+    .btn-order:hover {
+        background: linear-gradient(90deg, #ff9800 0%, #e31937 100%);
+        color: #fffbe7;
+        box-shadow: 0 4px 16px rgba(255, 195, 0, 0.18);
+    }
+    /* Modal modern style */
+    .modal-content {
+        border-radius: 24px;
+        box-shadow: 0 8px 40px rgba(227, 25, 55, 0.10);
+        border: none;
+    }
+    .modal-header {
+        border-bottom: 1.5px solid #ffe082;
+        background: linear-gradient(90deg, #fffbe7 0%, #fff3e0 100%);
+        border-radius: 24px 24px 0 0;
+    }
+    .modal-title {
+        color: #e31937;
+        font-weight: 700;
+        font-size: 1.4rem;
+    }
+    .modal-footer {
+        border-top: 1.5px solid #ffe082;
+        background: #fffbe7;
+        border-radius: 0 0 24px 24px;
+    }
+    .btn-outline-danger {
+        border-radius: 20px;
+        border: 2px solid #e31937;
+        color: #e31937;
+        background: #fff;
+        font-weight: 500;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        transition: background 0.2s, color 0.2s;
+    }
+    .btn-outline-danger.active, .btn-outline-danger:active, .btn-outline-danger:hover {
+        background: linear-gradient(90deg, #e31937 0%, #ff9800 100%);
+        color: #fff;
+        border-color: #ff9800;
+    }
+    .btn-danger {
+        background: linear-gradient(90deg, #e31937 0%, #ff9800 100%);
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 30px;
+        padding: 10px 32px;
+        font-size: 1.1rem;
+        box-shadow: 0 2px 8px rgba(227, 25, 55, 0.10);
+        transition: background 0.3s, color 0.3s;
+    }
+    .btn-danger:hover {
+        background: linear-gradient(90deg, #ff9800 0%, #e31937 100%);
+        color: #fffbe7;
+    }
+    .btn-secondary {
+        border-radius: 30px;
+        font-weight: 500;
+        background: #fffbe7;
+        color: #e31937;
+        border: 2px solid #ffe082;
+        transition: background 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover {
+        background: #ffe082;
+        color: #e31937;
+    }
+    .input-group .form-control {
+        border-radius: 20px;
+        border: 1.5px solid #ffe082;
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #e31937;
+        background: #fffbe7;
+    }
+    .input-group .btn-outline-secondary {
+        border-radius: 20px;
+        border: 2px solid #ff9800;
+        color: #ff9800;
+        background: #fff;
+        font-weight: 600;
+        transition: background 0.2s, color 0.2s;
+    }
+    .input-group .btn-outline-secondary:hover {
+        background: #ff9800;
+        color: #fff;
+    }
+    @@media (max-width: 768px) {
+        .menu-hero {
+            height: 220px;
+            font-size: 1.2rem;
+            border-radius: 0 0 18px 18px;
+        }
+        .menu-card {
+            border-radius: 16px;
+        }
+        .modal-content {
+            border-radius: 16px;
+        }
+    }
+</style>
+
+@section Scripts {
+    <script>
+        const menuItems = [
+            {
+                id: 1,
+                name: "Mì Ý Jolly vừa",
+                desc: "Mì Ý Jolly với nước sốt đặc biệt, thơm ngon khó cưỡng.",
+                price: 39000,
+                img: "/assets/images/mi_y_jolly.png"
+            },
+            {
+                id: 2,
+                name: "Mì Ý Jolly lớn",
+                desc: "Phần mì Ý lớn cho bạn bữa ăn no nê, hấp dẫn.",
+                price: 49000,
+                img: "/assets/images/mi_y_jolly.png"
+            }
+        ];
+
+        function renderMenuList() {
+            const menuList = document.getElementById('menuList');
+            menuList.innerHTML = menuItems.map(item => `
+                <div class="col-md-6 col-lg-4">
+                    <div class="menu-card">
+                        <img src="${item.img}" alt="${item.name}" class="menu-img">
+                        <div class="menu-content">
+                            <h3>${item.name}</h3>
+                            <div class="menu-info">${item.desc}</div>
+                            <div class="menu-price">${item.price.toLocaleString()} đ</div>
+                            <button class="btn btn-order" data-bs-toggle="modal" data-bs-target="#orderOptionsModal">Đặt Hàng</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        renderMenuList();
+
+        // Quantity plus/minus logic for modal
+        document.addEventListener('DOMContentLoaded', function() {
+          const qtyInput = document.getElementById('orderQty');
+          document.getElementById('qtyMinus').onclick = function() {
+            let val = parseInt(qtyInput.value);
+            if (val > 1) qtyInput.value = val - 1;
+          };
+          document.getElementById('qtyPlus').onclick = function() {
+            let val = parseInt(qtyInput.value);
+            qtyInput.value = val + 1;
+          };
+        });
+    </script>
+} 

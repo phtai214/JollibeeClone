@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "Phần Ăn Phụ";
+}
+
+<div class="menu-hero">
+    <div class="menu-hero-content">
+        <h1>Phần Ăn Phụ</h1>
+        <p>Thưởng thức các phần ăn phụ hấp dẫn tại Jollibee!</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row" id="menuList">
+        <!-- Menu items will be dynamically populated -->
+    </div>
+</div>
+
+<style>
+    body { background: #f8f9fa; }
+    .menu-hero { background: linear-gradient(120deg, #ffb347 0%, #ffcc33 100%), url('/assets/images/phan_an_phu.png'); background-blend-mode: multiply; background-size: cover; background-position: center; background-repeat: no-repeat; height: 350px; display: flex; align-items: center; justify-content: center; text-align: center; color: white; position: relative; margin: 0 -15px; width: calc(100% + 30px); border-radius: 0 0 32px 32px; box-shadow: 0 8px 32px rgba(255, 195, 0, 0.15); }
+    .menu-hero-content { position: relative; z-index: 2; max-width: 800px; padding: 0 20px; }
+    .menu-hero h1 { font-size: 3.2rem; font-weight: 800; margin-bottom: 1rem; text-shadow: 2px 2px 8px rgba(0,0,0,0.18); letter-spacing: 1px; }
+    .menu-hero p { font-size: 1.35rem; margin-bottom: 2rem; text-shadow: 1px 1px 4px rgba(0,0,0,0.12); font-weight: 500; }
+    .menu-card { background: #fff; border-radius: 24px; overflow: hidden; transition: box-shadow 0.3s, transform 0.3s; border: none; box-shadow: 0 4px 32px rgba(255, 195, 0, 0.10), 0 1.5px 8px rgba(227, 25, 55, 0.07); margin-bottom: 32px; position: relative; }
+    .menu-card:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 12px 40px rgba(227, 25, 55, 0.18), 0 2px 12px rgba(255, 195, 0, 0.12); }
+    .menu-img { width: 100%; height: 220px; object-fit: cover; border-bottom: 2px solid #ffe082; background: #fffbe7; }
+    .menu-content { padding: 2rem 1.5rem 1.5rem 1.5rem; }
+    .menu-content h3 { color: #e31937; font-size: 1.35rem; margin-bottom: 0.75rem; font-weight: 700; letter-spacing: 0.5px; }
+    .menu-info { color: #555; font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.1rem; font-weight: 400; }
+    .menu-price { color: #ff9800; font-size: 1.3rem; font-weight: bold; margin-bottom: 1.2rem; letter-spacing: 0.5px; }
+    .btn-order { background: linear-gradient(90deg, #e31937 0%, #ff9800 100%); color: #fff; border-radius: 30px; padding: 12px 36px; font-weight: bold; border: none; font-size: 1.1rem; box-shadow: 0 2px 8px rgba(227, 25, 55, 0.10); transition: background 0.3s, color 0.3s, box-shadow 0.3s; }
+    .btn-order:hover { background: linear-gradient(90deg, #ff9800 0%, #e31937 100%); color: #fffbe7; box-shadow: 0 4px 16px rgba(255, 195, 0, 0.18); }
+    @@media (max-width: 768px) { .menu-hero { height: 220px; font-size: 1.2rem; border-radius: 0 0 18px 18px; } .menu-card { border-radius: 16px; } }
+</style>
+
+@section Scripts {
+    <script>
+        const menuItems = [
+            { id: 1, name: "Khoai tây chiên vừa", desc: "Khoai tây chiên vàng giòn, thơm ngon.", price: 25000, img: "/assets/images/khoai_menu.jpg" },
+            { id: 2, name: "Khoai tây lắc BBQ vừa", desc: "Khoai tây lắc vị BBQ hấp dẫn.", price: 29000, img: "/assets/images/khoaitaychien_mini.png" },
+            { id: 3, name: "Súp bí đỏ", desc: "Súp bí đỏ thơm ngon, bổ dưỡng.", price: 20000, img: "/assets/images/supbbido_menu.png" },
+            { id: 4, name: "Súp bắp", desc: "Súp bắp ngọt thanh, hấp dẫn.", price: 20000, img: "/assets/images/supbido_mini.png" }
+        ];
+        function renderMenuList() {
+            const menuList = document.getElementById('menuList');
+            menuList.innerHTML = menuItems.map(item => `
+                <div class="col-md-6 col-lg-4">
+                    <div class="menu-card">
+                        <img src="${item.img}" alt="${item.name}" class="menu-img">
+                        <div class="menu-content">
+                            <h3>${item.name}</h3>
+                            <div class="menu-info">${item.desc}</div>
+                            <div class="menu-price">${item.price.toLocaleString()} đ</div>
+                            <button class="btn btn-order">Đặt Hàng</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        renderMenuList();
+    </script>
+} 
