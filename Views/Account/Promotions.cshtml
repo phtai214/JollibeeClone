@@ -1,0 +1,298 @@
+@model dynamic
+@{
+    ViewData["Title"] = "Danh sách ưu đãi";
+    var availablePromotions = ((IEnumerable<dynamic>)Model.AvailablePromotions).ToList();
+    var usedPromotions = ((IEnumerable<dynamic>)Model.UsedPromotions).ToList();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/user-promotions.css" asp-append-version="true" />
+}
+
+<!-- Account Management Section -->
+<div class="account-management-container">
+    <div class="container-fluid px-4 py-5">
+        <div class="row">
+            <!-- Sidebar Menu -->
+            <div class="col-lg-3 col-md-4 mb-4">
+                <div class="account-sidebar">
+                    <div class="sidebar-header">
+                        <h5 class="sidebar-title">TÀI KHOẢN CỦA TÔI</h5>
+                    </div>
+                    <div class="sidebar-menu">
+                        <a href="@Url.Action("Profile", "Account")" class="sidebar-item">
+                            <span class="sidebar-text">QUẢN LÝ TÀI KHOẢN</span>
+                        </a>
+                        <a href="#" class="sidebar-item">
+                            <span class="sidebar-text">ĐƠN HÀNG CỦA TÔI</span>
+                        </a>
+                        <a href="@Url.Action("DeliveryAddresses", "Account")" class="sidebar-item">
+                            <span class="sidebar-text">ĐỊA CHỈ GIAO HÀNG</span>
+                        </a>
+                        <a href="@Url.Action("Promotions", "Account")" class="sidebar-item active">
+                            <span class="sidebar-text">DANH SÁCH ƯU ĐÃI</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9 col-md-8">
+                <div class="promotions-content">
+                    <!-- Page Header -->
+                    <div class="content-header">
+                        <h4 class="content-title" style="color: #e31937;">DANH SÁCH ƯU ĐÃI</h4>
+                        <p class="content-subtitle">Quản lý và sử dụng các ưu đãi dành riêng cho bạn</p>
+                    </div>
+
+                    <!-- Display Messages -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <!-- Statistics Cards -->
+                    <div class="promotions-stats">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="stat-card available">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-gift"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-number">@Model.TotalAvailable</div>
+                                        <div class="stat-label">Ưu đãi có thể sử dụng</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="stat-card used">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-history"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-number">@Model.TotalUsed</div>
+                                        <div class="stat-label">Đã sử dụng</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs Navigation -->
+                    <div class="promotions-tabs">
+                        <nav class="tabs-nav">
+                            <button class="tab-btn active" data-tab="available">
+                                <i class="fas fa-tags me-2"></i>
+                                Ưu đãi có thể sử dụng (@Model.TotalAvailable)
+                            </button>
+                            <button class="tab-btn" data-tab="history">
+                                <i class="fas fa-history me-2"></i>
+                                Lịch sử sử dụng (@Model.TotalUsed)
+                            </button>
+                        </nav>
+
+                        <!-- Available Promotions Tab -->
+                        <div class="tab-content active" id="available">
+                            @if (availablePromotions.Any())
+                            {
+                                <div class="promotions-grid">
+                                    @foreach (var promotion in availablePromotions)
+                                    {
+                                        <div class="promotion-card available-card" data-promotion-id="@promotion.PromotionID">
+                                            <div class="promotion-header">
+                                                <div class="promotion-badge">
+                                                    @if (promotion.DiscountType == "Percentage")
+                                                    {
+                                                        <span>-@promotion.DiscountValue%</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>-@promotion.DiscountValue.ToString("N0")đ</span>
+                                                    }
+                                                </div>
+                                                <div class="promotion-status available">
+                                                    <i class="fas fa-check-circle"></i>
+                                                    <span>Có thể sử dụng</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="promotion-body">
+                                                <h5 class="promotion-title">@promotion.PromotionName</h5>
+                                                <p class="promotion-description">
+                                                    @(string.IsNullOrEmpty(promotion.Description) ? "Ưu đãi đặc biệt từ Jollibee" : promotion.Description)
+                                                </p>
+
+                                                <div class="promotion-details">
+                                                    @if (!string.IsNullOrEmpty(promotion.CouponCode))
+                                                    {
+                                                        <div class="coupon-info">
+                                                            <label>Mã giảm giá:</label>
+                                                            <div class="coupon-code" onclick="copyCouponCode('@promotion.CouponCode')">
+                                                                <span class="code">@promotion.CouponCode</span>
+                                                                <i class="fas fa-copy"></i>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                    @if (promotion.MinOrderValue != null)
+                                                    {
+                                                        <div class="min-order-info">
+                                                            <i class="fas fa-shopping-cart"></i>
+                                                            <span>Đơn hàng tối thiểu: @promotion.MinOrderValue.ToString("N0")đ</span>
+                                                        </div>
+                                                    }
+
+                                                    <div class="usage-info">
+                                                        @if (promotion.MaxUsesPerUser != null)
+                                                        {
+                                                            var remainingUses = promotion.MaxUsesPerUser - promotion.UserUsageCount;
+                                                            <i class="fas fa-user-check"></i>
+                                                            <span>Còn lại: @remainingUses lần sử dụng</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <i class="fas fa-infinity"></i>
+                                                            <span>Không giới hạn sử dụng</span>
+                                                        }
+                                                    </div>
+
+                                                    <div class="validity-info">
+                                                        <i class="fas fa-calendar-alt"></i>
+                                                        <span>Có hiệu lực đến: @promotion.EndDate.ToString("dd/MM/yyyy")</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="promotion-actions">
+                                                <button class="btn btn-primary btn-use" onclick="usePromotion(@promotion.PromotionID)">
+                                                    <i class="fas fa-tag me-2"></i>Sử dụng ngay
+                                                </button>
+                                                <button class="btn btn-outline-secondary btn-share" onclick="sharePromotion('@promotion.PromotionName', '@promotion.CouponCode')">
+                                                    <i class="fas fa-share-alt me-2"></i>Chia sẻ
+                                                </button>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fas fa-gift"></i>
+                                    </div>
+                                    <h5>Chưa có ưu đãi nào</h5>
+                                    <p>Hiện tại bạn chưa có ưu đãi nào có thể sử dụng. Hãy xem các khuyến mãi mới nhất!</p>
+                                    <a href="@Url.Action("Index", "Promotion")" class="btn btn-primary">
+                                        <i class="fas fa-search me-2"></i>Khám phá ưu đãi
+                                    </a>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- History Tab -->
+                        <div class="tab-content" id="history">
+                            @if (usedPromotions.Any())
+                            {
+                                <div class="history-list">
+                                    @foreach (var item in usedPromotions)
+                                    {
+                                        <div class="history-item">
+                                            <div class="history-header">
+                                                <div class="history-info">
+                                                    <h6 class="history-title">@item.PromotionName</h6>
+                                                    <span class="history-date">
+                                                        <i class="fas fa-calendar me-1"></i>
+                                                        @item.UsedDate.ToString("dd/MM/yyyy HH:mm")
+                                                    </span>
+                                                </div>
+                                                <div class="history-amount">
+                                                    <span class="amount-label">Tiết kiệm</span>
+                                                    <span class="amount-value">@item.DiscountAmount.ToString("N0")đ</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="history-details">
+                                                @if (!string.IsNullOrEmpty(item.CouponCode))
+                                                {
+                                                    <div class="detail-item">
+                                                        <label>Mã đã sử dụng:</label>
+                                                        <span class="code-used">@item.CouponCode</span>
+                                                    </div>
+                                                }
+                                                
+                                                @if (!string.IsNullOrEmpty(item.OrderCode))
+                                                {
+                                                    <div class="detail-item">
+                                                        <label>Đơn hàng:</label>
+                                                        <span class="order-code">#@item.OrderCode</span>
+                                                    </div>
+                                                }
+                                                
+                                                <div class="detail-item">
+                                                    <label>Loại giảm giá:</label>
+                                                    <span class="discount-type">
+                                                        @if (item.DiscountType == "Percentage")
+                                                        {
+                                                            <span>Giảm @item.DiscountValue% giá trị đơn hàng</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Giảm @item.DiscountValue.ToString("N0")đ cho đơn hàng</span>
+                                                        }
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fas fa-history"></i>
+                                    </div>
+                                    <h5>Chưa có lịch sử sử dụng</h5>
+                                    <p>Bạn chưa sử dụng ưu đãi nào. Hãy bắt đầu tiết kiệm với các ưu đãi hấp dẫn!</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast for notifications -->
+<div class="toast-container">
+    <div id="promotionToast" class="toast">
+        <div class="toast-content">
+            <i class="toast-icon"></i>
+            <span class="toast-message"></span>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/user-promotions.js"></script>
+    <script>
+        $(document).ready(function() {
+            initializeUserPromotions();
+        });
+    </script>
+} 

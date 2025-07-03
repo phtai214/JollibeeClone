@@ -1,0 +1,262 @@
+@model IEnumerable<JollibeeClone.ViewModels.NewsPromotionViewModel>
+
+@{
+    ViewData["Title"] = "Khuyến mãi";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/promotion-page.css" />
+}
+
+<div class="promotion-page">
+    <!-- Header Section -->
+    <div class="promotion-header">
+        <div class="container">
+            <div class="text-center">
+                <h1 class="promotion-title">Khuyến mãi</h1>
+                <p class="promotion-subtitle">Khám phá những ưu đãi hấp dẫn từ Jollibee</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Promotions Content -->
+    <div class="container py-5">
+        @if (!Model.Any())
+        {
+            <div class="empty-state">
+                <i class="fas fa-tags"></i>
+                <h3>Hiện tại chưa có ưu đãi nào</h3>
+                <p>Hãy quay lại sau để không bỏ lỡ những ưu đãi hấp dẫn từ Jollibee!</p>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var promotion in Model)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="promotion-card" onclick="showPromotionDetails(@promotion.NewsID)">
+                            <div class="promotion-image">
+                                @if (!string.IsNullOrEmpty(promotion.ImageUrl))
+                                {
+                                    <img src="@promotion.ImageUrl" alt="@promotion.Title">
+                                }
+                                else
+                                {
+                                    <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                                        <i class="fas fa-tags fa-3x text-muted"></i>
+                                    </div>
+                                }
+                                <div class="promotion-badge">Khuyến mãi</div>
+                            </div>
+                            
+                            <div class="promotion-content">
+                                <h5 class="promotion-card-title">@promotion.Title</h5>
+                                <p class="promotion-description">
+                                    @(string.IsNullOrEmpty(promotion.ShortDescription) ? "Ưu đãi đặc biệt từ Jollibee" : promotion.ShortDescription)
+                                </p>
+                                
+                                <div class="promotion-meta">
+                                    <div class="promotion-date">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <span>@promotion.DisplayDate</span>
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(promotion.AuthorName))
+                                    {
+                                        <div class="promotion-author">
+                                            <i class="fas fa-user"></i>
+                                            <span>@promotion.AuthorName</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            
+                            <!-- Hover Overlay -->
+                            <div class="promotion-overlay">
+                                <div class="promotion-overlay-content">
+                                    <h5>@promotion.Title</h5>
+                                    <p>
+                                        @(string.IsNullOrEmpty(promotion.ShortDescription) ? "Nhấn để xem chi tiết ưu đãi từ Jollibee" : promotion.ShortDescription)
+                                    </p>
+                                    <button class="btn-view-detail" type="button">
+                                        <i class="fas fa-eye me-2"></i>Xem chi tiết
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal chi tiết khuyến mãi -->
+<div class="modal fade" id="promotionModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-light border-0">
+                <h5 class="modal-title fw-bold text-danger" id="modalTitle">Chi tiết khuyến mãi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4" id="modalBody">
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Đang tải...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Hiển thị chi tiết khuyến mãi
+        function showPromotionDetails(promotionId) {
+            console.log('Loading promotion details for ID:', promotionId);
+            
+            // Reset modal
+            $('#modalTitle').text('Chi tiết khuyến mãi');
+            $('#modalBody').html(`
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Đang tải...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Đang tải thông tin...</p>
+                </div>
+            `);
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('promotionModal'));
+            modal.show();
+            
+            // Load content
+            fetch('/Promotion/GetPromotionDetails/' + promotionId)
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    console.log('Response headers:', response.headers);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(response => {
+                    console.log('Response data:', response);
+                    if (response.success) {
+                        const data = response.data;
+                        
+                        // Fix: Use camelCase property names to match API response
+                        $('#modalTitle').text(data.title);
+                        
+                        // Format date properly - the datetime is now a string from server
+                        let formattedDate = data.publishedDate;
+                        try {
+                            // If it's in yyyy-MM-dd HH:mm:ss format, convert to Vietnamese display
+                            const dateObj = new Date(data.publishedDate);
+                            if (!isNaN(dateObj.getTime())) {
+                                formattedDate = dateObj.toLocaleDateString('vi-VN', {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric'
+                                });
+                            }
+                        } catch (e) {
+                            console.warn('Date formatting error:', e);
+                            formattedDate = data.publishedDate; // fallback to original
+                        }
+                        
+                        $('#modalBody').html(`
+                            <div class="promotion-detail">
+                                ${data.imageUrl ? `
+                                    <div class="text-center mb-4">
+                                        <img src="${data.imageUrl}" class="img-fluid rounded shadow" alt="${data.title}" style="max-height: 300px;">
+                                    </div>
+                                ` : ''}
+                                
+                                <div class="row mb-3">
+                                    <div class="col-sm-6">
+                                        <div class="d-flex align-items-center text-muted">
+                                            <i class="fas fa-calendar me-2 text-primary"></i>
+                                            <span>${formattedDate}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="d-flex align-items-center text-muted">
+                                            <i class="fas fa-user me-2 text-primary"></i>
+                                            <span>${data.authorName || 'Admin'}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                ${data.shortDescription ? `
+                                    <div class="alert alert-primary bg-light border-primary">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        ${data.shortDescription}
+                                    </div>
+                                ` : ''}
+                                
+                                <div class="promotion-content-detail">
+                                    ${data.content || '<p class="text-muted fst-italic">Thông tin chi tiết sẽ được cập nhật sớm.</p>'}
+                                </div>
+                            </div>
+                        `);
+                    } else {
+                        $('#modalBody').html(`
+                            <div class="alert alert-warning text-center">
+                                <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                                <p class="mb-0">${response.message || 'Không thể tải thông tin chi tiết.'}</p>
+                            </div>
+                        `);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading promotion details:', error);
+                    $('#modalBody').html(`
+                        <div class="alert alert-danger text-center">
+                            <i class="fas fa-times-circle fa-2x mb-3"></i>
+                            <p class="mb-0">Có lỗi xảy ra khi tải dữ liệu: ${error.message}</p>
+                            <small class="text-muted">ID: ${promotionId}</small>
+                        </div>
+                    `);
+                });
+        }
+        
+        // Chia sẻ khuyến mãi  
+        function sharePromotion(title, promotionId) {
+            const url = window.location.origin + '/Promotion#promotion-' + promotionId;
+            const text = 'Khám phá ưu đãi: ' + title + ' - Jollibee';
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: text,
+                    url: url
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(url).then(function() {
+                    alert('Đã sao chép liên kết khuyến mãi!');
+                }).catch(function() {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = url;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('Đã sao chép liên kết khuyến mãi!');
+                });
+            }
+        }
+        
+        // Stop click propagation on overlay buttons
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-view-detail')) {
+                e.stopPropagation();
+            }
+        });
+    </script>
+} 

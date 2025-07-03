@@ -12322,24 +12322,31 @@
     ]
   },
   "packageFolders": {
-    "/Users/daobao/.nuget/packages/": {}
+    "C:\\Users\\TAI\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/daobao/Documents/WEBAD/JollibeeClone/JollibeeClone.csproj",
+      "projectUniqueName": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\JollibeeClone.csproj",
       "projectName": "JollibeeClone",
-      "projectPath": "/Users/daobao/Documents/WEBAD/JollibeeClone/JollibeeClone.csproj",
-      "packagesPath": "/Users/daobao/.nuget/packages/",
-      "outputPath": "/Users/daobao/Documents/WEBAD/JollibeeClone/obj/",
+      "projectPath": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\JollibeeClone.csproj",
+      "packagesPath": "C:\\Users\\TAI\\.nuget\\packages\\",
+      "outputPath": "D:\\4.HK3_2025\\LapTrinhWeb_NC\\DoAn\\JollibeeClone\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/Users/daobao/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\TAI\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -12422,7 +12429,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

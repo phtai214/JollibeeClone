@@ -9,55 +9,55 @@ namespace JollibeeClone.ViewModels
     {
         public int PromotionID { get; set; }
 
-        [Required(ErrorMessage = "TÃªn voucher lÃ  báº¯t buá»™c")]
-        [StringLength(150, ErrorMessage = "TÃªn voucher khÃ´ng Ä‘Æ°á»£c vÆ°á»£t quÃ¡ 150 kÃ½ tá»±")]
-        [Display(Name = "TÃªn voucher")]
+        [Required(ErrorMessage = "Tên voucher là bắt buộc")]
+        [StringLength(150, ErrorMessage = "Tên voucher không được vượt quá 150 ký tự")]
+        [Display(Name = "Tên voucher")]
         public string PromotionName { get; set; } = string.Empty;
 
-        [StringLength(500, ErrorMessage = "MÃ´ táº£ khÃ´ng Ä‘Æ°á»£c vÆ°á»£t quÃ¡ 500 kÃ½ tá»±")]
-        [Display(Name = "MÃ´ táº£")]
+        [StringLength(500, ErrorMessage = "Mô tả không được vượt quá 500 ký tự")]
+        [Display(Name = "Mô tả")]
         public string? Description { get; set; }
 
-        [StringLength(50, ErrorMessage = "MÃ£ voucher khÃ´ng Ä‘Æ°á»£c vÆ°á»£t quÃ¡ 50 kÃ½ tá»±")]
-        [RegularExpression(@"^[A-Z0-9]+$", ErrorMessage = "MÃ£ voucher chá»‰ Ä‘Æ°á»£c chá»©a chá»¯ hoa vÃ  sá»‘, khÃ´ng cÃ³ khoáº£ng tráº¯ng")]
-        [Display(Name = "MÃ£ voucher")]
+        [StringLength(50, ErrorMessage = "Mã voucher không được vượt quá 50 ký tự")]
+        [RegularExpression(@"^[A-Z0-9]+$", ErrorMessage = "Mã voucher chỉ được chứa chữ hoa và số, không có khoảng trắng")]
+        [Display(Name = "Mã voucher")]
         public string? CouponCode { get; set; }
 
-        [Required(ErrorMessage = "Loáº¡i giáº£m giÃ¡ lÃ  báº¯t buá»™c")]
-        [Display(Name = "Loáº¡i giáº£m giÃ¡")]
+        [Required(ErrorMessage = "Loại giảm giá là bắt buộc")]
+        [Display(Name = "Loại giảm giá")]
         public string DiscountType { get; set; } = "Percentage";
 
-        [Required(ErrorMessage = "GiÃ¡ trá»‹ giáº£m giÃ¡ lÃ  báº¯t buá»™c")]
-        [Range(0.01, 100, ErrorMessage = "GiÃ¡ trá»‹ giáº£m giÃ¡ pháº£i tá»« 0.01% Ä‘áº¿n 100%")]
-        [Display(Name = "GiÃ¡ trá»‹ giáº£m giÃ¡ (%)")]
+        [Required(ErrorMessage = "Giá trị giảm giá là bắt buộc")]
+        [Range(0.01, 100, ErrorMessage = "Giá trị giảm giá phải từ 0.01% đến 100%")]
+        [Display(Name = "Giá trị giảm giá (%)")]
         public decimal DiscountValue { get; set; }
 
-        [Range(0, double.MaxValue, ErrorMessage = "GiÃ¡ trá»‹ Ä‘Æ¡n hÃ ng tá»‘i thiá»ƒu pháº£i lá»›n hÆ¡n hoáº·c báº±ng 0")]
-        [Display(Name = "GiÃ¡ trá»‹ Ä‘Æ¡n hÃ ng tá»‘i thiá»ƒu")]
+        [Range(0, double.MaxValue, ErrorMessage = "Giá trị đơn hàng tối thiểu phải lớn hơn hoặc bằng 0")]
+        [Display(Name = "Giá trị đơn hàng tối thiểu")]
         public decimal? MinOrderValue { get; set; }
 
-        [Required(ErrorMessage = "NgÃ y báº¯t Ä‘áº§u lÃ  báº¯t buá»™c")]
+        [Required(ErrorMessage = "Ngày bắt đầu là bắt buộc")]
         [DataType(DataType.DateTime)]
-        [Display(Name = "NgÃ y báº¯t Ä‘áº§u")]
+        [Display(Name = "Ngày bắt đầu")]
         public DateTime StartDate { get; set; } = DateTime.Today;
 
-        [Required(ErrorMessage = "NgÃ y káº¿t thÃºc lÃ  báº¯t buá»™c")]
+        [Required(ErrorMessage = "Ngày kết thúc là bắt buộc")]
         [DataType(DataType.DateTime)]
-        [Display(Name = "NgÃ y káº¿t thÃºc")]
+        [Display(Name = "Ngày kết thúc")]
         public DateTime EndDate { get; set; } = DateTime.Today.AddDays(30);
 
-        [Range(1, int.MaxValue, ErrorMessage = "Sá»‘ láº§n sá»­ dá»¥ng tá»‘i Ä‘a pháº£i lá»›n hÆ¡n 0")]
-        [Display(Name = "Sá»‘ láº§n sá»­ dá»¥ng tá»‘i Ä‘a")]
+        [Range(1, int.MaxValue, ErrorMessage = "Số lần sử dụng tối đa phải lớn hơn 0")]
+        [Display(Name = "Số lần sử dụng tối đa")]
         public int? MaxUses { get; set; }
 
-        [Display(Name = "Sá»‘ láº§n Ä‘Ã£ sá»­ dá»¥ng")]
+        [Display(Name = "Số lần đã sử dụng")]
         public int UsesCount { get; set; } = 0;
 
-        [Range(1, int.MaxValue, ErrorMessage = "Sá»‘ láº§n sá»­ dá»¥ng tá»‘i Ä‘a má»—i user pháº£i lá»›n hÆ¡n 0")]
-        [Display(Name = "Sá»‘ láº§n sá»­ dá»¥ng tá»‘i Ä‘a má»—i ngÆ°á»i")]
+        [Range(1, int.MaxValue, ErrorMessage = "Số lần sử dụng tối đa mỗi user phải lớn hơn 0")]
+        [Display(Name = "Số lần sử dụng tối đa mỗi người")]
         public int? MaxUsesPerUser { get; set; }
 
-        [Display(Name = "Tráº¡ng thÃ¡i hoáº¡t Ä‘á»™ng")]
+        [Display(Name = "Trạng thái hoạt động")]
         public bool IsActive { get; set; } = true;
 
         // For managing product and category scopes
@@ -78,43 +78,43 @@ namespace JollibeeClone.ViewModels
         public int DaysRemaining => Math.Max(0, (EndDate - DateTime.Today).Days);
         public int TotalDays => (EndDate - StartDate).Days + 1;
 
-        // Custom validation - YÃŠU Cáº¦U CHá»ŒN Cáº¢ PRODUCTS VÃ€ CATEGORIES
+        // Custom validation - YÊU CẦU CHỌN CẢ PRODUCTS VÀ CATEGORIES
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (EndDate <= StartDate)
             {
-                yield return new ValidationResult("NgÃ y káº¿t thÃºc pháº£i sau ngÃ y báº¯t Ä‘áº§u", new[] { nameof(EndDate) });
+                yield return new ValidationResult("Ngày kết thúc phải sau ngày bắt đầu", new[] { nameof(EndDate) });
             }
 
             if (StartDate < DateTime.Today.AddDays(-1))
             {
-                yield return new ValidationResult("NgÃ y báº¯t Ä‘áº§u khÃ´ng thá»ƒ quÃ¡ xa trong quÃ¡ khá»©", new[] { nameof(StartDate) });
+                yield return new ValidationResult("Ngày bắt đầu không thể quá xa trong quá khứ", new[] { nameof(StartDate) });
             }
 
             if ((EndDate - StartDate).Days > 365)
             {
-                yield return new ValidationResult("Thá»i gian hiá»‡u lá»±c voucher khÃ´ng Ä‘Æ°á»£c vÆ°á»£t quÃ¡ 365 ngÃ y", new[] { nameof(EndDate) });
+                yield return new ValidationResult("Thời gian hiệu lực voucher không được vượt quá 365 ngày", new[] { nameof(EndDate) });
             }
 
             if (MaxUsesPerUser.HasValue && MaxUses.HasValue && MaxUsesPerUser.Value > MaxUses.Value)
             {
-                yield return new ValidationResult("Sá»‘ láº§n sá»­ dá»¥ng tá»‘i Ä‘a má»—i ngÆ°á»i khÃ´ng Ä‘Æ°á»£c lá»›n hÆ¡n tá»•ng sá»‘ láº§n sá»­ dá»¥ng", new[] { nameof(MaxUsesPerUser) });
+                yield return new ValidationResult("Số lần sử dụng tối đa mỗi người không được lớn hơn tổng số lần sử dụng", new[] { nameof(MaxUsesPerUser) });
             }
 
             if (DiscountValue < 0.01m)
             {
-                yield return new ValidationResult("GiÃ¡ trá»‹ giáº£m giÃ¡ pháº£i Ã­t nháº¥t 0.01%", new[] { nameof(DiscountValue) });
+                yield return new ValidationResult("Giá trị giảm giá phải ít nhất 0.01%", new[] { nameof(DiscountValue) });
             }
 
             if (DiscountValue > 100m)
             {
-                yield return new ValidationResult("GiÃ¡ trá»‹ giáº£m giÃ¡ khÃ´ng Ä‘Æ°á»£c vÆ°á»£t quÃ¡ 100%", new[] { nameof(DiscountValue) });
+                yield return new ValidationResult("Giá trị giảm giá không được vượt quá 100%", new[] { nameof(DiscountValue) });
             }
 
-            // LOGIC CÅ¨: Báº®T BUá»˜C PHáº¢I CHá»ŒN Cáº¢ PRODUCTS VÃ€ CATEGORIES
+            // LOGIC CỨ: BẮT BUỘC PHẢI CHỌN CẢ PRODUCTS VÀ CATEGORIES
             if (!SelectedProductIds.Any() || !SelectedCategoryIds.Any())
             {
-                yield return new ValidationResult("Vui lÃ²ng chá»n Ã­t nháº¥t má»™t sáº£n pháº©m VÃ€ má»™t danh má»¥c Ä‘á»ƒ Ã¡p dá»¥ng voucher", new[] { nameof(SelectedProductIds), nameof(SelectedCategoryIds) });
+                yield return new ValidationResult("Vui lòng chọn ít nhất một sản phẩm VÀ một danh mục để áp dụng voucher", new[] { nameof(SelectedProductIds), nameof(SelectedCategoryIds) });
             }
         }
     }

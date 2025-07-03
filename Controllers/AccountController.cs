@@ -758,6 +758,84 @@ namespace JollibeeClone.Controllers
             }
         }
 
+        // GET: Account/Promotions - Danh sách ưu đãi của user
+        [HttpGet]
+        [UserAuthorize]
+        public async Task<IActionResult> Promotions()
+        {
+            try
+            {
+                var userId = int.Parse(HttpContext.Session.GetString("UserId"));
+                
+                // Lấy tất cả promotion active
+                var availablePromotions = await _context.Promotions
+                    .Where(p => p.IsActive && 
+                               p.StartDate <= DateTime.Now && 
+                               p.EndDate >= DateTime.Now &&
+                               (p.MaxUses == null || p.UsesCount < p.MaxUses))
+                    .Select(p => new {
+                        p.PromotionID,
+                        p.PromotionName,
+                        p.Description,
+                        p.CouponCode,
+                        p.DiscountType,
+                        p.DiscountValue,
+                        MinOrderValue = (decimal?)p.MinOrderValue,
+                        p.StartDate,
+                        p.EndDate,
+                        MaxUses = (int?)p.MaxUses,
+                        p.UsesCount,
+                        MaxUsesPerUser = (int?)p.MaxUsesPerUser,
+                        UserUsageCount = p.UserPromotions.Count(up => up.UserID == userId)
+                    })
+                    .ToListAsync();
+
+                // Lấy lịch sử sử dụng promotion của user
+                var usedPromotions = await _context.UserPromotions
+                    .Include(up => up.Promotion)
+                    .Include(up => up.Order)
+                    .Where(up => up.UserID == userId)
+                    .OrderByDescending(up => up.UsedDate)
+                    .Select(up => new {
+                        up.UserPromotionID,
+                        up.UsedDate,
+                        up.DiscountAmount,
+                        up.OrderID,
+                        OrderCode = up.Order != null ? up.Order.OrderCode : null,
+                        PromotionName = up.Promotion.PromotionName,
+                        CouponCode = up.Promotion.CouponCode,
+                        DiscountType = up.Promotion.DiscountType,
+                        DiscountValue = up.Promotion.DiscountValue
+                    })
+                    .ToListAsync();
+
+                // Filter promotions user có thể sử dụng
+                var eligiblePromotions = availablePromotions
+                    .Where(p => p.MaxUsesPerUser == null || p.UserUsageCount < p.MaxUsesPerUser)
+                    .ToList();
+
+                var viewModel = new {
+                    AvailablePromotions = eligiblePromotions,
+                    UsedPromotions = usedPromotions,
+                    TotalAvailable = eligiblePromotions.Count,
+                    TotalUsed = usedPromotions.Count
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading user promotions for user {UserId}", HttpContext.Session.GetString("UserId"));
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải danh sách ưu đãi.";
+                return View(new { 
+                    AvailablePromotions = new List<object>(), 
+                    UsedPromotions = new List<object>(),
+                    TotalAvailable = 0,
+                    TotalUsed = 0
+                });
+            }
+        }
+
         // Helper methods
         private bool IsUserLoggedIn()
         {

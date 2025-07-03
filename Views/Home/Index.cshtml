@@ -266,88 +266,72 @@
         <p class="title">Tin Tức</p>
     </div>
     <div class="content-post">
-        <div class="post-entry">
-            <div class="media">
-                <div class="post-image">
-                    <a href="https://jollibee.com.vn/blog/post/jollibee-dạt-mốc-200-cửa-hang-tại-thị-truờng-việt-nam" title="Jollibee đạt mốc 200 cửa hàng tại thị trường Việt Nam">
-                        <img src="https://jollibee.com.vn/media/magefan_blog/TT1_1.jpg" alt="Jollibee đạt mốc 200 cửa hàng tại thị trường Việt Nam">
-                    </a>
-                </div>
-                <div class="post-title-holder clearfix">
-                    <div class="post-title">
-                        <a class="post-item-link media-heading" href="https://jollibee.com.vn/blog/post/jollibee-dạt-mốc-200-cửa-hang-tại-thị-truờng-việt-nam">
-                            Jollibee đạt mốc 200 cửa hàng tại thị trường Việt Nam
-                        </a>
+        @{
+            var latestNews = ViewBag.LatestNews as List<dynamic> ?? new List<dynamic>();
+        }
+        
+        @if (latestNews.Any())
+        {
+            @foreach (var news in latestNews)
+            {
+                <div class="post-entry">
+                    <div class="media">
+                        <div class="post-image">
+                            <a href="/News#news-@news.NewsID" title="@news.Title">
+                                @if (!string.IsNullOrEmpty(news.ImageUrl))
+                                {
+                                    <img src="@news.ImageUrl" alt="@news.Title">
+                                }
+                                else
+                                {
+                                    <img src="/assets/images/bee.png" alt="@news.Title">
+                                }
+                            </a>
+                        </div>
+                        <div class="post-title-holder clearfix">
+                            <div class="post-title">
+                                <a class="post-item-link media-heading" href="/News#news-@news.NewsID">
+                                    @news.Title
+                                </a>
+                            </div>
+                        </div>
+                        <div class="post-text-hld clearfix">
+                            <p>@(string.IsNullOrEmpty(news.ShortDescription) ? "Tin tức mới từ Jollibee" : news.ShortDescription)</p>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar"></i> @news.PublishedDate.ToString("dd/MM/yyyy")
+                                @if (!string.IsNullOrEmpty(news.AuthorName))
+                                {
+                                    <span> | <i class="fas fa-user"></i> @news.AuthorName</span>
+                                }
+                            </small>
+                        </div>
                     </div>
                 </div>
-                <div class="post-text-hld clearfix">
-                    <p><strong><em>Sự kiện khai trương cửa hàng thứ 200 là cột mốc quan trọng trong kế hoạch mở rộng kinh doanh và khẳng định vị thế của Jollibee trong thị trường thức ăn nhanh Việt Nam.</em></strong></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="post-entry">
-            <div class="media">
-                <div class="post-image">
-                    <a href="https://jollibee.com.vn/blog/post/hợp-tac-bền-vững-giup-jollibee-phat-triển-tại-việt-nam-sau-hai-thập-kỷ-việc-co-chung-mục-tieu-va-mối" title="Hợp tác bền vững giúp Jollibee phát triển tại Việt Nam sau hai thập kỷ">
-                        <img src="https://jollibee.com.vn/media/magefan_blog/VN1.jpg" alt="Hợp tác bền vững giúp Jollibee phát triển tại Việt Nam sau hai thập kỷ">
-                    </a>
-                </div>
-                <div class="post-title-holder clearfix">
-                    <div class="post-title">
-                        <a class="post-item-link media-heading" href="https://jollibee.com.vn/blog/post/hợp-tac-bền-vững-giup-jollibee-phat-triển-tại-việt-nam-sau-hai-thập-kỷ-việc-co-chung-mục-tieu-va-mối">
-                            Hợp tác bền vững giúp Jollibee phát triển tại Việt Nam sau hai thập kỷ
-                        </a>
+            }
+        }
+        else
+        {
+            <div class="post-entry">
+                <div class="media">
+                    <div class="post-image">
+                        <img src="/assets/images/bee.png" alt="Jollibee">
+                    </div>
+                    <div class="post-title-holder clearfix">
+                        <div class="post-title">
+                            <span class="post-item-link media-heading">
+                                Hiện tại chưa có tin tức mới
+                            </span>
+                        </div>
+                    </div>
+                    <div class="post-text-hld clearfix">
+                        <p>Hãy quay lại sau để cập nhật những thông tin mới nhất từ Jollibee!</p>
                     </div>
                 </div>
-                <div class="post-text-hld clearfix">
-                    <p>Việc có chung mục tiêu và mối quan hệ hợp tác chặt chẽ với các đối tác giúp Jollibee Việt Nam phát triển bền bỉ suốt gần 20 năm qua.</p>
-                </div>
             </div>
-        </div>
-
-        <div class="post-entry">
-            <div class="media">
-                <div class="post-image">
-                    <a href="https://jollibee.com.vn/blog/post/jollibee-việt-nam-khai-truong-cửa-hang-thứ-191" title="JOLLIBEE VIỆT NAM KHAI TRƯƠNG CỬA HÀNG THỨ 191">
-                        <img src="https://jollibee.com.vn/media/magefan_blog/thumbnail2.jpg" alt="JOLLIBEE VIỆT NAM KHAI TRƯƠNG CỬA HÀNG THỨ 191">
-                    </a>
-                </div>
-                <div class="post-title-holder clearfix">
-                    <div class="post-title">
-                        <a class="post-item-link media-heading" href="https://jollibee.com.vn/blog/post/jollibee-việt-nam-khai-truong-cửa-hang-thứ-191">
-                            JOLLIBEE VIỆT NAM KHAI TRƯƠNG CỬA HÀNG THỨ 191
-                        </a>
-                    </div>
-                </div>
-                <div class="post-text-hld clearfix">
-                    <p>Vào ngày 17/05/2024, tại tuyến phố Mê Linh sầm uất của phường Liên Bảo, thành phố Vĩnh Yên, Jollibee Mê Linh chính thức khai trương, đánh dấu cột mốc sau 14 năm khai trương cửa hang thứ 2 tại Vĩnh Phúc.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="post-entry">
-            <div class="media">
-                <div class="post-image">
-                    <a href="https://jollibee.com.vn/blog/post/jollibee-–-thấu-hiểu-dể-thanh-cong-duplicated" title="Jollibee Việt Nam khai trương cửa hàng thứ 150">
-                        <img src="https://jollibee.com.vn/media/magefan_blog/THUMBNAIL-04-06.jpg" alt="Jollibee Việt Nam khai trương cửa hàng thứ 150">
-                    </a>
-                </div>
-                <div class="post-title-holder clearfix">
-                    <div class="post-title">
-                        <a class="post-item-link media-heading" href="https://jollibee.com.vn/blog/post/jollibee-–-thấu-hiểu-dể-thanh-cong-duplicated">
-                            Jollibee Việt Nam khai trương cửa hàng thứ 150
-                        </a>
-                    </div>
-                </div>
-                <div class="post-text-hld clearfix">
-                    <p>Jollibee Việt Nam đã đưa vào vận hành nhà máy mới với chứng nhận ISO 22000:2018 về quản lý an toàn vệ sinh thực phẩm quốc tế.</p>
-                </div>
-            </div>
-        </div>
+        }
     </div>
     <div class="footer-wrapper">
-        <a href="/tin-tuc" class="btn action primary">
+        <a href="@Url.Action("Index", "News")" class="btn action primary">
             Xem thêm
         </a>
     </div>

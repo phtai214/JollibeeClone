@@ -1,0 +1,200 @@
+@model IEnumerable<object>
+
+@{
+    ViewData["Title"] = "Tin Tức & Sự Kiện";
+    var newsList = Model.Cast<dynamic>().ToList();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/news-section.css" />
+}
+
+<!-- Enhanced Header Section like Jollibee -->
+<div class="news-page">
+    <div class="news-header">
+        <div class="container">
+            <div class="text-center">
+                <h1 class="news-title">TIN TỨC & SỰ KIỆN</h1>
+                <p class="news-subtitle">Tận hưởng những khoảnh khắc trọn vẹn cùng Jollibee</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- News Grid -->
+    <div class="news-section">
+        <div class="container">
+            @if (!newsList.Any())
+            {
+                <div class="empty-state">
+                    <i class="fas fa-newspaper"></i>
+                    <h3>Hiện tại chưa có tin tức nào</h3>
+                    <p>Hãy quay lại sau để cập nhật những thông tin mới nhất từ Jollibee!</p>
+                </div>
+            }
+            else
+            {
+                <div class="row g-4" id="newsContainer">
+                    @foreach (var news in newsList)
+                    {
+                        <div class="col-lg-4 col-md-6">
+                            <div class="news-card" data-news-title="@news.Title">
+                                <div class="news-image">
+                                    @if (!string.IsNullOrEmpty(news.ImageUrl))
+                                    {
+                                        <img src="@news.ImageUrl" alt="@news.Title" class="img-fluid">
+                                    }
+                                    else
+                                    {
+                                        <div class="news-placeholder">
+                                            <i class="fas fa-newspaper"></i>
+                                        </div>
+                                    }
+                                    <div class="news-badge">TIN TỨC</div>
+                                </div>
+
+                                <div class="news-content">
+                                    <h3 class="news-card-title">@news.Title</h3>
+                                    
+                                    @if (!string.IsNullOrEmpty(news.ShortDescription))
+                                    {
+                                        <p class="news-description">@news.ShortDescription</p>
+                                    }
+
+                                    <div class="news-meta">
+                                        <div class="news-date">
+                                            <i class="fas fa-calendar"></i>
+                                            @news.PublishedDate.ToString("dd/MM/yyyy")
+                                        </div>
+                                        <div class="news-author">
+                                            <i class="fas fa-user"></i>
+                                            @news.AuthorName
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="news-overlay">
+                                    <div class="news-overlay-content">
+                                        <h5>@news.Title</h5>
+                                        <p>@(news.ShortDescription ?? "Đọc để khám phá nội dung thú vị...")</p>
+                                        <button class="btn-view-detail" data-news-id="@news.NewsID">
+                                            <i class="fas fa-book-open"></i>
+                                            Đọc thêm
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Enhanced News Detail Modal -->
+<div class="modal fade" id="newsDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newsModalTitle"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="newsModalBody">
+                <!-- News content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="shareCurrentNews()">
+                    <i class="fas fa-share-alt"></i> Chia sẻ
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let currentNewsData = null;
+
+        $(document).ready(function() {
+            // Read more functionality
+            $('.btn-view-detail').on('click', function() {
+                var newsId = $(this).data('news-id');
+                loadNewsDetail(newsId);
+            });
+        });
+
+        function loadNewsDetail(newsId) {
+            $.get('/News/GetNewsDetails/' + newsId)
+                .done(function(response) {
+                    if (response.success) {
+                        var news = response.data;
+                        currentNewsData = news;
+                        $('#newsModalTitle').text(news.title);
+                        
+                        var modalContent = `
+                            <div class="news-detail">
+                                <div class="row">
+                                    <div class="col-12">
+                                        ${news.imageUrl ? `<img src="${news.imageUrl}" alt="${news.title}" class="img-fluid mb-4">` : ''}
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="fas fa-calendar me-2"></i>
+                                            <strong>Ngày đăng:</strong> <span class="ms-2">${new Date(news.publishedDate).toLocaleDateString('vi-VN')}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="fas fa-user me-2"></i>
+                                            <strong>Tác giả:</strong> <span class="ms-2">${news.authorName}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                ${news.shortDescription ? `
+                                <div class="alert alert-primary">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    ${news.shortDescription}
+                                </div>
+                                ` : ''}
+
+                                <div class="news-content-detail">
+                                    ${news.content}
+                                </div>
+                            </div>
+                        `;
+                        
+                        $('#newsModalBody').html(modalContent);
+                        $('#newsDetailModal').modal('show');
+                    } else {
+                        alert('Có lỗi xảy ra: ' + response.message);
+                    }
+                })
+                .fail(function() {
+                    alert('Có lỗi xảy ra khi tải tin tức.');
+                });
+        }
+
+        function shareCurrentNews() {
+            if (currentNewsData) {
+                if (navigator.share) {
+                    navigator.share({
+                        title: currentNewsData.title,
+                        text: currentNewsData.shortDescription || '',
+                        url: window.location.origin + '/News#news-' + currentNewsData.newsID
+                    });
+                } else {
+                    // Fallback: copy to clipboard
+                    var url = window.location.origin + '/News#news-' + currentNewsData.newsID;
+                    navigator.clipboard.writeText(url).then(function() {
+                        alert('Đã sao chép link tin tức!');
+                    });
+                }
+            }
+        }
+    </script>
+} 
