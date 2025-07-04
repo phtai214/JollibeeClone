@@ -22,30 +22,41 @@ public class HomeController : Controller
     {
         try
         {
-            // Lấy 4 tin tức mới nhất để hiển thị trên trang chủ
-            var latestNews = await _context.News
-                .Include(n => n.Author)
-                .Where(n => n.IsPublished && n.NewsType == "News")
+            // Test connection và lấy số lượng tin tức
+            var totalCount = await _context.News.CountAsync();
+            var publishedCount = await _context.News.Where(n => n.IsPublished).CountAsync();
+            
+            _logger.LogInformation($"Database connection OK. Total news: {totalCount}, Published: {publishedCount}");
+
+            // Lấy tin tức đơn giản nhất
+            var allNews = await _context.News.ToListAsync();
+            var newsForView = allNews
+                .Where(n => n.IsPublished)
                 .OrderByDescending(n => n.PublishedDate)
                 .Take(4)
                 .Select(n => new
                 {
-                    n.NewsID,
-                    n.Title,
-                    n.ShortDescription,
-                    n.ImageUrl,
-                    n.PublishedDate,
-                    AuthorName = n.Author != null ? n.Author.FullName : "Admin"
-                })
-                .ToListAsync();
+                    NewsID = n.NewsID,
+                    Title = n.Title ?? "Không có tiêu đề",
+                    ShortDescription = n.ShortDescription ?? "Không có mô tả",
+                    ImageUrl = n.ImageUrl ?? "",
+                    PublishedDate = n.PublishedDate,
+                    AuthorName = "Admin"
+                }).ToList();
 
-            ViewBag.LatestNews = latestNews;
+            ViewBag.LatestNews = newsForView;
+            ViewBag.TotalNewsInDB = totalCount;
+            ViewBag.PublishedNewsInDB = publishedCount;
+            
+            _logger.LogInformation($"Sending {newsForView.Count} news items to view");
+            
             return View();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error loading latest news for home page");
+            _logger.LogError(ex, "Error loading news: {Message}", ex.Message);
             ViewBag.LatestNews = new List<object>();
+            ViewBag.ErrorMessage = ex.Message;
             return View();
         }
     }

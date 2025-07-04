@@ -1,0 +1,1225 @@
+@{
+    ViewData["Title"] = "Cửa hàng";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/store-map-modal.css" asp-append-version="true" />
+}
+
+<div class="stores-hero">
+    <div class="stores-hero-content">
+        <h1>Tìm Cửa Hàng Jollibee</h1>
+        <p>Khám phá các cửa hàng Jollibee gần bạn nhất</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="advanced-search-container">
+        <div class="search-header">
+            <h3><i class="fas fa-filter me-2"></i>Tìm kiếm cửa hàng</h3>
+            <p class="text-muted">Chọn khu vực để tìm cửa hàng Jollibee gần bạn</p>
+        </div>
+        
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">
+                    <i class="fas fa-map-marker-alt text-danger me-1"></i>Tỉnh/Thành phố
+                </label>
+                <select id="citySelect" class="form-select">
+                    <option value="">Chọn tỉnh/thành phố...</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">
+                    <i class="fas fa-building text-danger me-1"></i>Quận/Huyện
+                </label>
+                <select id="districtSelect" class="form-select" disabled>
+                    <option value="">Chọn quận/huyện...</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">
+                    <i class="fas fa-home text-danger me-1"></i>Phường/Xã
+                </label>
+                <select id="wardSelect" class="form-select" disabled>
+                    <option value="">Chọn phường/xã...</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">
+                    <i class="fas fa-search text-danger me-1"></i>Tìm kiếm thêm
+                </label>
+                <input type="text" id="storeSearch" class="form-control" placeholder="Tên cửa hàng, địa chỉ...">
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <button class="btn btn-danger me-2" id="searchBtn">
+                    <i class="fas fa-search me-1"></i>Tìm kiếm
+                </button>
+                <button class="btn btn-outline-secondary" id="resetBtn">
+                    <i class="fas fa-undo me-1"></i>Đặt lại
+                </button> 
+            </div>
+            <div class="col-md-6">
+                <div class="view-options text-end">
+                    <button class="btn btn-outline-primary active" id="listViewBtn">
+                        <i class="fas fa-list"></i> Danh sách
+                    </button>
+                    <button class="btn btn-outline-primary" id="mapViewBtn">
+                        <i class="fas fa-map-marker-alt"></i> Bản đồ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <div id="storeCounter" class="text-muted">Đang tải...</div>
+        </div>
+    </div>
+    
+    <div class="row" id="storeList">
+        <!-- Store cards will be dynamically populated -->
+    </div>
+
+    <div id="storeMap" class="mt-4" style="height: 600px; display: none;">
+        <!-- Map will be loaded here -->
+    </div>
+</div>
+
+<!-- Google Maps Modal -->
+<div class="modal fade" id="storeMapModal" tabindex="-1" aria-labelledby="storeMapModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <div class="d-flex align-items-center">
+                    <div class="modal-icon me-3">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-bold" id="storeMapModalLabel">Vị trí cửa hàng</h5>
+                        <p class="mb-0 text-muted" id="storeModalAddress">Đang tải thông tin...</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="store-map-container">
+                    <iframe 
+                        id="googleMapsFrame" 
+                        width="100%" 
+                        height="500" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                    <div id="mapLoadingOverlay" class="map-loading-overlay">
+                        <div class="text-center">
+                            <div class="spinner-border text-danger mb-3" role="status" style="width: 3rem; height: 3rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <h5 class="text-muted">Đang tải bản đồ...</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0 bg-light">
+                <div class="row w-100">
+                    <div class="col-md-8">
+                        <div class="store-quick-info">
+                            <h6 class="fw-bold" id="storeModalName">Tên cửa hàng</h6>
+                            <div class="d-flex align-items-center text-muted mb-2">
+                                <i class="fas fa-phone me-2"></i>
+                                <span id="storeModalPhone">Chưa cập nhật</span>
+                            </div>
+                            <div class="d-flex align-items-center text-muted">
+                                <i class="fas fa-clock me-2"></i>
+                                <span id="storeModalHours">Chưa cập nhật</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Đóng
+                        </button>
+                        <a href="#" target="_blank" class="btn btn-danger" id="openGoogleMapsBtn">
+                            <i class="fas fa-external-link-alt me-1"></i>Mở Google Maps
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stores-hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/assets/images/laytaicuahang_trangchu.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        position: relative;
+        margin: 0 -15px;
+        width: calc(100% + 30px);
+    }
+
+    .stores-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(227, 25, 55, 0.8), rgba(0, 0, 0, 0.7));
+        z-index: 1;
+    }
+
+    .stores-hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        padding: 0 20px;
+    }
+
+    .stores-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        animation: fadeInDown 1s ease-out;
+    }
+
+    .stores-hero p {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        animation: fadeInUp 1s ease-out;
+    }
+
+    @* @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    } *@
+
+    .search-box {
+        position: relative;
+        max-width: 600px;
+        margin: 0 auto;
+        animation: fadeIn 1.5s ease-out;
+    }
+
+    @* @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    } *@
+
+    .advanced-search-container {
+        background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(227, 25, 55, 0.08);
+        border: 1px solid rgba(227, 25, 55, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    .search-header h3 {
+        color: #e31937;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-label {
+        color: #333;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-select, .form-control {
+        border: 2px solid #dee2e6;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+    }
+
+    .form-select:focus, .form-control:focus {
+        border-color: #e31937;
+        box-shadow: 0 0 0 0.2rem rgba(227, 25, 55, 0.25);
+    }
+
+    .form-select:disabled {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        cursor: not-allowed;
+    }
+
+    .btn-danger {
+        background: linear-gradient(45deg, #e31937, #ff2d47);
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(227, 25, 55, 0.3);
+    }
+
+    .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(227, 25, 55, 0.4);
+    }
+
+    .btn-outline-secondary {
+        border: 2px solid #6c757d;
+        border-radius: 10px;
+        padding: 0.60rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-secondary:hover {
+        background: #6c757d;
+        border-color: #6c757d;
+        transform: translateY(-1px);
+    }
+
+    .store-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(227, 25, 55, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        height: 100%;
+    }
+
+    .store-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(227, 25, 55, 0.15);
+    }
+
+    .store-content {
+        padding: 1.5rem;
+    }
+
+    .store-content h3 {
+        color: #e31937;
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .store-info {
+        color: #666;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .store-info i {
+        color: #e31937;
+        width: 20px;
+        margin-right: 10px;
+    }
+
+    .store-info a {
+        color: #e31937;
+        text-decoration: none;
+    }
+
+    .store-info a:hover {
+        text-decoration: underline;
+    }
+
+    .store-image {
+        border-radius: 12px 12px 0 0;
+    }
+
+    .btn-outline-primary {
+        color: #e31937;
+        border-color: #e31937;
+    }
+
+    .btn-outline-primary:hover,
+    .btn-outline-primary.active {
+        background-color: #e31937;
+        border-color: #e31937;
+        color: white;
+    }
+
+
+
+    @* @media (max-width: 768px) {
+        .stores-hero {
+            height: 300px;
+        }
+        
+        .view-options {
+            margin-top: 1rem;
+            text-align: left !important;
+        }
+
+        .modal-dialog {
+            margin: 0.5rem;
+        }
+
+        .modal-footer .row {
+            flex-direction: column;
+        }
+
+        .modal-footer .col-md-4 {
+            margin-top: 1rem;
+            text-align: center !important;
+        } *@
+    }
+</style>
+
+@section Scripts {
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+    <script>
+        let allStores = [];
+        let currentStores = [];
+        let locationsData = {}; // Store location data from real API
+        
+        // No fallback data needed - using real API
+
+        // Load stores data from API
+        async function loadStores(searchParams = {}) {
+            try {
+                showLoading();
+                console.log('Loading stores with params:', searchParams);
+                
+                // Build query string
+                const params = new URLSearchParams();
+                if (searchParams.search) params.append('search', searchParams.search);
+                if (searchParams.city) params.append('city', searchParams.city);
+                if (searchParams.district) params.append('district', searchParams.district);
+                if (searchParams.ward) params.append('ward', searchParams.ward);
+                
+                const apiUrl = `/api/stores?${params.toString()}`;
+                console.log('API URL:', apiUrl);
+                
+                const response = await fetch(apiUrl);
+                const result = await response.json();
+                
+                console.log('Store API Response:', result);
+                
+                if (result.success) {
+                    allStores = result.data;
+                    currentStores = allStores;
+                    console.log(`Loaded ${currentStores.length} stores`);
+                    renderStoreList();
+                    updateStoreCounter();
+                } else {
+                    console.error('Lỗi khi tải dữ liệu cửa hàng:', result.message);
+                    showError('Không thể tải dữ liệu cửa hàng: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Lỗi kết nối:', error);
+                showError('Lỗi kết nối: ' + error.message);
+            }
+        }
+
+
+
+        // Perform search with current filters
+        function performSearch() {
+            const citySelect = document.getElementById('citySelect');
+            const districtSelect = document.getElementById('districtSelect');
+            const wardSelect = document.getElementById('wardSelect');
+            const searchInput = document.getElementById('storeSearch');
+            
+            const searchParams = {
+                search: searchInput.value.trim(),
+                city: citySelect.value,  // Use direct value since we're using real city names now
+                district: districtSelect.value,  // Use direct value
+                ward: wardSelect.value
+            };
+            
+            // Remove empty parameters
+            Object.keys(searchParams).forEach(key => {
+                if (!searchParams[key]) delete searchParams[key];
+            });
+            
+            console.log('Search params:', searchParams);
+            loadStores(searchParams);
+        }
+
+        // Reset all filters
+        function resetFilters() {
+            console.log('Resetting all filters...');
+            
+            // Clear all form inputs
+            document.getElementById('citySelect').value = '';
+            document.getElementById('districtSelect').innerHTML = '<option value="">Chọn quận/huyện...</option>';
+            document.getElementById('districtSelect').disabled = true;
+            document.getElementById('wardSelect').innerHTML = '<option value="">Chọn phường/xã...</option>';
+            document.getElementById('wardSelect').disabled = true;
+            document.getElementById('storeSearch').value = '';
+            
+            // Show loading immediately
+            showLoading();
+            
+            // Show success notification
+            showSuccessMessage('Đã đặt lại bộ lọc, đang tải tất cả cửa hàng...');
+            
+            // Load all stores without any filters
+            setTimeout(() => {
+                console.log('Loading all stores after reset...');
+                loadStores({});
+            }, 100);
+        }
+
+        // Show success message
+        function showSuccessMessage(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'alert alert-success alert-dismissible fade show';
+            successDiv.style.position = 'fixed';
+            successDiv.style.top = '20px';
+            successDiv.style.right = '20px';
+            successDiv.style.zIndex = '9999';
+            successDiv.style.maxWidth = '400px';
+            successDiv.innerHTML = `
+                <strong><i class="fas fa-check-circle"></i> Thành công:</strong><br>
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(successDiv);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                if (successDiv.parentNode) {
+                    successDiv.remove();
+                }
+            }, 3000);
+        }
+
+        function showLoading() {
+            const storeList = document.getElementById('storeList');
+            storeList.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <div class="spinner-border text-danger" role="status" style="width: 3rem; height: 3rem;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h4 class="mt-3 text-muted">Đang tải dữ liệu cửa hàng...</h4>
+                </div>
+            `;
+            
+            const counterElement = document.getElementById('storeCounter');
+            if (counterElement) {
+                counterElement.textContent = 'Đang tải...';
+            }
+        }
+
+        function renderStoreList() {
+            const storeList = document.getElementById('storeList');
+            if (currentStores.length === 0) {
+                storeList.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-store-slash fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">Không tìm thấy cửa hàng nào</h4>
+                        <p class="text-muted">Vui lòng thử lại với từ khóa khác</p>
+                    </div>
+                `;
+                return;
+            }
+
+            storeList.innerHTML = currentStores.map(store => {
+                console.log('Rendering store:', store);
+                console.log('GoogleMapsUrl from store:', store.GoogleMapsUrl);
+                const storeName = store.StoreName || store.storeName || 'Tên cửa hàng chưa cập nhật';
+                const fullAddress = store.FullAddress || store.fullAddress || 
+                                  `${store.StreetAddress || store.streetAddress || ''} ${store.Ward || store.ward || ''} ${store.District || store.district || ''} ${store.City || store.city || ''}`.trim() || 
+                                  'Địa chỉ chưa cập nhật';
+                const phoneNumber = store.PhoneNumber || store.phoneNumber;
+                const openingHours = store.OpeningHours || store.openingHours;
+                const imageUrl = store.ImageUrl || store.imageUrl;
+                const googleMapsUrl = store.GoogleMapsUrl || store.googleMapsUrl || '';
+                const storeId = store.StoreID || store.storeID;
+                
+                console.log(`Store ${storeName}: GoogleMapsUrl = "${googleMapsUrl}"`);
+                
+                return `
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="store-card" 
+                         data-store-id="${storeId}"
+                         data-store-name="${storeName.replace(/"/g, '&quot;')}"
+                         data-store-address="${fullAddress.replace(/"/g, '&quot;')}"
+                         data-store-phone="${phoneNumber || ''}"
+                         data-store-hours="${openingHours || ''}"
+                         data-google-maps-url="${googleMapsUrl ? googleMapsUrl.replace(/"/g, '&quot;') : ''}">
+                        ${imageUrl ? `<img src="${imageUrl}" alt="${storeName}" class="store-image" style="width: 100%; height: 200px; object-fit: cover;">` : ''}
+                        <div class="store-content">
+                            <h3>${storeName}</h3>
+                            <div class="store-info">
+                                <p><i class="fas fa-map-marker-alt"></i> ${fullAddress}</p>
+                                ${phoneNumber ? `<p><i class="fas fa-phone"></i> <a href="tel:${phoneNumber}" class="text-decoration-none" onclick="event.stopPropagation()">${phoneNumber}</a></p>` : ''}
+                                ${openingHours ? `<p><i class="fas fa-clock"></i> ${openingHours}</p>` : '<p><i class="fas fa-clock"></i> Giờ mở cửa: Chưa cập nhật</p>'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+            
+            // Add event listeners to store cards
+            document.querySelectorAll('.store-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const storeId = this.getAttribute('data-store-id');
+                    const storeName = this.getAttribute('data-store-name');
+                    const storeAddress = this.getAttribute('data-store-address');
+                    const storePhone = this.getAttribute('data-store-phone');
+                    const storeHours = this.getAttribute('data-store-hours');
+                    const googleMapsUrl = this.getAttribute('data-google-maps-url');
+                    
+                    console.log('Store card clicked, data attributes:', {
+                        storeId, storeName, storeAddress, storePhone, storeHours, googleMapsUrl
+                    });
+                    
+                    openStoreMapModal(storeId, storeName, storeAddress, storePhone, storeHours, googleMapsUrl);
+                });
+            });
+        }
+
+        function updateStoreCounter() {
+            const totalStores = currentStores.length;
+            const counterElement = document.getElementById('storeCounter');
+            if (counterElement) {
+                counterElement.innerHTML = `<i class="fas fa-store me-2"></i>Tìm thấy <strong>${totalStores}</strong> cửa hàng`;
+            }
+        }
+
+        function showError(message) {
+            const storeList = document.getElementById('storeList');
+            storeList.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                    <h4 class="text-warning">${message}</h4>
+                    <button class="btn btn-danger mt-3" onclick="resetAndReload()">
+                        <i class="fas fa-refresh"></i> Tải lại tất cả cửa hàng
+                    </button>
+                </div>
+            `;
+            
+            const counterElement = document.getElementById('storeCounter');
+            if (counterElement) {
+                counterElement.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>Lỗi tải dữ liệu';
+            }
+        }
+
+        // Function to reset and reload all stores
+        function resetAndReload() {
+            console.log('Reset and reload triggered...');
+            showLoading();
+            
+            // Clear all filters first
+            document.getElementById('citySelect').value = '';
+            document.getElementById('districtSelect').innerHTML = '<option value="">Chọn quận/huyện...</option>';
+            document.getElementById('districtSelect').disabled = true;
+            document.getElementById('wardSelect').innerHTML = '<option value="">Chọn phường/xã...</option>';
+            document.getElementById('wardSelect').disabled = true;
+            document.getElementById('storeSearch').value = '';
+            
+            // Load all stores
+            setTimeout(() => {
+                loadStores({});
+            }, 200);
+        }
+
+        function initMap() {
+            if (typeof google !== 'undefined') {
+                const map = new google.maps.Map(document.getElementById('storeMap'), {
+                    center: { lat: 10.7757, lng: 106.7009 },
+                    zoom: 12
+                });
+
+                currentStores.forEach(store => {
+                    if (store.Latitude && store.Longitude) {
+                        new google.maps.Marker({
+                            position: { lat: parseFloat(store.Latitude), lng: parseFloat(store.Longitude) },
+                            map: map,
+                            title: store.StoreName
+                        });
+                    }
+                });
+            } else {
+                document.getElementById('storeMap').innerHTML = '<div class="text-center py-5"><h4>Google Maps chưa được tải</h4></div>';
+            }
+        }
+
+        // Event listeners setup
+        function setupEventListeners() {
+
+            // Search button
+            document.getElementById('searchBtn').addEventListener('click', performSearch);
+
+            // Reset button
+            document.getElementById('resetBtn').addEventListener('click', resetFilters);
+
+
+
+            // Text search with debounce
+            let searchTimeout;
+            document.getElementById('storeSearch').addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    performSearch();
+                }, 300);
+            });
+
+            // View toggle buttons
+            document.getElementById('listViewBtn').addEventListener('click', function() {
+                document.getElementById('storeList').style.display = 'block';
+                document.getElementById('storeMap').style.display = 'none';
+                this.classList.add('active');
+                document.getElementById('mapViewBtn').classList.remove('active');
+            });
+
+            document.getElementById('mapViewBtn').addEventListener('click', function() {
+                document.getElementById('storeList').style.display = 'none';
+                document.getElementById('storeMap').style.display = 'block';
+                this.classList.add('active');
+                document.getElementById('listViewBtn').classList.remove('active');
+                initMap();
+            });
+
+            // Enter key support for search input
+            document.getElementById('storeSearch').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+        }
+
+        // Handle parameters from home page search
+        function handleSearchParameters() {
+            const initialCity = '@ViewBag.InitialCity';
+            const initialDistrict = '@ViewBag.InitialDistrict';
+            const initialWard = '@ViewBag.InitialWard';
+            
+            console.log('Handling search parameters:', { initialCity, initialDistrict, initialWard });
+            
+            if (initialCity) {
+                setTimeout(() => {
+                    const citySelect = document.getElementById('citySelect');
+                    console.log('Setting city to:', initialCity);
+                    
+                    // Find and select the city option
+                    for (let option of citySelect.options) {
+                        if (option.value === initialCity) {
+                            citySelect.value = initialCity;
+                            console.log('City selected successfully');
+                            break;
+                        }
+                    }
+                    
+                    // Trigger change event to load districts
+                    const changeEvent = new Event('change');
+                    citySelect.dispatchEvent(changeEvent);
+                    
+                    // After districts are loaded, select the initial district if provided
+                    if (initialDistrict) {
+                        setTimeout(() => {
+                            const districtSelect = document.getElementById('districtSelect');
+                            console.log('Setting district to:', initialDistrict);
+                            
+                            // Find and select the district option
+                            for (let option of districtSelect.options) {
+                                if (option.value === initialDistrict) {
+                                    districtSelect.value = initialDistrict;
+                                    console.log('District selected successfully');
+                                    break;
+                                }
+                            }
+                            
+                            // Trigger change event to load wards
+                            const changeEvent = new Event('change');
+                            districtSelect.dispatchEvent(changeEvent);
+                            
+                            // After wards are loaded, select the initial ward if provided
+                            if (initialWard) {
+                                setTimeout(() => {
+                                    const wardSelect = document.getElementById('wardSelect');
+                                    console.log('Setting ward to:', initialWard);
+                                    
+                                    // Find and select the ward option
+                                    for (let option of wardSelect.options) {
+                                        if (option.value === initialWard) {
+                                            wardSelect.value = initialWard;
+                                            console.log('Ward selected successfully');
+                                            break;
+                                        }
+                                    }
+                                    
+                                    // Auto perform search with all parameters
+                                    setTimeout(() => {
+                                        console.log('Performing auto search with city, district, and ward');
+                                        performSearch();
+                                    }, 200);
+                                }, 1000);
+                            } else {
+                                // Auto perform search with city and district
+                                setTimeout(() => {
+                                    console.log('Performing auto search with city and district');
+                                    performSearch();
+                                }, 800);
+                            }
+                        }, 800);
+                    } else {
+                        // Auto search with just city
+                        setTimeout(() => {
+                            console.log('Performing auto search with city only');
+                            performSearch();
+                        }, 800);
+                    }
+                }, 1500);
+            }
+        }
+
+        // Load locations using the real API
+        async function loadLocations() {
+            try {
+                console.log('Loading locations API...');
+                
+                // First check if we have any stores data
+                const debugResponse = await fetch('/api/stores/debug');
+                const debugResult = await debugResponse.json();
+                console.log('Debug API result:', debugResult);
+                
+                if (debugResult.success && debugResult.totalStores === 0) {
+                    console.warn('No stores found in database, creating sample data...');
+                    await createSampleStores();
+                    // After creating sample data, reload locations
+                    setTimeout(() => {
+                        loadLocations();
+                    }, 1000);
+                    return;
+                }
+                
+                const response = await fetch('/api/locations');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                console.log('Locations API response:', result);
+                
+                if (result.success) {
+                    locationsData = result;
+                    console.log('Cities loaded:', result.cities);
+                    console.log('Districts loaded:', Object.keys(result.districts || {}));
+                    populateCitySelect();
+                    handleSearchParameters(); // Handle search params after data is loaded
+                } else {
+                    console.error('Failed to load locations:', result.message);
+                    showLocationError('Không thể tải dữ liệu địa điểm: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error loading locations:', error);
+                showLocationError('Lỗi kết nối API địa điểm: ' + error.message);
+            }
+        }
+
+        // Function to create sample stores
+        async function createSampleStores() {
+            try {
+                console.log('Creating sample stores...');
+                const response = await fetch('/api/stores/create-samples', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log(`✅ Success: ${result.message}`);
+                    showSuccessMessage(`Đã tạo ${result.count} cửa hàng mẫu thành công!`);
+                } else {
+                    console.log(`❌ Failed: ${result.message}`);
+                }
+            } catch (error) {
+                console.error(`❌ Error: ${error.message}`);
+            }
+        }
+
+        // Show location loading error
+        function showLocationError(message) {
+            const citySelect = document.getElementById('citySelect');
+            citySelect.innerHTML = '<option value="">Lỗi tải dữ liệu - Vui lòng reload trang</option>';
+            citySelect.disabled = true;
+            
+            // Show error notification
+            console.error(message);
+            
+            // Try to use empty database and show message
+            showError(message + '\nVui lòng kiểm tra:\n1. Kết nối internet\n2. Server đang chạy\n3. Database có dữ liệu cửa hàng');
+        }
+
+        // Show error notification
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'alert alert-danger alert-dismissible fade show';
+            errorDiv.style.position = 'fixed';
+            errorDiv.style.top = '20px';
+            errorDiv.style.right = '20px';
+            errorDiv.style.zIndex = '9999';
+            errorDiv.style.maxWidth = '400px';
+            errorDiv.innerHTML = `
+                <strong><i class="fas fa-exclamation-triangle"></i> Lỗi:</strong><br>
+                ${message.replace(/\n/g, '<br>')}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(errorDiv);
+            
+            // Auto remove after 8 seconds
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.remove();
+                }
+            }, 8000);
+        }
+
+        // Populate city select with real data
+        function populateCitySelect() {
+            const citySelect = document.getElementById('citySelect');
+            citySelect.innerHTML = '<option value="">Chọn tỉnh/thành phố...</option>';
+            
+            if (locationsData.cities && locationsData.cities.length > 0) {
+                locationsData.cities.forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+            }
+        }
+
+        // Update city change event to use real data
+        function setupCityChangeEvent() {
+            document.getElementById('citySelect').addEventListener('change', function() {
+                const selectedCity = this.value;
+                const districtSelect = document.getElementById('districtSelect');
+                const wardSelect = document.getElementById('wardSelect');
+                
+                // Reset dependent dropdowns
+                districtSelect.innerHTML = '<option value="">Chọn quận/huyện...</option>';
+                districtSelect.disabled = true;
+                wardSelect.innerHTML = '<option value="">Chọn phường/xã...</option>';
+                wardSelect.disabled = true;
+                
+                if (selectedCity && locationsData.districts && locationsData.districts[selectedCity]) {
+                    const districts = locationsData.districts[selectedCity];
+                    districts.forEach(district => {
+                        const option = document.createElement('option');
+                        option.value = district;
+                        option.textContent = district;
+                        districtSelect.appendChild(option);
+                    });
+                    districtSelect.disabled = false;
+                }
+            });
+        }
+
+        // Setup district change event to load wards
+        function setupDistrictChangeEvent() {
+            document.getElementById('districtSelect').addEventListener('change', function() {
+                const selectedCity = document.getElementById('citySelect').value;
+                const selectedDistrict = this.value;
+                const wardSelect = document.getElementById('wardSelect');
+                
+                // Reset ward dropdown
+                wardSelect.innerHTML = '<option value="">Chọn phường/xã...</option>';
+                wardSelect.disabled = true;
+                
+                if (selectedCity && selectedDistrict) {
+                    // Load wards using the new API
+                    loadWards(selectedCity, selectedDistrict);
+                }
+            });
+        }
+
+        // Load wards from API
+        async function loadWards(city, district) {
+            try {
+                console.log(`Loading wards for city: ${city}, district: ${district}`);
+                const response = await fetch(`/api/wards?city=${encodeURIComponent(city)}&district=${encodeURIComponent(district)}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                console.log('Wards API response:', result);
+                
+                if (result.success) {
+                    const wardSelect = document.getElementById('wardSelect');
+                    
+                    if (result.wards && result.wards.length > 0) {
+                        result.wards.forEach(ward => {
+                            const option = document.createElement('option');
+                            option.value = ward;
+                            option.textContent = ward;
+                            wardSelect.appendChild(option);
+                        });
+                        wardSelect.disabled = false;
+                        console.log(`Loaded ${result.wards.length} wards`);
+                    } else {
+                        console.log('No wards found for this district');
+                        const option = document.createElement('option');
+                        option.value = '';
+                        option.textContent = 'Không có phường/xã nào';
+                        wardSelect.appendChild(option);
+                    }
+                } else {
+                    console.error('Failed to load wards:', result.message);
+                    showError('Không thể tải dữ liệu phường/xã: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error loading wards:', error);
+                showError('Lỗi kết nối API phường/xã: ' + error.message);
+            }
+        }
+
+        // Function to convert Google Maps embed URL to regular maps URL
+        function convertEmbedToRegularMapsUrl(embedUrl, fallbackAddress) {
+            try {
+                console.log('Converting embed URL:', embedUrl);
+                
+                // If it's already a regular maps URL, return as is
+                if (!embedUrl.includes('/embed')) {
+                    return embedUrl;
+                }
+                
+                // Method 1: Try to extract coordinates from embed URL
+                const coordMatch = embedUrl.match(/!2d([-\d.]+)!3d([-\d.]+)/);
+                if (coordMatch && coordMatch[1] && coordMatch[2]) {
+                    const lng = coordMatch[1];
+                    const lat = coordMatch[2];
+                    const regularUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+                    console.log('Extracted coordinates:', lat, lng);
+                    return regularUrl;
+                }
+                
+                // Method 2: Try to extract place ID
+                const placeIdMatch = embedUrl.match(/!1s(0x[a-f0-9]+:0x[a-f0-9]+)/);
+                if (placeIdMatch && placeIdMatch[1]) {
+                    const placeId = placeIdMatch[1];
+                    const regularUrl = `https://www.google.com/maps/place/${encodeURIComponent(placeId)}`;
+                    console.log('Extracted place ID:', placeId);
+                    return regularUrl;
+                }
+                
+                // Method 3: Try to extract query from pb parameter
+                const pbMatch = embedUrl.match(/pb=([^&]+)/);
+                if (pbMatch && pbMatch[1]) {
+                    // Decode the pb parameter and try to extract place name
+                    const decodedPb = decodeURIComponent(pbMatch[1]);
+                    const placeMatch = decodedPb.match(/!1s([^!]+)/);
+                    if (placeMatch && placeMatch[1]) {
+                        const placeName = decodeURIComponent(placeMatch[1]);
+                        const regularUrl = `https://www.google.com/maps/search/${encodeURIComponent(placeName)}`;
+                        console.log('Extracted place name:', placeName);
+                        return regularUrl;
+                    }
+                }
+                
+                // Method 4: Fallback to address search
+                if (fallbackAddress) {
+                    const searchUrl = `https://www.google.com/maps/search/${encodeURIComponent(fallbackAddress)}`;
+                    console.log('Using fallback address search:', searchUrl);
+                    return searchUrl;
+                }
+                
+                // Method 5: Last resort - simple conversion
+                const simpleUrl = embedUrl.replace('/embed', '').replace('?pb=', '?q=');
+                console.log('Simple conversion fallback:', simpleUrl);
+                return simpleUrl;
+                
+            } catch (error) {
+                console.error('Error converting embed URL:', error);
+                // Final fallback to address search
+                if (fallbackAddress) {
+                    return `https://www.google.com/maps/search/${encodeURIComponent(fallbackAddress)}`;
+                }
+                return embedUrl; // Return original if all else fails
+            }
+        }
+
+        // Function to open store map modal
+        function openStoreMapModal(storeId, storeName, storeAddress, storePhone, storeHours, googleMapsUrl) {
+            console.log('Opening map modal for store:', storeId);
+            console.log('Store details:', {
+                storeId, storeName, storeAddress, storePhone, storeHours, googleMapsUrl
+            });
+            
+            // Clean and validate googleMapsUrl
+            let cleanedUrl = '';
+            if (googleMapsUrl && typeof googleMapsUrl === 'string') {
+                cleanedUrl = googleMapsUrl.trim();
+                console.log('Cleaned Google Maps URL:', cleanedUrl);
+            }
+            
+            // Update modal content
+            document.getElementById('storeMapModalLabel').textContent = storeName;
+            document.getElementById('storeModalAddress').textContent = storeAddress;
+            document.getElementById('storeModalName').textContent = storeName;
+            document.getElementById('storeModalPhone').textContent = storePhone || 'Chưa cập nhật';
+            document.getElementById('storeModalHours').textContent = storeHours || 'Chưa cập nhật';
+            
+            // Show loading overlay
+            const loadingOverlay = document.getElementById('mapLoadingOverlay');
+            loadingOverlay.classList.remove('hidden');
+            
+            // Check if Google Maps URL is available and valid
+            if (cleanedUrl && cleanedUrl !== '' && cleanedUrl !== 'null' && cleanedUrl !== 'undefined') {
+                console.log('✅ Using provided Google Maps URL:', cleanedUrl);
+                
+                // Extract src from iframe HTML if needed
+                let embedUrl = cleanedUrl;
+                if (cleanedUrl.includes('<iframe')) {
+                    const srcMatch = cleanedUrl.match(/src="([^"]+)"/);
+                    if (srcMatch && srcMatch[1]) {
+                        embedUrl = srcMatch[1];
+                        console.log('Extracted embed URL from iframe HTML:', embedUrl);
+                    }
+                }
+                
+                // Set iframe source
+                const iframe = document.getElementById('googleMapsFrame');
+                iframe.src = embedUrl;
+                
+                // Update "Open Google Maps" button - create regular maps URL
+                const openMapsBtn = document.getElementById('openGoogleMapsBtn');
+                if (embedUrl.includes('maps.google.com')) {
+                    // Convert embed URL to regular maps URL
+                    const regularMapsUrl = convertEmbedToRegularMapsUrl(embedUrl, storeAddress);
+                    console.log('Converted to regular maps URL:', regularMapsUrl);
+                    openMapsBtn.href = regularMapsUrl;
+                } else {
+                    openMapsBtn.href = embedUrl;
+                }
+                
+                // Hide loading overlay after iframe loads
+                iframe.onload = function() {
+                    console.log('Google Maps iframe loaded successfully');
+                    setTimeout(() => {
+                        loadingOverlay.classList.add('hidden');
+                    }, 1000);
+                };
+                
+                // Show success message briefly
+                setTimeout(() => {
+                    if (!loadingOverlay.classList.contains('hidden')) {
+                        loadingOverlay.innerHTML = `
+                            <div class="text-center">
+                                <i class="fas fa-check-circle text-success mb-3" style="font-size: 3rem;"></i>
+                                <h5 class="text-success">Đang tải bản đồ...</h5>
+                                <p class="text-muted">Sử dụng link Google Maps chính thức</p>
+                            </div>
+                        `;
+                    }
+                }, 500);
+                
+            } else {
+                console.log('❌ No valid Google Maps URL provided, creating fallback');
+                console.log('googleMapsUrl value:', googleMapsUrl, 'type:', typeof googleMapsUrl);
+                
+                // Create a Google Maps search URL based on address
+                const searchQuery = encodeURIComponent(storeAddress);
+                const searchUrl = `https://www.google.com/maps/search/${searchQuery}`;
+                
+                console.log('Created fallback search URL:', searchUrl);
+                
+                // Set iframe to show message instead of map
+                const iframe = document.getElementById('googleMapsFrame');
+                iframe.src = '';
+                
+                // Update "Open Google Maps" button
+                const openMapsBtn = document.getElementById('openGoogleMapsBtn');
+                openMapsBtn.href = searchUrl;
+                
+                // Show a message about missing Google Maps URL
+                setTimeout(() => {
+                    loadingOverlay.innerHTML = `
+                        <div class="text-center">
+                            <i class="fas fa-info-circle text-warning mb-3" style="font-size: 3rem;"></i>
+                            <h5 class="text-warning">Chưa có link Google Maps</h5>
+                            <p class="text-muted">Cửa hàng này chưa được cập nhật link Google Maps.<br>Vui lòng nhấn "Mở Google Maps" để tìm kiếm.</p>
+                            <button class="btn btn-danger" onclick="document.getElementById('openGoogleMapsBtn').click()">
+                                <i class="fas fa-external-link-alt me-1"></i>Tìm trên Google Maps
+                            </button>
+                        </div>
+                    `;
+                }, 1000);
+            }
+            
+            // Show the modal
+            const modal = new bootstrap.Modal(document.getElementById('storeMapModal'));
+            modal.show();
+            
+            // Reset iframe on modal close
+            document.getElementById('storeMapModal').addEventListener('hidden.bs.modal', function() {
+                document.getElementById('googleMapsFrame').src = '';
+                loadingOverlay.classList.remove('hidden');
+                loadingOverlay.innerHTML = `
+                    <div class="text-center">
+                        <div class="spinner-border text-danger mb-3" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h5 class="text-muted">Đang tải bản đồ...</h5>
+                    </div>
+                `;
+            });
+        }
+
+        // Initialize everything when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Store page initializing...');
+            setupEventListeners();
+            setupCityChangeEvent(); // Setup city change event with real data
+            setupDistrictChangeEvent(); // Setup district change event to load wards
+            loadLocations(); // Load real location data instead of fake API
+            
+            // Load all stores initially with better error handling
+            setTimeout(() => {
+                console.log('Initial stores loading...');
+                loadStores({}).catch(error => {
+                    console.error('Initial store loading failed:', error);
+                    showError('Không thể tải dữ liệu cửa hàng ban đầu. Vui lòng thử lại.');
+                });
+            }, 500);
+        });
+    </script>
+} 

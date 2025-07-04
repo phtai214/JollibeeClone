@@ -43,11 +43,7 @@ namespace JollibeeClone.Controllers
             return View();
         }
 
-        [Route("Store")]
-        public IActionResult Stores()
-        {
-            return View();
-        }
+       
 
         // API để lấy chi tiết dịch vụ
         [HttpGet]

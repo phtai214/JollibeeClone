@@ -131,7 +131,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
         // POST: Admin/Store/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StoreName,StreetAddress,Ward,District,City,PhoneNumber,OpeningHours,ImageUrl,IsActive")] Store store, IFormFile? imageFile)
+        public async Task<IActionResult> Create([Bind("StoreName,StreetAddress,Ward,District,City,PhoneNumber,OpeningHours,GoogleMapsUrl,ImageUrl,IsActive")] Store store, IFormFile? imageFile)
         {
             try
             {
@@ -243,7 +243,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
         // POST: Admin/Store/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StoreID,StoreName,StreetAddress,Ward,District,City,PhoneNumber,OpeningHours,ImageUrl,IsActive")] Store store, IFormFile? imageFile)
+        public async Task<IActionResult> Edit(int id, [Bind("StoreID,StoreName,StreetAddress,Ward,District,City,PhoneNumber,OpeningHours,GoogleMapsUrl,ImageUrl,IsActive")] Store store, IFormFile? imageFile)
         {
             if (id != store.StoreID)
             {

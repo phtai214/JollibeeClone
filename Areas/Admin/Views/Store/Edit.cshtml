@@ -138,6 +138,49 @@
                             </div>
                         </div>
 
+                        <!-- Google Maps URL -->
+                        <div class="mb-3">
+                            <label asp-for="GoogleMapsUrl" class="form-label">
+                                <i class="fas fa-map-marked-alt me-1"></i>
+                                Link Google Maps
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fab fa-google"></i>
+                                </span>
+                                <input asp-for="GoogleMapsUrl" class="form-control" placeholder="Nhập link nhúng Google Maps..." />
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1 text-info"></i>
+                                <strong>Hướng dẫn lấy link:</strong>
+                                <ol class="mb-0 mt-1" style="font-size: 0.9rem;">
+                                    <li>Truy cập <a href="https://maps.google.com" target="_blank" class="text-decoration-none">Google Maps</a></li>
+                                    <li>Tìm kiếm địa chỉ cửa hàng</li>
+                                    <li>Nhấn nút "Chia sẻ" → "Nhúng bản đồ"</li>
+                                    <li>Copy link trong thẻ &lt;iframe&gt; và dán vào đây</li>
+                                </ol>
+                                @if (!string.IsNullOrEmpty(Model.GoogleMapsUrl))
+                                {
+                                    <div class="mt-2 p-2 bg-success bg-opacity-10 border border-success rounded">
+                                        <small class="text-success">
+                                            <i class="fas fa-check-circle me-1"></i>
+                                            <strong>Đã có link Google Maps</strong>
+                                        </small>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="mt-2 p-2 bg-light rounded">
+                                        <small class="text-muted">
+                                            <strong>Ví dụ:</strong> 
+                                            <code style="font-size: 0.8rem;">https://www.google.com/maps/embed?pb=!1m18!1m12...</code>
+                                        </small>
+                                    </div>
+                                }
+                            </div>
+                            <span asp-validation-for="GoogleMapsUrl" class="text-danger"></span>
+                        </div>
+
                         <!-- Trạng thái -->
                         <div class="mb-4">
                             <div class="form-check form-switch">

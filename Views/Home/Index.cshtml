@@ -4,10 +4,10 @@
 
 <!-- Thêm link CSS cho phần hôm nay ăn gì -->
 <link rel="stylesheet" href="/css/today-menu.css">
-<!-- Thêm link CSS cho phần tìm cửa hàng -->
-<link rel="stylesheet" href="/css/store-locator.css">
-<!-- Thêm link CSS cho phần tin tức -->
-<link rel="stylesheet" href="/css/news-section.css">
+<!-- Thêm link CSS cho phần tìm cửa hàng mới -->
+<link rel="stylesheet" href="/css/home-store-finder.css">
+<!-- Thêm link CSS cho phần tin tức trang chủ -->
+<link rel="stylesheet" href="/css/home-news.css">
 
 <!-- Jollibee-style Full-Width Slider with Only Button on Each Banner -->
 <div id="jollibeeCarousel" class="carousel slide mb-4" data-bs-ride="carousel" style="width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;">
@@ -189,155 +189,448 @@
 </div>
 <!-- KẾT THÚC: Jollibee, xin chào -->
 
-<!-- BẮT ĐẦU: Tìm cửa hàng -->
-<div class="home-store-locator">
-    <div class="title">
-        <h3>Tìm cửa hàng</h3>
+<!-- BẮT ĐẦU: Tìm cửa hàng mới -->
+<div class="home-store-finder">
+    <div class="store-finder-content">
+        <h2 class="store-finder-title">TÌM CỬA HÀNG</h2>
+        <div class="store-finder-form">
+            <div class="form-group">
+                <select id="city-select" class="form-control store-select">
+                    <option value="">Chọn tỉnh thành</option>
+                </select>
+                <i class="fas fa-chevron-down select-arrow"></i>
+            </div>
+            <div class="form-group">
+                <select id="district-select" class="form-control store-select" disabled>
+                    <option value="">Chọn quận huyện</option>
+                </select>
+                <i class="fas fa-chevron-down select-arrow"></i>
+            </div>
+            <div class="form-group">
+                <select id="ward-select" class="form-control store-select" disabled>
+                    <option value="">Chọn phường xã</option>
+                </select>
+                <i class="fas fa-chevron-down select-arrow"></i>
+            </div>
+            <button id="search-stores-btn" class="btn-search-stores">
+                TÌM KIẾM
+            </button>
+        </div>
     </div>
-    <div id="location-filter" class="location-filter">
-        <select id="province-filter" name="province-filter" class="filter province-filter">
-            <option value="">Chọn tỉnh thành</option>
-            <option value="1">Hồ Chí Minh</option>
-            <option value="2">Hà Nội</option>
-            <option value="30">An Giang</option>
-            <option value="10">Bà Rịa - Vũng Tàu</option>
-            <option value="28">Bắc Giang</option>
-            <option value="55">Bạc Liêu</option>
-            <option value="17">Bắc Ninh</option>
-            <option value="37">Bến Tre</option>
-            <option value="4">Bình Dương</option>
-            <option value="25">Bình Định</option>
-            <option value="23">Bình Phước</option>
-            <option value="39">Cà Mau</option>
-            <option value="12">Cần Thơ</option>
-            <option value="3">Đà Nẵng</option>
-            <option value="11">Đắk Lắk</option>
-            <option value="58">Điện Biên</option>
-            <option value="5">Đồng Nai</option>
-            <option value="47">Đồng Tháp</option>
-            <option value="22">Gia Lai</option>
-            <option value="45">Hà Nam</option>
-            <option value="46">Hà Tĩnh</option>
-            <option value="21">Hải Dương</option>
-            <option value="7">Hải Phòng</option>
-            <option value="24">Hưng Yên</option>
-            <option value="6">Khánh Hòa</option>
-            <option value="16">Kiên Giang</option>
-            <option value="49">Kon Tum</option>
-            <option value="14">Lâm Đồng</option>
-            <option value="8">Long An</option>
-            <option value="35">Nam Định</option>
-            <option value="20">Nghệ An</option>
-            <option value="41">Ninh Bình</option>
-            <option value="43">Ninh Thuận</option>
-            <option value="42">Phú Thọ</option>
-            <option value="44">Phú Yên</option>
-            <option value="50">Quảng Bình</option>
-            <option value="9">Quảng Nam</option>
-            <option value="36">Quảng Ngãi</option>
-            <option value="18">Quảng Ninh</option>
-            <option value="51">Quảng Trị</option>
-            <option value="48">Sóc Trăng</option>
-            <option value="32">Tây Ninh</option>
-            <option value="27">Thái Bình</option>
-            <option value="33">Thái Nguyên</option>
-            <option value="19">Thanh Hóa</option>
-            <option value="15">Thừa Thiên Huế</option>
-            <option value="26">Tiền Giang</option>
-            <option value="52">Trà Vinh</option>
-            <option value="57">Tuyên Quang</option>
-            <option value="40">Vĩnh Long</option>
-            <option value="31">Vĩnh Phúc</option>
-            <option value="56">Yên Bái</option>
-        </select>
-        <select id="district-filter" name="district-filter" class="filter district-filter">
-            <option value="">Chọn quận huyện</option>
-        </select>
-    </div>
-    <a id="locator-submit" class="btn action primary">
-        <span>Tìm kiếm</span>
-    </a>
 </div>
-<!-- KẾT THÚC: Tìm cửa hàng -->
+<!-- KẾT THÚC: Tìm cửa hàng mới -->
 
 <!-- BẮT ĐẦU: Tin tức -->
-<div class="widget-post-wrapper">
-    <div class="title-wrapper">
-        <p class="title">Tin Tức</p>
-    </div>
-    <div class="content-post">
+<div class="home-news-section">
+    <div class="container">
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title">Tin Tức</h2>
+            <p class="section-subtitle">Cập nhật những thông tin mới nhất từ Jollibee</p>
+        </div>
+        
         @{
-            var latestNews = ViewBag.LatestNews as List<dynamic> ?? new List<dynamic>();
+            var latestNews = ViewBag.LatestNews as IEnumerable<dynamic>;
+            var newsList = latestNews?.ToList() ?? new List<dynamic>();
         }
         
-        @if (latestNews.Any())
-        {
-            @foreach (var news in latestNews)
+        @* <!-- Debug info -->
+        <div class="alert alert-info mb-4">
+            <strong>Debug Info:</strong><br>
+            - Tổng tin tức trong DB: @ViewBag.TotalNewsInDB<br>
+            - Tin tức đã publish: @ViewBag.PublishedNewsInDB<br>
+            - Tin tức hiển thị: @newsList.Count<br>
+            @if (ViewBag.ErrorMessage != null)
             {
-                <div class="post-entry">
-                    <div class="media">
-                        <div class="post-image">
-                            <a href="/News#news-@news.NewsID" title="@news.Title">
-                                @if (!string.IsNullOrEmpty(news.ImageUrl))
-                                {
-                                    <img src="@news.ImageUrl" alt="@news.Title">
-                                }
-                                else
-                                {
-                                    <img src="/assets/images/bee.png" alt="@news.Title">
-                                }
-                            </a>
-                        </div>
-                        <div class="post-title-holder clearfix">
-                            <div class="post-title">
-                                <a class="post-item-link media-heading" href="/News#news-@news.NewsID">
-                                    @news.Title
+                <span class="text-danger">- Lỗi: @ViewBag.ErrorMessage</span><br>
+            }
+            @if (!newsList.Any())
+            {
+                <a href="/Admin/News/Create" class="alert-link">→ Tạo tin tức mới tại Admin Panel</a>
+            }
+        </div> *@
+        
+        @if (newsList.Any())
+        {
+                         <div class="row g-4">
+                @foreach (var news in newsList)
+                {
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <div class="news-card-home">
+                            <div class="news-image-wrapper">
+                                <a href="/News#news-@news.NewsID" title="@news.Title">
+                                    @if (!string.IsNullOrEmpty(news.ImageUrl))
+                                    {
+                                        <img src="@news.ImageUrl" alt="@news.Title" class="news-image">
+                                    }
+                                    else
+                                    {
+                                        <div class="news-placeholder">
+                                            <i class="fas fa-newspaper"></i>
+                                        </div>
+                                    }
+                                </a>
+                                <div class="news-date-badge">
+                                    <span class="day">@news.PublishedDate.ToString("dd")</span>
+                                    <span class="month">@news.PublishedDate.ToString("MM")</span>
+                                </div>
+                            </div>
+                            <div class="news-content-home">
+                                <h3 class="news-title-home">
+                                    <a href="/News#news-@news.NewsID">@news.Title</a>
+                                </h3>
+                                <p class="news-description-home">
+                                    @(string.IsNullOrEmpty(news.ShortDescription) ? "Tin tức mới từ Jollibee" : (news.ShortDescription.Length > 100 ? news.ShortDescription.Substring(0, 100) + "..." : news.ShortDescription))
+                                </p>
+                                <div class="news-meta-home">
+                                    <span class="news-author">
+                                        <i class="fas fa-user"></i> @(string.IsNullOrEmpty(news.AuthorName) ? "Admin" : news.AuthorName)
+                                    </span>
+                                </div>
+                                <a href="/News#news-@news.NewsID" class="btn-read-more-home">
+                                    Đọc thêm <i class="fas fa-arrow-right"></i>
                                 </a>
                             </div>
                         </div>
-                        <div class="post-text-hld clearfix">
-                            <p>@(string.IsNullOrEmpty(news.ShortDescription) ? "Tin tức mới từ Jollibee" : news.ShortDescription)</p>
-                            <small class="text-muted">
-                                <i class="fas fa-calendar"></i> @news.PublishedDate.ToString("dd/MM/yyyy")
-                                @if (!string.IsNullOrEmpty(news.AuthorName))
-                                {
-                                    <span> | <i class="fas fa-user"></i> @news.AuthorName</span>
-                                }
-                            </small>
-                        </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         }
         else
         {
-            <div class="post-entry">
-                <div class="media">
-                    <div class="post-image">
-                        <img src="/assets/images/bee.png" alt="Jollibee">
-                    </div>
-                    <div class="post-title-holder clearfix">
-                        <div class="post-title">
-                            <span class="post-item-link media-heading">
-                                Hiện tại chưa có tin tức mới
-                            </span>
-                        </div>
-                    </div>
-                    <div class="post-text-hld clearfix">
-                        <p>Hãy quay lại sau để cập nhật những thông tin mới nhất từ Jollibee!</p>
-                    </div>
+            <div class="empty-news-state text-center">
+                <div class="empty-news-icon mb-4">
+                    <img src="/assets/images/bee.png" alt="Jollibee" width="150">
                 </div>
+                <h3 class="empty-news-title">Hiện tại chưa có tin tức mới</h3>
+                <p class="empty-news-description">Hãy quay lại sau để cập nhật những thông tin mới nhất từ Jollibee!</p>
+                <a href="@Url.Action("Index", "News")" class="btn btn-outline-primary">
+                    <i class="fas fa-newspaper"></i> Xem tất cả tin tức
+                </a>
             </div>
         }
-    </div>
-    <div class="footer-wrapper">
-        <a href="@Url.Action("Index", "News")" class="btn action primary">
-            Xem thêm
-        </a>
+        
+        <div class="text-center mt-5">
+            <a href="@Url.Action("Index", "News")" class="btn btn-jollibee-primary btn-lg">
+                <i class=""></i> Xem thêm 
+            </a>
+        </div>
     </div>
 </div>
 <!-- KẾT THÚC: Tin tức -->
 
 @section Scripts {
-    <script src="/js/store-locator.js"></script>
+    <script>
+        // Home Store Finder JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const citySelect = document.getElementById('city-select');
+            const districtSelect = document.getElementById('district-select');
+            const wardSelect = document.getElementById('ward-select');
+            const searchBtn = document.getElementById('search-stores-btn');
+            
+            let locationsData = {};
+            
+            // Load locations data from API
+            async function loadLocations() {
+                try {
+                    console.log('Loading locations from API...');
+                    
+                    // First check if we have any stores data
+                    const debugResponse = await fetch('/api/stores/debug');
+                    const debugResult = await debugResponse.json();
+                    console.log('Debug API result:', debugResult);
+                    
+                    if (debugResult.success && debugResult.totalStores === 0) {
+                        console.warn('No stores found in database, creating sample data...');
+                        await createSampleStores();
+                        // After creating sample data, reload locations
+                        setTimeout(() => {
+                            loadLocations();
+                        }, 1000);
+                        return;
+                    }
+                    
+                    const response = await fetch('/api/locations');
+                    const result = await response.json();
+                    
+                    console.log('Locations API result:', result);
+                    
+                    if (result.success) {
+                        locationsData = result;
+                        console.log('Loaded cities:', result.cities);
+                        console.log('Loaded districts:', result.districts);
+                        populateCities();
+                    } else {
+                        console.error('Failed to load locations:', result.message);
+                        showError('Không thể tải dữ liệu địa điểm: ' + result.message);
+                    }
+                } catch (error) {
+                    console.error('Error loading locations:', error);
+                    showError('Lỗi kết nối khi tải dữ liệu: ' + error.message);
+                }
+            }
+            
+            // Function to create sample stores
+            async function createSampleStores() {
+                try {
+                    console.log('Creating sample stores...');
+                    const response = await fetch('/api/stores/create-samples', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        console.log(`✅ Success: ${result.message}`);
+                    } else {
+                        console.log(`❌ Failed: ${result.message}`);
+                    }
+                } catch (error) {
+                    console.error(`❌ Error: ${error.message}`);
+                }
+            }
+            
+            // Populate cities dropdown
+            function populateCities() {
+                citySelect.innerHTML = '<option value="">Chọn tỉnh thành</option>';
+                
+                if (locationsData.cities && locationsData.cities.length > 0) {
+                    locationsData.cities.forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelect.appendChild(option);
+                    });
+                }
+            }
+            
+            // Populate districts dropdown based on selected city
+            function populateDistricts(selectedCity) {
+                districtSelect.innerHTML = '<option value="">Chọn quận huyện</option>';
+                districtSelect.disabled = true;
+                wardSelect.innerHTML = '<option value="">Chọn phường xã</option>';
+                wardSelect.disabled = true;
+                
+                if (selectedCity && locationsData.districts && locationsData.districts[selectedCity]) {
+                    const districts = locationsData.districts[selectedCity];
+                    districts.forEach(district => {
+                        const option = document.createElement('option');
+                        option.value = district;
+                        option.textContent = district;
+                        districtSelect.appendChild(option);
+                    });
+                    districtSelect.disabled = false;
+                }
+            }
+            
+            // Populate wards dropdown based on selected city and district
+            async function populateWards(selectedCity, selectedDistrict) {
+                wardSelect.innerHTML = '<option value="">Chọn phường xã</option>';
+                wardSelect.disabled = true;
+                
+                if (selectedCity && selectedDistrict) {
+                    try {
+                        console.log(`Loading wards for city: ${selectedCity}, district: ${selectedDistrict}`);
+                        const response = await fetch(`/api/wards?city=${encodeURIComponent(selectedCity)}&district=${encodeURIComponent(selectedDistrict)}`);
+                        const result = await response.json();
+                        
+                        if (result.success && result.wards && result.wards.length > 0) {
+                            result.wards.forEach(ward => {
+                                const option = document.createElement('option');
+                                option.value = ward;
+                                option.textContent = ward;
+                                wardSelect.appendChild(option);
+                            });
+                            wardSelect.disabled = false;
+                            console.log(`Loaded ${result.wards.length} wards`);
+                        } else {
+                            console.log('No wards found for this district');
+                        }
+                    } catch (error) {
+                        console.error('Error loading wards:', error);
+                    }
+                }
+            }
+            
+            // Handle city selection change
+            citySelect.addEventListener('change', function() {
+                const selectedCity = this.value;
+                populateDistricts(selectedCity);
+                
+                // Add visual feedback
+                if (selectedCity) {
+                    this.classList.add('success');
+                    this.classList.remove('error');
+                } else {
+                    this.classList.remove('success', 'error');
+                }
+            });
+            
+            // Handle district selection change
+            districtSelect.addEventListener('change', function() {
+                const selectedCity = citySelect.value;
+                const selectedDistrict = this.value;
+                
+                // Load wards for the selected district
+                if (selectedCity && selectedDistrict) {
+                    populateWards(selectedCity, selectedDistrict);
+                }
+                
+                // Add visual feedback
+                if (this.value) {
+                    this.classList.add('success');
+                    this.classList.remove('error');
+                } else {
+                    this.classList.remove('success', 'error');
+                }
+            });
+            
+            // Handle ward selection change
+            wardSelect.addEventListener('change', function() {
+                // Add visual feedback
+                if (this.value) {
+                    this.classList.add('success');
+                    this.classList.remove('error');
+                } else {
+                    this.classList.remove('success', 'error');
+                }
+            });
+            
+            // Handle search button click
+            searchBtn.addEventListener('click', function() {
+                const selectedCity = citySelect.value;
+                const selectedDistrict = districtSelect.value;
+                const selectedWard = wardSelect.value;
+                
+                // Validate selection
+                if (!selectedCity) {
+                    showFieldError(citySelect, 'Vui lòng chọn tỉnh thành');
+                    return;
+                }
+                
+                // Show loading state
+                this.classList.add('loading');
+                this.textContent = '';
+                
+                // Build URL with parameters
+                const params = new URLSearchParams();
+                params.append('city', selectedCity);
+                if (selectedDistrict) {
+                    params.append('district', selectedDistrict);
+                }
+                if (selectedWard) {
+                    params.append('ward', selectedWard);
+                }
+                
+                // Redirect to store page with search params
+                const storeUrl = '/Store/Index?' + params.toString();
+                
+                // Add delay for better UX
+                setTimeout(() => {
+                    window.location.href = storeUrl;
+                }, 500);
+            });
+            
+            // Show field error
+            function showFieldError(field, message) {
+                field.classList.add('error');
+                field.classList.remove('success');
+                
+                // Remove existing error message
+                const existingError = field.parentNode.querySelector('.error-message');
+                if (existingError) {
+                    existingError.remove();
+                }
+                
+                // Add new error message
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = message;
+                field.parentNode.appendChild(errorDiv);
+                
+                // Remove error after 3 seconds
+                setTimeout(() => {
+                    field.classList.remove('error');
+                    errorDiv.remove();
+                }, 3000);
+            }
+            
+            // Create sample stores if database is empty
+            async function createSampleStores() {
+                try {
+                    console.log('Creating sample stores...');
+                    const response = await fetch('/api/stores/seed', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    const result = await response.json();
+                    console.log('Seed API result:', result);
+                    
+                    if (result.success) {
+                        console.log('Sample stores created successfully');
+                        // Reload locations after creating sample data
+                        setTimeout(loadLocations, 1000);
+                    } else {
+                        showError('Không thể tạo dữ liệu mẫu: ' + result.message);
+                    }
+                } catch (error) {
+                    console.error('Error creating sample stores:', error);
+                    showError('Lỗi khi tạo dữ liệu mẫu: ' + error.message);
+                }
+            }
+
+            // Show general error
+            function showError(message) {
+                // Create a styled error message
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'alert alert-danger';
+                errorDiv.style.position = 'fixed';
+                errorDiv.style.top = '20px';
+                errorDiv.style.right = '20px';
+                errorDiv.style.zIndex = '9999';
+                errorDiv.style.maxWidth = '400px';
+                errorDiv.innerHTML = `
+                    <strong><i class="fas fa-exclamation-triangle"></i> Lỗi:</strong><br>
+                    ${message}
+                    <button type="button" class="btn-close" style="float: right;" onclick="this.parentElement.remove()"></button>
+                `;
+                
+                document.body.appendChild(errorDiv);
+                
+                // Auto remove after 5 seconds
+                setTimeout(() => {
+                    if (errorDiv.parentNode) {
+                        errorDiv.remove();
+                    }
+                }, 5000);
+                
+                console.error(message);
+            }
+            
+            // Initialize the component
+            loadLocations();
+            
+            // Add keyboard support
+            [citySelect, districtSelect].forEach(select => {
+                select.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        searchBtn.click();
+                    }
+                });
+            });
+            
+            // Add focus effects
+            [citySelect, districtSelect].forEach(select => {
+                select.addEventListener('focus', function() {
+                    this.parentNode.style.transform = 'translateY(-2px)';
+                });
+                
+                select.addEventListener('blur', function() {
+                    this.parentNode.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
 }

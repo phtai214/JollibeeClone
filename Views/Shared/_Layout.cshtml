@@ -17,6 +17,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital@0;1&display=swap" rel="stylesheet">
     @await RenderSectionAsync("Styles", required: false)
     <style>
+      /* Sticky Footer Layout */
+      html, body {
+        height: 100%;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .container {
+        flex: 1;
+      }
+      
       .navbar { 
         background: #e31937 !important; 
         border-bottom: 6px solid #ffc627;
@@ -51,7 +69,7 @@
         box-shadow: 0 4px 15px rgba(227,25,55,0.3);
       }
       .navbar .dropdown-menu { 
-        background: #fff;
+        background: #F6D8DBFF;
         border: none;
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         border-radius: 8px;
@@ -61,9 +79,7 @@
         padding: 10px 20px;
       }
       .navbar .dropdown-item:hover { 
-        background: #ffc627; 
         color: #e31937;
-        transform: translateX(5px);
       }
       .user-actions i {
         font-size: 1.2rem;
@@ -102,8 +118,8 @@
               <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link text-white fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
                 @* <li class="nav-item"><a class="nav-link text-white fw-bold" asp-area="" asp-controller="Home" asp-action="About">Về Jollibee</a></li> *@
-                <li class="nav-item dropdown position-static menu-hover-parent">
-                  <a class="nav-link dropdown-toggle text-white fw-bold d-flex align-items-center" href="#" id="menuDropdown" role="button">
+                <li class="nav-item position-static menu-hover-parent">
+                  <a class="nav-link text-white fw-bold d-flex align-items-center" href="#" id="menuDropdown" role="button">
                     Thực Đơn <i class="fas fa-chevron-down ms-1"></i>
                   </a>
                   <ul class="dropdown-menu menu-dropdown-wide p-3" aria-labelledby="menuDropdown">
@@ -161,7 +177,7 @@
                 <li class="nav-item"><a class="nav-link text-white fw-bold" asp-area="" asp-controller="Service" asp-action="Index">Dịch Vụ</a></li>
                 <li class="nav-item"><a class="nav-link text-white fw-bold" asp-area="" asp-controller="News" asp-action="Index">Tin Tức</a></li>
                 <li class="nav-item"><a class="nav-link text-white fw-bold" asp-area="" asp-controller="Store" asp-action="Index">Cửa hàng</a></li>
-                <li class="nav-item"><a class="nav-link text-white fw-bold" asp-area="" asp-controller="Contact" asp-action="Index">Liên Hệ</a></li>
+                @* <li class="nav-item"><a class="nav-link text-white fw-bold" asp-area="" asp-controller="Contact" asp-action="Index">Liên Hệ</a></li> *@
                 @* <li class="nav-item"><a class="nav-link text-white fw-bold" href="https://jollibee.talent.vn/">Tuyển dụng</a></li> *@
               </ul>
               <!-- Right: Actions (mobile) -->
@@ -290,13 +306,15 @@
           </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="main-content">
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
-    <footer class="jolli-footer mt-5 pt-5">
+    <footer class="jolli-footer pt-5">
         <div class="container-fluid px-5">
             <div class="row text-white pb-4">
                 <!-- Left: Logo & Company Info -->
@@ -562,7 +580,7 @@
       });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
-    <div id="globalMenuDropdown" ...> ... </div>
+    @* <div id="globalMenuDropdown" ...> ... </div> *@
     <script>
     function showGlobalDropdown(e) {
         e.preventDefault();

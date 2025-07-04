@@ -159,44 +159,47 @@ button.accept-policy[b-rferl1ndzp] {
   align-items: flex-start;
   gap: 0.5rem;
   border: none;
-  margin-top: 0.5rem !important;
+  margin-top: -1rem !important;  
+  position: absolute;
+  top: calc(100% - 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
 }
 .menu-dropdown-wide li[b-rferl1ndzp] {
-  background: none;
   border: none;
   box-shadow: none;
 }
 .menu-dropdown-wide .dropdown-item[b-rferl1ndzp] {
-  background: none;
   border: none;
-  color: #e31937;
+  color: #333;
   font-weight: 600;
   border-radius: 12px;
-  transition: background 0.2s, color 0.2s, transform 0.2s;
+  transition: transform 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 1rem;
+  font-size: 10px;
 }
-.menu-dropdown-wide .dropdown-item:hover[b-rferl1ndzp] {
-  background: #ffc62733;
-  color: #e31937;
-  transform: translateY(-4px) scale(1.05);
+.menu-dropdown-wide .dropdown-item:hover .menu-img[b-rferl1ndzp] {
+  transform: scale(1.60);
+  filter: drop-shadow(0 4px 12px rgba(227, 25, 55, 0.2));
 }
 .menu-img[b-rferl1ndzp] {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
   margin-bottom: 0.5rem;
   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
-  background: #fff;
   border-radius: 50%;
   padding: 6px;
+  background: transparent !important;
+  transition: transform 0.3s ease, filter 0.3s ease;
 }
 .menu-dropdown-wide .fw-bold[b-rferl1ndzp] {
-  color: #e31937;
+  color: inherit;
   font-size: 0.95rem;
-  margin-top: 0.25rem;
+    margin-top: -0.3rem;
 }
 .menu-dropdown-wide .small[b-rferl1ndzp] {
   font-size: 0.85rem;
@@ -219,17 +222,60 @@ button.accept-policy[b-rferl1ndzp] {
   display: flex !important;
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
+  transition-delay: 0s !important;
 }
 .menu-hover-parent > .dropdown-menu[b-rferl1ndzp] {
   display: none;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s;
+  visibility: hidden;
+  transition: opacity 0.4s ease 0.1s, visibility 0.4s ease 0.1s;
 }
-.menu-hover-parent.show > .dropdown-menu[b-rferl1ndzp] {
+
+/* Giữ menu hiển thị khi hover vào dropdown menu */
+.menu-dropdown-wide:hover[b-rferl1ndzp] {
   display: flex !important;
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
+}
+
+/* Tạo bridge để tránh menu biến mất khi di chuyển chuột */
+.menu-hover-parent:hover[b-rferl1ndzp]::before {
+  content: '';
+  position: absolute;
+  top: 95%;
+  left: -50px;
+  right: -50px;
+  height: 20px;
+  z-index: 999;
+  pointer-events: auto;
+}
+
+.menu-hover-parent[b-rferl1ndzp] {
+  position: relative;
+}
+
+/* Cải thiện transition cho dropdown */
+.menu-dropdown-wide[b-rferl1ndzp] {
+  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+}
+
+.menu-hover-parent:not(:hover) > .menu-dropdown-wide[b-rferl1ndzp] {
+  transform: translateX(-50%) translateY(-10px);
+  transition-delay: 0.3s;
+}
+
+/* Thêm invisible area phía trên dropdown */
+.menu-dropdown-wide[b-rferl1ndzp]::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: 0;
+  right: 0;
+  height: 15px;
+  z-index: 1001;
 }
 
 .icon-btn[b-rferl1ndzp] {

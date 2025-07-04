@@ -42,6 +42,9 @@ namespace JollibeeClone.Models
 
         public string? ImageUrl { get; set; }
 
+        [StringLength(500)]
+        public string? GoogleMapsUrl { get; set; }
+
         public bool IsActive { get; set; } = true;
 
         // Navigation properties

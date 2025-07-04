@@ -1,0 +1,292 @@
+/* Google Maps Modal Styles */
+.modal-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #e31937 0%, #ff4757 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 15px rgba(227, 25, 55, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 4px 15px rgba(227, 25, 55, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 25px rgba(227, 25, 55, 0.5);
+    }
+    100% {
+        box-shadow: 0 4px 15px rgba(227, 25, 55, 0.3);
+    }
+}
+
+.store-map-container {
+    position: relative;
+    background: #f8f9fa;
+    border-radius: 0 0 15px 15px;
+    overflow: hidden;
+    min-height: 500px;
+}
+
+.map-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.map-loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.store-quick-info h6 {
+    color: #e31937;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.store-quick-info .fas {
+    color: #e31937;
+    width: 20px;
+    text-align: center;
+}
+
+.modal-content {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.modal.show .modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(227, 25, 55, 0.1);
+}
+
+.modal-footer {
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+    border-top: 1px solid rgba(227, 25, 55, 0.1);
+}
+
+/* Store Card Hover Effects */
+.store-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.store-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 0%, rgba(227, 25, 55, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.store-card:hover::before {
+    opacity: 1;
+}
+
+.store-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(227, 25, 55, 0.2);
+}
+
+.store-card .store-content {
+    position: relative;
+    z-index: 2;
+}
+
+.store-card .store-content::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 45px;
+    background: rgba(227, 25, 55, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.store-card:hover .store-content::after {
+    opacity: 1;
+    background: rgba(227, 25, 55, 0.15);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.store-card .store-content::before {
+    content: '\f279';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    right: 32.5px;
+    transform: translateY(-50%);
+    color: #e31937;
+    font-size: 1.3rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 3;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.store-card:hover .store-content::before {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Click Animation */
+.store-card:active {
+    transform: translateY(-6px) scale(0.98);
+}
+
+/* Modal Responsive */
+@media (max-width: 768px) {
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+
+    .modal-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .modal-footer {
+        padding: 1rem 1.5rem;
+    }
+
+    .modal-footer .row {
+        flex-direction: column;
+    }
+
+    .modal-footer .col-md-4 {
+        margin-top: 1rem;
+        text-align: center !important;
+    }
+
+    .store-map-container {
+        min-height: 400px;
+    }
+
+    .modal-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .store-card .store-content::after {
+        right: 15px;
+        width: 35px;
+        height: 35px;
+    }
+
+    .store-card .store-content::before {
+        right: 25px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .store-map-container {
+        min-height: 350px;
+    }
+
+    .modal-content {
+        border-radius: 15px;
+    }
+}
+
+/* Loading Animation */
+.map-loading-overlay .spinner-border {
+    animation: spin 1s linear infinite, glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 10px rgba(227, 25, 55, 0.5);
+    }
+    to {
+        box-shadow: 0 0 20px rgba(227, 25, 55, 0.8), 0 0 30px rgba(227, 25, 55, 0.6);
+    }
+}
+
+/* Button Hover Effects */
+#openGoogleMapsBtn {
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #e31937 0%, #ff4757 100%);
+    border: none;
+    box-shadow: 0 4px 15px rgba(227, 25, 55, 0.3);
+}
+
+#openGoogleMapsBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(227, 25, 55, 0.4);
+    background: linear-gradient(135deg, #d1172e 0%, #e8455a 100%);
+}
+
+/* Success Message in Loading Overlay */
+.map-loading-overlay .btn {
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-5px);
+    }
+    60% {
+        transform: translateY(-3px);
+    }
+}
+
+/* Store Card Grid Improvements */
+.col-md-6.col-lg-4 {
+    transition: all 0.3s ease;
+}
+
+.store-card:hover ~ .col-md-6.col-lg-4 .store-card {
+    opacity: 0.7;
+    transform: scale(0.95);
+}
+
+.store-card:hover {
+    z-index: 10;
+    position: relative;
+} 

@@ -134,17 +134,17 @@
         </div>
     </form>
 
-    <!-- ThÃ´ng tin káº¿t quáº£ -->
+    <!-- Thông tin kết quả -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="result-count">
-            Hiá»ƒn thá»‹ @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.PageIndex * Model.PageSize, Model.TotalCount)) cá»§a @Model.TotalCount cá»­a hÃ ng
+            Hiển thị @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.PageIndex * Model.PageSize, Model.TotalCount)) của @Model.TotalCount cửa hàng
         </div>
         <div class="pagination-info">
             Trang @Model.PageIndex / @Model.TotalPages
         </div>
     </div>
 
-    <!-- Danh sÃ¡ch cá»­a hÃ ng -->
+    <!-- Danh sách cửa hàng -->
     @if (Model.Any())
     {
         <!-- Grid View -->

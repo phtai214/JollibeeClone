@@ -2196,6 +2196,42 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\delivery-address.css'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\home-news.css'))">
+      <SourceType>Package</SourceType>
+      <SourceId>JollibeeClone</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/JollibeeClone</BasePath>
+      <RelativePath>css/home-news.css</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>9gnl5e8u89</Fingerprint>
+      <Integrity>+YZkyBtr2zkp6RcDx3ZLYI+j9elEYvoK4v8wP9MuewA=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\home-news.css'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\home-store-finder.css'))">
+      <SourceType>Package</SourceType>
+      <SourceId>JollibeeClone</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/JollibeeClone</BasePath>
+      <RelativePath>css/home-store-finder.css</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>anunc8tdu2</Fingerprint>
+      <Integrity>5ra9OjiEoDtpqZfoxjdYScCuL/dciCwtR3uIbJlCAgk=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\home-store-finder.css'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\modern-dashboard.css'))">
       <SourceType>Package</SourceType>
       <SourceId>JollibeeClone</SourceId>
@@ -2442,11 +2478,29 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>sk8rw6fb18</Fingerprint>
-      <Integrity>LAxnsr/rYOdsJ1KEaqlwCzx4/xAs5RTOZ5UlXVjrO90=</Integrity>
+      <Fingerprint>85q8pjesw9</Fingerprint>
+      <Integrity>XPvmTAiknbx75pzAyEnaSGNImnKIg5WTuScVceqgux8=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\store-locator.css'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\store-map-modal.css'))">
+      <SourceType>Package</SourceType>
+      <SourceId>JollibeeClone</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/JollibeeClone</BasePath>
+      <RelativePath>css/store-map-modal.css</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>aqjgnpzcej</Fingerprint>
+      <Integrity>4nIHTJEAkORX+QvlYOmlZCvl0Kt44q4klLWRLb0ZXNs=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\store-map-modal.css'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\today-menu.css'))">
       <SourceType>Package</SourceType>
@@ -2646,23 +2700,23 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\categories\c5b83887-831b-4541-944a-7cff298c2efd_thuc_uong.png'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\JollibeeClone.1ortg2be6w.bundle.scp.css'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\JollibeeClone.eds1ekslm0.bundle.scp.css'))">
       <SourceType>Package</SourceType>
       <SourceId>JollibeeClone</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/JollibeeClone</BasePath>
-      <RelativePath>JollibeeClone.1ortg2be6w.bundle.scp.css</RelativePath>
+      <RelativePath>JollibeeClone.eds1ekslm0.bundle.scp.css</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>Reference</AssetMode>
       <AssetRole>Primary</AssetRole>
       <RelatedAsset></RelatedAsset>
       <AssetTraitName>ScopedCss</AssetTraitName>
       <AssetTraitValue>ProjectBundle</AssetTraitValue>
-      <Fingerprint>1ortg2be6w</Fingerprint>
-      <Integrity>r0aIms3dtNvF4d5d5T4n4cixotICA+HeEKDFMwofoqY=</Integrity>
+      <Fingerprint>eds1ekslm0</Fingerprint>
+      <Integrity>Hhw8jVPxwhL+QP/HqUpdwz9TQ6w8cZ8a7h2KMNUefMU=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\JollibeeClone.1ortg2be6w.bundle.scp.css'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\JollibeeClone.eds1ekslm0.bundle.scp.css'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\address-selector.js'))">
       <SourceType>Package</SourceType>
