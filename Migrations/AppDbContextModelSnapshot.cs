@@ -258,7 +258,7 @@ namespace JollibeeClone.Migrations
 
                     b.ToTable("News", t =>
                         {
-                            t.HasCheckConstraint("CK_NewsType_News", "NewsType IN ('Tin tức', 'Khuyến mãi')");
+                            t.HasCheckConstraint("CK_NewsType_News", "NewsType IN ('News', 'Promotion')");
                         });
                 });
 
@@ -1158,7 +1158,7 @@ namespace JollibeeClone.Migrations
                     b.HasOne("JollibeeClone.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("DeliveryMethod");
 

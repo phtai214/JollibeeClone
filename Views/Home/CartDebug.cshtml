@@ -1,0 +1,255 @@
+@{
+    ViewData["Title"] = "Cart Debug";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>🛒 Cart Debug Tool</h2>
+    <p>Dùng để debug vấn đề giỏ hàng không hiển thị sản phẩm</p>
+    
+    <div class="row">
+        <!-- Test Controls -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Test Controls</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-primary" onclick="addTestProduct()">Thêm sản phẩm test</button>
+                    <button class="btn btn-info" onclick="loadCart()">Load giỏ hàng</button>
+                    <button class="btn btn-warning" onclick="getDebugInfo()">Debug Info</button>
+                    <button class="btn btn-info" onclick="checkCartUserAssociation()">Check Cart User</button>
+                    <button class="btn btn-success" onclick="testJsonSerialization()">Test JSON</button>
+                    <button class="btn btn-success" onclick="testRawJson()">Test Raw JSON</button>
+                    <button class="btn btn-secondary" onclick="clearLogs()">Clear Logs</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Current Cart -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Current Cart</h5>
+                </div>
+                <div class="card-body" id="currentCart">
+                    <p class="text-muted">Chưa load giỏ hàng...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Debug Logs -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Debug Logs</h5>
+                </div>
+                <div class="card-body">
+                    <pre id="debugLogs" style="height: 400px; overflow-y: auto; background: #f8f9fa; padding: 15px; border-radius: 5px;"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let debugLogs = [];
+    
+    function log(message) {
+        const timestamp = new Date().toLocaleTimeString();
+        const logEntry = `[${timestamp}] ${message}`;
+        debugLogs.push(logEntry);
+        document.getElementById('debugLogs').textContent = debugLogs.join('\n');
+        console.log(message);
+    }
+    
+    function clearLogs() {
+        debugLogs = [];
+        document.getElementById('debugLogs').textContent = '';
+    }
+    
+    async function addTestProduct() {
+        try {
+            log('🧪 Testing add product to cart...');
+            
+            const testData = {
+                ProductID: 1, // Assuming product ID 1 exists
+                Quantity: 1,
+                SelectedOptions: []
+            };
+            
+            log(`📤 Sending request: ${JSON.stringify(testData)}`);
+            
+            const response = await fetch('/Cart/AddToCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(testData)
+            });
+            
+            const result = await response.json();
+            log(`📥 AddToCart response: ${JSON.stringify(result, null, 2)}`);
+            
+            if (result.success) {
+                log('✅ Product added successfully!');
+                await loadCart();
+            } else {
+                log(`❌ Failed to add product: ${result.message}`);
+            }
+        } catch (error) {
+            log(`❌ Error adding product: ${error.message}`);
+        }
+    }
+    
+    async function loadCart() {
+        try {
+            log('📱 Loading cart...');
+            
+            const response = await fetch('/Cart/GetCart');
+            const result = await response.json();
+            
+            log(`📥 GetCart response: ${JSON.stringify(result, null, 2)}`);
+            
+            if (result.success) {
+                const cart = result.data;
+                document.getElementById('currentCart').innerHTML = `
+                    <p><strong>Cart ID:</strong> ${cart.CartID}</p>
+                    <p><strong>Session ID:</strong> ${cart.SessionID || 'N/A'}</p>
+                    <p><strong>User ID:</strong> ${cart.UserID || 'N/A'}</p>
+                    <p><strong>Items Count:</strong> ${cart.CartItems.length}</p>
+                    <p><strong>Total Amount:</strong> ${cart.TotalAmount}đ</p>
+                    <hr>
+                    <h6>Items:</h6>
+                    ${cart.CartItems.length > 0 ? 
+                        cart.CartItems.map(item => `
+                            <div class="mb-2 p-2 border">
+                                <strong>${item.ProductName}</strong><br>
+                                Quantity: ${item.Quantity}<br>
+                                Price: ${item.UnitPrice}đ
+                            </div>
+                        `).join('') : 
+                        '<p class="text-muted">No items</p>'
+                    }
+                `;
+                log(`✅ Cart loaded with ${cart.CartItems.length} items`);
+            } else {
+                log(`❌ Failed to load cart: ${result.message}`);
+            }
+        } catch (error) {
+            log(`❌ Error loading cart: ${error.message}`);
+        }
+    }
+    
+    async function getDebugInfo() {
+        try {
+            log('🔍 Getting debug info...');
+            
+            const response = await fetch('/Cart/Debug');
+            const result = await response.json();
+            
+            log(`📥 Debug info: ${JSON.stringify(result, null, 2)}`);
+            
+            if (result.success) {
+                const info = result.data;
+                log(`🔍 Current Session: ${info.CurrentSessionId}`);
+                log(`🔍 Authenticated: ${info.IsAuthenticated}`);
+                log(`🔍 Total Carts in DB: ${info.TotalCartsInDb}`);
+                
+                info.Carts.forEach((cart, index) => {
+                    log(`🔍 Cart ${index + 1}: ID=${cart.CartID}, Session=${cart.SessionID}, User=${cart.UserID}, Items=${cart.ItemsCount}`);
+                });
+            }
+        } catch (error) {
+            log(`❌ Error getting debug info: ${error.message}`);
+        }
+    }
+    
+    async function testJsonSerialization() {
+        try {
+            log('🧪 Testing JSON serialization...');
+            
+            const response = await fetch('/Cart/TestJson');
+            const result = await response.json();
+            
+            log(`📥 Test JSON response: ${JSON.stringify(result, null, 2)}`);
+            
+            if (result.success) {
+                const cart = result.data;
+                log(`🧪 Test cart has CartItems: ${cart.CartItems !== undefined}`);
+                log(`🧪 Test cart CartItems count: ${cart.CartItems?.length || 'undefined'}`);
+            }
+        } catch (error) {
+            log(`❌ Error testing JSON: ${error.message}`);
+        }
+    }
+    
+    async function testRawJson() {
+        try {
+            log('🧪 Testing RAW JSON serialization...');
+            
+            const response = await fetch('/Cart/TestRawJson');
+            const result = await response.json();
+            
+            log(`📥 Raw JSON response: ${JSON.stringify(result, null, 2)}`);
+            
+            if (result.success) {
+                const cart = result.data;
+                log(`🧪 Raw cart has CartItems: ${cart.CartItems !== undefined}`);
+                log(`🧪 Raw cart CartItems count: ${cart.CartItems?.length || 'undefined'}`);
+            }
+        } catch (error) {
+            log(`❌ Error testing Raw JSON: ${error.message}`);
+        }
+    }
+    
+    async function checkCartUserAssociation() {
+        try {
+            log('👤 Checking cart user association...');
+            
+            // Get current cart
+            const cartResponse = await fetch('/Cart/GetCart');
+            const cartResult = await cartResponse.json();
+            
+            if (cartResult.success) {
+                const cart = cartResult.data;
+                log(`👤 Current Cart ID: ${cart.cartID || cart.CartID}`);
+                log(`👤 Cart UserID: ${cart.userID || cart.UserID || 'NULL'}`);
+                log(`👤 Cart SessionID: ${cart.sessionID || cart.SessionID || 'NULL'}`);
+                log(`👤 Cart Items Count: ${cart.CartItems?.length || 0}`);
+                
+                // Get debug info to see all carts
+                const debugResponse = await fetch('/Cart/Debug');
+                const debugResult = await debugResponse.json();
+                
+                if (debugResult.success) {
+                    const info = debugResult.data;
+                    log(`👤 Current Session ID: ${info.CurrentSessionId}`);
+                    log(`👤 Is Authenticated: ${info.IsAuthenticated}`);
+                    log(`👤 Total Carts in DB: ${info.TotalCartsInDb}`);
+                    
+                    // Find current user's cart
+                    const userCarts = info.Carts.filter(c => c.UserID !== null);
+                    const sessionCarts = info.Carts.filter(c => c.SessionID === info.CurrentSessionId);
+                    
+                    log(`👤 User-associated carts: ${userCarts.length}`);
+                    log(`👤 Session-associated carts: ${sessionCarts.length}`);
+                    
+                    userCarts.forEach((cart, index) => {
+                        log(`👤 User Cart ${index + 1}: UserID=${cart.UserID}, Items=${cart.ItemsCount}, Created=${cart.CreatedDate}`);
+                    });
+                }
+            }
+        } catch (error) {
+            log(`❌ Error checking cart user association: ${error.message}`);
+        }
+    }
+    
+    // Auto load cart on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        log('🚀 Cart Debug Tool loaded');
+        loadCart();
+    });
+</script> 

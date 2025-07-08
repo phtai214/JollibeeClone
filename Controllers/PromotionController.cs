@@ -222,7 +222,7 @@ namespace JollibeeClone.Controllers
                         promotion.ShortDescription,
                         promotion.Content,
                         promotion.ImageUrl,
-                        PublishedDate = promotion.PublishedDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                        promotion.PublishedDate,
                         AuthorName = authorName
                     }
                 });
@@ -234,75 +234,66 @@ namespace JollibeeClone.Controllers
             }
         }
 
-        // API để validate coupon code - Giữ lại cho tương thích với existing functionality
+        // API để validate mã coupon (nếu có hệ thống mã giảm giá)
         [HttpPost]
         public async Task<IActionResult> ValidateCouponCode([FromBody] ValidateCouponRequest request)
         {
             try
             {
-                if (string.IsNullOrEmpty(request.CouponCode))
+                if (string.IsNullOrWhiteSpace(request.CouponCode))
                 {
                     return Json(new { success = false, message = "Vui lòng nhập mã giảm giá." });
                 }
 
-                // Kiểm tra trong bảng Promotions cũ để tương thích với hệ thống cart hiện tại
-                var promotion = await _context.Promotions
-                    .Where(p => p.CouponCode == request.CouponCode &&
-                               p.IsActive &&
-                               p.StartDate <= DateTime.Now &&
-                               p.EndDate >= DateTime.Now &&
-                               (p.MaxUses == null || p.UsesCount < p.MaxUses))
+                // Tìm kiếm promotion với mã coupon trong content hoặc title
+                var promotion = await _context.News
+                    .Where(n => n.IsPublished && 
+                               n.NewsType == "Promotion" &&
+                               (n.Content.Contains(request.CouponCode) || 
+                                n.Title.Contains(request.CouponCode)))
                     .FirstOrDefaultAsync();
 
                 if (promotion == null)
                 {
-                    return Json(new { success = false, message = "Mã giảm giá không hợp lệ hoặc đã hết hạn." });
-                }
-
-                // Kiểm tra giá trị đơn hàng tối thiểu
-                if (promotion.MinOrderValue != null && request.OrderAmount < promotion.MinOrderValue.Value)
-                {
-                    return Json(new 
-                    { 
+                    return Json(new { 
                         success = false, 
-                        message = $"Đơn hàng phải có giá trị tối thiểu {promotion.MinOrderValue.Value:N0}đ để sử dụng mã này." 
+                        message = "Mã giảm giá không hợp lệ hoặc đã hết hạn." 
                     });
                 }
 
-                // Tính toán giảm giá
-                decimal discountAmount = 0;
-                if (promotion.DiscountType == "Percentage")
-                {
-                    discountAmount = request.OrderAmount * promotion.DiscountValue / 100;
-                }
-                else if (promotion.DiscountType == "Fixed")
-                {
-                    discountAmount = promotion.DiscountValue;
-                }
+                // Giả sử có logic tính discount (có thể mở rộng sau)
+                decimal discountAmount = request.OrderAmount * 0.1m; // 10% discount
+                decimal maxDiscount = 50000m; // Tối đa 50,000 VND
+                
+                discountAmount = Math.Min(discountAmount, maxDiscount);
 
                 return Json(new
                 {
                     success = true,
+                    message = "Mã giảm giá hợp lệ!",
                     data = new
                     {
-                        promotion.PromotionID,
-                        promotion.PromotionName,
-                        promotion.CouponCode,
-                        promotion.DiscountType,
-                        promotion.DiscountValue,
+                        promotion.NewsID,
+                        promotion.Title,
+                        CouponCode = request.CouponCode,
                         DiscountAmount = discountAmount,
-                        promotion.EndDate
+                        DiscountPercent = 10,
+                        MaxDiscount = maxDiscount
                     }
                 });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error validating coupon code: {CouponCode}", request.CouponCode);
-                return Json(new { success = false, message = "Có lỗi xảy ra khi kiểm tra mã giảm giá." });
+                return Json(new { 
+                    success = false, 
+                    message = "Có lỗi xảy ra khi kiểm tra mã giảm giá." 
+                });
             }
         }
     }
 
+    // Request model cho validate coupon
     public class ValidateCouponRequest
     {
         public string CouponCode { get; set; } = string.Empty;

@@ -349,7 +349,7 @@ namespace JollibeeClone.Data
                 entity.HasOne(e => e.User)
                     .WithMany(u => u.Orders)
                     .HasForeignKey(e => e.UserID)
-                    .OnDelete(DeleteBehavior.SetNull);
+                    .OnDelete(DeleteBehavior.NoAction);
 
                 entity.HasOne(e => e.UserAddress)
                     .WithMany(ua => ua.Orders)
@@ -478,7 +478,7 @@ namespace JollibeeClone.Data
                 entity.Property(e => e.NewsType).HasMaxLength(50).IsRequired().HasDefaultValue("Tin tức");
 
                 // Add check constraint for NewsType
-                entity.HasCheckConstraint("CK_NewsType_News", "NewsType IN ('Tin tức', 'Khuyến mãi')");
+                entity.HasCheckConstraint("CK_NewsType_News", "NewsType IN ('News', 'Promotion')");
 
                 entity.HasOne(e => e.Author)
                     .WithMany()
@@ -496,6 +496,8 @@ namespace JollibeeClone.Data
                 entity.Property(e => e.DisplayOrder).HasDefaultValue(0);
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
             });
+
+
 
             // Seed initial data
             //SeedData(modelBuilder);

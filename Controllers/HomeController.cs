@@ -71,10 +71,15 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult AdminGuide()
-    {
-        return View();
-    }
+            public IActionResult AdminGuide()
+        {
+            return View();
+        }
+
+        public IActionResult CartDebug()
+        {
+            return View();
+        }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

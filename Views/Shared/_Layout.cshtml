@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/JollibeeClone.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/cart.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Merge Black (main font) -->
     <link href="https://db.onlinewebfonts.com/c/870c14ea660dc49cbcf9c92af21392af?family=Merge+Black+W00+Regular" rel="stylesheet">
@@ -205,13 +206,13 @@
                           </div>
                         </div>
                       </li>
-                      <li><a class="dropdown-item py-2" asp-controller="Account" asp-action="Profile"><i class="fas fa-user me-3 text-muted"></i>Tài khoản của tôi</a></li>
+                      <li><a class="dropdown-item py-2" asp-controller="Account" asp-action="Profile"><i class="text-muted"></i>Tài khoản của tôi</a></li>
                       <li><hr class="dropdown-divider my-1"></li>
                       <li>
                         <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline w-100">
                           @Html.AntiForgeryToken()
                           <button type="submit" class="dropdown-item py-2 logout-btn border-0 bg-transparent w-100 text-start">
-                            <i class="fas fa-sign-out-alt me-3 text-danger"></i>Đăng xuất
+                            <i class="text-danger"></i>Đăng xuất
                           </button>
                         </form>
                       </li>
@@ -267,13 +268,13 @@
                           </div>
                         </div>
                       </li>
-                      <li><a class="dropdown-item py-2" asp-controller="Account" asp-action="Profile"><i class="fas fa-user me-3 text-muted"></i>Tài khoản của tôi</a></li>
+                      <li><a class="dropdown-item py-2" asp-controller="Account" asp-action="Profile"><i class="text-muted"></i>Tài khoản của tôi</a></li>
                       <li><hr class="dropdown-divider my-1"></li>
                       <li>
                         <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline w-100">
                           @Html.AntiForgeryToken()
                           <button type="submit" class="dropdown-item py-2 logout-btn border-0 bg-transparent w-100 text-start">
-                            <i class="fas fa-sign-out-alt me-3 text-danger"></i>Đăng xuất
+                            <i class="text-danger"></i>Đăng xuất
                           </button>
                         </form>
                       </li>
@@ -573,6 +574,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/cart.js" asp-append-version="true"></script>
     <script>
       var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
       var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

@@ -23,14 +23,14 @@ namespace JollibeeClone.Migrations
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PublishedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     IsPublished = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    NewsType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: "Tin tức"),
+                    NewsType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: "News"),
                     AuthorID = table.Column<int>(type: "int", nullable: true),
                     UserID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_News", x => x.NewsID);
-                    table.CheckConstraint("CK_NewsType_News", "NewsType IN ('Tin tức', 'Khuyến mãi')");
+                    table.CheckConstraint("CK_NewsType_News", "NewsType IN ('News', 'Promotion')");
                     table.ForeignKey(
                         name: "FK_News_Users_AuthorID",
                         column: x => x.AuthorID,
