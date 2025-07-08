@@ -1,0 +1,261 @@
+@model JollibeeClone.ViewModels.CheckoutShippingViewModel
+@{
+    ViewData["Title"] = "Thông tin đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/checkout-shipping.css" />
+
+<div class="checkout-container">
+    <!-- Checkout Progress Steps -->
+    <div class="checkout-progress">
+        <div class="progress-step completed">
+            <div class="step-number">
+                <i class="fas fa-check"></i>
+            </div>
+            <span class="step-title">THÔNG TIN KHÁCH HÀNG</span>
+        </div>
+        <div class="progress-arrow"></div>
+        <div class="progress-step active">
+            <div class="step-number">2</div>
+            <span class="step-title">THÔNG TIN ĐƠN HÀNG</span>
+        </div>
+        <div class="progress-arrow"></div>
+        <div class="progress-step">
+            <div class="step-number">3</div>
+            <span class="step-title">HOÀN TẤT THANH TOÁN</span>
+        </div>
+    </div>
+    
+    <!-- Page Title -->
+    <div class="page-title">
+        <h1>THÔNG TIN ĐƠN HÀNG</h1>
+    </div>
+
+    <div class="checkout-content">
+        <div class="checkout-left">
+            <form asp-action="ProcessCheckout" method="post" id="checkoutForm">
+                <!-- Customer Information Section -->
+                <div class="checkout-section">
+                    <div class="section-header">
+                        <h3 class="section-title">GIAO HÀNG ĐẾN</h3>
+                        <button type="button" class="edit-delivery-btn">
+                            <i class="fas fa-edit"></i> Cập nhật địa chỉ mới 
+                        </button>
+                    </div>
+                    <div class="customer-info">
+                        <div class="info-display">
+                            <div class="customer-name">
+                                <input asp-for="CustomerFullName" class="form-control customer-input" 
+                                       placeholder="Họ tên" required />
+                                <span asp-validation-for="CustomerFullName" class="text-danger"></span>
+                            </div>
+                            <div class="customer-phone">
+                                <input asp-for="CustomerPhoneNumber" class="form-control customer-input" 
+                                       placeholder="Số điện thoại" required />
+                                <span asp-validation-for="CustomerPhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="customer-email">
+                                <input asp-for="CustomerEmail" class="form-control customer-input" 
+                                       placeholder="Email" type="email" required />
+                                <span asp-validation-for="CustomerEmail" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        @if (Model.IsUserLoggedIn && Model.UserAddresses.Any())
+                        {
+                            <div class="address-selection">
+                                <label class="form-label">Chọn địa chỉ giao hàng:</label>
+                                <select asp-for="UserAddressID" class="form-select" id="addressSelect">
+                                    <option value="">Chọn địa chỉ...</option>
+                                    @foreach (var address in Model.UserAddresses)
+                                    {
+                                        <option value="@address.AddressID">
+                                            @address.FullName - @address.PhoneNumber - @address.Address
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="manual-address">
+                                <textarea asp-for="DeliveryAddress" class="form-control" rows="3" 
+                                          placeholder="Nhập địa chỉ giao hàng chi tiết" required></textarea>
+                                <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
+                            </div>
+                        }
+                        
+
+                    </div>
+                </div>
+
+                <!-- Delivery Method Section -->
+                <div class="checkout-section">
+                    <h3 class="section-title">PHƯƠNG THỨC VẬN CHUYỂN</h3>
+                    <div class="delivery-methods-new">
+                        @if (Model.DeliveryMethods.Any())
+                        {
+                            @foreach (var method in Model.DeliveryMethods)
+                            {
+                                <div class="delivery-method-item">
+                                    <input type="radio" asp-for="DeliveryMethodID" value="@method.DeliveryMethodID" 
+                                           id="delivery_@method.DeliveryMethodID" class="delivery-radio-new" />
+                                    <label for="delivery_@method.DeliveryMethodID" class="delivery-label-new">
+                                        <span class="radio-indicator"></span>
+                                        <span class="delivery-text">
+                                            @method.MethodName
+                                            @if (method.MethodName.Contains("giao hàng") || method.MethodName.Contains("ship"))
+                                            {
+                                                <span class="delivery-description">(+0 đ)</span>
+                                            }
+                                        </span>
+                                    </label>
+                                </div>
+                            }
+                        }
+                        <span asp-validation-for="DeliveryMethodID" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Store Selection (for pickup) -->
+                <div class="checkout-section store-pickup-section" style="display: none;">
+                    <div class="store-selection">
+                        <div class="form-group">
+                            <label class="form-label">Tỉnh thành</label>
+                            <select class="form-select" id="citySelect">
+                                <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Cửa hàng</label>
+                            <select asp-for="StoreID" class="form-select" id="storeSelect">
+                                <option value="">Chọn cửa hàng...</option>
+                                @foreach (var store in Model.Stores)
+                                {
+                                    <option value="@store.StoreID" data-address="@store.StreetAddress, @store.District, @store.City">
+                                        @store.StoreName - @store.StreetAddress, @store.District
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Ngày nhận hàng</label>
+                            <select asp-for="PickupDate" class="form-select" id="pickupDateSelect">
+                                <option value="">Chọn ngày nhận hàng</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Thời gian nhận hàng</label>
+                            <select asp-for="PickupTimeSlot" class="form-select">
+                                <option value="">Chọn thời gian nhận hàng *</option>
+                                @foreach (var timeSlot in Model.AvailableTimeSlots)
+                                {
+                                    <option value="@timeSlot.Value">@timeSlot.Text</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="pickup-note">
+                            <small class="text-muted">
+                                Thời gian chuẩn bị đơn hàng ít nhất 30 phút tính từ lúc đặt hàng thành công.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Notes Section -->
+                <div class="checkout-section">
+                    <h3 class="section-title">GHI CHÚ ĐƠN HÀNG</h3>
+                    <div class="order-notes">
+                        <textarea asp-for="NotesByCustomer" class="form-control" rows="4" 
+                                  placeholder="Ghi chú"></textarea>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="checkout-actions">
+                    <button type="submit" class="btn btn-primary continue-btn">
+                        TIẾP THEO
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Order Summary Section -->
+        <div class="checkout-right">
+            <div class="order-summary-card">
+                <div class="summary-header">
+                    <h3 class="summary-title">CHI TIẾT ĐƠN HÀNG</h3>
+                    <button type="button" class="edit-order-btn">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+                
+                <div class="order-items-list">
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <div class="order-item-card">
+                            <div class="item-image-wrapper">
+                                <img src="@item.ProductImage" alt="@item.ProductName" class="item-image" />
+                            </div>
+                            <div class="item-content">
+                                <div class="item-main-info">
+                                    <h4 class="item-name">@item.ProductName.ToUpper()</h4>
+                                    <div class="item-quantity-price">
+                                        <span class="quantity-text">x @item.Quantity</span>
+                                        <span class="item-price">+ @item.TotalPrice.ToString("N0") đ</span>
+                                    </div>
+                                </div>
+                                
+                                @if (item.ConfigurationOptions != null && item.ConfigurationOptions.Any())
+                                {
+                                    <div class="item-config-details">
+                                        @foreach (var config in item.ConfigurationOptions)
+                                        {
+                                            <div class="config-item">
+                                                <span class="config-quantity">@config.Quantity x</span>
+                                                <span class="config-name">@config.OptionName</span>
+                                                @if (!string.IsNullOrEmpty(config.VariantName))
+                                                {
+                                                    <span class="config-variant">@config.VariantName</span>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="order-summary-footer">
+                    <div class="subtotal-info">
+                        <div class="subtotal-row">
+                            <span class="subtotal-label">Chi phí tạm tính</span>
+                            <span class="subtotal-amount">@Model.SubtotalAmount.ToString("N0") đ</span>
+                        </div>
+                        <div class="vat-notice">
+                            <em>Đã bao gồm giá thuế VAT 8%</em>
+                        </div>
+                    </div>
+                    
+                    <div class="total-section">
+                        <div class="total-row">
+                            <span class="total-label">Tổng Cộng</span>
+                            <span class="total-amount">@Model.TotalAmount.ToString("N0") đ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/checkout-shipping.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

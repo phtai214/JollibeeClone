@@ -749,7 +749,7 @@ class JollibeeCart {
         }
         
         // Navigate to checkout page
-        window.location.href = '/Order/Checkout';
+        window.location.href = '/Cart/Checkout';
     }
 
     formatCurrency(amount) {

@@ -806,5 +806,190 @@ namespace JollibeeClone.Controllers
             
             return result;
         }
+
+        // GET: /Cart/Checkout
+        [HttpGet]
+        public async Task<IActionResult> Checkout()
+        {
+            try
+            {
+                // Get current cart
+                var cart = await GetOrCreateCartAsync();
+                var cartItems = await _context.CartItems
+                    .Where(ci => ci.CartID == cart.CartID)
+                    .Include(ci => ci.Product)
+                    .ToListAsync();
+
+                if (!cartItems.Any())
+                {
+                    TempData["Message"] = "Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm trước khi thanh toán.";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                var viewModel = new CheckoutShippingViewModel();
+
+                // Get user information if logged in
+                var isUserLoggedIn = HttpContext.Session.GetString("IsUserLoggedIn") == "true";
+                var userIdFromSession = HttpContext.Session.GetString("UserId");
+                
+                if (isUserLoggedIn && !string.IsNullOrEmpty(userIdFromSession) && int.TryParse(userIdFromSession, out int userId))
+                {
+                    var user = await _context.Users.FirstOrDefaultAsync(u => u.UserID == userId);
+                    if (user != null)
+                    {
+                        viewModel.CurrentUser = user;
+                        viewModel.IsUserLoggedIn = true;
+                        viewModel.CustomerFullName = user.FullName;
+                        viewModel.CustomerEmail = user.Email;
+                        viewModel.CustomerPhoneNumber = user.PhoneNumber ?? "";
+
+                        // Get user addresses
+                        viewModel.UserAddresses = await _context.UserAddresses
+                            .Where(ua => ua.UserID == userId)
+                            .OrderByDescending(ua => ua.IsDefault)
+                            .ToListAsync();
+                    }
+                }
+
+                // Load delivery methods
+                viewModel.DeliveryMethods = await _context.DeliveryMethods
+                    .Where(dm => dm.IsActive)
+                    .ToListAsync();
+
+                // Load stores
+                viewModel.Stores = await _context.Stores
+                    .Where(s => s.IsActive)
+                    .OrderBy(s => s.StoreName)
+                    .ToListAsync();
+
+                // Map cart items to view model
+                viewModel.CartItems = await MapCartItemsToViewModelAsync(cartItems);
+
+                // Calculate totals
+                viewModel.SubtotalAmount = viewModel.CartItems.Sum(ci => ci.TotalPrice);
+                viewModel.ShippingFee = 0; // Will be calculated based on delivery method
+                viewModel.DiscountAmount = 0; // Will be applied if promotions exist
+                viewModel.TotalAmount = viewModel.SubtotalAmount + viewModel.ShippingFee - viewModel.DiscountAmount;
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error in Checkout: {ex.Message}");
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải trang thanh toán.";
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        // POST: /Cart/ProcessCheckout
+        [HttpPost]
+        public async Task<IActionResult> ProcessCheckout(CheckoutShippingViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    // Reload dropdown data
+                    model.DeliveryMethods = await _context.DeliveryMethods
+                        .Where(dm => dm.IsActive)
+                        .ToListAsync();
+                    
+                    model.Stores = await _context.Stores
+                        .Where(s => s.IsActive)
+                        .OrderBy(s => s.StoreName)
+                        .ToListAsync();
+
+                    var isUserLoggedIn = HttpContext.Session.GetString("IsUserLoggedIn") == "true";
+                    var userIdFromSession = HttpContext.Session.GetString("UserId");
+                    
+                    if (isUserLoggedIn && !string.IsNullOrEmpty(userIdFromSession) && int.TryParse(userIdFromSession, out int userId))
+                    {
+                        model.UserAddresses = await _context.UserAddresses
+                            .Where(ua => ua.UserID == userId)
+                            .OrderByDescending(ua => ua.IsDefault)
+                            .ToListAsync();
+                    }
+
+                    return View("Checkout", model);
+                }
+
+                // Store checkout data in session for the next step
+                HttpContext.Session.SetString("CheckoutData", Newtonsoft.Json.JsonConvert.SerializeObject(model));
+
+                // Redirect to payment page (will be implemented next)
+                return RedirectToAction("Payment");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error in ProcessCheckout: {ex.Message}");
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi xử lý thông tin thanh toán.";
+                return RedirectToAction("Checkout");
+            }
+        }
+
+        // GET: /Cart/Payment
+        [HttpGet]
+        public IActionResult Payment()
+        {
+            // TODO: Implement payment page
+            var checkoutData = HttpContext.Session.GetString("CheckoutData");
+            if (string.IsNullOrEmpty(checkoutData))
+            {
+                return RedirectToAction("Checkout");
+            }
+
+            TempData["Message"] = "Trang thanh toán sẽ được triển khai trong bước tiếp theo.";
+            return RedirectToAction("Checkout");
+        }
+
+        private async Task<List<CheckoutCartItemViewModel>> MapCartItemsToViewModelAsync(List<CartItem> cartItems)
+        {
+            var result = new List<CheckoutCartItemViewModel>();
+
+            foreach (var item in cartItems)
+            {
+                var cartItemViewModel = new CheckoutCartItemViewModel
+                {
+                    CartItemID = item.CartItemID,
+                    ProductID = item.ProductID,
+                    ProductName = item.Product.ProductName,
+                    ProductImage = item.Product.ImageUrl,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.UnitPrice
+                };
+
+                // Parse configuration if exists
+                if (!string.IsNullOrEmpty(item.SelectedConfigurationSnapshot))
+                {
+                    try
+                    {
+                        var configData = JsonConvert.DeserializeObject<List<dynamic>>(item.SelectedConfigurationSnapshot);
+                        if (configData != null && configData.Any())
+                        {
+                            cartItemViewModel.ConfigurationOptions = configData.Select(config => new ConfigurationOptionDisplay
+                            {
+                                GroupName = (string)config.GroupName,
+                                OptionName = (string)config.OptionProductName,
+                                OptionImage = (string?)config.OptionProductImage,
+                                PriceAdjustment = (decimal)config.PriceAdjustment,
+                                Quantity = (int)config.Quantity,
+                                VariantName = (string?)config.VariantName
+                            }).ToList();
+
+                            cartItemViewModel.ConfigurationDescription = string.Join(", ", 
+                                cartItemViewModel.ConfigurationOptions.Select(co => co.OptionName));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error parsing configuration: {ex.Message}");
+                    }
+                }
+
+                result.Add(cartItemViewModel);
+            }
+
+            return result;
+        }
     }
 } 
