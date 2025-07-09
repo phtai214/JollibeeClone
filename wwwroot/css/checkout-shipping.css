@@ -271,6 +271,7 @@
     font-size: 16px;
     font-weight: 500;
     transition: background-color 0.3s ease;
+    margin-top: 10px;
 }
 
 .delivery-label i {
@@ -440,6 +441,7 @@
     font-size: 16px;
     resize: vertical;
     min-height: 100px;
+    margin-top: 8px;
 }
 
 .order-notes textarea:focus {
@@ -458,15 +460,16 @@
     background: #dc3545;
     border: none;
     color: white;
-    padding: 15px 40px;
+    padding: 12px 35px;
     font-size: 18px;
     font-weight: bold;
-    border-radius: 8px;
+    border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
-}
+    float: right;
+}   
 
 .continue-btn:hover {
     background: #c82333;
@@ -486,7 +489,7 @@
 .summary-header {
     background: #fef7e4;
     padding: 20px 25px;
-    border-bottom: 1px solid #e0e0e0;
+    /* border-bottom: 1px solid #e0e0e0; */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -521,6 +524,66 @@
 .order-items-list {
     background: white;
     padding: 0;
+    max-height: 300px; /* Chiều cao tối đa cho khoảng 3 sản phẩm */
+    overflow-y: auto; /* Thêm scroll khi cần thiết */
+    position: relative;
+}
+
+/* Fade effect để indicate có thể scroll */
+.order-items-list::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 17px; /* Exclude scrollbar area */
+    height: 30px;
+    background: linear-gradient(transparent, rgba(255, 255, 255, 0.95));
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+/* Hiển thị fade effect khi có scroll */
+.order-items-list.has-scroll::after {
+    opacity: 1;
+}
+
+/* Shadow indicator khi có scroll */
+.order-items-list.has-scroll {
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: inset 0 -10px 10px -5px rgba(0, 0, 0, 0.05);
+}
+
+/* Smooth scrolling cho order items */
+.order-items-list {
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar cho Order Items List */
+.order-items-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.order-items-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.order-items-list::-webkit-scrollbar-thumb {
+    background: #dc3545;
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+.order-items-list::-webkit-scrollbar-thumb:hover {
+    background: #fa4e60;
+}
+
+/* Touch device scrolling */
+.order-items-list {
+    -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
+    overscroll-behavior-y: contain; /* Prevent scroll chaining */
 }
 
 .order-item-card {
@@ -736,6 +799,11 @@
         height: 40px;
         font-size: 16px;
     }
+
+    /* Điều chỉnh chiều cao scroll cho tablet */
+    .order-items-list {
+        max-height: 250px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -754,5 +822,15 @@
         width: 100%;
         padding: 12px;
         font-size: 16px;
+    }
+
+    /* Điều chỉnh chiều cao scroll cho mobile */
+    .order-items-list {
+        max-height: 200px;
+    }
+
+    .item-image {
+        width: 50px;
+        height: 50px;
     }
 } 

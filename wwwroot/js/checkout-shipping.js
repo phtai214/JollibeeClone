@@ -9,6 +9,7 @@ function initializeCheckoutShipping() {
     handleStoreSelection();
     generatePickupDates();
     handleFormValidation();
+    setupScrollIndicator();
     console.log('Checkout shipping initialized');
 }
 
@@ -226,6 +227,36 @@ function showError(message) {
     
     // Scroll to top to make sure user sees the error
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Setup scroll indicator for order items list
+function setupScrollIndicator() {
+    const orderItemsList = document.querySelector('.order-items-list');
+    if (!orderItemsList) return;
+    
+    function checkScrollability() {
+        if (orderItemsList.scrollHeight > orderItemsList.clientHeight) {
+            orderItemsList.classList.add('has-scroll');
+        } else {
+            orderItemsList.classList.remove('has-scroll');
+        }
+    }
+    
+    // Check on load
+    checkScrollability();
+    
+    // Check on resize
+    window.addEventListener('resize', checkScrollability);
+    
+    // Optional: Hide fade effect when scrolled to bottom
+    orderItemsList.addEventListener('scroll', function() {
+        const isScrolledToBottom = Math.abs(this.scrollHeight - this.clientHeight - this.scrollTop) < 5;
+        if (isScrolledToBottom) {
+            this.classList.remove('has-scroll');
+        } else if (this.scrollHeight > this.clientHeight) {
+            this.classList.add('has-scroll');
+        }
+    });
 }
 
 // Utility function to format currency

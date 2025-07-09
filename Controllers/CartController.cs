@@ -807,9 +807,9 @@ namespace JollibeeClone.Controllers
             return result;
         }
 
-        // GET: /Cart/Checkout
+        // GET: /Cart/Shipping
         [HttpGet]
-        public async Task<IActionResult> Checkout()
+        public async Task<IActionResult> Shipping()
         {
             try
             {
@@ -881,9 +881,9 @@ namespace JollibeeClone.Controllers
             }
         }
 
-        // POST: /Cart/ProcessCheckout
+        // POST: /Cart/ProcessShipping
         [HttpPost]
-        public async Task<IActionResult> ProcessCheckout(CheckoutShippingViewModel model)
+        public async Task<IActionResult> ProcessShipping(CheckoutShippingViewModel model)
         {
             try
             {
@@ -910,7 +910,7 @@ namespace JollibeeClone.Controllers
                             .ToListAsync();
                     }
 
-                    return View("Checkout", model);
+                    return View("Shipping", model);
                 }
 
                 // Store checkout data in session for the next step
@@ -921,9 +921,9 @@ namespace JollibeeClone.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ Error in ProcessCheckout: {ex.Message}");
+                Console.WriteLine($"❌ Error in ProcessShipping: {ex.Message}");
                 TempData["ErrorMessage"] = "Có lỗi xảy ra khi xử lý thông tin thanh toán.";
-                return RedirectToAction("Checkout");
+                return RedirectToAction("Shipping");
             }
         }
 
@@ -935,11 +935,11 @@ namespace JollibeeClone.Controllers
             var checkoutData = HttpContext.Session.GetString("CheckoutData");
             if (string.IsNullOrEmpty(checkoutData))
             {
-                return RedirectToAction("Checkout");
+                return RedirectToAction("Shipping");
             }
 
             TempData["Message"] = "Trang thanh toán sẽ được triển khai trong bước tiếp theo.";
-            return RedirectToAction("Checkout");
+            return RedirectToAction("Shipping");
         }
 
         private async Task<List<CheckoutCartItemViewModel>> MapCartItemsToViewModelAsync(List<CartItem> cartItems)

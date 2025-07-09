@@ -89,7 +89,7 @@ class JollibeeCart {
                     <span class="cart-total-value" id="cartTotal">0đ</span>
                 </div>
                 <button class="cart-checkout-btn" id="cartCheckoutBtn">
-                    <i class="fas fa-credit-card"></i> Thanh Toán
+                    <i class=""></i> Thanh Toán
                 </button>
                 <button class="cart-continue-btn" id="cartContinueBtn">
                     <i class="fas fa-arrow-left"></i> Tiếp Tục Mua Sắm
@@ -748,8 +748,8 @@ class JollibeeCart {
             return;
         }
         
-        // Navigate to checkout page
-        window.location.href = '/Cart/Checkout';
+        // Navigate to shipping page
+        window.location.href = '/Cart/Shipping';
     }
 
     formatCurrency(amount) {
