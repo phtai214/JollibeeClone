@@ -35,6 +35,39 @@
     <div class="checkout-content">
         <div class="checkout-left">
             <form asp-action="ProcessShipping" method="post" id="checkoutForm">
+                @Html.AntiForgeryToken()
+                
+                <!-- Hidden fields to preserve data -->
+                <input type="hidden" asp-for="IsUserLoggedIn" />
+                <input type="hidden" asp-for="SubtotalAmount" />
+                <input type="hidden" asp-for="ShippingFee" />
+                <input type="hidden" asp-for="DiscountAmount" />
+                <input type="hidden" asp-for="TotalAmount" />
+                
+                <!-- Hidden fields for cart items -->
+                @for (int i = 0; i < Model.CartItems.Count; i++)
+                {
+                    <input type="hidden" asp-for="CartItems[i].CartItemID" />
+                    <input type="hidden" asp-for="CartItems[i].ProductID" />
+                    <input type="hidden" asp-for="CartItems[i].ProductName" />
+                    <input type="hidden" asp-for="CartItems[i].ProductImage" />
+                    <input type="hidden" asp-for="CartItems[i].Quantity" />
+                    <input type="hidden" asp-for="CartItems[i].UnitPrice" />
+                    <input type="hidden" asp-for="CartItems[i].ConfigurationDescription" />
+                }
+                
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        <h6>Vui lòng kiểm tra lại thông tin:</h6>
+                        <ul class="mb-0">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        </ul>
+                    </div>
+                }
                 <!-- Customer Information Section -->
                 <div class="checkout-section">
                     <div class="section-header">
@@ -46,18 +79,22 @@
                     <div class="customer-info">
                         <div class="info-display">
                             <div class="customer-name">
-                                <input asp-for="CustomerFullName" class="form-control customer-input" 
-                                       placeholder="Họ tên" required />
+                                <input asp-for="CustomerFullName" 
+                                       class="form-control customer-input" 
+                                       placeholder="Họ tên" />
                                 <span asp-validation-for="CustomerFullName" class="text-danger"></span>
                             </div>
                             <div class="customer-phone">
-                                <input asp-for="CustomerPhoneNumber" class="form-control customer-input" 
-                                       placeholder="Số điện thoại" required />
+                                <input asp-for="CustomerPhoneNumber" 
+                                       class="form-control customer-input" 
+                                       placeholder="Số điện thoại" />
                                 <span asp-validation-for="CustomerPhoneNumber" class="text-danger"></span>
                             </div>
                             <div class="customer-email">
-                                <input asp-for="CustomerEmail" class="form-control customer-input" 
-                                       placeholder="Email" type="email" required />
+                                <input asp-for="CustomerEmail" 
+                                       class="form-control customer-input" 
+                                       placeholder="Email" 
+                                       type="email" />
                                 <span asp-validation-for="CustomerEmail" class="text-danger"></span>
                             </div>
                         </div>
@@ -66,8 +103,10 @@
                         {
                             <div class="address-selection">
                                 <label class="form-label">Chọn địa chỉ giao hàng:</label>
-                                <select asp-for="UserAddressID" class="form-select" id="addressSelect">
-                                    <option value="">Chọn địa chỉ...</option>
+                                <select asp-for="UserAddressID" 
+                                        class="form-select" 
+                                        id="addressSelect">
+                                    <option value="">Nhập địa chỉ mới...</option>
                                     @foreach (var address in Model.UserAddresses)
                                     {
                                         <option value="@address.AddressID">
@@ -77,14 +116,25 @@
                                 </select>
                             </div>
                         }
-                        else
-                        {
-                            <div class="manual-address">
-                                <textarea asp-for="DeliveryAddress" class="form-control" rows="3" 
-                                          placeholder="Nhập địa chỉ giao hàng chi tiết" required></textarea>
-                                <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
-                            </div>
-                        }
+                        
+                        <!-- Always show manual address field -->
+                        <div class="manual-address" style="margin-top: 15px;">
+                            <label class="form-label">
+                                @if (Model.IsUserLoggedIn && Model.UserAddresses.Any())
+                                {
+                                    <span>Hoặc nhập địa chỉ mới:</span>
+                                }
+                                else
+                                {
+                                    <span>Địa chỉ giao hàng:</span>
+                                }
+                            </label>
+                            <textarea asp-for="DeliveryAddress" 
+                                      class="form-control" 
+                                      rows="3" 
+                                      placeholder="Nhập địa chỉ giao hàng chi tiết"></textarea>
+                            <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
+                        </div>
                         
 
                     </div>
@@ -99,8 +149,11 @@
                             @foreach (var method in Model.DeliveryMethods)
                             {
                                 <div class="delivery-method-item">
-                                    <input type="radio" asp-for="DeliveryMethodID" value="@method.DeliveryMethodID" 
-                                           id="delivery_@method.DeliveryMethodID" class="delivery-radio-new" />
+                                    <input type="radio" 
+                                           asp-for="DeliveryMethodID" 
+                                           value="@method.DeliveryMethodID" 
+                                           id="delivery_@method.DeliveryMethodID" 
+                                           class="delivery-radio-new" />
                                     <label for="delivery_@method.DeliveryMethodID" class="delivery-label-new">
                                         <span class="radio-indicator"></span>
                                         <span class="delivery-text">

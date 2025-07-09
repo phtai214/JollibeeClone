@@ -3,19 +3,15 @@ using JollibeeClone.Models;
 
 namespace JollibeeClone.ViewModels
 {
-    public class CheckoutShippingViewModel
+    public class CheckoutShippingViewModel : IValidatableObject
     {
         // Customer Information
-        [Required(ErrorMessage = "Họ tên là bắt buộc")]
         [StringLength(100)]
         public string CustomerFullName { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Số điện thoại là bắt buộc")]
         [StringLength(20)]
         public string CustomerPhoneNumber { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Email là bắt buộc")]
-        [EmailAddress(ErrorMessage = "Email không hợp lệ")]
         [StringLength(255)]
         public string CustomerEmail { get; set; } = string.Empty;
 
@@ -64,6 +60,46 @@ namespace JollibeeClone.ViewModels
         // User Information (if logged in)
         public User? CurrentUser { get; set; }
         public bool IsUserLoggedIn { get; set; }
+
+        // Custom validation logic
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var results = new List<ValidationResult>();
+
+            // Address validation: Either UserAddressID or DeliveryAddress must be provided
+            if (!UserAddressID.HasValue && string.IsNullOrWhiteSpace(DeliveryAddress))
+            {
+                results.Add(new ValidationResult(
+                    "Vui lòng chọn địa chỉ giao hàng hoặc nhập địa chỉ giao hàng chi tiết",
+                    new[] { nameof(DeliveryAddress) }));
+            }
+
+            // Basic customer info validation (for all users)
+            if (string.IsNullOrWhiteSpace(CustomerFullName))
+            {
+                results.Add(new ValidationResult(
+                    "Họ tên là bắt buộc",
+                    new[] { nameof(CustomerFullName) }));
+            }
+
+            if (string.IsNullOrWhiteSpace(CustomerPhoneNumber))
+            {
+                results.Add(new ValidationResult(
+                    "Số điện thoại là bắt buộc",
+                    new[] { nameof(CustomerPhoneNumber) }));
+            }
+
+            // Email validation - SIMPLIFIED: just check if not empty
+            if (string.IsNullOrWhiteSpace(CustomerEmail))
+            {
+                results.Add(new ValidationResult(
+                    "Email là bắt buộc",
+                    new[] { nameof(CustomerEmail) }));
+            }
+            // REMOVED format validation - accept any non-empty email
+
+            return results;
+        }
     }
 
     public class TimeSlotOption

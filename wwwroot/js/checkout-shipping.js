@@ -58,6 +58,10 @@ function makeStoreFieldsRequired(required) {
 // Handle address selection for logged-in users
 function handleAddressSelection() {
     const addressSelect = document.getElementById('addressSelect');
+    const manualAddressTextarea = document.querySelector('textarea[name="DeliveryAddress"]');
+    const customerNameInput = document.querySelector('input[name="CustomerFullName"]');
+    const customerPhoneInput = document.querySelector('input[name="CustomerPhoneNumber"]');
+    
     if (!addressSelect) return;
     
     addressSelect.addEventListener('change', function() {
@@ -66,10 +70,47 @@ function handleAddressSelection() {
             const selectedText = this.options[this.selectedIndex].text;
             console.log('Address selected:', selectedText);
             
-            // You can parse and populate customer info fields here if needed
-            // For now, the address ID will be submitted with the form
+            // Parse the format: "FullName - PhoneNumber - Address"
+            const parts = selectedText.split(' - ');
+            if (parts.length >= 3) {
+                const fullName = parts[0].trim();
+                const phoneNumber = parts[1].trim(); 
+                const address = parts.slice(2).join(' - ').trim();
+                
+                // Auto-fill customer information
+                if (customerNameInput) {
+                    customerNameInput.value = fullName;
+                    console.log('Auto-filled customer name:', fullName);
+                }
+                
+                if (customerPhoneInput) {
+                    customerPhoneInput.value = phoneNumber;
+                    console.log('Auto-filled customer phone:', phoneNumber);
+                }
+                
+                console.log('Address info parsed:', { fullName, phoneNumber, address });
+            }
+            
+            // Clear manual address when selecting from dropdown
+            if (manualAddressTextarea) {
+                manualAddressTextarea.value = '';
+                console.log('Cleared manual address field');
+            }
+        } else {
+            // If no address selected, you might want to restore original user info
+            console.log('Address selection cleared');
         }
     });
+    
+    // Also handle manual address input to clear dropdown selection
+    if (manualAddressTextarea) {
+        manualAddressTextarea.addEventListener('input', function() {
+            if (this.value.trim() && addressSelect && addressSelect.value) {
+                addressSelect.value = '';
+                console.log('Cleared address selection when manual input detected');
+            }
+        });
+    }
 }
 
 // Handle store selection and address updates
@@ -110,7 +151,20 @@ function generatePickupDates() {
         
         const dayName = daysOfWeek[date.getDay()];
         const dateString = date.toLocaleDateString('vi-VN');
-        const isoString = date.toISOString().split('T')[0];
+        
+        // Create date string in YYYY-MM-DD format without timezone issues
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const isoString = `${year}-${month}-${day}`;
+        
+        // Debug log to verify date generation
+        console.log(`Date ${i} debug:`, {
+            originalDate: date,
+            year, month, day,
+            finalString: isoString,
+            displayText: dateString
+        });
         
         const option = document.createElement('option');
         option.value = isoString;
@@ -124,6 +178,8 @@ function generatePickupDates() {
         }
         
         pickupDateSelect.appendChild(option);
+        
+        console.log(`Generated date ${i}: ${dateString} -> ${isoString}`);
     }
 }
 
@@ -133,11 +189,14 @@ function handleFormValidation() {
     if (!form) return;
     
     form.addEventListener('submit', function(e) {
+        console.log('Form submission started');
+        
         // Custom validation logic
         const deliveryMethodSelected = document.querySelector('.delivery-radio-new:checked');
         
         if (!deliveryMethodSelected) {
             e.preventDefault();
+            console.log('Validation failed: No delivery method selected');
             showError('Vui lòng chọn phương thức vận chuyển');
             return false;
         }
@@ -168,22 +227,30 @@ function handleFormValidation() {
             }
         }
         
-        // Check delivery address for home delivery
-        const isHomeDelivery = deliveryMethodSelected && 
-            deliveryMethodSelected.nextElementSibling.textContent.toLowerCase().includes('giao hàng');
+        // Check delivery address - simplified logic
+        const addressSelect = document.getElementById('addressSelect');
+        const manualAddress = document.querySelector('textarea[name="DeliveryAddress"]');
         
-        if (isHomeDelivery) {
-            const addressSelect = document.getElementById('addressSelect');
-            const manualAddress = document.querySelector('textarea[name="DeliveryAddress"]');
-            
-            if (addressSelect && !addressSelect.value && (!manualAddress || !manualAddress.value.trim())) {
-                e.preventDefault();
-                showError('Vui lòng chọn địa chỉ giao hàng hoặc nhập địa chỉ thủ công');
-                return false;
-            }
+        console.log('Address validation check:');
+        console.log('- Address select exists:', !!addressSelect);
+        console.log('- Address select value:', addressSelect ? addressSelect.value : 'N/A');
+        console.log('- Manual address exists:', !!manualAddress);
+        console.log('- Manual address value:', manualAddress ? manualAddress.value : 'N/A');
+        
+        // Simple logic: If no address selected from dropdown, manual address is required
+        const hasSelectedAddress = addressSelect && addressSelect.value;
+        const hasManualAddress = manualAddress && manualAddress.value.trim();
+        
+        if (!hasSelectedAddress && !hasManualAddress) {
+            e.preventDefault();
+            console.log('Validation failed: No address provided (neither selected nor manual)');
+            showError('Vui lòng chọn địa chỉ giao hàng hoặc nhập địa chỉ giao hàng chi tiết');
+            return false;
         }
         
-        console.log('Form validation passed');
+        console.log('Form validation passed - allowing submission');
+        console.log('Form will be submitted to server for final validation');
+        // Allow form to submit normally to server
         return true;
     });
 }
@@ -329,14 +396,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Initialize address display as readonly if user is logged in and has addresses
+// Initialize form - no longer making fields readonly
 document.addEventListener('DOMContentLoaded', function() {
-    const addressSelect = document.getElementById('addressSelect');
-    if (addressSelect && addressSelect.options.length > 1) {
-        const customerInputs = document.querySelectorAll('.customer-input');
-        customerInputs.forEach(input => {
-            input.disabled = true;
-            input.style.backgroundColor = '#f8f9fa';
-        });
-    }
+    console.log('Form initialized - all fields are editable');
 }); 

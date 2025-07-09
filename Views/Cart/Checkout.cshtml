@@ -1,0 +1,321 @@
+@model JollibeeClone.ViewModels.CheckoutViewModel
+@{
+    ViewData["Title"] = "Hoàn tất thanh toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/checkout.css" />
+
+<div class="checkout-container">
+    <!-- Checkout Progress Steps -->
+    <div class="checkout-progress">
+        <div class="progress-step completed">
+            <div class="step-number">
+                <i class="fas fa-check"></i>
+            </div>
+            <span class="step-title">THÔNG TIN KHÁCH HÀNG</span>
+        </div>
+        <div class="progress-arrow"></div>
+        <div class="progress-step completed">
+            <div class="step-number">
+                <i class="fas fa-check"></i>
+            </div>
+            <span class="step-title">THÔNG TIN ĐƠN HÀNG</span>
+        </div>
+        <div class="progress-arrow"></div>
+        <div class="progress-step active">
+            <div class="step-number">3</div>
+            <span class="step-title">HOÀN TẤT THANH TOÁN</span>
+        </div>
+    </div>
+    
+    <!-- Page Title -->
+    <div class="page-title">
+        <h1>HOÀN TẤT THANH TOÁN</h1>
+    </div>
+
+    <div class="checkout-content">
+        <div class="checkout-left">
+            <form asp-action="ProcessCheckout" method="post" id="checkoutForm">
+                <!-- Hidden fields to preserve data -->
+                <!-- Customer info - dynamically updated based on selected address -->
+                <input type="hidden" asp-for="CustomerFullName" />
+                <input type="hidden" asp-for="CustomerEmail" />
+                <input type="hidden" asp-for="CustomerPhoneNumber" />
+                <input type="hidden" asp-for="DeliveryAddress" />
+                <input type="hidden" asp-for="UserAddressID" />
+                <input type="hidden" asp-for="FullDeliveryAddress" />
+                <input type="hidden" asp-for="DeliveryMethodID" />
+                <input type="hidden" asp-for="DeliveryMethodName" />
+                <input type="hidden" asp-for="StoreID" />
+                <input type="hidden" asp-for="StoreName" />
+                <input type="hidden" asp-for="StoreAddress" />
+                <input type="hidden" asp-for="PickupDate" />
+                <input type="hidden" asp-for="PickupTimeSlot" />
+                <input type="hidden" asp-for="NotesByCustomer" />
+                <input type="hidden" asp-for="SubtotalAmount" />
+                <input type="hidden" asp-for="ShippingFee" />
+                <input type="hidden" asp-for="DiscountAmount" />
+                <input type="hidden" asp-for="TotalAmount" />
+                <input type="hidden" asp-for="UserID" />
+                <input type="hidden" asp-for="IsUserLoggedIn" />
+                <input type="hidden" asp-for="AppliedPromotionID" />
+
+                <!-- Payment Method Section -->
+                <div class="checkout-section">
+                    <h3 class="section-title">PHƯƠNG THỨC THANH TOÁN</h3>
+                    <div class="payment-methods">
+                        @if (Model.PaymentMethods.Any())
+                        {
+                            @foreach (var method in Model.PaymentMethods)
+                            {
+                                <div class="payment-method-item">
+                                    <input type="radio" asp-for="PaymentMethodID" value="@method.PaymentMethodID" 
+                                           id="payment_@method.PaymentMethodID" class="payment-radio" />
+                                    <label for="payment_@method.PaymentMethodID" class="payment-label">
+                                        <span class="radio-indicator"></span>
+                                        <span class="payment-icon">
+                                            @if (method.MethodName.Contains("Tiền mặt"))
+                                            {
+                                                <i class="fas fa-money-bill-wave"></i>
+                                            }
+                                            else if (method.MethodName.Contains("Vi MoMo"))
+                                            {
+                                                <i class="fab fa-mobile-alt"></i>
+                                            }
+                                            else if (method.MethodName.Contains("Ví điện tử"))
+                                            {
+                                                <i class="fas fa-wallet"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fas fa-credit-card"></i>
+                                            }
+                                        </span>
+                                        <span class="payment-text">@method.MethodName</span>
+                                    </label>
+                                </div>
+                            }
+                        }
+                        <span asp-validation-for="PaymentMethodID" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Voucher Application Section -->
+                @if (Model.IsUserLoggedIn)
+                {
+                    <div class="checkout-section">
+                        <h3 class="section-title">ÁP DỤNG VOUCHER</h3>
+                        
+                        <!-- Voucher Input -->
+                        <div class="voucher-input-section">
+                            <div class="voucher-input-group">
+                                <input type="text" id="voucherCode" placeholder="Nhập mã phiếu quà tặng" 
+                                       class="voucher-input" maxlength="50" />
+                                <button type="button" id="applyVoucherBtn" class="voucher-apply-btn">
+                                    ÁP DỤNG
+                                </button>
+                            </div>
+                            <div id="voucherMessage" class="voucher-message"></div>
+                        </div>
+
+                        <!-- Available Vouchers -->
+                        @if (Model.AvailableVouchers.Any())
+                        {
+                            <div class="available-vouchers">
+                                <button type="button" class="voucher-toggle-btn" id="toggleVouchersBtn">
+                                    <span>Duyệt voucher</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                
+                                <div class="vouchers-list" id="vouchersList" style="display: none;">
+                                    @foreach (var voucher in Model.AvailableVouchers)
+                                    {
+                                        <div class="voucher-card @(voucher.CanApply ? "available" : "unavailable")" 
+                                             data-voucher-code="@voucher.CouponCode" 
+                                             data-promotion-id="@voucher.PromotionID"
+                                             data-can-apply="@voucher.CanApply.ToString().ToLower()">
+                                            <div class="voucher-header">
+                                                <div class="voucher-discount">
+                                                    @voucher.DiscountValue%
+                                                </div>
+                                                <div class="voucher-info">
+                                                    <h4 class="voucher-name">@voucher.PromotionName</h4>
+                                                    <p class="voucher-code">@voucher.CouponCode</p>
+                                                </div>
+                                            </div>
+                                            <div class="voucher-body">
+                                                @if (!string.IsNullOrEmpty(voucher.Description))
+                                                {
+                                                    <p class="voucher-description">@voucher.Description</p>
+                                                }
+                                                @if (voucher.MinOrderValue.HasValue)
+                                                {
+                                                    <p class="voucher-condition">Đơn hàng tối thiểu: @voucher.MinOrderValue.Value.ToString("N0") đ</p>
+                                                }
+                                                <p class="voucher-expiry">Hết hạn: @voucher.EndDate.ToString("dd/MM/yyyy")</p>
+                                                
+                                                @if (voucher.CanApply)
+                                                {
+                                                    <p class="voucher-savings">Tiết kiệm: @voucher.EstimatedDiscount.ToString("N0") đ</p>
+                                                    <button type="button" class="voucher-use-btn" onclick="applyVoucherFromCard('@voucher.CouponCode')">
+                                                        Sử dụng
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <p class="voucher-reason">@voucher.CannotApplyReason</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+
+                <!-- Submit Button -->
+                <div class="checkout-actions">
+                    <button type="button" class="btn btn-outline back-btn" onclick="window.history.back()">
+                        TRỞ LẠI
+                    </button>
+                    <button type="submit" class="btn btn-primary place-order-btn">
+                        ĐẶT HÀNG
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Order Summary Section -->
+        <div class="checkout-right">
+            <div class="order-summary-card">
+                <div class="summary-header">
+                    <h3 class="summary-title">CHI TIẾT ĐƠN HÀNG</h3>
+                    <a href="/Cart/Shipping" class="edit-order-btn">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+                
+                <div class="order-items-list">
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <div class="order-item-card">
+                            <div class="item-image-wrapper">
+                                <img src="@item.ProductImage" alt="@item.ProductName" class="item-image" />
+                            </div>
+                            <div class="item-content">
+                                <div class="item-main-info">
+                                    <h4 class="item-name">@item.ProductName.ToUpper()</h4>
+                                    <div class="item-quantity-price">
+                                        <span class="quantity-text">x @item.Quantity</span>
+                                        <span class="item-price">+ @item.TotalPrice.ToString("N0") đ</span>
+                                    </div>
+                                </div>
+                                
+                                @if (item.ConfigurationOptions != null && item.ConfigurationOptions.Any())
+                                {
+                                    <div class="item-config-details">
+                                        @foreach (var config in item.ConfigurationOptions)
+                                        {
+                                            <div class="config-item">
+                                                <span class="config-quantity">@config.Quantity x</span>
+                                                <span class="config-name">@config.OptionName</span>
+                                                @if (!string.IsNullOrEmpty(config.VariantName))
+                                                {
+                                                    <span class="config-variant">@config.VariantName</span>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Delivery Information -->
+                <div class="delivery-info-section">
+                    <h4 class="info-section-title">Giao đến</h4>
+                    <div class="delivery-details">
+                        <!-- Customer info comes from selected UserAddress or manual input -->
+                        <div class="delivery-customer">
+                            <strong>@Model.CustomerFullName</strong>
+                        </div>
+                        <div class="delivery-phone">
+                            SĐT: @Model.CustomerPhoneNumber
+                        </div>
+                        @if (Model.IsDelivery)
+                        {
+                            <div class="delivery-address">
+                                @Model.GetDisplayAddress()
+                            </div>
+                        }
+                    </div>
+                    
+                    <h4 class="info-section-title">Phương thức giao hàng</h4>
+                    <div class="delivery-method">
+                        <div class="method-name">
+                            @(!string.IsNullOrEmpty(Model.DeliveryMethodName) ? Model.DeliveryMethodName : Model.DisplayDeliveryMethod)
+                        </div>
+                        
+                        @if (Model.IsPickup && !string.IsNullOrEmpty(Model.StoreName))
+                        {
+                            <div class="pickup-details">
+                                <div class="pickup-store">
+                                    <strong>@Model.StoreName</strong><br /> 
+                                    @Model.StoreAddress
+                                </div>
+                                @if (Model.PickupDate.HasValue)
+                                {
+                                    <div class="pickup-time">
+                                        @Model.GetDisplayPickupDate()@if (Model.PickupTimeSlot.HasValue){ <text> - @Model.GetDisplayTimeSlot()</text>}
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Order Summary Footer -->
+                <div class="order-summary-footer">
+                    <div class="subtotal-info">
+                        <div class="subtotal-row">
+                            <span class="subtotal-label">Chi phí tạm tính</span>
+                            <span class="subtotal-amount">@Model.SubtotalAmount.ToString("N0") đ</span>
+                        </div>
+                        @if (Model.ShippingFee > 0)
+                        {
+                            <div class="subtotal-row">
+                                <span class="subtotal-label">Phí giao hàng</span>
+                                <span class="subtotal-amount">@Model.ShippingFee.ToString("N0") đ</span>
+                            </div>
+                        }
+                        @if (Model.HasVoucherApplied)
+                        {
+                            <div class="subtotal-row discount-row">
+                                <span class="subtotal-label">Voucher (@Model.AppliedPromotionName)</span>
+                                <span class="subtotal-amount discount-amount">-@Model.DiscountAmount.ToString("N0") đ</span>
+                            </div>
+                        }
+                        <div class="vat-notice">
+                            <em>Đã bao gồm giá thuế VAT 8%</em>
+                        </div>
+                    </div>
+                    
+                    <div class="total-section">
+                        <div class="total-row">
+                            <span class="total-label">Tổng Cộng</span>
+                            <span class="total-amount" id="finalTotalAmount">@Model.FinalAmount.ToString("N0") đ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/checkout.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 
