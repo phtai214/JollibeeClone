@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="~/JollibeeClone.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/cart.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="~/assets/images/logo_jollibee.png" type="image/x-icon">
     <!-- Merge Black (main font) -->
     <link href="https://db.onlinewebfonts.com/c/870c14ea660dc49cbcf9c92af21392af?family=Merge+Black+W00+Regular" rel="stylesheet">
     <!-- Roboto (secondary font) -->
@@ -206,7 +207,8 @@
                           </div>
                         </div>
                       </li>
-                      <li><a class="dropdown-item py-2" asp-controller="Account" asp-action="Profile"><i class="text-muted"></i>Tài khoản của tôi</a></li>
+                      <li><a class="dropdown-item py-2" asp-controller="Account" asp-action="Profile"><i class="fas fa-user text-muted me-2"></i>Tài khoản của tôi</a></li>
+                      <li><a class="dropdown-item py-2" asp-controller="Account" asp-action="Orders"><i class="fas fa-receipt text-muted me-2"></i>Đơn hàng của tôi</a></li>
                       <li><hr class="dropdown-divider my-1"></li>
                       <li>
                         <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline w-100">
@@ -268,7 +270,8 @@
                           </div>
                         </div>
                       </li>
-                      <li><a class="dropdown-item py-2" asp-controller="Account" asp-action="Profile"><i class="text-muted"></i>Tài khoản của tôi</a></li>
+                      <li><a class="dropdown-item py-2" asp-controller="Account" asp-action="Profile"><i class="fas fa-user text-muted me-2"></i>Tài khoản của tôi</a></li>
+                      <li><a class="dropdown-item py-2" asp-controller="Account" asp-action="Orders"><i class="fas fa-receipt text-muted me-2"></i>Đơn hàng của tôi</a></li>
                       <li><hr class="dropdown-divider my-1"></li>
                       <li>
                         <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline w-100">

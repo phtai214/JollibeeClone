@@ -19,7 +19,7 @@
             <p class="text-muted">Thông tin chi tiết về đơn hàng</p>
         </div>
         <div class="header-actions">
-            @if (Model.OrderStatusID != 5 && Model.OrderStatusID != 6) // Không phải đã giao hoặc đã hủy
+            @if (Model.OrderStatusID != 6 && Model.OrderStatusID != 7) // Không phải hoàn thành hoặc đã hủy
             {
                 <a href="@Url.Action("UpdateStatus", new { id = Model.OrderID })" class="btn btn-warning me-2">
                     <i class="fas fa-edit me-2"></i>
@@ -61,7 +61,7 @@
                             <div class="mb-3">
                                 <label class="form-label"><strong>Trạng thái:</strong></label>
                                 <div class="form-control-plaintext">
-                                    @{
+                                                                            @{
                                         string statusClass = "secondary";
                                         string statusIcon = "fas fa-clock";
                                         switch (Model.OrderStatusID)
@@ -82,11 +82,11 @@
                                                 statusClass = "warning";
                                                 statusIcon = "fas fa-shipping-fast";
                                                 break;
-                                            case 5: // Đã giao
+                                            case 6: // Hoàn thành
                                                 statusClass = "success";
                                                 statusIcon = "fas fa-check-double";
                                                 break;
-                                            case 6: // Đã hủy
+                                            case 7: // Đã hủy
                                                 statusClass = "danger";
                                                 statusIcon = "fas fa-times-circle";
                                                 break;
@@ -159,7 +159,16 @@
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div class="product-image me-3">
-                                                        <i class="fas fa-hamburger fa-2x text-jollibee-red"></i>
+                                                        @if (!string.IsNullOrEmpty(item.Product?.ImageUrl))
+                                                        {
+                                                            <img src="@item.Product.ImageUrl" alt="@item.ProductNameSnapshot" class="rounded" style="width: 50px; height: 50px; object-fit: cover;" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="d-flex align-items-center justify-content-center bg-light rounded" style="width: 50px; height: 50px;">
+                                                                <i class="fas fa-hamburger text-jollibee-red"></i>
+                                                            </div>
+                                                        }
                                                     </div>
                                                     <div>
                                                         <h6 class="mb-1">@item.ProductNameSnapshot</h6>
@@ -167,7 +176,7 @@
                                                         {
                                                             <small class="text-muted">
                                                                 <i class="fas fa-cogs me-1"></i>
-                                                                Tùy chỉnh: @item.SelectedConfigurationSnapshot
+                                                                Có tùy chỉnh
                                                             </small>
                                                         }
                                                     </div>

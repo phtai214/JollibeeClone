@@ -960,5 +960,477 @@ namespace JollibeeClone.Controllers
                 return View(model);
             }
         }
+
+        // GET: Account/Orders - Danh sách đơn hàng của user
+        [HttpGet]
+        [UserAuthorize]
+        public async Task<IActionResult> Orders(int page = 1, string status = "")
+        {
+            try
+            {
+                var userIdString = HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+                {
+                    return RedirectToAction("Login");
+                }
+
+                const int pageSize = 10;
+                var query = _context.Orders
+                    .Include(o => o.OrderStatus)
+                    .Include(o => o.PaymentMethod)
+                    .Include(o => o.DeliveryMethod)
+                    .Include(o => o.UserAddress)
+                    .Include(o => o.OrderItems)
+                    .Where(o => o.UserID == userId);
+
+                // Filter by status if provided
+                if (!string.IsNullOrEmpty(status))
+                {
+                    query = query.Where(o => o.OrderStatus.StatusName.Contains(status));
+                }
+
+                // Order by newest first
+                query = query.OrderByDescending(o => o.OrderDate);
+
+                var totalItems = await query.CountAsync();
+                var orders = await query
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                // Map to view model
+                var orderSummaries = orders.Select(o => new UserOrderSummaryViewModel
+                {
+                    OrderID = o.OrderID,
+                    OrderCode = o.OrderCode,
+                    OrderDate = o.OrderDate,
+                    StatusName = o.OrderStatus.StatusName,
+                    StatusDescription = o.OrderStatus.Description ?? "",
+                    TotalAmount = o.TotalAmount,
+                    PaymentMethodName = o.PaymentMethod.MethodName,
+                    DeliveryMethodName = o.DeliveryMethod?.MethodName ?? "",
+                    DeliveryAddress = o.UserAddress?.Address,
+                    TotalItems = o.OrderItems.Sum(oi => oi.Quantity),
+                    StatusColor = GetStatusColor(o.OrderStatus.StatusName),
+                    StatusIcon = GetStatusIcon(o.OrderStatus.StatusName),
+                    CanCancel = CanCancelOrder(o.OrderStatus.StatusName),
+                    CanReorder = o.OrderStatus.StatusName == "Hoàn thành" || o.OrderStatus.StatusName == "Đã hủy"
+                }).ToList();
+
+                // Get total orders count (without status filter)
+                var totalOrdersCount = await _context.Orders
+                    .Where(o => o.UserID == userId)
+                    .CountAsync();
+
+                var viewModel = new UserOrderListViewModel
+                {
+                    Orders = orderSummaries,
+                    CurrentPage = page,
+                    PageIndex = page,
+                    PageSize = pageSize,
+                    TotalItems = totalItems,
+                    TotalPages = (int)Math.Ceiling((double)totalItems / pageSize),
+                    TotalOrdersCount = totalOrdersCount,
+                    StatusFilter = status,
+                    CurrentStatusFilter = status
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading user orders for UserId: {UserId}", HttpContext.Session.GetString("UserId"));
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải danh sách đơn hàng.";
+                return View(new UserOrderListViewModel());
+            }
+        }
+
+        // GET: Account/OrderDetail/{id} - Chi tiết đơn hàng
+        [HttpGet]
+        [UserAuthorize]
+        public async Task<IActionResult> OrderDetail(int id)
+        {
+            try
+            {
+                var userIdString = HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+                {
+                    return RedirectToAction("Login");
+                }
+
+                var order = await _context.Orders
+                    .Include(o => o.OrderStatus)
+                    .Include(o => o.PaymentMethod)
+                    .Include(o => o.DeliveryMethod)
+                    .Include(o => o.Store)
+                    .Include(o => o.UserAddress)
+                    .Include(o => o.OrderItems)
+                        .ThenInclude(oi => oi.Product)
+                    .FirstOrDefaultAsync(o => o.OrderID == id && o.UserID == userId);
+
+                if (order == null)
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy đơn hàng.";
+                    return RedirectToAction("Orders");
+                }
+
+                // Map order items
+                var orderItems = new List<UserOrderItemViewModel>();
+                foreach (var item in order.OrderItems)
+                {
+                    var orderItemViewModel = new UserOrderItemViewModel
+                    {
+                        OrderItemID = item.OrderItemID,
+                        ProductID = item.ProductID,
+                        ProductName = item.ProductNameSnapshot,
+                        ProductImage = item.Product?.ImageUrl,
+                        Quantity = item.Quantity,
+                        UnitPrice = item.UnitPrice,
+                        Subtotal = item.Subtotal,
+                        ConfigurationOptions = new List<OrderItemConfigurationViewModel>()
+                    };
+
+                    // Parse configuration if exists
+                    if (!string.IsNullOrEmpty(item.SelectedConfigurationSnapshot))
+                    {
+                        try
+                        {
+                            var configData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(item.SelectedConfigurationSnapshot);
+                            if (configData != null)
+                            {
+                                orderItemViewModel.ConfigurationOptions = configData.Select(config => new OrderItemConfigurationViewModel
+                                {
+                                    GroupName = (string)config.GroupName,
+                                    OptionName = (string)config.OptionProductName,
+                                    OptionImage = (string?)config.OptionProductImage,
+                                    Quantity = (int)config.Quantity,
+                                    PriceAdjustment = (decimal)config.PriceAdjustment,
+                                    VariantName = (string?)config.VariantName,
+                                    VariantType = (string?)config.VariantType
+                                }).ToList();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, "Error parsing order item configuration for OrderItemID: {OrderItemID}", item.OrderItemID);
+                        }
+                    }
+
+                    orderItems.Add(orderItemViewModel);
+                }
+
+                // Create tracking events
+                var trackingEvents = CreateTrackingEvents(order);
+
+                var viewModel = new UserOrderDetailViewModel
+                {
+                    OrderID = order.OrderID,
+                    OrderCode = order.OrderCode,
+                    OrderDate = order.OrderDate,
+                    CustomerFullName = order.CustomerFullName,
+                    CustomerPhoneNumber = order.CustomerPhoneNumber,
+                    CustomerEmail = order.CustomerEmail,
+                    StatusName = order.OrderStatus.StatusName,
+                    StatusDescription = order.OrderStatus.Description ?? "",
+                    StatusColor = GetStatusColor(order.OrderStatus.StatusName),
+                    StatusIcon = GetStatusIcon(order.OrderStatus.StatusName),
+                    DeliveryMethodName = order.DeliveryMethod?.MethodName ?? "",
+                    DeliveryAddress = order.UserAddress?.Address,
+                    StoreName = order.Store?.StoreName,
+                    StoreAddress = order.Store != null ? $"{order.Store.StreetAddress}, {order.Store.District}, {order.Store.City}" : null,
+                    PickupDate = order.PickupDate,
+                    PickupTimeSlot = order.PickupTimeSlot,
+                    PaymentMethodName = order.PaymentMethod.MethodName,
+                    SubtotalAmount = order.SubtotalAmount,
+                    ShippingFee = order.ShippingFee,
+                    DiscountAmount = order.DiscountAmount,
+                    TotalAmount = order.TotalAmount,
+                    OrderItems = orderItems,
+                    NotesByCustomer = order.NotesByCustomer,
+                    TrackingEvents = trackingEvents,
+                    CanCancel = CanCancelOrder(order.OrderStatus.StatusName),
+                    CanReorder = order.OrderStatus.StatusName == "Hoàn thành" || order.OrderStatus.StatusName == "Đã hủy"
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading order detail for OrderID: {OrderID}", id);
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải chi tiết đơn hàng.";
+                return RedirectToAction("Orders");
+            }
+        }
+
+        // GET: /Account/ProfileOrders - Display orders within profile layout
+        [HttpGet]
+        [UserAuthorize]
+        public async Task<IActionResult> ProfileOrders(string? status = null, int page = 1)
+        {
+            try
+            {
+                var isUserLoggedIn = HttpContext.Session.GetString("IsUserLoggedIn") == "true";
+                var userIdFromSession = HttpContext.Session.GetString("UserId");
+
+                if (!isUserLoggedIn || string.IsNullOrEmpty(userIdFromSession) || !int.TryParse(userIdFromSession, out int userId))
+                {
+                    return RedirectToAction("Login");
+                }
+
+                Console.WriteLine($"🔍 ProfileOrders called - UserID: {userId}, Status: {status}, Page: {page}");
+
+                const int pageSize = 5; // Smaller page size for profile view
+
+                // Build query with includes
+                var query = _context.Orders
+                    .Include(o => o.OrderStatus)
+                    .Include(o => o.PaymentMethod)
+                    .Include(o => o.DeliveryMethod)
+                    .Include(o => o.UserAddress)
+                    .Include(o => o.OrderItems)
+                    .Where(o => o.UserID == userId);
+
+                // Apply status filter
+                if (!string.IsNullOrEmpty(status) && status != "all")
+                {
+                    query = query.Where(o => o.OrderStatus.StatusName.ToLower().Contains(status.ToLower()));
+                    Console.WriteLine($"🔍 Applied status filter: {status}");
+                }
+
+                // Get total count for pagination
+                var totalItems = await query.CountAsync();
+
+                // Get paginated orders
+                var orders = await query
+                    .OrderByDescending(o => o.OrderDate)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                Console.WriteLine($"🔍 Found {orders.Count} orders for page {page}");
+
+                // Map to view model
+                var orderSummaries = orders.Select(o => new UserOrderSummaryViewModel
+                {
+                    OrderID = o.OrderID,
+                    OrderCode = o.OrderCode,
+                    OrderDate = o.OrderDate,
+                    StatusName = o.OrderStatus.StatusName,
+                    StatusDescription = o.OrderStatus.Description ?? "",
+                    TotalAmount = o.TotalAmount,
+                    PaymentMethodName = o.PaymentMethod.MethodName,
+                    DeliveryMethodName = o.DeliveryMethod?.MethodName ?? "",
+                    DeliveryAddress = o.UserAddress?.Address ?? o.CustomerFullName, // Fallback to customer name if no address
+                    TotalItems = o.OrderItems.Sum(oi => oi.Quantity),
+                    StatusColor = GetStatusColor(o.OrderStatus.StatusName),
+                    StatusIcon = GetStatusIcon(o.OrderStatus.StatusName),
+                    CanCancel = CanCancelOrder(o.OrderStatus.StatusName),
+                    CanReorder = o.OrderStatus.StatusName.ToLower() == "hoàn thành" || o.OrderStatus.StatusName.ToLower() == "đã hủy"
+                }).ToList();
+
+                // Get total orders count (without status filter)
+                var totalOrdersCount = await _context.Orders
+                    .Where(o => o.UserID == userId)
+                    .CountAsync();
+
+                var viewModel = new UserOrderListViewModel
+                {
+                    Orders = orderSummaries,
+                    CurrentPage = page,
+                    PageIndex = page,
+                    PageSize = pageSize,
+                    TotalItems = totalItems,
+                    TotalPages = (int)Math.Ceiling((double)totalItems / pageSize),
+                    TotalOrdersCount = totalOrdersCount,
+                    StatusFilter = status,
+                    CurrentStatusFilter = status ?? "all"
+                };
+
+                Console.WriteLine($"🔍 ProfileOrders ViewModel created - Total: {totalItems}, Page: {page}/{viewModel.TotalPages}");
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error in ProfileOrders: {ex.Message}");
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải danh sách đơn hàng.";
+                return RedirectToAction("Profile");
+            }
+        }
+
+        // Helper methods for order status styling
+        private string GetStatusColor(string statusName)
+        {
+            return statusName.ToLower() switch
+            {
+                "chờ xác nhận" => "#ffc107",
+                "đã xác nhận" => "#0E64CDFF",
+                "đang chuẩn bị" => "#fd7e14",
+                "đang giao hàng" => "#11C4C4FF",
+                "hoàn thành" => "#28a745",
+                "đã hủy" => "#dc3545",
+                _ => "#6c757d"
+            };
+        }
+
+        private string GetStatusIcon(string statusName)
+        {
+            return statusName.ToLower() switch
+            {
+                "chờ xác nhận" => "fas fa-clock",
+                "đã xác nhận" => "fas fa-check-circle",
+                "đang chuẩn bị" => "fas fa-utensils",
+                "đang giao hàng" => "fas fa-shipping-fast",
+                "hoàn thành" => "fas fa-check-double",
+                "đã hủy" => "fas fa-times-circle",
+                _ => "fas fa-question-circle"
+            };
+        }
+
+        private bool CanCancelOrder(string statusName)
+        {
+            // Chỉ cho phép hủy đơn hàng khi ở trạng thái "chờ xác nhận"
+            // Một khi admin đã xác nhận đơn hàng thì không thể hủy nữa
+            return statusName.ToLower() == "chờ xác nhận";
+        }
+
+        private List<OrderTrackingEvent> CreateTrackingEvents(Orders order)
+        {
+            var events = new List<OrderTrackingEvent>();
+            var currentStatus = order.OrderStatus.StatusName.ToLower();
+
+            // Đặt hàng thành công
+            events.Add(new OrderTrackingEvent
+            {
+                EventDate = order.OrderDate,
+                EventTitle = "Đặt hàng thành công",
+                EventDescription = $"Đơn hàng #{order.OrderCode} đã được tạo",
+                EventIcon = "fas fa-shopping-cart",
+                EventColor = "#28a745",
+                IsCompleted = true
+            });
+
+            // Xác nhận đơn hàng
+            var isConfirmed = currentStatus != "chờ xác nhận";
+            events.Add(new OrderTrackingEvent
+            {
+                EventDate = isConfirmed ? order.OrderDate.AddMinutes(5) : DateTime.MinValue,
+                EventTitle = "Xác nhận đơn hàng",
+                EventDescription = isConfirmed ? "Đơn hàng đã được xác nhận" : "Đang chờ xác nhận từ cửa hàng",
+                EventIcon = "fas fa-check-circle",
+                EventColor = isConfirmed ? "#28a745" : "#6c757d",
+                IsCompleted = isConfirmed
+            });
+
+            // Chuẩn bị đơn hàng
+            var isPreparing = new[] { "đang chuẩn bị", "đang giao hàng", "hoàn thành" }.Contains(currentStatus);
+            events.Add(new OrderTrackingEvent
+            {
+                EventDate = isPreparing ? order.OrderDate.AddMinutes(15) : DateTime.MinValue,
+                EventTitle = "Chuẩn bị đơn hàng",
+                EventDescription = isPreparing ? "Đơn hàng đang được chuẩn bị" : "Chưa bắt đầu chuẩn bị",
+                EventIcon = "fas fa-utensils",
+                EventColor = isPreparing ? "#28a745" : "#6c757d",
+                IsCompleted = isPreparing
+            });
+
+            // Giao hàng/Sẵn sàng lấy hàng
+            var isDelivery = order.DeliveryMethod?.MethodName?.Contains("giao hàng") == true;
+            if (isDelivery)
+            {
+                var isDelivering = new[] { "đang giao hàng", "hoàn thành" }.Contains(currentStatus);
+                events.Add(new OrderTrackingEvent
+                {
+                    EventDate = isDelivering ? order.OrderDate.AddMinutes(30) : DateTime.MinValue,
+                    EventTitle = "Đang giao hàng",
+                    EventDescription = isDelivering ? "Đơn hàng đang được giao đến địa chỉ của bạn" : "Chưa bắt đầu giao hàng",
+                    EventIcon = "fas fa-shipping-fast",
+                    EventColor = isDelivering ? "#28a745" : "#6c757d",
+                    IsCompleted = isDelivering
+                });
+            }
+            else
+            {
+                // For pickup orders, add a "Ready for pickup" step that completes when preparing is done
+                var isReadyForPickup = new[] { "đang chuẩn bị", "hoàn thành" }.Contains(currentStatus);
+                events.Add(new OrderTrackingEvent
+                {
+                    EventDate = isReadyForPickup ? order.OrderDate.AddMinutes(30) : DateTime.MinValue,
+                    EventTitle = "Sẵn sàng lấy hàng tại cửa hàng",
+                    EventDescription = isReadyForPickup ? "Đơn hàng đã sẵn sàng để bạn đến lấy tại cửa hàng" : "Đang chuẩn bị",
+                    EventIcon = "fas fa-store",
+                    EventColor = isReadyForPickup ? "#28a745" : "#6c757d",
+                    IsCompleted = isReadyForPickup
+                });
+            }
+
+            // Hoàn thành
+            var isCompleted = currentStatus == "hoàn thành";
+            events.Add(new OrderTrackingEvent
+            {
+                EventDate = isCompleted ? order.OrderDate.AddMinutes(60) : DateTime.MinValue,
+                EventTitle = "Hoàn thành",
+                EventDescription = isCompleted ? "Đơn hàng đã được hoàn thành" : "Chưa hoàn thành",
+                EventIcon = "fas fa-check-circle",
+                EventColor = isCompleted ? "#28a745" : "#6c757d",
+                IsCompleted = isCompleted
+            });
+
+            return events.Where(e => e.EventDate != DateTime.MinValue || e.IsCompleted).ToList();
+        }
+
+        // POST: Cancel Order
+        [HttpPost]
+        [UserAuthorize]
+        public async Task<IActionResult> CancelOrder(int id)
+        {
+            try
+            {
+                var order = await _context.Orders
+                    .Include(o => o.OrderStatus)
+                    .FirstOrDefaultAsync(o => o.OrderID == id);
+
+                if (order == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy đơn hàng." });
+                }
+
+                // Check if user has permission to cancel this order
+                var userIdFromSession = HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userIdFromSession) || !int.TryParse(userIdFromSession, out int userId) || order.UserID != userId)
+                {
+                    return Json(new { success = false, message = "Bạn không có quyền hủy đơn hàng này." });
+                }
+
+                // Check if order can be cancelled
+                if (!CanCancelOrder(order.OrderStatus.StatusName))
+                {
+                    return Json(new { success = false, message = "Đơn hàng này không thể hủy được vì đã được cửa hàng xác nhận. Chỉ có thể hủy đơn hàng khi đang ở trạng thái 'Chờ xác nhận'." });
+                }
+
+                // Find "Đã hủy" status
+                var cancelledStatus = await _context.OrderStatuses
+                    .FirstOrDefaultAsync(s => s.StatusName == "Đã hủy");
+
+                if (cancelledStatus == null)
+                {
+                    return Json(new { success = false, message = "Không thể hủy đơn hàng. Vui lòng liên hệ hỗ trợ." });
+                }
+
+                // Update order status to cancelled
+                order.OrderStatusID = cancelledStatus.OrderStatusID;
+                _context.Orders.Update(order);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation($"Order {order.OrderCode} has been cancelled by user {userId}");
+
+                return Json(new { success = true, message = "Đơn hàng đã được hủy thành công." });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error cancelling order {OrderID}", id);
+                return Json(new { success = false, message = "Có lỗi xảy ra khi hủy đơn hàng." });
+            }
+        }
     }
-} 
+}

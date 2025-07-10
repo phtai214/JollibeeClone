@@ -1250,12 +1250,43 @@ namespace JollibeeClone.Controllers
                     PickupDate = shippingData.PickupDate,
                     PickupTimeSlot = shippingData.PickupTimeSlot,
                     NotesByCustomer = shippingData.NotesByCustomer,
-                    CartItems = shippingData.CartItems,
                     SubtotalAmount = shippingData.SubtotalAmount,
                     ShippingFee = shippingData.ShippingFee,
                     DiscountAmount = shippingData.DiscountAmount,
                     TotalAmount = shippingData.TotalAmount
                 };
+
+                // RELOAD cart items from database to ensure full configuration data
+                var cart = await GetOrCreateCartAsync();
+                var cartItems = await _context.CartItems
+                    .Where(ci => ci.CartID == cart.CartID)
+                    .Include(ci => ci.Product)
+                    .ToListAsync();
+
+                if (cartItems.Any())
+                {
+                    viewModel.CartItems = await MapCartItemsToViewModelAsync(cartItems);
+                    Console.WriteLine($"🔍 Reloaded {viewModel.CartItems.Count} cart items with full configuration data");
+                    
+                    // Debug: Log configuration data for each item
+                    foreach (var item in viewModel.CartItems)
+                    {
+                        Console.WriteLine($"🔍 Item: {item.ProductName}, ConfigOptions: {item.ConfigurationOptions?.Count ?? 0}");
+                        if (item.ConfigurationOptions != null)
+                        {
+                            foreach (var config in item.ConfigurationOptions)
+                            {
+                                Console.WriteLine($"    - {config.GroupName}: {config.OptionName} ({config.VariantName})");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"❌ No cart items found, redirecting to home");
+                    TempData["ErrorMessage"] = "Giỏ hàng của bạn đang trống.";
+                    return RedirectToAction("Index", "Home");
+                }
 
                 // Get full address information and customer details
                 if (viewModel.UserAddressID.HasValue)
@@ -1367,9 +1398,118 @@ namespace JollibeeClone.Controllers
                     return View("Checkout", model);
                 }
 
-                // TODO: Process payment and create order
-                TempData["SuccessMessage"] = "Đơn hàng đã được đặt thành công!";
-                return RedirectToAction("OrderSuccess");
+                // Process payment and create order
+                using var transaction = await _context.Database.BeginTransactionAsync();
+                
+                try
+                {
+                    Console.WriteLine($"🛒 ProcessCheckout - Creating order for customer: {model.CustomerFullName}");
+                    
+                    // Get current cart
+                    var cart = await GetOrCreateCartAsync();
+                    var cartItems = await _context.CartItems
+                        .Where(ci => ci.CartID == cart.CartID)
+                        .Include(ci => ci.Product)
+                        .ToListAsync();
+
+                    if (!cartItems.Any())
+                    {
+                        throw new InvalidOperationException("Giỏ hàng trống, không thể tạo đơn hàng");
+                    }
+
+                    // Generate unique order code
+                    var orderCode = await GenerateOrderCodeAsync();
+                    Console.WriteLine($"🛒 Generated order code: {orderCode}");
+
+                    // Parse pickup time slot
+                    TimeSpan? pickupTimeSlot = model.PickupTimeSlot;
+
+                    // Create order
+                    var order = new Orders
+                    {
+                        OrderCode = orderCode,
+                        UserID = model.UserID,
+                        CustomerFullName = model.CustomerFullName,
+                        CustomerEmail = model.CustomerEmail,
+                        CustomerPhoneNumber = model.CustomerPhoneNumber,
+                        UserAddressID = model.UserAddressID,
+                        DeliveryMethodID = model.DeliveryMethodID,
+                        StoreID = model.StoreID,
+                        PickupDate = model.PickupDate,
+                        PickupTimeSlot = pickupTimeSlot,
+                        OrderDate = DateTime.Now,
+                        SubtotalAmount = model.SubtotalAmount,
+                        ShippingFee = model.ShippingFee,
+                        DiscountAmount = model.DiscountAmount,
+                        TotalAmount = model.TotalAmount,
+                        OrderStatusID = 1, // Chờ xác nhận
+                        PaymentMethodID = model.PaymentMethodID,
+                        PromotionID = model.AppliedPromotionID,
+                        NotesByCustomer = model.NotesByCustomer
+                    };
+
+                    _context.Orders.Add(order);
+                    await _context.SaveChangesAsync();
+                    
+                    Console.WriteLine($"🛒 Order created with ID: {order.OrderID}");
+
+                    // Create order items from cart items
+                    foreach (var cartItem in cartItems)
+                    {
+                        var orderItem = new OrderItems
+                        {
+                            OrderID = order.OrderID,
+                            ProductID = cartItem.ProductID,
+                            ProductNameSnapshot = cartItem.Product.ProductName,
+                            Quantity = cartItem.Quantity,
+                            UnitPrice = cartItem.UnitPrice,
+                            Subtotal = cartItem.UnitPrice * cartItem.Quantity,
+                            SelectedConfigurationSnapshot = cartItem.SelectedConfigurationSnapshot
+                        };
+
+                        _context.OrderItems.Add(orderItem);
+                        Console.WriteLine($"🛒 Added order item: {orderItem.ProductNameSnapshot} x{orderItem.Quantity}");
+                    }
+
+                    await _context.SaveChangesAsync();
+                    Console.WriteLine($"🛒 Order items saved successfully");
+
+                    // Mark promotion as used if applicable
+                    if (model.AppliedPromotionID.HasValue && model.UserID.HasValue)
+                    {
+                        var userPromotion = new UserPromotion
+                        {
+                            UserID = model.UserID.Value,
+                            PromotionID = model.AppliedPromotionID.Value,
+                            OrderID = order.OrderID,
+                            UsedDate = DateTime.Now
+                        };
+                        _context.UserPromotions.Add(userPromotion);
+                        await _context.SaveChangesAsync();
+                        Console.WriteLine($"🛒 Promotion {model.AppliedPromotionID} marked as used");
+                    }
+
+                    // Clear cart after successful order creation
+                    _context.CartItems.RemoveRange(cartItems);
+                    await _context.SaveChangesAsync();
+                    Console.WriteLine($"🛒 Cart cleared after successful order");
+
+                    // Commit transaction
+                    await transaction.CommitAsync();
+                    Console.WriteLine($"✅ Order {orderCode} created successfully!");
+
+                    // Store order ID in session for success page
+                    HttpContext.Session.SetInt32("LastOrderID", order.OrderID);
+                    
+                    TempData["SuccessMessage"] = $"Đơn hàng {orderCode} đã được đặt thành công!";
+                    return RedirectToAction("OrderSuccess", new { orderId = order.OrderID });
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    Console.WriteLine($"❌ Error creating order: {ex.Message}");
+                    throw;
+                }
             }
             catch (Exception ex)
             {
@@ -1422,11 +1562,123 @@ namespace JollibeeClone.Controllers
             }
         }
 
-        // GET: Temporary order success page
+        // GET: Order success page
         [HttpGet]
-        public IActionResult OrderSuccess()
+        public async Task<IActionResult> OrderSuccess(int? orderId)
         {
-            return View();
+            try
+            {
+                // Get order ID from parameter or session
+                int orderIdToLoad = orderId ?? HttpContext.Session.GetInt32("LastOrderID") ?? 0;
+                
+                if (orderIdToLoad == 0)
+                {
+                    Console.WriteLine($"❌ No order ID found for success page");
+                    TempData["ErrorMessage"] = "Không tìm thấy thông tin đơn hàng.";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Load order details
+                var order = await _context.Orders
+                    .Include(o => o.OrderStatus)
+                    .Include(o => o.PaymentMethod)
+                    .Include(o => o.DeliveryMethod)
+                    .Include(o => o.Store)
+                    .Include(o => o.UserAddress)
+                    .Include(o => o.OrderItems)
+                        .ThenInclude(oi => oi.Product)
+                    .FirstOrDefaultAsync(o => o.OrderID == orderIdToLoad);
+
+                if (order == null)
+                {
+                    Console.WriteLine($"❌ Order {orderIdToLoad} not found");
+                    TempData["ErrorMessage"] = "Không tìm thấy đơn hàng.";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Map order items to view model
+                var orderItems = new List<UserOrderItemViewModel>();
+                foreach (var item in order.OrderItems)
+                {
+                    var orderItemViewModel = new UserOrderItemViewModel
+                    {
+                        OrderItemID = item.OrderItemID,
+                        ProductID = item.ProductID,
+                        ProductName = item.ProductNameSnapshot,
+                        ProductImage = item.Product?.ImageUrl,
+                        Quantity = item.Quantity,
+                        UnitPrice = item.UnitPrice,
+                        Subtotal = item.Subtotal,
+                        ConfigurationOptions = new List<OrderItemConfigurationViewModel>()
+                    };
+
+                    // Parse configuration if exists
+                    if (!string.IsNullOrEmpty(item.SelectedConfigurationSnapshot))
+                    {
+                        try
+                        {
+                            var configData = JsonConvert.DeserializeObject<List<dynamic>>(item.SelectedConfigurationSnapshot);
+                            if (configData != null)
+                            {
+                                orderItemViewModel.ConfigurationOptions = configData.Select(config => new OrderItemConfigurationViewModel
+                                {
+                                    GroupName = (string)config.GroupName,
+                                    OptionName = (string)config.OptionProductName,
+                                    OptionImage = (string?)config.OptionProductImage,
+                                    Quantity = (int)config.Quantity,
+                                    PriceAdjustment = (decimal)config.PriceAdjustment,
+                                    VariantName = (string?)config.VariantName,
+                                    VariantType = (string?)config.VariantType
+                                }).ToList();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error parsing order item configuration: {ex.Message}");
+                        }
+                    }
+
+                    orderItems.Add(orderItemViewModel);
+                }
+
+                // Calculate estimated delivery time
+                var estimatedDeliveryTime = "";
+                var isDelivery = order.DeliveryMethod?.MethodName?.Contains("giao hàng") == true || 
+                                order.DeliveryMethod?.MethodName?.Contains("ship") == true;
+                var isPickup = !isDelivery;
+
+                if (isPickup && order.PickupDate.HasValue)
+                {
+                    estimatedDeliveryTime = $"Nhận hàng vào {order.PickupDate.Value:dd/MM/yyyy}";
+                    if (order.PickupTimeSlot.HasValue)
+                    {
+                        estimatedDeliveryTime += $" lúc {order.PickupTimeSlot.Value:hh\\:mm}";
+                    }
+                }
+                else if (isDelivery)
+                {
+                    var estimatedTime = order.OrderDate.AddMinutes(45); // 45 minutes for delivery
+                    estimatedDeliveryTime = $"Giao hàng trong khoảng {estimatedTime:HH:mm} - {estimatedTime.AddMinutes(15):HH:mm}";
+                }
+
+                var viewModel = new OrderSuccessViewModel
+                {
+                    Order = order,
+                    OrderItems = orderItems,
+                    EstimatedDeliveryTime = estimatedDeliveryTime,
+                    IsDelivery = isDelivery,
+                    IsPickup = isPickup
+                };
+
+                Console.WriteLine($"✅ Order success page loaded for order {order.OrderCode}");
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error loading order success page: {ex.Message}");
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải thông tin đơn hàng.";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         private async Task<List<CheckoutCartItemViewModel>> MapCartItemsToViewModelAsync(List<CartItem> cartItems)
@@ -1563,5 +1815,32 @@ namespace JollibeeClone.Controllers
                 return Json(new { error = ex.Message });
             }
         }
+
+        // Helper method to generate unique order code
+        private async Task<string> GenerateOrderCodeAsync()
+        {
+            var today = DateTime.Now;
+            var datePrefix = today.ToString("yyMMdd"); // Format: 241210 (for 2024-12-10)
+            
+            // Find highest order number for today
+            var todayOrderCodes = await _context.Orders
+                .Where(o => o.OrderCode.StartsWith(datePrefix))
+                .Select(o => o.OrderCode)
+                .ToListAsync();
+
+            var maxOrderNumber = 0;
+            foreach (var existingOrderCode in todayOrderCodes)
+            {
+                if (existingOrderCode.Length >= 11 && int.TryParse(existingOrderCode.Substring(6, 5), out int orderNumber))
+                {
+                    maxOrderNumber = Math.Max(maxOrderNumber, orderNumber);
+                }
+            }
+
+            var nextOrderNumber = maxOrderNumber + 1;
+            var orderCode = $"{datePrefix}{nextOrderNumber:D5}"; // Format: 24121000001
+
+            return orderCode;
+        }
     }
-} 
+}

@@ -1,0 +1,210 @@
+@model UserOrderListViewModel
+@{
+    ViewData["Title"] = "Đơn hàng của tôi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/css/user-orders.css" rel="stylesheet" />
+
+<div class="orders-container">
+    <div class="orders-header">
+        <div class="header-content">
+            <h1><i class="fas fa-receipt"></i> Đơn hàng của tôi</h1>
+            <p class="subtitle">Theo dõi và quản lý các đơn hàng của bạn</p>
+            <div class="cancel-policy-note">
+                <i class="fas fa-info-circle"></i>
+                <small>Lưu ý: Bạn chỉ có thể hủy đơn hàng khi đang ở trạng thái "Chờ xác nhận"</small>
+            </div>
+        </div>
+        
+        <!-- Status Filter -->
+        <div class="status-filter">
+            <div class="filter-tabs">
+                <a href="@Url.Action("Orders", new { status = "" })" 
+                   class="filter-tab @(string.IsNullOrEmpty(Model.CurrentStatusFilter) ? "active" : "")">
+                    <span class="tab-text">Tất cả</span>
+                    <span class="tab-count">@Model.TotalOrdersCount</span>
+                </a>
+                <a href="@Url.Action("Orders", new { status = "chờ xác nhận" })" 
+                   class="filter-tab @(Model.CurrentStatusFilter == "chờ xác nhận" ? "active" : "")">
+                    <span class="tab-text">Chờ xác nhận</span>
+                    <span class="tab-count">@Model.Orders.Count(o => o.StatusName == "Chờ xác nhận")</span>
+                </a>
+                <a href="@Url.Action("Orders", new { status = "đang chuẩn bị" })" 
+                   class="filter-tab @(Model.CurrentStatusFilter == "đang chuẩn bị" ? "active" : "")">
+                    <span class="tab-text">Đang chuẩn bị</span>
+                    <span class="tab-count">@Model.Orders.Count(o => o.StatusName == "Đang chuẩn bị")</span>
+                </a>
+                <a href="@Url.Action("Orders", new { status = "hoàn thành" })" 
+                   class="filter-tab @(Model.CurrentStatusFilter == "hoàn thành" ? "active" : "")">
+                    <span class="tab-text">Hoàn thành</span>
+                    <span class="tab-count">@Model.Orders.Count(o => o.StatusName == "Hoàn thành")</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="orders-content">
+        @if (Model.Orders.Any())
+        {
+            <div class="orders-list">
+                @foreach (var order in Model.Orders)
+                {
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="order-info">
+                                <h3 class="order-code">
+                                    <i class="fas fa-hashtag"></i>
+                                    @order.OrderCode
+                                </h3>
+                                <p class="order-date">
+                                    <i class="far fa-calendar"></i>
+                                    @order.OrderDate.ToString("dd/MM/yyyy HH:mm")
+                                </p>
+                            </div>
+                            <div class="order-status">
+                                <span class="status-badge" style="background-color: @order.StatusColor; color: white;">
+                                    <i class="@order.StatusIcon"></i>
+                                    @order.StatusName
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="order-details">
+                            <div class="order-items-preview">
+                                <h4><i class="fas fa-utensils"></i> Sản phẩm đã đặt</h4>
+                                <div class="items-summary">
+                                    <span class="items-count">@order.TotalItems sản phẩm</span>
+                                    <span class="items-total">@order.TotalAmount.ToString("N0") ₫</span>
+                                </div>
+                            </div>
+
+                            <div class="order-delivery">
+                                <div class="delivery-info">
+                                    <i class="fas fa-truck"></i>
+                                    <span>@order.DeliveryMethodName</span>
+                                </div>
+                                @if (!string.IsNullOrEmpty(order.DeliveryAddress))
+                                {
+                                    <div class="delivery-address">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>@order.DeliveryAddress</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="order-actions">
+                            <a href="@Url.Action("OrderDetail", new { id = order.OrderID })" 
+                               class="btn btn-primary">
+                                <i class="fas fa-eye"></i>
+                                Xem chi tiết
+                            </a>
+                            
+                            @if (order.CanReorder)
+                            {
+                                <button class="btn btn-outline" onclick="reorderItems(@order.OrderID)">
+                                    <i class="fas fa-redo"></i>
+                                    Đặt lại
+                                </button>
+                            }
+                            
+                            @if (order.CanCancel)
+                            {
+                                <button class="btn btn-danger" onclick="cancelOrder(@order.OrderID)">
+                                    <i class="fas fa-times"></i>
+                                    Hủy đơn
+                                </button>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Pagination -->
+            @if (Model.TotalPages > 1)
+            {
+                <div class="pagination-container">
+                    <nav class="pagination-nav">
+                        <ul class="pagination">
+                            @if (Model.HasPreviousPage)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("Orders", new { page = Model.PageIndex - 1, status = Model.CurrentStatusFilter })">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            }
+
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                                    <a class="page-link" href="@Url.Action("Orders", new { page = i, status = Model.CurrentStatusFilter })">@i</a>
+                                </li>
+                            }
+
+                            @if (Model.HasNextPage)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("Orders", new { page = Model.PageIndex + 1, status = Model.CurrentStatusFilter })">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-receipt"></i>
+                </div>
+                <h3>Chưa có đơn hàng nào</h3>
+                <p>Bạn chưa có đơn hàng nào. Hãy khám phá menu và đặt hàng ngay!</p>
+                <a href="@Url.Action("MonNgonPhaiThu", "Menu")" class="btn btn-primary">
+                    <i class="fas fa-utensils"></i>
+                    Khám phá menu
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function reorderItems(orderId) {
+            if (confirm('Bạn có muốn đặt lại các sản phẩm trong đơn hàng này?')) {
+                // Implementation for reordering
+                window.location.href = '/Menu/MonNgonPhaiThu';
+            }
+        }
+
+        function cancelOrder(orderId) {
+            if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này?\n\nLưu ý: \n- Chỉ có thể hủy đơn hàng khi đang ở trạng thái "Chờ xác nhận"\n- Đơn hàng đã được xác nhận bởi cửa hàng không thể hủy\n- Đơn hàng đã hủy không thể khôi phục')) {
+                // Implementation for canceling order
+                fetch(`/Account/CancelOrder/${orderId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.message || 'Có lỗi xảy ra khi hủy đơn hàng.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi hủy đơn hàng.');
+                });
+            }
+        }
+    </script>
+} 

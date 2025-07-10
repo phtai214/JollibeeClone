@@ -1,0 +1,444 @@
+@model JollibeeClone.ViewModels.UserOrderListViewModel
+@{
+    ViewData["Title"] = "Đơn hàng của tôi";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/user-orders.css" asp-append-version="true" />
+    <style>
+        /* Override profile styles for orders */
+        .orders-content {
+            background: #f8f9fa; 
+            color: white;
+            padding: 40px 0;
+            min-height: calc(100vh - 140px);
+        }
+        
+        .orders-header {
+            margin-bottom: 30px;
+        }
+        
+        .orders-list {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .order-filters {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-tab {
+            padding: 8px 20px;
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 25px;
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-tab:hover {
+            background: #e31937;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .filter-tab.active {
+            background: #e31937;
+            color: white;
+            border-color: #e31937;
+        }
+        
+        .order-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .order-card:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .order-header {
+            background: #F8F9FAFF;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+        }
+        
+        .order-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .order-code {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #e31937;
+        }
+        
+        .order-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .order-status {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .order-body {
+            padding: 20px;
+        }
+        
+        .order-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .order-summary {
+            flex: 1;
+        }
+        
+        .summary-item {
+            margin-bottom: 8px;
+            color: #666;
+        }
+        
+        .summary-item i {
+            width: 20px;
+            text-align: center;
+            margin-right: 8px;
+            color: #e31937;
+        }
+        
+        .order-total {
+            text-align: right;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #e31937;
+        }
+        
+        .order-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+        
+        .btn-order-action {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .btn-view-detail {
+            background: #e31937;
+            color: white;
+            border: 1px solid #e31937;
+        }
+        
+        .btn-view-detail:hover {
+            background: #c71530;
+            color: white;
+        }
+        
+        .btn-cancel-order {
+            background: white;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+        
+        .btn-cancel-order:hover {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .empty-orders {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-orders i {
+            font-size: 4rem;
+            color: #e31937;
+            margin-bottom: 20px;
+        }
+        
+        .pagination-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+    </style>
+}
+
+<!-- Account Management Section -->
+<div class="account-management-container">
+    <div class="container-fluid px-4 py-5">
+        <div class="row">
+            <!-- Sidebar Menu -->
+            <div class="col-lg-3 col-md-4 mb-4">
+                <div class="account-sidebar">
+                    <div class="sidebar-header">
+                        <h5 class="sidebar-title">TÀI KHOẢN CỦA TÔI</h5>
+                    </div>
+                    <div class="sidebar-menu">
+                        <a href="@Url.Action("Profile", "Account")" class="sidebar-item">
+                            <span class="sidebar-text">QUẢN LÝ TÀI KHOẢN</span>
+                        </a>
+                        <a href="@Url.Action("ProfileOrders", "Account")" class="sidebar-item active">
+                            <span class="sidebar-text">ĐƠN HÀNG CỦA TÔI</span>
+                        </a>
+                        <a href="@Url.Action("DeliveryAddresses", "Account")" class="sidebar-item">
+                            <span class="sidebar-text">ĐỊA CHỈ GIAO HÀNG</span>
+                        </a>
+                        <a href="@Url.Action("Promotions", "Account")" class="sidebar-item">
+                            <span class="sidebar-text">DANH SÁCH ƯU ĐÃI</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9 col-md-8">
+                
+                    <!-- Orders Header -->
+                    <div class="orders-header">
+                        <div class="header-content">
+                            <h1> Đơn hàng của tôi</h1>
+                            <p class="subtitle">Theo dõi và quản lý các đơn hàng của bạn</p>
+                            <div class="cancel-policy-note">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Lưu ý: Bạn chỉ có thể hủy đơn hàng khi đang ở trạng thái "Chờ xác nhận"</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Orders List Container -->
+                    <div class="orders-list">
+                        <!-- Order Filters -->
+                        <div class="order-filters">
+                            <div class="filter-tabs">
+                                <a href="@Url.Action("ProfileOrders", "Account", new { status = "all" })" 
+                                   class="filter-tab @(Model.CurrentStatusFilter == "all" ? "active" : "")">
+                                    Tất cả
+                                    <span class="" style="color:#FFFFFFFF; font-weight: bold;">@Model.TotalOrdersCount</span>
+                                </a>
+                                <a href="@Url.Action("ProfileOrders", "Account", new { status = "chờ xác nhận" })" 
+                                   class="filter-tab @(Model.CurrentStatusFilter == "chờ xác nhận" ? "active" : "")">
+                                    Chờ xác nhận
+                                    <span class=""style="color:#393938FF; font-weight: bold;">@Model.Orders.Count(o => o.StatusName.ToLower().Contains("chờ xác nhận"))</span>
+                                </a>
+                                <a href="@Url.Action("ProfileOrders", "Account", new { status = "đang chuẩn bị" })" 
+                                   class="filter-tab @(Model.CurrentStatusFilter == "đang chuẩn bị" ? "active" : "")">
+                                    Đang chuẩn bị
+                                    <span class="" style="color:#F0820DFF; font-weight: bold;">@Model.Orders.Count(o => o.StatusName.ToLower().Contains("đang chuẩn bị"))</span>
+                                </a>
+                                <a href="@Url.Action("ProfileOrders", "Account", new { status = "hoàn thành" })" 
+                                   class="filter-tab @(Model.CurrentStatusFilter == "hoàn thành" ? "active" : "")">
+                                    Hoàn thành
+                                    <span class="" style="color:#1FB90EFF; font-weight: bold;">@Model.Orders.Count(o => o.StatusName.ToLower().Contains("hoàn thành"))</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Hidden CSRF Token for AJAX requests -->
+                        @Html.AntiForgeryToken()
+                        
+                        <!-- Display Messages -->
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+
+                        <!-- Orders List -->
+                        @if (Model.HasOrders)
+                        {
+                            @foreach (var order in Model.Orders)
+                            {
+                                <div class="order-card">
+                                    <!-- Order Header -->
+                                    <div class="order-header">
+                                        <div class="order-info">
+                                            <span class="order-code"># @order.OrderCode</span>
+                                            <span class="order-date">
+                                                <i class=""></i>
+                                                @order.FormattedOrderDate
+                                            </span>
+                                        </div>
+                                        <span class="order-status" style="background-color: @order.StatusColor; color: white;">
+                                            <i class="@order.StatusIcon me-1"></i>
+                                            @order.StatusName
+                                        </span>
+                                    </div>
+
+                                    <!-- Order Body -->
+                                    <div class="order-body">
+                                        <div class="order-details">
+                                            <div class="order-summary">
+                                                <div class="summary-item">
+                                                    <i class="fas fa-utensils"></i>
+                                                    <strong>Sản phẩm đã đặt:</strong> @order.TotalItems sản phẩm
+                                                </div>
+                                                <div class="summary-item">
+                                                    <i class="@(order.DeliveryMethodName.Contains("giao hàng") ? "fas fa-truck" : "fas fa-store")"></i>
+                                                    <strong>@order.DeliveryMethodName:</strong> @order.DeliveryAddress
+                                                </div>
+                                                <div class="summary-item">
+                                                    <i class="fas fa-credit-card"></i>
+                                                    <strong>Thanh toán:</strong> @order.PaymentMethodName
+                                                </div>
+                                            </div>
+                                            <div class="order-total">
+                                                @order.FormattedTotalAmount
+                                            </div>
+                                        </div>
+
+                                        <!-- Order Actions -->
+                                        <div class="order-actions">
+                                            <a href="@Url.Action("OrderDetail", "Account", new { id = order.OrderID })" 
+                                               class="btn btn-order-action btn-view-detail">
+                                                <i class="fas fa-eye me-1"></i>
+                                                Xem chi tiết
+                                            </a>
+                                            @if (order.CanCancel)
+                                            {
+                                                <button type="button" 
+                                                        class="btn btn-order-action btn-cancel-order" 
+                                                        onclick="cancelOrder(@order.OrderID)">
+                                                    <i class="fas fa-times me-1"></i>
+                                                    Hủy đơn
+                                                </button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            <!-- Pagination -->
+                            @if (Model.TotalPages > 1)
+                            {
+                                <div class="pagination-wrapper">
+                                    <nav aria-label="Pagination">
+                                        <ul class="pagination">
+                                            @if (Model.HasPreviousPage)
+                                            {
+                                                <li class="page-item">
+                                                    <a class="page-link" href="@Url.Action("ProfileOrders", "Account", new { status = Model.StatusFilter, page = Model.CurrentPage - 1 })">
+                                                        <i class="fas fa-chevron-left"></i>
+                                                    </a>
+                                                </li>
+                                            }
+
+                                            @for (int i = 1; i <= Model.TotalPages; i++)
+                                            {
+                                                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                                    <a class="page-link" href="@Url.Action("ProfileOrders", "Account", new { status = Model.StatusFilter, page = i })">@i</a>
+                                                </li>
+                                            }
+
+                                            @if (Model.HasNextPage)
+                                            {
+                                                <li class="page-item">
+                                                    <a class="page-link" href="@Url.Action("ProfileOrders", "Account", new { status = Model.StatusFilter, page = Model.CurrentPage + 1 })">
+                                                        <i class="fas fa-chevron-right"></i>
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </nav>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <!-- Empty State -->
+                            <div class="empty-orders">
+                                <i class="fas fa-receipt"></i>
+                                <h4>Chưa có đơn hàng nào</h4>
+                                <p>Bạn chưa có đơn hàng nào. Hãy khám phá thực đơn ngon của chúng tôi!</p>
+                                <a href="@Url.Action("Index", "Home")" class="btn btn-primary mt-3">
+                                    <i class="fas fa-utensils me-2"></i>
+                                    Khám phá thực đơn
+                                </a>
+                            </div>
+                        }
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Cancel order function
+        function cancelOrder(orderId) {
+            if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này?\n\nLưu ý: \n- Chỉ có thể hủy đơn hàng khi đang ở trạng thái "Chờ xác nhận"\n- Đơn hàng đã được xác nhận bởi cửa hàng không thể hủy\n- Đơn hàng đã hủy không thể khôi phục')) {
+                fetch('@Url.Action("CancelOrder", "Account")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                    },
+                    body: JSON.stringify({ orderId: orderId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        toastr.success(data.message || 'Đơn hàng đã được hủy thành công!');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        toastr.error(data.message || 'Có lỗi xảy ra khi hủy đơn hàng.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    toastr.error('Có lỗi xảy ra khi hủy đơn hàng.');
+                });
+            }
+        }
+
+        // Auto dismiss alerts
+        setTimeout(function() {
+            $('.alert').alert('close');
+        }, 5000);
+    </script>
+} 

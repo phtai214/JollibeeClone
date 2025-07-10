@@ -1,0 +1,330 @@
+@model UserOrderDetailViewModel
+@{
+    ViewData["Title"] = $"Chi tiết đơn hàng #{Model.OrderCode}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/css/order-detail.css" rel="stylesheet" />
+
+<div class="order-detail-container">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="@Url.Action("Orders")"><i class="fas fa-arrow-left"></i> Quay lại danh sách đơn hàng</a>
+    </div>
+
+    <!-- Order Header -->
+    <div class="order-header">
+        <div class="header-info">
+            <h1>Đơn hàng #@Model.OrderCode</h1>
+            <p class="order-date">
+                <i class="far fa-calendar"></i>
+                Đặt hàng lúc @Model.OrderDate.ToString("HH:mm dd/MM/yyyy")
+            </p>
+        </div>
+        <div class="header-status">
+            <span class="status-badge large" style="background-color: @Model.StatusColor; color: white;">
+                <i class="@Model.StatusIcon"></i>
+                @Model.StatusName
+            </span>
+        </div>
+    </div>
+
+    <div class="order-content">
+        <div class="main-content">
+            <!-- Order Timeline -->
+            <div class="order-section">
+                <h2> Trạng thái đơn hàng</h2>
+                <div class="timeline">
+                    @foreach (var trackingEvent in Model.TrackingEvents.OrderBy(e => e.EventDate))
+                    {
+                        <div class="timeline-item @(trackingEvent.IsCompleted ? "completed" : "pending")">
+                            <div class="timeline-marker" style="border-color: @trackingEvent.EventColor;">
+                                <i class="@trackingEvent.EventIcon" style="color: @trackingEvent.EventColor;"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>@trackingEvent.EventTitle</h4>
+                                <p>@trackingEvent.EventDescription</p>
+                                @if (trackingEvent.EventDate != DateTime.MinValue)
+                                {
+                                    <time>@trackingEvent.EventDate.ToString("HH:mm dd/MM/yyyy")</time>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Order Items -->
+            <div class="order-section">
+                <h2><i class="fas fa-utensils"></i> Sản phẩm đã đặt</h2>
+                <div class="order-items">
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <div class="order-item">
+                            <div class="item-image">
+                                @if (!string.IsNullOrEmpty(item.ProductImage))
+                                {
+                                    <img src="@item.ProductImage" alt="@item.ProductName" />
+                                }
+                                else
+                                {
+                                    <div class="no-image">
+                                        <i class="fas fa-utensils"></i>
+                                    </div>
+                                }
+                            </div>
+                            <div class="item-details">
+                                <h3>@item.ProductName</h3>
+                                
+                                @if (item.ConfigurationOptions.Any())
+                                {
+                                    <div class="item-configurations">
+                                        <h4>Tùy chọn:</h4>
+                                        @foreach (var config in item.ConfigurationOptions.GroupBy(c => c.GroupName))
+                                        {
+                                            <div class="config-group">
+                                                <span class="config-group-name">@config.Key:</span>
+                                                <ul class="config-options">
+                                                    @foreach (var option in config)
+                                                    {
+                                                        <li class="config-option">
+                                                            <span class="option-name">@option.OptionName</span>
+                                                            @if (!string.IsNullOrEmpty(option.VariantName))
+                                                            {
+                                                                <span class="variant-info">(@option.VariantName)</span>
+                                                            }
+                                                            @if (option.PriceAdjustment > 0)
+                                                            {
+                                                                <span class="price-adjustment">+@option.PriceAdjustment.ToString("N0")₫</span>
+                                                            }
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                
+                                <div class="item-pricing">
+                                    <span class="unit-price">@item.UnitPrice.ToString("N0")₫ x @item.Quantity</span>
+                                    <span class="subtotal">@item.Subtotal.ToString("N0")₫</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Order Actions -->
+            @if (Model.CanCancel || Model.CanReorder)
+            {
+                <div class="order-section">
+                    <h2> Thao tác</h2>
+                    <div class="order-actions">
+                        @if (Model.CanReorder)
+                        {
+                            <button class="btn btn-primary" onclick="reorderItems(@Model.OrderID)">
+                                <i class="fas fa-redo"></i>
+                                Đặt lại đơn hàng này
+                            </button>
+                        }
+                        
+                        @if (Model.CanCancel)
+                        {
+                            <button class="btn btn-danger" onclick="cancelOrder(@Model.OrderID)">
+                                <i class="fas fa-times"></i>
+                                Hủy đơn hàng
+                            </button>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Customer Information -->
+            <div class="info-card">
+                <h3><i class="fas fa-user"></i> Thông tin khách hàng</h3>
+                <div class="info-content">
+                    <div class="info-row">
+                        <label>Họ tên:</label>
+                        <span>@Model.CustomerFullName</span>
+                    </div>
+                    <div class="info-row">
+                        <label>Số điện thoại:</label>
+                        <span>@Model.CustomerPhoneNumber</span>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.CustomerEmail))
+                    {
+                        <div class="info-row">
+                            <label>Email:</label>
+                            <span>@Model.CustomerEmail</span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Delivery Information -->
+            <div class="info-card">
+                @if (!string.IsNullOrEmpty(Model.StoreName))
+                {
+                    <!-- Pickup Order -->
+                    <h3><i class="fas fa-store"></i> Thông tin nhận hàng</h3>
+                    <div class="info-content">
+                        <div class="info-row">
+                            <label>Phương thức:</label>
+                            <span>@Model.DeliveryMethodName</span>
+                        </div>
+                        
+                        <div class="info-row">
+                            <label>Cửa hàng:</label>
+                            <span>@Model.StoreName</span>
+                        </div>
+                        
+                        @if (!string.IsNullOrEmpty(Model.StoreAddress))
+                        {
+                            <div class="info-row">
+                                <label>Địa chỉ cửa hàng:</label>
+                                <span>@Model.StoreAddress</span>
+                            </div>
+                        }
+                        
+                        @if (Model.PickupDate.HasValue)
+                        {
+                            <div class="info-row">
+                                <label>Ngày nhận:</label>
+                                <span>@Model.PickupDate.Value.ToString("dd/MM/yyyy")</span>
+                            </div>
+                        }
+                        
+                        @if (Model.PickupTimeSlot.HasValue)
+                        {
+                            <div class="info-row">
+                                <label>Khung giờ:</label>
+                                <span>@Model.PickupTimeSlot.Value.ToString(@"hh\:mm")</span>
+                            </div>
+                        }
+                    </div>
+                }
+                else if (!string.IsNullOrEmpty(Model.DeliveryAddress))
+                {
+                    <!-- Delivery Order -->
+                    <h3><i class="fas fa-shipping-fast"></i> Thông tin giao hàng</h3>
+                    <div class="info-content">
+                        <div class="info-row">
+                            <label>Phương thức:</label>
+                            <span>@Model.DeliveryMethodName</span>
+                        </div>
+                        
+                        <div class="info-row">
+                            <label>Địa chỉ giao hàng:</label>
+                            <span>@Model.DeliveryAddress</span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <!-- Fallback -->
+                    <h3><i class="fas fa-shipping-fast"></i> Thông tin vận chuyển</h3>
+                    <div class="info-content">
+                        <div class="info-row">
+                            <label>Phương thức:</label>
+                            <span>@Model.DeliveryMethodName</span>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Payment Information -->
+            <div class="info-card">
+                <h3> Thanh toán</h3>
+                <div class="info-content">
+                    <div class="info-row">
+                        <label>Phương thức:</label>
+                        <span>@Model.PaymentMethodName</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="info-card">
+                <h3> Tổng cộng</h3>
+                <div class="order-summary">
+                    <div class="summary-row">
+                        <span>Tạm tính:</span>
+                        <span>@Model.SubtotalAmount.ToString("N0")₫</span>
+                    </div>
+                    
+                    @if (Model.ShippingFee > 0)
+                    {
+                        <div class="summary-row">
+                            <span>Phí giao hàng:</span>
+                            <span>@Model.ShippingFee.ToString("N0")₫</span>
+                        </div>
+                    }
+                    
+                    @if (Model.DiscountAmount > 0)
+                    {
+                        <div class="summary-row discount">
+                            <span>Giảm giá:</span>
+                            <span>-@Model.DiscountAmount.ToString("N0")₫</span>
+                        </div>
+                    }
+                    
+                    <div class="summary-row total">
+                        <span>Tổng cộng:</span>
+                        <span>@Model.TotalAmount.ToString("N0")₫</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes -->
+            @if (!string.IsNullOrEmpty(Model.NotesByCustomer))
+            {
+                <div class="info-card">
+                    <h3><i class="fas fa-sticky-note"></i> Ghi chú</h3>
+                    <div class="info-content">
+                        <p>@Model.NotesByCustomer</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function reorderItems(orderId) {
+            if (confirm('Bạn có muốn đặt lại các sản phẩm trong đơn hàng này?')) {
+                // Implementation for reordering
+                window.location.href = '/Menu/MonNgonPhaiThu';
+            }
+        }
+
+        function cancelOrder(orderId) {
+            if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này?\n\nLưu ý: \n- Chỉ có thể hủy đơn hàng khi đang ở trạng thái "Chờ xác nhận"\n- Đơn hàng đã được xác nhận bởi cửa hàng không thể hủy\n- Đơn hàng đã hủy không thể khôi phục')) {
+                // Implementation for canceling order
+                fetch(`/Account/CancelOrder/${orderId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = '@Url.Action("Orders")';
+                    } else {
+                        alert(data.message || 'Có lỗi xảy ra khi hủy đơn hàng.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi hủy đơn hàng.');
+                });
+            }
+        }
+    </script>
+} 

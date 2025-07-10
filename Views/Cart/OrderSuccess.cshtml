@@ -1,32 +1,224 @@
+@model JollibeeClone.ViewModels.OrderSuccessViewModel
 @{
     ViewData["Title"] = "Đặt hàng thành công";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container text-center" style="padding: 60px 20px;">
-    <div class="success-icon" style="font-size: 72px; color: #28a745; margin-bottom: 30px;">
-        <i class="fas fa-check-circle"></i>
+<link rel="stylesheet" href="~/css/order-success.css" />
+
+<div class="order-success-container">
+    <!-- Success Header -->
+    <div class="success-header">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1 class="success-title">Đặt hàng thành công!</h1>
+        <p class="success-subtitle">
+            Cảm ơn bạn đã đặt hàng tại Jollibee. Đơn hàng của bạn đã được ghi nhận thành công.
+        </p>
     </div>
-    
-    <h1 style="color: #28a745; margin-bottom: 20px;">Đặt hàng thành công!</h1>
-    
-    <p style="font-size: 18px; color: #666; margin-bottom: 30px;">
-        Cảm ơn bạn đã đặt hàng. Chúng tôi sẽ liên hệ với bạn sớm nhất để xác nhận đơn hàng.
-    </p>
-    
-    <div style="margin: 40px 0;">
-        <a href="/" class="btn btn-primary" style="margin-right: 15px; padding: 12px 30px;">
+
+    <!-- Order Information Card -->
+    <div class="order-info-card">
+        <div class="card-header">
+            <h2 class="card-title">THÔNG TIN ĐƠN HÀNG</h2>
+            <span class="order-code">#@Model.Order.OrderCode</span>
+        </div>
+        
+        <div class="card-content">
+            <!-- Order Details -->
+            <div class="order-details-section">
+                <div class="detail-row">
+                    <span class="detail-label">Mã đơn hàng:</span>
+                    <span class="detail-value order-code-highlight">#@Model.Order.OrderCode</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Ngày đặt hàng:</span>
+                    <span class="detail-value">@Model.Order.OrderDate.ToString("dd/MM/yyyy HH:mm")</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Trạng thái:</span>
+                    <span class="detail-value status-pending">
+                        <i class="fas fa-clock"></i>
+                        @Model.Order.OrderStatus.StatusName
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Phương thức thanh toán:</span>
+                    <span class="detail-value">@Model.Order.PaymentMethod.MethodName</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Phương thức vận chuyển:</span>
+                    <span class="detail-value">
+                        <i class="@(Model.IsDelivery ? "" : "")"></i>
+                        @Model.Order.DeliveryMethod?.MethodName
+                    </span>
+                </div>
+                
+                @if (Model.Order.DeliveryMethod?.MethodName?.ToLower().Contains("giao hàng") == true)
+                {
+                    <!-- Chỉ hiển thị thông tin giao hàng -->
+                    <div class="detail-row">
+                        <span class="detail-label">Địa chỉ giao hàng:</span>
+                        <span class="detail-value">@Model.Order.UserAddress?.Address</span>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.EstimatedDeliveryTime))
+                    {
+                        <div class="detail-row">
+                            <span class="detail-label">Thời gian giao hàng dự kiến:</span>
+                            <span class="detail-value estimated-time">@Model.EstimatedDeliveryTime</span>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <!-- Chỉ hiển thị thông tin nhận tại cửa hàng -->
+                    @if (!string.IsNullOrEmpty(Model.Order.Store?.StoreName))
+                    {
+                        <div class="detail-row">
+                            <span class="detail-label">Cửa hàng nhận hàng:</span>
+                            <span class="detail-value">@Model.Order.Store.StoreName</span>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.EstimatedDeliveryTime))
+                    {
+                        <div class="detail-row">
+                            <span class="detail-label">Thời gian nhận hàng:</span>
+                            <span class="detail-value estimated-time">@Model.EstimatedDeliveryTime</span>
+                        </div>
+                    }
+                }
+            </div>
+
+            <!-- Customer Information -->
+            <div class="customer-info-section">
+                <h3 class="section-title">THÔNG TIN KHÁCH HÀNG</h3>
+                <div class="customer-details">
+                    <p><strong>Họ tên:</strong> @Model.Order.CustomerFullName</p>
+                    <p><strong>Số điện thoại:</strong> @Model.Order.CustomerPhoneNumber</p>
+                    <p><strong>Email:</strong> @Model.Order.CustomerEmail</p>
+                </div>
+            </div>
+
+            <!-- Order Items -->
+            <div class="order-items-section">
+                <h3 class="section-title">CHI TIẾT ĐƠN HÀNG</h3>
+                <div class="order-items-list">
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <div class="order-item">
+                            <div class="item-image">
+                                <img src="@item.ProductImage" alt="@item.ProductName" />
+                            </div>
+                            <div class="item-details">
+                                <h4 class="item-name">@item.ProductName.ToUpper()</h4>
+                                
+                                @if (item.HasConfiguration)
+                                {
+                                    <div class="item-configuration">
+                                        @foreach (var config in item.ConfigurationOptions)
+                                        {
+                                            <div class="config-item">
+                                                <span class="config-quantity">@config.Quantity x</span>
+                                                <span class="config-name">@config.OptionName</span>
+                                                @if (!string.IsNullOrEmpty(config.VariantName))
+                                                {
+                                                    <span class="config-variant">@config.VariantName</span>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                
+                                <div class="item-quantity-price">
+                                    <span class="quantity">Số lượng: @item.Quantity</span>
+                                    <span class="price">@item.FormattedSubtotal</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary-section">
+                <div class="summary-row">
+                    <span class="summary-label">Tạm tính:</span>
+                    <span class="summary-value">@Model.Order.SubtotalAmount.ToString("N0") đ</span>
+                </div>
+                
+                @if (Model.Order.ShippingFee > 0)
+                {
+                    <div class="summary-row">
+                        <span class="summary-label">Phí giao hàng:</span>
+                        <span class="summary-value">@Model.Order.ShippingFee.ToString("N0") đ</span>
+                    </div>
+                }
+                
+                @if (Model.Order.DiscountAmount > 0)
+                {
+                    <div class="summary-row discount">
+                        <span class="summary-label">Giảm giá:</span>
+                        <span class="summary-value">-@Model.Order.DiscountAmount.ToString("N0") đ</span>
+                    </div>
+                }
+                
+                <div class="summary-row total">
+                    <span class="summary-label">Tổng cộng:</span>
+                    <span class="summary-value">@Model.Order.TotalAmount.ToString("N0") đ</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <a href="/" class="btn btn-primary">
+            <i class="fas fa-shopping-bag"></i>
             Tiếp tục mua sắm
         </a>
-        <a href="/Account/Profile" class="btn btn-outline-secondary" style="padding: 12px 30px;">
+        <a href="/Account/Orders" class="btn btn-secondary">
+            <i class=""></i>
             Xem đơn hàng
         </a>
     </div>
-    
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success" style="margin-top: 20px;">
-            @TempData["SuccessMessage"]
+
+    <!-- Support Information -->
+    <div class="support-info">
+        <div class="support-item">
+            <i class="fas fa-phone-alt"></i>
+            <div class="support-content">
+                <h4>Hotline hỗ trợ</h4>
+                <p>@Model.CustomerSupportPhone</p>
+            </div>
         </div>
-    }
-</div> 
+        <div class="support-item">
+            <i class="fas fa-clock"></i>
+            <div class="support-content">
+                <h4>Thời gian hỗ trợ</h4>
+                <p>8:00 - 22:00 (Tất cả các ngày)</p>
+            </div>
+        </div>
+        <div class="support-item">
+            <i class="fas fa-info-circle"></i>
+            <div class="support-content">
+                <h4>Lưu ý</h4>
+                <p>Vui lòng giữ mã đơn hàng để tra cứu</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Print order functionality
+        function printOrder() {
+            window.print();
+        }
+        
+        // Auto-redirect after 5 minutes (optional)
+        // setTimeout(function() {
+        //     window.location.href = '/';
+        // }, 300000);
+    </script>
+} 
