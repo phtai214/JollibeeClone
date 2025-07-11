@@ -2226,8 +2226,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>bza1ddpeit</Fingerprint>
-      <Integrity>KYGhcwgQhQbRcMzvSPG1nlvpf1D6YrW/EahKuhrq98g=</Integrity>
+      <Fingerprint>f7vf11t0dk</Fingerprint>
+      <Integrity>u2CRS71GmwxDCRULXe4Aj7M6N/NT/Ducn7aexEhFP/o=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\checkout.css'))</OriginalItemSpec>
@@ -2244,11 +2244,29 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>5hsujr5c7t</Fingerprint>
-      <Integrity>qXqtj5FwP64js+ijcJ/D3IGZ3NWAxf0AkSWd/DuuhJM=</Integrity>
+      <Fingerprint>j0bofyf8ae</Fingerprint>
+      <Integrity>PYt+tpIDbqDwVkHJuaDp+uIocmdGgEgYD0kRWklkt8I=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\checkout-shipping.css'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\dashboard-card-links.css'))">
+      <SourceType>Package</SourceType>
+      <SourceId>JollibeeClone</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/JollibeeClone</BasePath>
+      <RelativePath>css/dashboard-card-links.css</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>3klo5vv3wx</Fingerprint>
+      <Integrity>3cuSa1Rm0MiVlnggkqXBlfOYQnA+BD6ZRE4V5pnz+yo=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\dashboard-card-links.css'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\delivery-address.css'))">
       <SourceType>Package</SourceType>
@@ -3072,8 +3090,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>aeqwi42rg5</Fingerprint>
-      <Integrity>XvAdFLGCh57TqpKyLTk5u5KW1qf4FJV7U8iMlDarIj0=</Integrity>
+      <Fingerprint>lbgw9pl4bo</Fingerprint>
+      <Integrity>X+jnT4xo3+r03x++uEwD/C/O74qm6JQnhrYTV0/qopA=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\checkout-shipping.js'))</OriginalItemSpec>

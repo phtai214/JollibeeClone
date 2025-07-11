@@ -50,10 +50,10 @@
                     <i class="fas fa-money-bill-wave"></i>
                 </div>
             </div>
-            <h2 class="stat-card-value">70,000,000 VNĐ</h2>
-            <div class="stat-card-trend">
+            <h2 class="stat-card-value" id="totalRevenue">0 VNĐ</h2>
+            <div class="stat-card-trend" id="revenueTrend">
                 <i class="fas fa-arrow-up"></i>
-                <span>+12.5% so với tuần trước</span>
+                <span>Đang tải...</span>
             </div>
         </div>
 
@@ -64,10 +64,10 @@
                     <i class="fas fa-check-circle"></i>
                 </div>
             </div>
-            <h2 class="stat-card-value">65,000,000 VNĐ</h2>
-            <div class="stat-card-trend">
+            <h2 class="stat-card-value" id="paidRevenue">0 VNĐ</h2>
+            <div class="stat-card-trend" id="paidTrend">
                 <i class="fas fa-arrow-up"></i>
-                <span>+8.3% so với tuần trước</span>
+                <span>Đang tải...</span>
             </div>
         </div>
 
@@ -78,10 +78,10 @@
                     <i class="fas fa-shopping-cart"></i>
                 </div>
             </div>
-            <h2 class="stat-card-value">120</h2>
-            <div class="stat-card-trend">
+            <h2 class="stat-card-value" id="totalOrders">0</h2>
+            <div class="stat-card-trend" id="ordersTrend">
                 <i class="fas fa-arrow-up"></i>
-                <span>+15.2% so với tuần trước</span>
+                <span>Đang tải...</span>
             </div>
         </div>
 
@@ -92,10 +92,10 @@
                     <i class="fas fa-credit-card"></i>
                 </div>
             </div>
-            <h2 class="stat-card-value">108</h2>
-            <div class="stat-card-trend">
+            <h2 class="stat-card-value" id="paidOrders">0</h2>
+            <div class="stat-card-trend" id="paidOrdersTrend">
                 <i class="fas fa-arrow-up"></i>
-                <span>+10.8% so với tuần trước</span>
+                <span>Đang tải...</span>
             </div>
         </div>
     </div>
@@ -110,7 +110,7 @@
                         <i class="fas fa-chart-bar text-primary"></i>
                         Doanh thu theo ngày
                     </h3>
-                    <p class="chart-card-subtitle">Biểu đồ doanh thu và sản phẩm bán chạy trong tháng</p>
+                    <p class="chart-card-subtitle">Biểu đồ doanh thu và sản phẩm bán chạy trong khoảng thời gian</p>
                 </div>
                 <div class="chart-actions">
                     <button class="chart-btn active" data-type="revenue">Doanh thu</button>
@@ -143,166 +143,264 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Fake data cho biểu đồ
-        const revenueData = {
-            labels: ['01/12', '02/12', '03/12', '04/12', '05/12', '06/12', '07/12', '08/12', '09/12', '10/12', '11/12', '12/12', '13/12', '14/12', '15/12'],
-            datasets: [{
-                label: 'Doanh thu (VNĐ)',
-                data: [2100000, 1900000, 2500000, 2200000, 2800000, 2400000, 2600000, 2300000, 2700000, 2900000, 2450000, 2650000, 2850000, 2750000, 3100000],
-                borderColor: '#DC143C',
-                backgroundColor: 'rgba(220, 20, 60, 0.1)',
-                borderWidth: 3,
-                fill: true,
-                tension: 0.4,
-                pointBackgroundColor: '#DC143C',
-                pointBorderColor: '#fff',
-                pointBorderWidth: 2,
-                pointRadius: 6,
-                pointHoverRadius: 8
-            }]
-        };
+        let currentChart;
+        let orderStatusChart;
+        let currentDateRange = 'week';
+        let bestSellingProducts = [];
 
-        const orderData = {
-            labels: ['01/12', '02/12', '03/12', '04/12', '05/12', '06/12', '07/12', '08/12', '09/12', '10/12', '11/12', '12/12', '13/12', '14/12', '15/12'],
-            datasets: [{
-                label: 'Số đơn hàng',
-                data: [7, 6, 9, 8, 11, 9, 10, 8, 10, 12, 9, 10, 11, 10, 13],
-                borderColor: '#007bff',
-                backgroundColor: 'rgba(0, 123, 255, 0.1)',
-                borderWidth: 3,
-                fill: true,
-                tension: 0.4,
-                pointBackgroundColor: '#007bff',
-                pointBorderColor: '#fff',
-                pointBorderWidth: 2,
-                pointRadius: 6,
-                pointHoverRadius: 8
-            }]
-        };
-
-        // Fake data cho sản phẩm bán chạy
-        const bestSellingProducts = [
-            'Burger Tôm', 'Gà Rán', 'Gà Sốt Cay', 'Mì Ý', 'Burger Bò', 
-            'Burger Gà', 'Cơm Gà', 'Salad', 'Nước ngọt', 'Kem Vani',
-            'Khoai tây chiên', 'Kem Socola', 'Súp bí đỏ', 'Nước Ép Xoài Đào', 'Combo Gà Cay'
-        ];
-        
-        const productSales = [45, 38, 42, 35, 40, 33, 37, 28, 50, 25, 48, 30, 22, 44, 36];
-
-        // Biểu đồ doanh thu
-        const ctx1 = document.getElementById('revenueChart').getContext('2d');
-        let currentChart = new Chart(ctx1, {
-            type: 'line',
-            data: revenueData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: {
-                    intersect: false,
-                    mode: 'index'
-                },
-                plugins: {
-                    tooltip: {
-                        backgroundColor: 'white',
-                        titleColor: 'red',
-                        bodyColor: '#4E4D4DFF',
-                        borderColor: '#DC143C',
-                        borderWidth: 1,
-                        cornerRadius: 8,
-                        displayColors: false,
-                        callbacks: {
-                            label: function(context) {
-                                const value = context.parsed.y;
-                                const productIndex = context.dataIndex;
-                                const product = bestSellingProducts[productIndex];
-                                const sales = productSales[productIndex];
-                                
-                                return [
-                                    `Doanh thu: ${value.toLocaleString('vi-VN')} VNĐ`,
-                                    `Sản phẩm bán chạy: ${product}`,
-                                    `Đã bán: ${sales} phần`
-                                ];
-                            }
-                        }
-                    },
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            color: '#6c757d'
-                        }
-                    },
-                    y: {
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.05)'
-                        },
-                        ticks: {
-                            color: '#6c757d',
-                            callback: function(value) {
-                                return (value / 1000000).toFixed(1) + 'M';
-                            }
-                        }
-                    }
-                }
-            }
+        // Khởi tạo trang
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStatisticsData();
         });
 
-        // Biểu đồ trạng thái đơn hàng
-        const ctx2 = document.getElementById('orderStatusChart').getContext('2d');
-        new Chart(ctx2, {
-            type: 'doughnut',
-            data: {
-                labels: ['Chờ xác nhận','Đã xác nhận','Đang chuẩn bị','Đang giao','Đã giao', 'Đã hủy'],
-                datasets: [{
-                    data: [40, 30, 20, 20, 25, 10],
-                    backgroundColor: [
-                        '#E0E0E0FF',
-                        '#FFCA2BFF', 
-                        '#15ACC3FF',
-                        '#AFFF2EFF',
-                        '#2AC24DFF',
-                        '#dc3545'
-                    ],
-                    borderWidth: 0,
-                    hoverOffset: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    tooltip: {
-                        backgroundColor: 'white',
-                        titleColor: 'red',
-                        bodyColor: '#4E4D4DFF',
+        // Hàm tải dữ liệu thống kê tổng quan
+        async function loadStatisticsOverview(dateRange = 'week') {
+            try {
+                const response = await fetch(`@Url.Action("GetStatisticsOverview", "Statistics")?dateRange=${dateRange}`);
+                const data = await response.json();
+
+                // Cập nhật các số liệu tổng quan
+                document.getElementById('totalRevenue').textContent = data.totalRevenue + ' VNĐ';
+                document.getElementById('paidRevenue').textContent = data.paidRevenue + ' VNĐ';
+                document.getElementById('totalOrders').textContent = data.totalOrders;
+                document.getElementById('paidOrders').textContent = data.paidOrders;
+
+                // Cập nhật trend
+                updateTrend('revenueTrend', data.revenueChange);
+                updateTrend('ordersTrend', data.ordersChange);
+                updateTrend('paidTrend', data.paidRevenueChange); // Dùng trend riêng cho đã thanh toán
+                updateTrend('paidOrdersTrend', data.paidOrdersChange); // Dùng trend riêng cho đơn đã thanh toán
+
+            } catch (error) {
+                console.error('Lỗi khi tải dữ liệu tổng quan:', error);
+            }
+        }
+
+        // Hàm cập nhật trend
+        function updateTrend(elementId, changePercent) {
+            const element = document.getElementById(elementId);
+            const icon = element.querySelector('i');
+            const span = element.querySelector('span');
+            
+            if (changePercent > 0) {
+                icon.className = 'fas fa-arrow-up';
+                span.textContent = `+${changePercent}% so với kỳ trước`;
+                element.style.color = '#28a745';
+            } else if (changePercent < 0) {
+                icon.className = 'fas fa-arrow-down';
+                span.textContent = `${changePercent}% so với kỳ trước`;
+                element.style.color = '#dc3545';
+            } else {
+                icon.className = 'fas fa-minus';
+                span.textContent = 'Không thay đổi';
+                element.style.color = '#6c757d';
+            }
+        }
+
+        // Hàm tải dữ liệu biểu đồ doanh thu
+        async function loadRevenueChartData(dateRange = 'week') {
+            try {
+                const response = await fetch(`@Url.Action("GetRevenueChartData", "Statistics")?dateRange=${dateRange}`);
+                const data = await response.json();
+
+                const revenueData = {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Doanh thu (VNĐ)',
+                        data: data.revenueData,
                         borderColor: '#DC143C',
-                        borderWidth: 1,
-                        cornerRadius: 8,
-                        callbacks: {
-                            label: function(context) {
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = ((context.parsed / total) * 100).toFixed(1);
-                                return `${context.label}: ${context.parsed} đơn (${percentage}%)`;
+                        backgroundColor: 'rgba(220, 20, 60, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#DC143C',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                };
+
+                const orderData = {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Số đơn hàng',
+                        data: data.orderData,
+                        borderColor: '#007bff',
+                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#007bff',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                };
+
+                // Tạo biểu đồ
+                const ctx1 = document.getElementById('revenueChart').getContext('2d');
+                if (currentChart) {
+                    currentChart.destroy();
+                }
+
+                currentChart = new Chart(ctx1, {
+                    type: 'line',
+                    data: revenueData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        },
+                        plugins: {
+                            tooltip: {
+                                backgroundColor: 'white',
+                                titleColor: 'red',
+                                bodyColor: '#4E4D4DFF',
+                                borderColor: '#DC143C',
+                                borderWidth: 1,
+                                cornerRadius: 8,
+                                displayColors: false,
+                                callbacks: {
+                                    label: function(context) {
+                                        const dataIndex = context.dataIndex;
+                                        const value = context.parsed.y;
+                                        
+                                        if (data.bestSellingProducts && data.bestSellingProducts[dataIndex]) {
+                                            const bestSellingData = data.bestSellingProducts[dataIndex];
+                                            return [
+                                                `Doanh thu: ${value.toLocaleString('vi-VN')} VNĐ`,
+                                                `Sản phẩm bán chạy: ${bestSellingData.bestProduct}`,
+                                                `Đã bán: ${bestSellingData.bestProductSold} phần`
+                                            ];
+                                        } else {
+                                            return `Doanh thu: ${value.toLocaleString('vi-VN')} VNĐ`;
+                                        }
+                                    }
+                                }
+                            },
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#6c757d'
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.05)'
+                                },
+                                ticks: {
+                                    color: '#6c757d',
+                                    callback: function(value) {
+                                        return (value / 1000000).toFixed(1) + 'M';
+                                    }
+                                }
                             }
                         }
-                    },
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            usePointStyle: true,
-                            padding: 20,
-                            color: '#212529'
-                        }
                     }
-                },
-                cutout: '60%'
+                });
+
+                // Lưu data để chuyển đổi
+                currentChart.revenueData = revenueData;
+                currentChart.orderData = orderData;
+                currentChart.bestSellingData = data.bestSellingProducts;
+
+            } catch (error) {
+                console.error('Lỗi khi tải dữ liệu biểu đồ:', error);
             }
+        }
+
+        // Hàm tải dữ liệu biểu đồ trạng thái đơn hàng
+        async function loadOrderStatusChart(dateRange = 'week') {
+            try {
+                const response = await fetch(`@Url.Action("GetOrderStatusData", "Statistics")?dateRange=${dateRange}`);
+                const data = await response.json();
+
+                const ctx2 = document.getElementById('orderStatusChart').getContext('2d');
+                if (orderStatusChart) {
+                    orderStatusChart.destroy();
+                }
+
+                orderStatusChart = new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.data,
+                            backgroundColor: [
+                                '#E0E0E0FF',
+                                '#FFCA2BFF', 
+                                '#15ACC3FF',
+                                '#AFFF2EFF',
+                                '#2AC24DFF',
+                                '#dc3545'
+                            ],
+                            borderWidth: 0,
+                            hoverOffset: 10
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: {
+                                backgroundColor: 'white',
+                                titleColor: 'red',
+                                bodyColor: '#4E4D4DFF',
+                                borderColor: '#DC143C',
+                                borderWidth: 1,
+                                cornerRadius: 8,
+                                callbacks: {
+                                    label: function(context) {
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                        return `${context.label}: ${context.parsed} đơn (${percentage}%)`;
+                                    }
+                                }
+                            },
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 20,
+                                    color: '#212529'
+                                }
+                            }
+                        },
+                        cutout: '60%'
+                    }
+                });
+
+            } catch (error) {
+                console.error('Lỗi khi tải dữ liệu trạng thái đơn hàng:', error);
+            }
+        }
+
+        // Hàm tải tất cả dữ liệu
+        async function loadStatisticsData(dateRange = 'week') {
+            currentDateRange = dateRange;
+            await Promise.all([
+                loadStatisticsOverview(dateRange),
+                loadRevenueChartData(dateRange),
+                loadOrderStatusChart(dateRange)
+            ]);
+        }
+
+        // Xử lý thay đổi khoảng thời gian
+        document.getElementById('dateRange').addEventListener('change', function() {
+            const dateRange = this.value;
+            document.getElementById('exportDateRange').value = dateRange;
+            loadStatisticsData(dateRange);
         });
 
         // Chuyển đổi giữa biểu đồ doanh thu và đơn hàng
@@ -313,42 +411,53 @@
                 this.classList.add('active');
                 
                 const type = this.dataset.type;
-                if (type === 'revenue') {
-                    currentChart.data = revenueData;
-                    currentChart.options.plugins.tooltip.callbacks.label = function(context) {
-                        const value = context.parsed.y;
-                        const productIndex = context.dataIndex;
-                        const product = bestSellingProducts[productIndex];
-                        const sales = productSales[productIndex];
-                        
-                        return [
-                            `Doanh thu: ${value.toLocaleString('vi-VN')} VNĐ`,
-                            `Sản phẩm bán chạy: ${product}`,
-                            `Đã bán: ${sales} phần`
-                        ];
-                    };
-                } else {
-                    currentChart.data = orderData;
-                    currentChart.options.plugins.tooltip.callbacks.label = function(context) {
-                        const value = context.parsed.y;
-                        const productIndex = context.dataIndex;
-                        const product = bestSellingProducts[productIndex];
-                        const sales = productSales[productIndex];
-                        
-                        return [
-                            `Số đơn hàng: ${value}`,
-                            `Sản phẩm bán chạy: ${product}`,
-                            `Đã bán: ${sales} phần`
-                        ];
-                    };
+                if (currentChart) {
+                    if (type === 'revenue') {
+                        currentChart.data = currentChart.revenueData;
+                        // Cập nhật tooltip và trục Y cho doanh thu
+                        currentChart.options.plugins.tooltip.callbacks.label = function(context) {
+                            const dataIndex = context.dataIndex;
+                            const value = context.parsed.y;
+                            
+                            if (currentChart.bestSellingData && currentChart.bestSellingData[dataIndex]) {
+                                const bestSellingData = currentChart.bestSellingData[dataIndex];
+                                return [
+                                    `Doanh thu: ${value.toLocaleString('vi-VN')} VNĐ`,
+                                    `Sản phẩm bán chạy: ${bestSellingData.bestProduct}`,
+                                    `Đã bán: ${bestSellingData.bestProductSold} phần`
+                                ];
+                            } else {
+                                return `Doanh thu: ${value.toLocaleString('vi-VN')} VNĐ`;
+                            }
+                        };
+                        currentChart.options.scales.y.ticks.callback = function(value) {
+                            return (value / 1000000).toFixed(1) + 'M';
+                        };
+                    } else {
+                        currentChart.data = currentChart.orderData;
+                        // Cập nhật tooltip và trục Y cho đơn hàng
+                        currentChart.options.plugins.tooltip.callbacks.label = function(context) {
+                            const dataIndex = context.dataIndex;
+                            const value = context.parsed.y;
+                            
+                            if (currentChart.bestSellingData && currentChart.bestSellingData[dataIndex]) {
+                                const bestSellingData = currentChart.bestSellingData[dataIndex];
+                                return [
+                                    `Số đơn hàng: ${value}`,
+                                    `Sản phẩm bán chạy: ${bestSellingData.bestProduct}`,
+                                    `Đã bán: ${bestSellingData.bestProductSold} phần`
+                                ];
+                            } else {
+                                return `Số đơn hàng: ${value}`;
+                            }
+                        };
+                        currentChart.options.scales.y.ticks.callback = function(value) {
+                            return Math.round(value); // Hiển thị số nguyên cho đơn hàng
+                        };
+                    }
+                    currentChart.update();
                 }
-                currentChart.update();
             });
-        });
-
-        // Cập nhật hidden input khi thay đổi date range
-        document.getElementById('dateRange').addEventListener('change', function() {
-            document.getElementById('exportDateRange').value = this.value;
         });
 
         // Custom date range (có thể mở rộng sau)
