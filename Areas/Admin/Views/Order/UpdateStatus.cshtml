@@ -112,7 +112,7 @@
                             <div class="alert alert-info">
                                 <h6 class="alert-heading">
                                     <i class="fas fa-info-circle me-2"></i>
-                                    Quy trình xử lý đơn hàng:
+                                    Quy trình xử lý đơn hàng - @Model.DeliveryMethod?.MethodName:
                                 </h6>
                                 <div class="status-flow">
                                     <div class="status-step">
@@ -136,30 +136,56 @@
                                         </span>
                                         <i class="fas fa-arrow-right mx-2 text-muted"></i>
                                     </div>
-                                    <div class="status-step">
-                                        <span class="badge bg-warning">
-                                            <i class="fas fa-shipping-fast me-1"></i>
-                                            Đang giao
-                                        </span>
-                                        <i class="fas fa-arrow-right mx-2 text-muted"></i>
-                                    </div>
+                                    
+                                    @if (Model.DeliveryMethodID == 1) @* Giao hàng tận nơi *@
+                                    {
+                                        <div class="status-step">
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-shipping-fast me-1"></i>
+                                                Đang giao hàng
+                                            </span>
+                                            <i class="fas fa-arrow-right mx-2 text-muted"></i>
+                                        </div>
+                                    }
+                                    else if (Model.DeliveryMethodID == 2) @* Hẹn lấy tại cửa hàng *@
+                                    {
+                                        <div class="status-step">
+                                            <span class="badge bg-teal" style="background-color: #20c997;">
+                                                <i class="fas fa-store me-1"></i>
+                                                Sẵn sàng lấy hàng
+                                            </span>
+                                            <i class="fas fa-arrow-right mx-2 text-muted"></i>
+                                        </div>
+                                    }
+                                    
                                     <div class="status-step">
                                         <span class="badge bg-success">
                                             <i class="fas fa-check-double me-1"></i>
-                                            Đã giao
+                                            Hoàn thành
                                         </span>
                                     </div>
                                 </div>
                                 <hr class="my-2">
                                 <small class="text-muted">
-                                    <strong>Lưu ý:</strong> Có thể hủy đơn hàng ở các bước trước khi giao. Không thể hủy khi đang giao hàng.
+                                    <strong>Lưu ý:</strong> 
+                                    @if (Model.DeliveryMethodID == 1)
+                                    {
+                                        <span>Đơn hàng giao tận nơi - Có thể hủy trước khi bắt đầu giao hàng.</span>
+                                    }
+                                    else if (Model.DeliveryMethodID == 2)
+                                    {
+                                        <span>Đơn hàng lấy tại cửa hàng - Có thể hủy trước khi sẵn sàng lấy hàng.</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Có thể hủy đơn hàng ở các bước trước khi hoàn thành.</span>
+                                    }
                                 </small>
                             </div>
                         </div>
 
                         <div class="d-flex justify-content-end gap-2">
                             <a href="@Url.Action("Details", new { id = Model.OrderID })" class="btn btn-outline-secondary">
-                                <i class="fas fa-times me-2"></i>
                                 Hủy bỏ
                             </a>
                             <button type="submit" class="btn btn-primary">
@@ -207,6 +233,26 @@
                         <div class="form-control-plaintext">
                             <i class="fas fa-money-bill me-2"></i>
                             <strong class="text-success">@Model.TotalAmount.ToString("N0") Đ</strong>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Phương thức giao hàng:</strong></label>
+                        <div class="form-control-plaintext">
+                            @if (Model.DeliveryMethodID == 1)
+                            {
+                                <i class="fas fa-shipping-fast me-2 text-success"></i>
+                                <span class="badge bg-success">@Model.DeliveryMethod?.MethodName</span>
+                            }
+                            else if (Model.DeliveryMethodID == 2)
+                            {
+                                <i class="fas fa-store me-2 text-info"></i>
+                                <span class="badge bg-info">@Model.DeliveryMethod?.MethodName</span>
+                            }
+                            else
+                            {
+                                <i class="fas fa-question-circle me-2"></i>
+                                @Model.DeliveryMethod?.MethodName
+                            }
                         </div>
                     </div>
                     <div class="mb-3">

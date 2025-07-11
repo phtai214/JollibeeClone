@@ -37,6 +37,12 @@ namespace JollibeeClone.ViewModels
         public decimal DiscountAmount { get; set; }
         public decimal TotalAmount { get; set; }
 
+        // Freeship Information
+        public bool IsFreeship { get; set; }
+        public string FreeshipeMessage { get; set; } = "";
+        public decimal RequiredAmountForFreeship { get; set; }
+        public bool IsFirstOrder { get; set; }
+
         // Available Options
         public List<DeliveryMethods> DeliveryMethods { get; set; } = new List<DeliveryMethods>();
         public List<Store> Stores { get; set; } = new List<Store>();

@@ -35,10 +35,10 @@
             <div class="order-section">
                 <h2> Trạng thái đơn hàng</h2>
                 <div class="timeline">
-                    @foreach (var trackingEvent in Model.TrackingEvents.OrderBy(e => e.EventDate))
+                    @foreach (var trackingEvent in Model.TrackingEvents)
                     {
                         <div class="timeline-item @(trackingEvent.IsCompleted ? "completed" : "pending")">
-                            <div class="timeline-marker" style="border-color: @trackingEvent.EventColor;">
+                            <div class="timeline-marker" >
                                 <i class="@trackingEvent.EventIcon" style="color: @trackingEvent.EventColor;"></i>
                             </div>
                             <div class="timeline-content">
@@ -249,19 +249,30 @@
 
             <!-- Order Summary -->
             <div class="info-card">
-                <h3> Tổng cộng</h3>
+                <h3><i class="fas fa-receipt"></i> Tổng cộng</h3>
                 <div class="order-summary">
                     <div class="summary-row">
                         <span>Tạm tính:</span>
                         <span>@Model.SubtotalAmount.ToString("N0")₫</span>
                     </div>
                     
-                    @if (Model.ShippingFee > 0)
+                    @* Chỉ hiển thị phí ship khi là delivery (giao hàng), không hiển thị khi pickup *@
+                    @if (!string.IsNullOrEmpty(Model.DeliveryAddress))
                     {
-                        <div class="summary-row">
-                            <span>Phí giao hàng:</span>
-                            <span>@Model.ShippingFee.ToString("N0")₫</span>
-                        </div>
+                        @if (Model.ShippingFee > 0)
+                        {
+                            <div class="summary-row">
+                                <span>Phí giao hàng:</span>
+                                <span>@Model.ShippingFee.ToString("N0")₫</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="summary-row">
+                                <span>Phí giao hàng:</span>
+                                <span style="color: #28a745;">Miễn phí</span>
+                            </div>
+                        }
                     }
                     
                     @if (Model.DiscountAmount > 0)

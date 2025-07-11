@@ -284,12 +284,23 @@
                             <span class="subtotal-label">Chi phí tạm tính</span>
                             <span class="subtotal-amount">@Model.SubtotalAmount.ToString("N0") đ</span>
                         </div>
-                        @if (Model.ShippingFee > 0)
+                        @* Chỉ hiển thị phí ship khi là delivery (giao hàng), không hiển thị khi pickup *@
+                        @if (Model.IsDelivery)
                         {
-                            <div class="subtotal-row">
-                                <span class="subtotal-label">Phí giao hàng</span>
-                                <span class="subtotal-amount">@Model.ShippingFee.ToString("N0") đ</span>
-                            </div>
+                            @if (Model.ShippingFee > 0)
+                            {
+                                <div class="subtotal-row">
+                                    <span class="subtotal-label">Phí giao hàng</span>
+                                    <span class="subtotal-amount">@Model.ShippingFee.ToString("N0") đ</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="subtotal-row">
+                                    <span class="subtotal-label">Phí giao hàng</span>
+                                    <span class="subtotal-amount" style="color: #28a745;">Miễn phí</span>
+                                </div>
+                            }
                         }
                         @if (Model.HasVoucherApplied)
                         {

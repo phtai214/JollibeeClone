@@ -18,6 +18,7 @@ namespace JollibeeClone.Models
 
         // Navigation properties
         public virtual ICollection<Orders> Orders { get; set; } = new List<Orders>();
+        public virtual ICollection<OrderStatusHistory> OrderStatusHistories { get; set; } = new List<OrderStatusHistory>();
     }
 }
 

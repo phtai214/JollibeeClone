@@ -64,7 +64,7 @@
 
 .stat-number {
     display: block;
-    font-size: 2.5rem;
+    font-size: 2.0rem;
     font-weight: 700;
     color: var(--jollibee-yellow);
     margin-bottom: 5px;

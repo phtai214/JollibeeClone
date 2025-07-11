@@ -338,7 +338,7 @@
 
 .delivery-radio-new:checked + .delivery-label-new {
     background: #fff5f5;
-    border-left: 4px solid #dc3545;
+    /* border-left: 4px solid #dc3545; */
 }
 
 .radio-indicator {
@@ -833,4 +833,160 @@
         width: 50px;
         height: 50px;
     }
+}
+
+/* Shipping Message Styles */
+.shipping-message {
+    margin-top: 15px;
+}
+
+.shipping-message .alert {
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.shipping-message .alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.shipping-message .alert-info {
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+}
+
+/* Minimum Order Error Styles */
+.minimum-order-error {
+    margin-bottom: 20px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.minimum-order-error .alert {
+    border-radius: 8px;
+    padding: 15px;
+    border-left: 4px solid #f39c12;
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+    color: #856404;
+}
+
+.minimum-order-error .alert i {
+    margin-right: 8px;
+}
+
+.minimum-order-error .btn {
+    margin-top: 10px;
+}
+
+/* Shipping Error Styles */
+.shipping-error {
+    margin-top: 15px;
+}
+
+.shipping-error .alert {
+    border-radius: 8px;
+    padding: 12px 15px;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+/* Freeship Info Styles */
+.freeship-info {
+    padding: 0;
+}
+
+.freeship-info .alert {
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.freeship-info .alert i {
+    margin-right: 8px;
+}
+
+/* Shipping Row in Order Summary */
+.shipping-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #e9ecef;
+}
+
+.shipping-label {
+    font-size: 15px;
+    color: #666;
+    font-weight: 500;
+}
+
+.shipping-amount {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Delivery Method Updates */
+.delivery-description {
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 5px;
+    transition: color 0.3s ease;
+}
+
+.delivery-radio-new:checked + .delivery-label-new .delivery-description {
+    font-weight: 600;
+}
+
+/* Continue Button Disabled State */
+.continue-btn:disabled {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.continue-btn:disabled:hover {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* Animation for dynamic elements */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.shipping-message,
+.minimum-order-error,
+.shipping-error {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Enhanced alert styling */
+.alert {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.alert i {
+    margin-right: 8px;
 } 

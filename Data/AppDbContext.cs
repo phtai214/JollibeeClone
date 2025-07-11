@@ -25,6 +25,7 @@ namespace JollibeeClone.Data
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<OrderStatuses> OrderStatuses { get; set; }
+        public DbSet<OrderStatusHistory> OrderStatusHistories { get; set; }
         public DbSet<PaymentMethods> PaymentMethods { get; set; }
         public DbSet<DeliveryMethods> DeliveryMethods { get; set; }
         public DbSet<Orders> Orders { get; set; }
@@ -306,6 +307,26 @@ namespace JollibeeClone.Data
                 entity.HasIndex(e => e.StatusName).IsUnique();
                 entity.Property(e => e.StatusName).HasMaxLength(50).IsRequired();
                 entity.Property(e => e.Description).HasMaxLength(255);
+            });
+
+            // Configure OrderStatusHistory entity
+            modelBuilder.Entity<OrderStatusHistory>(entity =>
+            {
+                entity.HasKey(e => e.OrderStatusHistoryID);
+                entity.Property(e => e.OrderStatusHistoryID).UseIdentityColumn(1, 1);
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+                entity.Property(e => e.Note).HasMaxLength(500);
+
+                entity.HasOne(e => e.Order)
+                    .WithMany(o => o.OrderStatusHistories)
+                    .HasForeignKey(e => e.OrderID)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.OrderStatus)
+                    .WithMany(os => os.OrderStatusHistories)
+                    .HasForeignKey(e => e.OrderStatusID)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             // Configure PaymentMethod entity

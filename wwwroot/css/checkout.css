@@ -193,7 +193,7 @@
 
 .payment-radio:checked + .payment-label {
     background: #fff5f5;
-    border-left: 4px solid #dc3545;
+    /* border-left: 4px solid #dc3545; */
 }
 
 .radio-indicator {

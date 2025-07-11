@@ -64,6 +64,7 @@ namespace JollibeeClone.Models
         public ICollection<OrderItems> OrderItems { get; set; } = new List<OrderItems>();
         public virtual ICollection<Payments> Payments { get; set; } = new List<Payments>();
         public virtual ICollection<UserPromotion> UserPromotions { get; set; } = new List<UserPromotion>();
+        public virtual ICollection<OrderStatusHistory> OrderStatusHistories { get; set; } = new List<OrderStatusHistory>();
     }
 }
 

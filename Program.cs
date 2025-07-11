@@ -41,6 +41,12 @@ builder.Services.AddSession(options =>
 // Đăng ký PromotionService
 builder.Services.AddScoped<IPromotionService, PromotionService>();
 
+// Đăng ký OrderStatusHistoryService
+builder.Services.AddScoped<JollibeeClone.Services.OrderStatusHistoryService>();
+
+// Đăng ký ShippingService
+builder.Services.AddScoped<JollibeeClone.Services.ShippingService>();
+
 // Thêm các service khác
 builder.Services.AddControllersWithViews(options =>
 {

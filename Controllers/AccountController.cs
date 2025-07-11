@@ -4,6 +4,7 @@ using JollibeeClone.Data;
 using JollibeeClone.Models;
 using JollibeeClone.ViewModels;
 using JollibeeClone.Attributes;
+using JollibeeClone.Services;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -13,11 +14,13 @@ namespace JollibeeClone.Controllers
     {
         private readonly AppDbContext _context;
         private readonly ILogger<AccountController> _logger;
+        private readonly OrderStatusHistoryService _statusHistoryService;
 
-        public AccountController(AppDbContext context, ILogger<AccountController> logger)
+        public AccountController(AppDbContext context, ILogger<AccountController> logger, OrderStatusHistoryService statusHistoryService)
         {
             _context = context;
             _logger = logger;
+            _statusHistoryService = statusHistoryService;
         }
 
         // GET: Account/Register
@@ -1120,7 +1123,7 @@ namespace JollibeeClone.Controllers
                 }
 
                 // Create tracking events
-                var trackingEvents = CreateTrackingEvents(order);
+                var trackingEvents = await CreateTrackingEventsAsync(order);
 
                 var viewModel = new UserOrderDetailViewModel
                 {
@@ -1263,13 +1266,14 @@ namespace JollibeeClone.Controllers
         {
             return statusName.ToLower() switch
             {
-                "chờ xác nhận" => "#ffc107",
-                "đã xác nhận" => "#0E64CDFF",
-                "đang chuẩn bị" => "#fd7e14",
-                "đang giao hàng" => "#11C4C4FF",
-                "hoàn thành" => "#28a745",
-                "đã hủy" => "#dc3545",
-                _ => "#6c757d"
+                "chờ xác nhận" => "#ffc107", // warning yellow
+                "đã xác nhận" => "#17a2b8",  // info blue  
+                "đang chuẩn bị" => "#fd7e14", // orange
+                "đang giao hàng" => "#28a745", // success green
+                "sẵn sàng lấy hàng" => "#20c997", // teal
+                "hoàn thành" => "#28a745", // success green
+                "đã hủy" => "#dc3545", // danger red
+                _ => "#6c757d" // secondary gray
             };
         }
 
@@ -1281,6 +1285,7 @@ namespace JollibeeClone.Controllers
                 "đã xác nhận" => "fas fa-check-circle",
                 "đang chuẩn bị" => "fas fa-utensils",
                 "đang giao hàng" => "fas fa-shipping-fast",
+                "sẵn sàng lấy hàng" => "fas fa-store",
                 "hoàn thành" => "fas fa-check-double",
                 "đã hủy" => "fas fa-times-circle",
                 _ => "fas fa-question-circle"
@@ -1294,15 +1299,21 @@ namespace JollibeeClone.Controllers
             return statusName.ToLower() == "chờ xác nhận";
         }
 
-        private List<OrderTrackingEvent> CreateTrackingEvents(Orders order)
+        private async Task<List<OrderTrackingEvent>> CreateTrackingEventsAsync(Orders order)
         {
             var events = new List<OrderTrackingEvent>();
             var currentStatus = order.OrderStatus.StatusName.ToLower();
+            var currentStatusId = order.OrderStatusID;
 
-            // Đặt hàng thành công
+            // Lấy lịch sử trạng thái thực tế từ database
+            var statusHistory = await _statusHistoryService.GetOrderStatusHistoryAsync(order.OrderID);
+            var statusTimes = statusHistory.ToDictionary(h => h.OrderStatusID, h => h.UpdatedAt);
+
+            // Đặt hàng thành công - LUÔN HIỂN THỊ
+            var orderCreatedTime = statusTimes.ContainsKey(1) ? statusTimes[1] : order.OrderDate;
             events.Add(new OrderTrackingEvent
             {
-                EventDate = order.OrderDate,
+                EventDate = orderCreatedTime,
                 EventTitle = "Đặt hàng thành công",
                 EventDescription = $"Đơn hàng #{order.OrderCode} đã được tạo",
                 EventIcon = "fas fa-shopping-cart",
@@ -1310,38 +1321,78 @@ namespace JollibeeClone.Controllers
                 IsCompleted = true
             });
 
+            // Kiểm tra nếu đơn hàng đã bị hủy
+            if (currentStatus == "đã hủy")
+            {
+                // Kiểm tra xem có lịch sử xác nhận không
+                var wasConfirmed = statusTimes.ContainsKey(2);
+                
+                if (wasConfirmed)
+                {
+                    events.Add(new OrderTrackingEvent
+                    {
+                        EventDate = statusTimes[2],
+                        EventTitle = "Đã xác nhận",
+                        EventDescription = "Đơn hàng đã được xác nhận bởi cửa hàng",
+                        EventIcon = "fas fa-check-circle",
+                        EventColor = "#28a745",
+                        IsCompleted = true
+                    });
+                }
+
+                // Hiển thị trạng thái đã hủy với thời gian thực tế
+                var cancelledTime = statusTimes.ContainsKey(7) ? statusTimes[7] : DateTime.Now;
+                events.Add(new OrderTrackingEvent
+                {
+                    EventDate = cancelledTime,
+                    EventTitle = "Đã hủy",
+                    EventDescription = wasConfirmed ? 
+                        "Đơn hàng đã bị hủy" : 
+                        "Đơn hàng đã bị hủy trước khi được xác nhận",
+                    EventIcon = "fas fa-times-circle",
+                    EventColor = "#dc3545",
+                    IsCompleted = true
+                });
+
+                return events; // Dừng lại, không hiển thị các trạng thái khác
+            }
+
+            // Logic bình thường cho đơn hàng chưa hủy
             // Xác nhận đơn hàng
-            var isConfirmed = currentStatus != "chờ xác nhận";
+            var isConfirmed = statusTimes.ContainsKey(2);
             events.Add(new OrderTrackingEvent
             {
-                EventDate = isConfirmed ? order.OrderDate.AddMinutes(5) : DateTime.MinValue,
-                EventTitle = "Xác nhận đơn hàng",
-                EventDescription = isConfirmed ? "Đơn hàng đã được xác nhận" : "Đang chờ xác nhận từ cửa hàng",
+                EventDate = isConfirmed ? statusTimes[2] : DateTime.MinValue,
+                EventTitle = "Đã xác nhận",
+                EventDescription = isConfirmed ? "Đơn hàng đã được xác nhận bởi cửa hàng" : "Chờ xác nhận từ cửa hàng",
                 EventIcon = "fas fa-check-circle",
                 EventColor = isConfirmed ? "#28a745" : "#6c757d",
                 IsCompleted = isConfirmed
             });
 
             // Chuẩn bị đơn hàng
-            var isPreparing = new[] { "đang chuẩn bị", "đang giao hàng", "hoàn thành" }.Contains(currentStatus);
+            var isPreparing = statusTimes.ContainsKey(3);
             events.Add(new OrderTrackingEvent
             {
-                EventDate = isPreparing ? order.OrderDate.AddMinutes(15) : DateTime.MinValue,
-                EventTitle = "Chuẩn bị đơn hàng",
+                EventDate = isPreparing ? statusTimes[3] : DateTime.MinValue,
+                EventTitle = "Đang chuẩn bị",
                 EventDescription = isPreparing ? "Đơn hàng đang được chuẩn bị" : "Chưa bắt đầu chuẩn bị",
                 EventIcon = "fas fa-utensils",
                 EventColor = isPreparing ? "#28a745" : "#6c757d",
                 IsCompleted = isPreparing
             });
 
-            // Giao hàng/Sẵn sàng lấy hàng
-            var isDelivery = order.DeliveryMethod?.MethodName?.Contains("giao hàng") == true;
+            // Xác định loại giao hàng dựa trên DeliveryMethodID
+            var isDelivery = order.DeliveryMethodID == 1; // ID 1 = "Giao hàng tận nơi"
+            var isPickup = order.DeliveryMethodID == 2;   // ID 2 = "Hẹn lấy tại cửa hàng"
+
             if (isDelivery)
             {
-                var isDelivering = new[] { "đang giao hàng", "hoàn thành" }.Contains(currentStatus);
+                // Logic cho giao hàng tận nơi
+                var isDelivering = statusTimes.ContainsKey(4);
                 events.Add(new OrderTrackingEvent
                 {
-                    EventDate = isDelivering ? order.OrderDate.AddMinutes(30) : DateTime.MinValue,
+                    EventDate = isDelivering ? statusTimes[4] : DateTime.MinValue,
                     EventTitle = "Đang giao hàng",
                     EventDescription = isDelivering ? "Đơn hàng đang được giao đến địa chỉ của bạn" : "Chưa bắt đầu giao hàng",
                     EventIcon = "fas fa-shipping-fast",
@@ -1349,35 +1400,39 @@ namespace JollibeeClone.Controllers
                     IsCompleted = isDelivering
                 });
             }
-            else
+            else if (isPickup)
             {
-                // For pickup orders, add a "Ready for pickup" step that completes when preparing is done
-                var isReadyForPickup = new[] { "đang chuẩn bị", "hoàn thành" }.Contains(currentStatus);
+                // Logic cho lấy tại cửa hàng
+                var isReadyForPickup = statusTimes.ContainsKey(5);
                 events.Add(new OrderTrackingEvent
                 {
-                    EventDate = isReadyForPickup ? order.OrderDate.AddMinutes(30) : DateTime.MinValue,
-                    EventTitle = "Sẵn sàng lấy hàng tại cửa hàng",
-                    EventDescription = isReadyForPickup ? "Đơn hàng đã sẵn sàng để bạn đến lấy tại cửa hàng" : "Đang chuẩn bị",
+                    EventDate = isReadyForPickup ? statusTimes[5] : DateTime.MinValue,
+                    EventTitle = "Sẵn sàng lấy hàng",
+                    EventDescription = isReadyForPickup ? "Đơn hàng đã sẵn sàng để bạn đến lấy tại cửa hàng" : "Đang chuẩn bị để lấy",
                     EventIcon = "fas fa-store",
                     EventColor = isReadyForPickup ? "#28a745" : "#6c757d",
                     IsCompleted = isReadyForPickup
                 });
             }
 
-            // Hoàn thành
-            var isCompleted = currentStatus == "hoàn thành";
+            // Hoàn thành đơn hàng - LUÔN CUỐI CÙNG
+            var isCompleted = statusTimes.ContainsKey(6) && currentStatus == "hoàn thành";
             events.Add(new OrderTrackingEvent
             {
-                EventDate = isCompleted ? order.OrderDate.AddMinutes(60) : DateTime.MinValue,
+                EventDate = isCompleted ? statusTimes[6] : DateTime.MinValue,
                 EventTitle = "Hoàn thành",
-                EventDescription = isCompleted ? "Đơn hàng đã được hoàn thành" : "Chưa hoàn thành",
-                EventIcon = "fas fa-check-circle",
+                EventDescription = isCompleted ? 
+                    (isDelivery ? "Đơn hàng đã được giao thành công" : "Đơn hàng đã được lấy thành công") : 
+                    "Chưa hoàn thành",
+                EventIcon = "fas fa-check-double",
                 EventColor = isCompleted ? "#28a745" : "#6c757d",
                 IsCompleted = isCompleted
             });
 
-            return events.Where(e => e.EventDate != DateTime.MinValue || e.IsCompleted).ToList();
+            return events;
         }
+
+
 
         // POST: Cancel Order
         [HttpPost]
@@ -1421,6 +1476,14 @@ namespace JollibeeClone.Controllers
                 order.OrderStatusID = cancelledStatus.OrderStatusID;
                 _context.Orders.Update(order);
                 await _context.SaveChangesAsync();
+
+                // Ghi lại lịch sử thay đổi trạng thái
+                await _statusHistoryService.LogStatusChangeAsync(
+                    orderId: order.OrderID,
+                    statusId: cancelledStatus.OrderStatusID,
+                    updatedBy: $"User-{userId}",
+                    note: "Đơn hàng được hủy bởi khách hàng"
+                );
 
                 _logger.LogInformation($"Order {order.OrderCode} has been cancelled by user {userId}");
 

@@ -113,7 +113,7 @@
                             <div class="item-details">
                                 <h4 class="item-name">@item.ProductName.ToUpper()</h4>
                                 
-                                @if (item.HasConfiguration)
+                                @if (item.ConfigurationOptions.Any())
                                 {
                                     <div class="item-configuration">
                                         @foreach (var config in item.ConfigurationOptions)
@@ -132,7 +132,7 @@
                                 
                                 <div class="item-quantity-price">
                                     <span class="quantity">Số lượng: @item.Quantity</span>
-                                    <span class="price">@item.FormattedSubtotal</span>
+                                    <span class="price">@item.Subtotal.ToString("N0")₫</span>
                                 </div>
                             </div>
                         </div>
@@ -144,28 +144,39 @@
             <div class="order-summary-section">
                 <div class="summary-row">
                     <span class="summary-label">Tạm tính:</span>
-                    <span class="summary-value">@Model.Order.SubtotalAmount.ToString("N0") đ</span>
+                    <span class="summary-value">@Model.Order.SubtotalAmount.ToString("N0")₫</span>
                 </div>
                 
-                @if (Model.Order.ShippingFee > 0)
+                @* Chỉ hiển thị phí ship khi là delivery (giao hàng), không hiển thị khi pickup *@
+                @if (Model.Order.DeliveryMethod?.MethodName?.Contains("giao hàng") == true)
                 {
-                    <div class="summary-row">
-                        <span class="summary-label">Phí giao hàng:</span>
-                        <span class="summary-value">@Model.Order.ShippingFee.ToString("N0") đ</span>
-                    </div>
+                    @if (Model.Order.ShippingFee > 0)
+                    {
+                        <div class="summary-row">
+                            <span class="summary-label">Phí giao hàng:</span>
+                            <span class="summary-value">@Model.Order.ShippingFee.ToString("N0")₫</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="summary-row">
+                            <span class="summary-label">Phí giao hàng:</span>
+                            <span class="summary-value" style="color: #28a745;">Miễn phí</span>
+                        </div>
+                    }
                 }
                 
                 @if (Model.Order.DiscountAmount > 0)
                 {
                     <div class="summary-row discount">
                         <span class="summary-label">Giảm giá:</span>
-                        <span class="summary-value">-@Model.Order.DiscountAmount.ToString("N0") đ</span>
+                        <span class="summary-value">-@Model.Order.DiscountAmount.ToString("N0")₫</span>
                     </div>
                 }
                 
                 <div class="summary-row total">
                     <span class="summary-label">Tổng cộng:</span>
-                    <span class="summary-value">@Model.Order.TotalAmount.ToString("N0") đ</span>
+                    <span class="summary-value">@Model.Order.TotalAmount.ToString("N0")₫</span>
                 </div>
             </div>
         </div>
@@ -189,7 +200,7 @@
             <i class="fas fa-phone-alt"></i>
             <div class="support-content">
                 <h4>Hotline hỗ trợ</h4>
-                <p>@Model.CustomerSupportPhone</p>
+                <p>1900 1533</p>
             </div>
         </div>
         <div class="support-item">

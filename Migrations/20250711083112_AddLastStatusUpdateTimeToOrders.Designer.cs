@@ -4,6 +4,7 @@ using JollibeeClone.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JollibeeClone.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250711083112_AddLastStatusUpdateTimeToOrders")]
+    partial class AddLastStatusUpdateTimeToOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -305,42 +308,6 @@ namespace JollibeeClone.Migrations
                         });
                 });
 
-            modelBuilder.Entity("JollibeeClone.Models.OrderStatusHistory", b =>
-                {
-                    b.Property<int>("OrderStatusHistoryID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderStatusHistoryID"));
-
-                    b.Property<string>("Note")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("OrderID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderStatusID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("OrderStatusHistoryID");
-
-                    b.HasIndex("OrderID");
-
-                    b.HasIndex("OrderStatusID");
-
-                    b.ToTable("OrderStatusHistories");
-                });
-
             modelBuilder.Entity("JollibeeClone.Models.OrderStatuses", b =>
                 {
                     b.Property<int>("OrderStatusID")
@@ -396,6 +363,9 @@ namespace JollibeeClone.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("decimal(18,2)")
                         .HasDefaultValue(0m);
+
+                    b.Property<DateTime?>("LastStatusUpdateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("NotesByCustomer")
                         .HasColumnType("nvarchar(max)");
@@ -1157,25 +1127,6 @@ namespace JollibeeClone.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("JollibeeClone.Models.OrderStatusHistory", b =>
-                {
-                    b.HasOne("JollibeeClone.Models.Orders", "Order")
-                        .WithMany("OrderStatusHistories")
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("JollibeeClone.Models.OrderStatuses", "OrderStatus")
-                        .WithMany("OrderStatusHistories")
-                        .HasForeignKey("OrderStatusID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("OrderStatus");
-                });
-
             modelBuilder.Entity("JollibeeClone.Models.Orders", b =>
                 {
                     b.HasOne("JollibeeClone.Models.DeliveryMethods", "DeliveryMethod")
@@ -1423,16 +1374,12 @@ namespace JollibeeClone.Migrations
 
             modelBuilder.Entity("JollibeeClone.Models.OrderStatuses", b =>
                 {
-                    b.Navigation("OrderStatusHistories");
-
                     b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("JollibeeClone.Models.Orders", b =>
                 {
                     b.Navigation("OrderItems");
-
-                    b.Navigation("OrderStatusHistories");
 
                     b.Navigation("Payments");
 

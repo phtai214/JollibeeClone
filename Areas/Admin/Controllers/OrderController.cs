@@ -1,5 +1,6 @@
 ﻿using JollibeeClone.Models;
 using JollibeeClone.Data;
+using JollibeeClone.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +14,13 @@ namespace JollibeeClone.Areas.Admin.Controllers
     {
         private readonly ILogger<OrderController> _logger;
         private readonly AppDbContext _context;
+        private readonly OrderStatusHistoryService _statusHistoryService;
 
-        public OrderController(ILogger<OrderController> logger, AppDbContext context)
+        public OrderController(ILogger<OrderController> logger, AppDbContext context, OrderStatusHistoryService statusHistoryService)
         {
             _logger = logger;
             _context = context;
+            _statusHistoryService = statusHistoryService;
         }
 
         // GET: Admin/Order
@@ -184,7 +187,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
                 }
 
                 // Get available statuses based on current status
-                var availableStatuses = await GetAvailableStatusesAsync(order.OrderStatusID);
+                var availableStatuses = await GetAvailableStatusesAsync(order.OrderStatusID, order.DeliveryMethodID);
                 ViewBag.OrderStatuses = new SelectList(availableStatuses, "OrderStatusID", "StatusName");
                 
                 return View(order);
@@ -215,15 +218,23 @@ namespace JollibeeClone.Areas.Admin.Controllers
                 }
 
                 // Validate status transition
-                if (!await IsValidStatusTransitionAsync(order.OrderStatusID, NewOrderStatusID))
+                if (!await IsValidStatusTransitionAsync(order.OrderStatusID, NewOrderStatusID, order.DeliveryMethodID))
                 {
                     TempData["ErrorMessage"] = "Không thể chuyển từ trạng thái hiện tại sang trạng thái mới.";
                     return RedirectToAction("UpdateStatus", new { id = OrderID });
                 }
 
-                // Update order status in database
+                // Update order status and log history
                 order.OrderStatusID = NewOrderStatusID;
                 await _context.SaveChangesAsync();
+
+                // Ghi lại lịch sử thay đổi trạng thái
+                await _statusHistoryService.LogStatusChangeAsync(
+                    orderId: order.OrderID,
+                    statusId: NewOrderStatusID,
+                    updatedBy: "Admin",
+                    note: "Trạng thái được cập nhật bởi admin"
+                );
 
                 var newStatus = await _context.OrderStatuses
                     .FirstOrDefaultAsync(s => s.OrderStatusID == NewOrderStatusID);
@@ -243,30 +254,60 @@ namespace JollibeeClone.Areas.Admin.Controllers
         #region Helper Methods
 
         /// <summary>
-        /// Get available status transitions based on current status
+        /// Get available status transitions based on current status and delivery method
         /// </summary>
-        private async Task<List<OrderStatuses>> GetAvailableStatusesAsync(int currentStatusId)
+        private async Task<List<OrderStatuses>> GetAvailableStatusesAsync(int currentStatusId, int? deliveryMethodId = null)
         {
             try
             {
                 var allStatuses = await _context.OrderStatuses.ToListAsync();
+                List<OrderStatuses> availableStatuses = new List<OrderStatuses>();
                 
                 // Define valid status transitions based on business logic
                 switch (currentStatusId)
                 {
                     case 1: // Chờ xác nhận -> có thể chuyển thành Đã xác nhận hoặc Đã hủy
-                        return allStatuses.Where(s => s.OrderStatusID == 2 || s.OrderStatusID == 7).ToList();
+                        availableStatuses = allStatuses.Where(s => s.OrderStatusID == 2 || s.OrderStatusID == 7).ToList();
+                        break;
+                        
                     case 2: // Đã xác nhận -> có thể chuyển thành Đang chuẩn bị hoặc Đã hủy
-                        return allStatuses.Where(s => s.OrderStatusID == 3 || s.OrderStatusID == 7).ToList();
-                    case 3: // Đang chuẩn bị -> có thể chuyển thành Đang giao hoặc Hoàn thành hoặc Đã hủy
-                        return allStatuses.Where(s => s.OrderStatusID == 4 || s.OrderStatusID == 6 || s.OrderStatusID == 7).ToList();
-                    case 4: // Đang giao -> có thể chuyển thành Hoàn thành
-                        return allStatuses.Where(s => s.OrderStatusID == 6).ToList();
+                        availableStatuses = allStatuses.Where(s => s.OrderStatusID == 3 || s.OrderStatusID == 7).ToList();
+                        break;
+                        
+                    case 3: // Đang chuẩn bị -> logic phụ thuộc vào loại giao hàng
+                        if (deliveryMethodId == 1) // Giao hàng tận nơi
+                        {
+                            // Có thể chuyển thành Đang giao hàng hoặc Hoàn thành hoặc Đã hủy
+                            availableStatuses = allStatuses.Where(s => s.OrderStatusID == 4 || s.OrderStatusID == 6 || s.OrderStatusID == 7).ToList();
+                        }
+                        else if (deliveryMethodId == 2) // Hẹn lấy tại cửa hàng
+                        {
+                            // Có thể chuyển thành Sẵn sàng lấy hàng hoặc Hoàn thành hoặc Đã hủy
+                            availableStatuses = allStatuses.Where(s => s.OrderStatusID == 5 || s.OrderStatusID == 6 || s.OrderStatusID == 7).ToList();
+                        }
+                        else
+                        {
+                            // Fallback: cho phép cả hai
+                            availableStatuses = allStatuses.Where(s => s.OrderStatusID == 4 || s.OrderStatusID == 5 || s.OrderStatusID == 6 || s.OrderStatusID == 7).ToList();
+                        }
+                        break;
+                        
+                    case 4: // Đang giao hàng -> có thể chuyển thành Hoàn thành
+                        availableStatuses = allStatuses.Where(s => s.OrderStatusID == 6).ToList();
+                        break;
+                        
+                    case 5: // Sẵn sàng lấy hàng -> có thể chuyển thành Hoàn thành
+                        availableStatuses = allStatuses.Where(s => s.OrderStatusID == 6).ToList();
+                        break;
+                        
                     case 6: // Hoàn thành -> không thể chuyển (trạng thái cuối)
                     case 7: // Đã hủy -> không thể chuyển (trạng thái cuối)
                     default:
-                        return new List<OrderStatuses>();
+                        availableStatuses = new List<OrderStatuses>();
+                        break;
                 }
+                
+                return availableStatuses;
             }
             catch (Exception ex)
             {
@@ -278,11 +319,11 @@ namespace JollibeeClone.Areas.Admin.Controllers
         /// <summary>
         /// Validate if status transition is allowed
         /// </summary>
-        private async Task<bool> IsValidStatusTransitionAsync(int currentStatusId, int newStatusId)
+        private async Task<bool> IsValidStatusTransitionAsync(int currentStatusId, int newStatusId, int? deliveryMethodId = null)
         {
             try
             {
-                var availableStatuses = await GetAvailableStatusesAsync(currentStatusId);
+                var availableStatuses = await GetAvailableStatusesAsync(currentStatusId, deliveryMethodId);
                 return availableStatuses.Any(s => s.OrderStatusID == newStatusId);
             }
             catch (Exception ex)
@@ -290,6 +331,15 @@ namespace JollibeeClone.Areas.Admin.Controllers
                 _logger.LogError(ex, "Error validating status transition from {CurrentId} to {NewId}", currentStatusId, newStatusId);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Get Vietnam local time to ensure consistent timezone handling
+        /// </summary>
+        private DateTime GetVietnamLocalTime()
+        {
+            var vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+            return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vietnamTimeZone);
         }
 
         #endregion

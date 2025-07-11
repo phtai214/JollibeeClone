@@ -58,7 +58,7 @@
                                     @order.OrderCode
                                 </h3>
                                 <p class="order-date">
-                                    <i class="far fa-calendar"></i>
+                                    <i class="">Thời gian đặt hàng:</i>
                                     @order.OrderDate.ToString("dd/MM/yyyy HH:mm")
                                 </p>
                             </div>
@@ -72,7 +72,7 @@
 
                         <div class="order-details">
                             <div class="order-items-preview">
-                                <h4><i class="fas fa-utensils"></i> Sản phẩm đã đặt</h4>
+                                <h4> Sản phẩm đã đặt</h4>
                                 <div class="items-summary">
                                     <span class="items-count">@order.TotalItems sản phẩm</span>
                                     <span class="items-total">@order.TotalAmount.ToString("N0") ₫</span>
@@ -97,7 +97,6 @@
                         <div class="order-actions">
                             <a href="@Url.Action("OrderDetail", new { id = order.OrderID })" 
                                class="btn btn-primary">
-                                <i class="fas fa-eye"></i>
                                 Xem chi tiết
                             </a>
                             

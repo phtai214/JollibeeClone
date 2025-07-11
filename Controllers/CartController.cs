@@ -5,6 +5,7 @@ using JollibeeClone.Models;
 using JollibeeClone.ViewModels;
 using JollibeeClone.Attributes;
 using JollibeeClone.Areas.Admin.Services;
+using JollibeeClone.Services;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Globalization;
@@ -16,11 +17,15 @@ namespace JollibeeClone.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IPromotionService _promotionService;
+        private readonly OrderStatusHistoryService _statusHistoryService;
+        private readonly ShippingService _shippingService;
         
-        public CartController(AppDbContext context, IPromotionService promotionService)
+        public CartController(AppDbContext context, IPromotionService promotionService, OrderStatusHistoryService statusHistoryService, ShippingService shippingService)
         {
             _context = context;
             _promotionService = promotionService;
+            _statusHistoryService = statusHistoryService;
+            _shippingService = shippingService;
         }
 
         // GET: /Cart/GetCart
@@ -831,6 +836,18 @@ namespace JollibeeClone.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
+                // Check minimum order value
+                const decimal MIN_ORDER_VALUE = 60000m;
+                var subtotalAmount = await MapCartItemsToViewModelAsync(cartItems);
+                var currentSubtotal = subtotalAmount.Sum(ci => ci.TotalPrice);
+                
+                if (currentSubtotal < MIN_ORDER_VALUE)
+                {
+                    var requiredAmount = MIN_ORDER_VALUE - currentSubtotal;
+                    TempData["ErrorMessage"] = $"Đơn hàng tối thiểu {MIN_ORDER_VALUE:N0}₫ để có thể đặt hàng. Vui lòng thêm {requiredAmount:N0}₫ nữa.";
+                    return RedirectToAction("Index", "Home");
+                }
+
                 var viewModel = new CheckoutShippingViewModel();
 
                 // Get user information if logged in
@@ -894,9 +911,30 @@ namespace JollibeeClone.Controllers
 
                 // Calculate totals
                 viewModel.SubtotalAmount = viewModel.CartItems.Sum(ci => ci.TotalPrice);
-                viewModel.ShippingFee = 0; // Will be calculated based on delivery method
                 viewModel.DiscountAmount = 0; // Will be applied if promotions exist
+
+                // Calculate shipping fee and freeship info
+                var userIdForShipping = isUserLoggedIn && !string.IsNullOrEmpty(userIdFromSession) && int.TryParse(userIdFromSession, out int shippingUserId) ? shippingUserId : (int?)null;
+                
+                // Get freeship promotion info to display
+                var freeshipeInfo = await _shippingService.GetFreeshipePromotionInfoAsync(userIdForShipping, viewModel.SubtotalAmount);
+                viewModel.IsFirstOrder = freeshipeInfo.IsFirstOrder;
+                viewModel.FreeshipeMessage = freeshipeInfo.Message;
+                viewModel.RequiredAmountForFreeship = freeshipeInfo.RequiredAmountForFreeship;
+                
+                // Default to delivery method 1 (giao hàng tận nơi) for initial calculation
+                viewModel.DeliveryMethodID = 1; // Set default delivery method
+                var shippingCalculation = await _shippingService.CalculateShippingFeeAsync(userIdForShipping, viewModel.SubtotalAmount, 1);
+                viewModel.ShippingFee = shippingCalculation.ShippingFee;
+                viewModel.IsFreeship = shippingCalculation.IsFreeship;
+                
                 viewModel.TotalAmount = viewModel.SubtotalAmount + viewModel.ShippingFee - viewModel.DiscountAmount;
+
+                Console.WriteLine($"🚚 Shipping calculation for user {userIdForShipping}:");
+                Console.WriteLine($"  - Subtotal: {viewModel.SubtotalAmount:N0}₫");
+                Console.WriteLine($"  - Shipping: {viewModel.ShippingFee:N0}₫ (Freeship: {viewModel.IsFreeship})");
+                Console.WriteLine($"  - Message: {viewModel.FreeshipeMessage}");
+                Console.WriteLine($"  - Is First Order: {viewModel.IsFirstOrder}");
 
                 return View(viewModel);
             }
@@ -1076,6 +1114,15 @@ namespace JollibeeClone.Controllers
                     }
                 }
                 
+                // Check minimum order value before proceeding
+                const decimal MIN_ORDER_VALUE = 60000m;
+                if (model.SubtotalAmount < MIN_ORDER_VALUE)
+                {
+                    var requiredAmount = MIN_ORDER_VALUE - model.SubtotalAmount;
+                    TempData["ErrorMessage"] = $"Đơn hàng tối thiểu {MIN_ORDER_VALUE:N0}₫ để có thể đặt hàng. Vui lòng thêm {requiredAmount:N0}₫ nữa.";
+                    return RedirectToAction("Shipping");
+                }
+
                 // FORCE BYPASS: If basic fields are filled, override validation
                 bool hasBasicInfo = !string.IsNullOrEmpty(model.CustomerFullName?.Trim()) &&
                                    !string.IsNullOrEmpty(model.CustomerPhoneNumber?.Trim()) &&
@@ -1165,8 +1212,20 @@ namespace JollibeeClone.Controllers
                     {
                         model.CartItems = await MapCartItemsToViewModelAsync(cartItems);
                         model.SubtotalAmount = model.CartItems.Sum(ci => ci.TotalPrice);
-                        model.ShippingFee = 0;
                         model.DiscountAmount = 0;
+
+                        // Recalculate shipping fee
+                        var userIdForShipping = isUserLoggedIn && !string.IsNullOrEmpty(userIdFromSession) && int.TryParse(userIdFromSession, out int shippingUserId) ? shippingUserId : (int?)null;
+                        var shippingCalculation = await _shippingService.CalculateShippingFeeAsync(userIdForShipping, model.SubtotalAmount, model.DeliveryMethodID);
+                        model.ShippingFee = shippingCalculation.ShippingFee;
+                        model.IsFreeship = shippingCalculation.IsFreeship;
+                        model.FreeshipeMessage = shippingCalculation.Message;
+
+                        // Update freeship info
+                        var freeshipeInfo = await _shippingService.GetFreeshipePromotionInfoAsync(userIdForShipping, model.SubtotalAmount);
+                        model.IsFirstOrder = freeshipeInfo.IsFirstOrder;
+                        model.RequiredAmountForFreeship = freeshipeInfo.RequiredAmountForFreeship;
+
                         model.TotalAmount = model.SubtotalAmount + model.ShippingFee - model.DiscountAmount;
                     }
 
@@ -1267,6 +1326,17 @@ namespace JollibeeClone.Controllers
                 {
                     viewModel.CartItems = await MapCartItemsToViewModelAsync(cartItems);
                     Console.WriteLine($"🔍 Reloaded {viewModel.CartItems.Count} cart items with full configuration data");
+                    
+                    // Check minimum order value
+                    const decimal MIN_ORDER_VALUE = 60000m;
+                    var currentSubtotal = viewModel.CartItems.Sum(ci => ci.TotalPrice);
+                    if (currentSubtotal < MIN_ORDER_VALUE)
+                    {
+                        var requiredAmount = MIN_ORDER_VALUE - currentSubtotal;
+                        Console.WriteLine($"❌ Order below minimum: {currentSubtotal:N0}₫ < {MIN_ORDER_VALUE:N0}₫");
+                        TempData["ErrorMessage"] = $"Đơn hàng tối thiểu {MIN_ORDER_VALUE:N0}₫ để có thể đặt hàng. Vui lòng thêm {requiredAmount:N0}₫ nữa.";
+                        return RedirectToAction("Index", "Home");
+                    }
                     
                     // Debug: Log configuration data for each item
                     foreach (var item in viewModel.CartItems)
@@ -1417,12 +1487,31 @@ namespace JollibeeClone.Controllers
                         throw new InvalidOperationException("Giỏ hàng trống, không thể tạo đơn hàng");
                     }
 
+                    // Final check minimum order value
+                    const decimal MIN_ORDER_VALUE = 60000m;
+                    if (model.SubtotalAmount < MIN_ORDER_VALUE)
+                    {
+                        throw new InvalidOperationException($"Đơn hàng tối thiểu {MIN_ORDER_VALUE:N0}₫");
+                    }
+
                     // Generate unique order code
                     var orderCode = await GenerateOrderCodeAsync();
                     Console.WriteLine($"🛒 Generated order code: {orderCode}");
 
                     // Parse pickup time slot
                     TimeSpan? pickupTimeSlot = model.PickupTimeSlot;
+
+                    // Calculate final shipping fee
+                    var finalShippingCalculation = await _shippingService.CalculateShippingFeeAsync(model.UserID, model.SubtotalAmount, model.DeliveryMethodID);
+                    model.ShippingFee = finalShippingCalculation.ShippingFee;
+                    model.TotalAmount = model.SubtotalAmount + model.ShippingFee - model.DiscountAmount;
+
+                    Console.WriteLine($"🚚 Final shipping calculation for order:");
+                    Console.WriteLine($"  - UserID: {model.UserID}");
+                    Console.WriteLine($"  - Subtotal: {model.SubtotalAmount:N0}₫");
+                    Console.WriteLine($"  - Shipping: {model.ShippingFee:N0}₫");
+                    Console.WriteLine($"  - Total: {model.TotalAmount:N0}₫");
+                    Console.WriteLine($"  - Message: {finalShippingCalculation.Message}");
 
                     // Create order
                     var order = new Orders
@@ -1437,7 +1526,7 @@ namespace JollibeeClone.Controllers
                         StoreID = model.StoreID,
                         PickupDate = model.PickupDate,
                         PickupTimeSlot = pickupTimeSlot,
-                        OrderDate = DateTime.Now,
+                        OrderDate = GetVietnamLocalTime(),
                         SubtotalAmount = model.SubtotalAmount,
                         ShippingFee = model.ShippingFee,
                         DiscountAmount = model.DiscountAmount,
@@ -1452,6 +1541,14 @@ namespace JollibeeClone.Controllers
                     await _context.SaveChangesAsync();
                     
                     Console.WriteLine($"🛒 Order created with ID: {order.OrderID}");
+
+                    // Ghi lại lịch sử trạng thái đầu tiên cho đơn hàng mới
+                    await _statusHistoryService.LogStatusChangeAsync(
+                        orderId: order.OrderID,
+                        statusId: 1, // "Chờ xác nhận"
+                        updatedBy: "System",
+                        note: "Đơn hàng được tạo"
+                    );
 
                     // Create order items from cart items
                     foreach (var cartItem in cartItems)
@@ -1816,6 +1913,70 @@ namespace JollibeeClone.Controllers
             }
         }
 
+        // Helper method to get Vietnam local time
+        private DateTime GetVietnamLocalTime()
+        {
+            var vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+            return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vietnamTimeZone);
+        }
+
+        // API: Calculate shipping fee real-time
+        [HttpPost]
+        public async Task<IActionResult> CalculateShipping([FromBody] CalculateShippingRequest request)
+        {
+            try
+            {
+                // Get user info
+                var isUserLoggedIn = HttpContext.Session.GetString("IsUserLoggedIn") == "true";
+                var userIdFromSession = HttpContext.Session.GetString("UserId");
+                var userId = isUserLoggedIn && !string.IsNullOrEmpty(userIdFromSession) && int.TryParse(userIdFromSession, out int uid) ? uid : (int?)null;
+
+                // Check minimum order value
+                const decimal MIN_ORDER_VALUE = 60000m;
+                if (request.OrderAmount < MIN_ORDER_VALUE)
+                {
+                    return Json(new CalculateShippingResponse
+                    {
+                        Success = false,
+                        CanCheckout = false,
+                        ShippingFee = 0,
+                        TotalAmount = request.OrderAmount,
+                        Message = $"Đơn hàng tối thiểu {MIN_ORDER_VALUE:N0}₫ để có thể đặt hàng",
+                        RequiredAmount = MIN_ORDER_VALUE - request.OrderAmount,
+                        IsMinimumOrder = false
+                    });
+                }
+
+                // Calculate shipping fee
+                var shippingResult = await _shippingService.CalculateShippingFeeAsync(userId, request.OrderAmount, request.DeliveryMethodId);
+                var freeshipeInfo = await _shippingService.GetFreeshipePromotionInfoAsync(userId, request.OrderAmount);
+
+                return Json(new CalculateShippingResponse
+                {
+                    Success = true,
+                    CanCheckout = true,
+                    ShippingFee = shippingResult.ShippingFee,
+                    TotalAmount = request.OrderAmount + shippingResult.ShippingFee,
+                    Message = shippingResult.Message,
+                    IsFreeship = shippingResult.IsFreeship,
+                    FreeshipeMessage = freeshipeInfo.Message,
+                    IsFirstOrder = freeshipeInfo.IsFirstOrder,
+                    RequiredAmount = 0,
+                    IsMinimumOrder = true
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error calculating shipping: {ex.Message}");
+                return Json(new CalculateShippingResponse
+                {
+                    Success = false,
+                    CanCheckout = false,
+                    Message = "Có lỗi xảy ra khi tính phí giao hàng"
+                });
+            }
+        }
+
         // Helper method to generate unique order code
         private async Task<string> GenerateOrderCodeAsync()
         {
@@ -1842,5 +2003,26 @@ namespace JollibeeClone.Controllers
 
             return orderCode;
         }
+    }
+
+    // Request/Response models for shipping calculation
+    public class CalculateShippingRequest
+    {
+        public decimal OrderAmount { get; set; }
+        public int DeliveryMethodId { get; set; }
+    }
+
+    public class CalculateShippingResponse
+    {
+        public bool Success { get; set; }
+        public bool CanCheckout { get; set; }
+        public decimal ShippingFee { get; set; }
+        public decimal TotalAmount { get; set; }
+        public string Message { get; set; } = "";
+        public bool IsFreeship { get; set; }
+        public string FreeshipeMessage { get; set; } = "";
+        public bool IsFirstOrder { get; set; }
+        public decimal RequiredAmount { get; set; }
+        public bool IsMinimumOrder { get; set; }
     }
 }

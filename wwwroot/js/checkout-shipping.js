@@ -10,7 +10,20 @@ function initializeCheckoutShipping() {
     generatePickupDates();
     handleFormValidation();
     setupScrollIndicator();
+    
+    // Initialize shipping calculation on page load
+    calculateShippingOnLoad();
+    
     console.log('Checkout shipping initialized');
+}
+
+// Calculate shipping on page load
+function calculateShippingOnLoad() {
+    const selectedDeliveryMethod = document.querySelector('.delivery-radio-new:checked');
+    if (selectedDeliveryMethod) {
+        const deliveryMethodId = parseInt(selectedDeliveryMethod.value);
+        updateShippingCalculation(deliveryMethodId);
+    }
 }
 
 // Handle delivery method radio button changes
@@ -22,6 +35,7 @@ function handleDeliveryMethodChange() {
         radio.addEventListener('change', function() {
             if (this.checked) {
                 const methodName = this.nextElementSibling.textContent.toLowerCase();
+                const deliveryMethodId = parseInt(this.value);
                 
                 // Show store pickup section if pickup method is selected
                 if (methodName.includes('lấy tại') || methodName.includes('pickup') || methodName.includes('cửa hàng')) {
@@ -32,10 +46,207 @@ function handleDeliveryMethodChange() {
                     makeStoreFieldsRequired(false);
                 }
                 
-                console.log('Delivery method changed:', methodName);
+                // Calculate shipping for new delivery method
+                updateShippingCalculation(deliveryMethodId);
+                
+                console.log('Delivery method changed:', methodName, 'ID:', deliveryMethodId);
             }
         });
     });
+}
+
+// Update shipping calculation via API
+async function updateShippingCalculation(deliveryMethodId) {
+    try {
+        // Get current subtotal from the page
+        const subtotalElement = document.querySelector('.subtotal-amount');
+        const subtotalText = subtotalElement ? subtotalElement.textContent : '0';
+        const subtotal = parseFloat(subtotalText.replace(/[^\d]/g, '')) || 0;
+        
+        console.log('Calculating shipping for:', { deliveryMethodId, subtotal });
+        
+        // Call shipping API
+        const response = await fetch('/Cart/CalculateShipping', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: JSON.stringify({
+                OrderAmount: subtotal,
+                DeliveryMethodId: deliveryMethodId
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log('Shipping calculation result:', result);
+        
+        if (result.success) {
+            updateShippingUI(result, deliveryMethodId);
+        } else {
+            handleShippingError(result.message);
+        }
+        
+    } catch (error) {
+        console.error('Error calculating shipping:', error);
+        handleShippingError('Không thể tính phí giao hàng. Vui lòng thử lại.');
+    }
+}
+
+// Update shipping UI with calculation results
+function updateShippingUI(result, deliveryMethodId) {
+    // Update delivery method description with shipping fee
+    const methodLabel = document.querySelector(`label[for="delivery_${deliveryMethodId}"] .delivery-description`);
+    if (methodLabel) {
+        if (result.shippingFee === 0) {
+            methodLabel.textContent = result.isFreeship ? '(Miễn phí)' : '(0 đ)';
+            methodLabel.style.color = result.isFreeship ? '#28a745' : '#6c757d';
+        } else {
+            methodLabel.textContent = `(+${formatCurrency(result.shippingFee)})`;
+            methodLabel.style.color = '#dc3545';
+        }
+    }
+    
+    // Update hidden form fields
+    const shippingFeeInput = document.querySelector('input[name="ShippingFee"]');
+    if (shippingFeeInput) {
+        shippingFeeInput.value = result.shippingFee;
+    }
+    
+    const totalAmountInput = document.querySelector('input[name="TotalAmount"]');
+    if (totalAmountInput) {
+        totalAmountInput.value = result.totalAmount;
+    }
+    
+    // Update total amount display
+    const totalAmountElement = document.querySelector('.total-amount');
+    if (totalAmountElement) {
+        totalAmountElement.textContent = formatCurrency(result.totalAmount);
+    }
+    
+    // BỎ LUÔN shipping message để tránh confuse user
+    // updateShippingMessage(result);
+    
+    // Handle minimum order validation
+    if (!result.canCheckout && result.requiredAmount > 0) {
+        showMinimumOrderError(result.requiredAmount);
+    } else {
+        hideMinimumOrderError();
+    }
+    
+    console.log('Shipping UI updated:', {
+        shippingFee: result.shippingFee,
+        totalAmount: result.totalAmount,
+        isFreeship: result.isFreeship,
+        canCheckout: result.canCheckout
+    });
+}
+
+// Update shipping message display
+function updateShippingMessage(result) {
+    let messageContainer = document.querySelector('.shipping-message');
+    if (!messageContainer) {
+        // Create message container if it doesn't exist
+        messageContainer = document.createElement('div');
+        messageContainer.className = 'shipping-message';
+        
+        // Insert after delivery methods section
+        const deliverySection = document.querySelector('.delivery-methods-new');
+        if (deliverySection) {
+            deliverySection.parentNode.insertBefore(messageContainer, deliverySection.nextSibling);
+        }
+    }
+    
+    if (result.freeshipeMessage || result.message) {
+        const messageText = result.freeshipeMessage || result.message;
+        messageContainer.innerHTML = `
+            <div class="alert ${result.isFreeship ? 'alert-success' : 'alert-info'} mb-3">
+                <i class="fas ${result.isFreeship ? 'fa-gift' : 'fa-info-circle'}"></i>
+                ${messageText}
+            </div>
+        `;
+        messageContainer.style.display = 'block';
+    } else {
+        messageContainer.style.display = 'none';
+    }
+}
+
+// Show minimum order error
+function showMinimumOrderError(requiredAmount) {
+    let errorContainer = document.querySelector('.minimum-order-error');
+    if (!errorContainer) {
+        errorContainer = document.createElement('div');
+        errorContainer.className = 'minimum-order-error';
+        
+        // Insert at the top of the form
+        const form = document.getElementById('checkoutForm');
+        if (form) {
+            form.insertBefore(errorContainer, form.firstChild);
+        }
+    }
+    
+    errorContainer.innerHTML = `
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>Đơn hàng tối thiểu 60,000₫</strong><br>
+            Vui lòng thêm ${formatCurrency(requiredAmount)} nữa để có thể đặt hàng.
+            <a href="/Menu/MonNgonPhaiThu" class="btn btn-sm btn-outline-primary ms-2">
+                <i class="fas fa-plus"></i> Thêm món
+            </a>
+        </div>
+    `;
+    errorContainer.style.display = 'block';
+    
+    // Disable submit button
+    const submitButton = document.querySelector('.continue-btn');
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'ĐƠN HÀNG CHƯA ĐẠT TỐI THIỂU';
+    }
+}
+
+// Hide minimum order error
+function hideMinimumOrderError() {
+    const errorContainer = document.querySelector('.minimum-order-error');
+    if (errorContainer) {
+        errorContainer.style.display = 'none';
+    }
+    
+    // Enable submit button
+    const submitButton = document.querySelector('.continue-btn');
+    if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'TIẾP THEO';
+    }
+}
+
+// Handle shipping calculation errors
+function handleShippingError(message) {
+    console.error('Shipping error:', message);
+    
+    // Show error message
+    let errorContainer = document.querySelector('.shipping-error');
+    if (!errorContainer) {
+        errorContainer = document.createElement('div');
+        errorContainer.className = 'shipping-error';
+        
+        const deliverySection = document.querySelector('.delivery-methods-new');
+        if (deliverySection) {
+            deliverySection.parentNode.insertBefore(errorContainer, deliverySection.nextSibling);
+        }
+    }
+    
+    errorContainer.innerHTML = `
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-triangle"></i>
+            ${message}
+        </div>
+    `;
+    errorContainer.style.display = 'block';
 }
 
 // Make store-related fields required or optional
@@ -328,7 +539,7 @@ function setupScrollIndicator() {
 
 // Utility function to format currency
 function formatCurrency(amount) {
-    return new Intl.NumberFormat('vi-VN').format(amount) + ' đ';
+    return new Intl.NumberFormat('vi-VN').format(amount) + '₫';
 }
 
 // Handle edit address button click

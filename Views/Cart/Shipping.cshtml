@@ -160,7 +160,29 @@
                                             @method.MethodName
                                             @if (method.MethodName.Contains("giao hàng") || method.MethodName.Contains("ship"))
                                             {
-                                                <span class="delivery-description">(+0 đ)</span>
+                                                @if (method.DeliveryMethodID == Model.DeliveryMethodID)
+                                                {
+                                                    @if (Model.ShippingFee == 0 && Model.IsFreeship)
+                                                    {
+                                                        <span class="delivery-description" style="color: #28a745;">(Miễn phí)</span>
+                                                    }
+                                                    else if (Model.ShippingFee == 0)
+                                                    {
+                                                        <span class="delivery-description">(0₫)</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="delivery-description" style="color: #dc3545;">(+@Model.ShippingFee.ToString("N0")₫)</span>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span class="delivery-description">(Tính sau)</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span class="delivery-description">(0₫)</span>
                                             }
                                         </span>
                                     </label>
@@ -289,17 +311,49 @@
                     <div class="subtotal-info">
                         <div class="subtotal-row">
                             <span class="subtotal-label">Chi phí tạm tính</span>
-                            <span class="subtotal-amount">@Model.SubtotalAmount.ToString("N0") đ</span>
+                            <span class="subtotal-amount">@Model.SubtotalAmount.ToString("N0")₫</span>
                         </div>
                         <div class="vat-notice">
                             <em>Đã bao gồm giá thuế VAT 8%</em>
                         </div>
+                        
+                        @* Chỉ hiển thị phí ship khi là delivery (giao hàng), không hiển thị khi pickup *@
+                        @if (Model.DeliveryMethodID == 1)
+                        {
+                            @if (Model.ShippingFee > 0)
+                            {
+                                <div class="shipping-row">
+                                    <span class="shipping-label">Phí giao hàng</span>
+                                    <span class="shipping-amount">@Model.ShippingFee.ToString("N0")₫</span>
+                                </div>
+                            }
+                            else if (Model.IsFreeship)
+                            {
+                                <div class="shipping-row">
+                                    <span class="shipping-label">Phí giao hàng</span>
+                                    <span class="shipping-amount" style="color: #28a745;">Miễn phí</span>
+                                </div>
+                            }
+                        }
                     </div>
+                    
+                    @* BỎ LUÔN phần FreeshipeMessage này để tránh confuse user *@
+                    @* 
+                    @if (!string.IsNullOrEmpty(Model.FreeshipeMessage))
+                    {
+                        <div class="freeship-info mb-3">
+                            <div class="alert @(Model.IsFirstOrder && Model.SubtotalAmount >= 60000 ? "alert-success" : "alert-info") mb-0">
+                                <i class="fas @(Model.IsFirstOrder && Model.SubtotalAmount >= 60000 ? "fa-gift" : "fa-info-circle")"></i>
+                                @Model.FreeshipeMessage
+                            </div>
+                        </div>
+                    }
+                    *@
                     
                     <div class="total-section">
                         <div class="total-row">
                             <span class="total-label">Tổng Cộng</span>
-                            <span class="total-amount">@Model.TotalAmount.ToString("N0") đ</span>
+                            <span class="total-amount">@Model.TotalAmount.ToString("N0")₫</span>
                         </div>
                     </div>
                 </div>

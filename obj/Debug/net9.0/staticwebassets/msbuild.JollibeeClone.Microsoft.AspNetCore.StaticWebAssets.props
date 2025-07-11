@@ -2244,8 +2244,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>sif2stfe4q</Fingerprint>
-      <Integrity>FFuZQDX0TJIY9Y88D4ynhoy9jtQ2BRExvVCxIdQMmtY=</Integrity>
+      <Fingerprint>5hsujr5c7t</Fingerprint>
+      <Integrity>qXqtj5FwP64js+ijcJ/D3IGZ3NWAxf0AkSWd/DuuhJM=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\checkout-shipping.css'))</OriginalItemSpec>
@@ -2370,8 +2370,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>jrgyim5fni</Fingerprint>
-      <Integrity>XwOgIg1n+5Aa0BOj/Kzp/m+rtaxEgqXB+SzcDoyOZmA=</Integrity>
+      <Fingerprint>k4zodm05nu</Fingerprint>
+      <Integrity>1EzPmEzDJc0eMGIfLMJ4Z45IV9m0REfePOHDT5eCR6g=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\order-detail.css'))</OriginalItemSpec>
@@ -2478,8 +2478,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>g0qp7urwvc</Fingerprint>
-      <Integrity>EGENlGu3qK+tB8rf/51DGnGc9qUGoudOFn7mUEQJVxQ=</Integrity>
+      <Fingerprint>f4c3co9iwo</Fingerprint>
+      <Integrity>4aOSRdjPF5bampWOj+8sT8QeIA7xfoxu0kzFdALnTTs=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\promotions.css'))</OriginalItemSpec>
@@ -2622,8 +2622,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>4q05zxgtzn</Fingerprint>
-      <Integrity>FAYP7d8S7wPZpvNpi6q64T0OZkcmITbZwdggedc5up8=</Integrity>
+      <Fingerprint>6h6g0rhxzn</Fingerprint>
+      <Integrity>yiAgcyN7T6J4+DUAZgmWDwZ34zAR4121qlWgJZMXXcE=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\today-menu.css'))</OriginalItemSpec>
@@ -2676,8 +2676,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>rfytihncis</Fingerprint>
-      <Integrity>aQYR4u9MeNDJbzoRl8P7nEK8j8C5hmuLaixAXPx4PyA=</Integrity>
+      <Fingerprint>f2iia2xi85</Fingerprint>
+      <Integrity>CbIfskhOqi/8vtg3aBGfb0JbvzT9bGSbER+CUWPnVaw=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\user-promotions.css'))</OriginalItemSpec>
@@ -3072,8 +3072,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>hbtwt9o8b8</Fingerprint>
-      <Integrity>kyILDcjdpVeQNrZZ3UrJ4BSx4mel9VQ5HVu1FMLYrqs=</Integrity>
+      <Fingerprint>aeqwi42rg5</Fingerprint>
+      <Integrity>XvAdFLGCh57TqpKyLTk5u5KW1qf4FJV7U8iMlDarIj0=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\checkout-shipping.js'))</OriginalItemSpec>
