@@ -372,7 +372,7 @@ namespace JollibeeClone.Controllers
             }
         }
 
-        // NEW: Get all menu items for "Phần ăn phụ" category
+        // NEW: Get all menu items for "Phần ăn phụ" category - only regular products (no combos)
         public JsonResult GetPhanAnPhuItems()
         {
             try
@@ -394,20 +394,12 @@ namespace JollibeeClone.Controllers
 
                 Console.WriteLine($"📂 Found category: {phanAnPhuCategory.CategoryName} (ID: {phanAnPhuCategory.CategoryID})");
 
-                // Get IDs of products used as options in combos
-                var comboOptionProductIds = _context.ProductConfigurationOptions
-                    .Select(pco => pco.OptionProductID)
-                    .Distinct()
-                    .ToList();
-
-                Console.WriteLine($"🚫 Excluding {comboOptionProductIds.Count} combo option products: {string.Join(", ", comboOptionProductIds)}");
-
-                // Get all available products in this category, excluding combo option products
+                // Simplified logic - only get regular products (not configurable/combo products)
                 var allProducts = _context.Products
                     .Include(p => p.Category)
                     .Where(p => p.IsAvailable && 
                                p.CategoryID == phanAnPhuCategory.CategoryID &&
-                               (p.IsConfigurable || !comboOptionProductIds.Contains(p.ProductID)))
+                               !p.IsConfigurable) // Only get non-combo products
                     .Select(p => new {
                         p.ProductID,
                         p.ProductName,
@@ -419,11 +411,10 @@ namespace JollibeeClone.Controllers
                         p.IsConfigurable,
                         CategoryName = p.Category.CategoryName
                     })
-                    .OrderBy(p => p.IsConfigurable ? 0 : 1)
-                    .ThenBy(p => p.ProductName)
+                    .OrderBy(p => p.ProductName)
                     .ToList();
 
-                Console.WriteLine($"📦 Found {allProducts.Count} products in 'Phần ăn phụ' category:");
+                Console.WriteLine($"📦 Found {allProducts.Count} regular products in 'Phần ăn phụ' category:");
                 foreach (var product in allProducts)
                 {
                     Console.WriteLine($"  - {product.ProductName} (ID: {product.ProductID}, Price: {product.Price}, IsConfigurable: {product.IsConfigurable})");
@@ -439,7 +430,7 @@ namespace JollibeeClone.Controllers
             }
         }
 
-        // NEW: Get all menu items for "Món tráng miệng" category
+        // NEW: Get all menu items for "Món tráng miệng" category - only regular products (no combos)
         public JsonResult GetMonTrangMiengItems()
         {
             try
@@ -462,20 +453,12 @@ namespace JollibeeClone.Controllers
 
                 Console.WriteLine($"📂 Found category: {monTrangMiengCategory.CategoryName} (ID: {monTrangMiengCategory.CategoryID})");
 
-                // Get IDs of products used as options in combos
-                var comboOptionProductIds = _context.ProductConfigurationOptions
-                    .Select(pco => pco.OptionProductID)
-                    .Distinct()
-                    .ToList();
-
-                Console.WriteLine($"🚫 Excluding {comboOptionProductIds.Count} combo option products: {string.Join(", ", comboOptionProductIds)}");
-
-                // Get all available products in this category, excluding combo option products
+                // Simplified logic - only get regular products (not configurable/combo products)
                 var allProducts = _context.Products
                     .Include(p => p.Category)
                     .Where(p => p.IsAvailable && 
                                p.CategoryID == monTrangMiengCategory.CategoryID &&
-                               (p.IsConfigurable || !comboOptionProductIds.Contains(p.ProductID)))
+                               !p.IsConfigurable) // Only get non-combo products
                     .Select(p => new {
                         p.ProductID,
                         p.ProductName,
@@ -487,11 +470,10 @@ namespace JollibeeClone.Controllers
                         p.IsConfigurable,
                         CategoryName = p.Category.CategoryName
                     })
-                    .OrderBy(p => p.IsConfigurable ? 0 : 1)
-                    .ThenBy(p => p.ProductName)
+                    .OrderBy(p => p.ProductName)
                     .ToList();
 
-                Console.WriteLine($"📦 Found {allProducts.Count} products in 'Món tráng miệng' category:");
+                Console.WriteLine($"📦 Found {allProducts.Count} regular products in 'Món tráng miệng' category:");
                 foreach (var product in allProducts)
                 {
                     Console.WriteLine($"  - {product.ProductName} (ID: {product.ProductID}, Price: {product.Price}, IsConfigurable: {product.IsConfigurable})");
@@ -507,7 +489,7 @@ namespace JollibeeClone.Controllers
             }
         }
 
-        // NEW: Get all menu items for "Thức uống" category
+        // NEW: Get all menu items for "Thức uống" category - only regular products (no combos)
         public JsonResult GetThucUongItems()
         {
             try
@@ -530,20 +512,12 @@ namespace JollibeeClone.Controllers
 
                 Console.WriteLine($"📂 Found category: {thucUongCategory.CategoryName} (ID: {thucUongCategory.CategoryID})");
 
-                // Get IDs of products used as options in combos
-                var comboOptionProductIds = _context.ProductConfigurationOptions
-                    .Select(pco => pco.OptionProductID)
-                    .Distinct()
-                    .ToList();
-
-                Console.WriteLine($"🚫 Excluding {comboOptionProductIds.Count} combo option products: {string.Join(", ", comboOptionProductIds)}");
-
-                // Get all available products in this category, excluding combo option products
+                // Simplified logic - only get regular products (not configurable/combo products)
                 var allProducts = _context.Products
                     .Include(p => p.Category)
                     .Where(p => p.IsAvailable && 
                                p.CategoryID == thucUongCategory.CategoryID &&
-                               (p.IsConfigurable || !comboOptionProductIds.Contains(p.ProductID)))
+                               !p.IsConfigurable) // Only get non-combo products
                     .Select(p => new {
                         p.ProductID,
                         p.ProductName,
@@ -555,11 +529,10 @@ namespace JollibeeClone.Controllers
                         p.IsConfigurable,
                         CategoryName = p.Category.CategoryName
                     })
-                    .OrderBy(p => p.IsConfigurable ? 0 : 1)
-                    .ThenBy(p => p.ProductName)
+                    .OrderBy(p => p.ProductName)
                     .ToList();
 
-                Console.WriteLine($"📦 Found {allProducts.Count} products in 'Thức uống' category:");
+                Console.WriteLine($"📦 Found {allProducts.Count} regular products in 'Thức uống' category:");
                 foreach (var product in allProducts)
                 {
                     Console.WriteLine($"  - {product.ProductName} (ID: {product.ProductID}, Price: {product.Price}, IsConfigurable: {product.IsConfigurable})");

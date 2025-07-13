@@ -17,7 +17,7 @@
 
 /* Hero Section */
 .menu-hero {
-    background: linear-gradient(135deg, var(--primary-pink) 0%, var(--secondary-lavender) 50%, var(--sweet-purple) 100%);
+    background: linear-gradient(135deg, var(--primary-pink) 10%, var(--secondary-lavender) 50%, var(--sweet-purple) 100%);
     color: var(--white);
     padding: 80px 0;
     text-align: center;
@@ -145,7 +145,7 @@
 
 /* Buttons - Simple Design */
 .btn-order, .btn-order-simple {
-    background: linear-gradient(135deg, var(--primary-pink) 0%, var(--soft-rose) 100%);
+    background: var(--primary-pink);
     color: var(--white);
     border: none;
     border-radius: 8px;
@@ -160,7 +160,7 @@
 }
 
 .btn-order:hover, .btn-order-simple:hover {
-    background: linear-gradient(135deg, var(--soft-rose) 0%, var(--sweet-purple) 100%);
+    background:  var(--sweet-purple);
     box-shadow: 0 4px 12px var(--shadow-medium);
 }
 
