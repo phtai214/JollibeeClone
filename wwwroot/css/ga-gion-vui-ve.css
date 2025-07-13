@@ -1,0 +1,486 @@
+/* Gà Giòn Vui Vẻ Page Styles */
+
+body {
+    background: #f8f9fa;
+}
+
+/* Hero Section */
+.ga-gion-hero {
+    background: linear-gradient(120deg, #ffb347 0%, #ffd700 50%, #ff8c00 100%), url('/assets/images/ga_gion_vui_ve.png');
+    background-blend-mode: multiply;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    position: relative;
+    margin: 0 -15px;
+    width: calc(100% + 30px);
+    border-radius: 0 0 32px 32px;
+    box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2);
+}
+
+.ga-gion-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.ga-gion-hero h1 {
+    font-size: 3.2rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    letter-spacing: 1px;
+    background: linear-gradient(45deg, #fff, #fffacd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.ga-gion-hero p {
+    font-size: 1.35rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.15);
+    font-weight: 500;
+    color: #fffacd;
+}
+
+/* Menu Cards */
+.menu-card {
+    background: #fff;
+    border-radius: 24px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    box-shadow: 0 4px 32px rgba(255, 215, 0, 0.12), 0 1.5px 8px rgba(218, 165, 32, 0.08);
+    margin-bottom: 32px;
+    position: relative;
+}
+
+.combo-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(45deg, #daa520, #ff8c00);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(218, 165, 32, 0.4);
+}
+
+.menu-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(218, 165, 32, 0.2), 0 2px 12px rgba(255, 215, 0, 0.15);
+}
+
+.menu-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 3px solid #ffd700;
+    background: #fffacd;
+    transition: transform 0.3s ease;
+}
+
+.menu-card:hover .menu-img {
+    transform: scale(1.05);
+}
+
+.menu-content {
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+}
+
+.menu-content h3 {
+    color: #b8860b;
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.menu-info {
+    color: #555;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 1.1rem;
+    font-weight: 400;
+}
+
+.menu-price {
+    color: #ff8c00;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(255, 140, 0, 0.1);
+}
+
+/* Buttons */
+.btn-order, .btn-order-simple {
+    background: linear-gradient(135deg, #daa520 0%, #ff8c00 100%);
+    color: #fff;
+    border-radius: 30px;
+    padding: 12px 36px;
+    font-weight: bold;
+    border: none;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
+    transition: all 0.3s ease;
+    display: block;
+    margin: 0 auto;
+    min-width: 140px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-order::before, .btn-order-simple::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-order:hover::before, .btn-order-simple:hover::before {
+    left: 100%;
+}
+
+.btn-order:hover, .btn-order-simple:hover {
+    background: linear-gradient(135deg, #ff8c00 0%, #daa520 100%);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-order:active, .btn-order-simple:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(218, 165, 32, 0.3);
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: 24px;
+    box-shadow: 0 8px 40px rgba(218, 165, 32, 0.15);
+    border: none;
+}
+
+.modal-header {
+    border-bottom: 2px solid #ffd700;
+    background: linear-gradient(90deg, #fffacd 0%, #fff8dc 100%);
+    border-radius: 24px 24px 0 0;
+}
+
+.modal-title {
+    color: #b8860b;
+    font-weight: 700;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #b8860b;
+    opacity: 0.8;
+}
+
+.btn-close:hover {
+    opacity: 1;
+    color: #ff8c00;
+}
+
+/* Form Controls */
+.btn-check:checked + .btn-outline-danger {
+    background: linear-gradient(135deg, #daa520, #ff8c00);
+    border-color: #daa520;
+    color: white;
+    box-shadow: 0 2px 8px rgba(218, 165, 32, 0.3);
+}
+
+.btn-outline-danger {
+    border-color: #daa520;
+    color: #b8860b;
+    border-width: 2px;
+    border-radius: 12px;
+    padding: 8px 16px;
+    margin-right: 8px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-outline-danger:hover {
+    background: linear-gradient(135deg, #daa520, #ff8c00);
+    border-color: #daa520;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(218, 165, 32, 0.2);
+}
+
+.btn-outline-danger img {
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.form-label.fw-bold {
+    color: #b8860b;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+/* Quantity Controls */
+.input-group .form-control {
+    border: 2px solid #daa520;
+    border-radius: 0;
+    text-align: center;
+    font-weight: 600;
+    color: #b8860b;
+}
+
+.input-group .form-control:focus {
+    border-color: #ff8c00;
+    box-shadow: 0 0 0 3px rgba(218, 165, 32, 0.15);
+}
+
+.input-group .btn-outline-secondary {
+    border-radius: 20px;
+    border: 2px solid #daa520;
+    color: #b8860b;
+    background: #fff;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.input-group .btn-outline-secondary:hover {
+    background: #daa520;
+    color: #fff;
+    border-color: #daa520;
+}
+
+.input-group .btn-outline-secondary:first-child {
+    border-radius: 20px 0 0 20px;
+}
+
+.input-group .btn-outline-secondary:last-child {
+    border-radius: 0 20px 20px 0;
+}
+
+/* Total Price Display */
+.total-price-display {
+    background: linear-gradient(135deg, #fffacd, #fff8dc);
+    padding: 15px 20px;
+    border-radius: 15px;
+    border: 2px solid #ffd700;
+}
+
+.total-price-display .text-muted {
+    color: #b8860b !important;
+    font-weight: 600;
+}
+
+.total-price-display .text-danger {
+    color: #ff8c00 !important;
+    font-weight: 800;
+    text-shadow: 0 1px 2px rgba(255, 140, 0, 0.1);
+}
+
+/* Modal Footer Buttons */
+.modal-footer .btn-secondary {
+    background: #6c757d;
+    border-color: #6c757d;
+    border-radius: 25px;
+    padding: 10px 24px;
+    font-weight: 600;
+}
+
+.modal-footer .btn-danger {
+    background: linear-gradient(135deg, #daa520, #ff8c00);
+    border: none;
+    border-radius: 25px;
+    padding: 10px 24px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
+    transition: all 0.3s ease;
+}
+
+.modal-footer .btn-danger:hover {
+    background: linear-gradient(135deg, #ff8c00, #daa520);
+    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Loading and Success States */
+.btn-order:disabled,
+.btn-order-simple:disabled {
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.btn-order:disabled:hover,
+.btn-order-simple:disabled:hover {
+    background: #ccc;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ga-gion-hero {
+        height: 250px;
+        border-radius: 0 0 18px 18px;
+        margin: 0;
+        width: 100%;
+    }
+    
+    .ga-gion-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .ga-gion-hero p {
+        font-size: 1.1rem;
+    }
+    
+    .menu-card {
+        border-radius: 16px;
+        margin-bottom: 24px;
+    }
+    
+    .menu-content {
+        padding: 1.5rem 1rem 1rem 1rem;
+    }
+    
+    .menu-content h3 {
+        font-size: 1.2rem;
+    }
+    
+    .menu-price {
+        font-size: 1.2rem;
+    }
+    
+    .btn-order, .btn-order-simple {
+        padding: 10px 28px;
+        font-size: 1rem;
+    }
+    
+    .modal-content {
+        border-radius: 16px;
+    }
+    
+    .modal-header {
+        border-radius: 16px 16px 0 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .ga-gion-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .ga-gion-hero p {
+        font-size: 1rem;
+    }
+    
+    .menu-img {
+        height: 180px;
+    }
+    
+    .btn-outline-danger {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        width: 100%;
+    }
+    
+    .btn-outline-danger img {
+        width: 40px !important;
+    }
+    
+    .total-price-display {
+        padding: 12px 16px;
+        text-align: center;
+    }
+}
+
+/* Animation for page load */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.menu-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.menu-card:nth-child(1) { animation-delay: 0.1s; }
+.menu-card:nth-child(2) { animation-delay: 0.2s; }
+.menu-card:nth-child(3) { animation-delay: 0.3s; }
+.menu-card:nth-child(4) { animation-delay: 0.4s; }
+.menu-card:nth-child(5) { animation-delay: 0.5s; }
+.menu-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Hover effects for images */
+@keyframes bounce {
+    0%, 20%, 60%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    80% {
+        transform: translateY(-5px);
+    }
+}
+
+.combo-badge:hover {
+    animation: bounce 1s;
+}
+
+/* Focus styles for accessibility */
+.btn-order:focus,
+.btn-order-simple:focus,
+.btn-outline-danger:focus {
+    outline: 3px solid rgba(218, 165, 32, 0.4);
+    outline-offset: 2px;
+}
+
+/* Custom scrollbar for modal */
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #daa520;
+    border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: #ff8c00;
+} 

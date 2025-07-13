@@ -777,3 +777,10 @@ D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\lwdo
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\2r7nqbv693-f7vf11t0dk.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\2p47uqp0v2-lbgw9pl4bo.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\zb7map27dz-3klo5vv3wx.gz
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\j3i3okl2bn-n85v86lpro.gz
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\bxfap9qxdm-u5z0rdvsdh.gz
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\m7es41u4rl-k1drb9dgio.gz
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\bkhxjhkgui-yfyfjt4vjj.gz
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\85b6mo2idw-fs2tomz4vr.gz
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\axtn8uclyw-k2fu2p2ujr.gz
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\w16ikstypl-lm8d3x8gyd.gz
