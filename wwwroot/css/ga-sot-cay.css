@@ -282,6 +282,120 @@
     font-weight: 600;
 }
 
+/* Modal Quantity Controls & Total Price */
+.modal-footer .order-info {
+    background: rgb(255, 255, 255);
+    padding: 8px 14px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
+}
+
+.modal-footer .order-info .btn-outline-secondary {
+    border: 2px solid #f02727;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.modal-footer .order-info .btn-outline-secondary:hover {
+    background: rgb(255, 251, 251);
+    border-color: #f93636;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.modal-footer .order-info .form-control {
+    border: 2px solid rgb(255, 54, 54);
+    background: rgb(255, 255, 255);
+    color: #FF4500;
+    font-weight: 700;
+    font-size: 16px;
+    text-align: center;
+}
+
+.modal-footer .order-info .form-control:focus {
+    border-color: #fff;
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.3);
+    background: #fff;
+}
+
+.modal-footer .total-price {
+    color: #ff2626;
+    font-size: 18px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.modal-footer .total-price span {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ef3838;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Modal Buttons */
+.modal-footer .modal-buttons .btn-secondary {
+    background: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.modal-footer .modal-buttons .btn-secondary:hover {
+    background: #5a6268;
+    border-color: #5a6268;
+    transform: translateY(-1px);
+}
+
+.modal-footer .modal-buttons .btn-danger {
+    background: linear-gradient(135deg, #DC143C 0%, #B22222 100%);
+    border: none;
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+    transition: all 0.2s ease;
+}
+
+.modal-footer .modal-buttons .btn-danger:hover {
+    background: linear-gradient(135deg, #B22222 0%, #8B0000 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(220, 20, 60, 0.4);
+}
+
+/* Modal Options Styling */
+.modal-body .btn-outline-danger {
+    border: 2px solid #FF6B35;
+    color: #FF6B35;
+    background: transparent;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 4px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.modal-body .btn-outline-danger:hover,
+.modal-body .btn-check:checked + .btn-outline-danger {
+    background: linear-gradient(135deg, #FF6B35 0%, #FF4500 100%);
+    border-color: #FF4500;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(255, 107, 53, 0.3);
+}
+
+.modal-body .form-label {
+    color: #FF4500;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .menu-hero h1 {
@@ -501,4 +615,4 @@
 
 .combo-badge:hover {
     animation: bounce 0.6s ease infinite;
-} 
+}

@@ -853,6 +853,25 @@
     color: #dc3545;
 }
 
+
+
+/* Shipping fee row styling */
+
+
+.shipping-fee-row .subtotal-label {
+    color: #676767;
+    font-weight: 600;
+}
+
+.shipping-fee-row .subtotal-amount {
+    color: #4d4d4d;
+    font-weight: 700;
+}
+
+.shipping-fee-free .subtotal-amount {
+    color: #28a745 !important;
+}
+
 /* Validation Errors */
 .text-danger {
     color: #dc3545 !important;
@@ -982,4 +1001,4 @@
     .voucher-apply-btn {
         width: 100%;
     }
-} 
+}

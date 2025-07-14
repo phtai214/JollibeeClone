@@ -269,6 +269,8 @@
                         <i class="fas fa-edit"></i>
                     </button>
                 </div>
+
+                
                 
                 <div class="order-items-list">
                     @foreach (var item in Model.CartItems)
@@ -317,38 +319,15 @@
                             <em>Đã bao gồm giá thuế VAT 8%</em>
                         </div>
                         
-                        @* Chỉ hiển thị phí ship khi là delivery (giao hàng), không hiển thị khi pickup *@
-                        @if (Model.DeliveryMethodID == 1)
-                        {
-                            @if (Model.ShippingFee > 0)
-                            {
-                                <div class="shipping-row">
-                                    <span class="shipping-label">Phí giao hàng</span>
-                                    <span class="shipping-amount">@Model.ShippingFee.ToString("N0")₫</span>
-                                </div>
-                            }
-                            else if (Model.IsFreeship)
-                            {
-                                <div class="shipping-row">
-                                    <span class="shipping-label">Phí giao hàng</span>
-                                    <span class="shipping-amount" style="color: #28a745;">Miễn phí</span>
-                                </div>
-                            }
-                        }
-                    </div>
-                    
-                    @* BỎ LUÔN phần FreeshipeMessage này để tránh confuse user *@
-                    @* 
-                    @if (!string.IsNullOrEmpty(Model.FreeshipeMessage))
-                    {
-                        <div class="freeship-info mb-3">
-                            <div class="alert @(Model.IsFirstOrder && Model.SubtotalAmount >= 60000 ? "alert-success" : "alert-info") mb-0">
-                                <i class="fas @(Model.IsFirstOrder && Model.SubtotalAmount >= 60000 ? "fa-gift" : "fa-info-circle")"></i>
-                                @Model.FreeshipeMessage
+                        @* Container cho phí giao hàng - sẽ được JavaScript control hoàn toàn *@
+                        <div id="shipping-fee-container" style="display: none;">
+                            @* Dynamic shipping fee content sẽ được JavaScript tạo *@
+                            <div class="shipping-row" id="dynamic-shipping-row" style="display: none;">
+                                <span class="shipping-label">Phí giao hàng</span>
+                                <span class="shipping-amount" id="dynamic-shipping-amount">0₫</span>
                             </div>
                         </div>
-                    }
-                    *@
+                
                     
                     <div class="total-section">
                         <div class="total-row">
@@ -365,4 +344,88 @@
 @section Scripts {
     <script src="~/js/checkout-shipping.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <style>
+        /* Enhanced shipping fee container control */
+        #shipping-fee-container {
+            transition: all 0.3s ease;
+        }
+        
+        #shipping-fee-container.force-hide {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0;
+        }
+        
+        #shipping-fee-container.force-show {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1;
+        }
+        
+        /* Default hidden state */
+        #shipping-fee-container {
+            display: none;
+        }
+        
+        .shipping-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .shipping-label {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .shipping-amount {
+            font-weight: 600;
+            color: #dc3545;
+        }
+        
+        .shipping-amount.free {
+            color: #28a745;
+        }
+    </style>
+    
+    <script type="text/javascript">
+        // DEBUG: Log current delivery method info
+        console.log('🔍 DEBUG - Current delivery method info:');
+        console.log('- DeliveryMethodID:', @Model.DeliveryMethodID);
+        console.log('- ShippingFee:', @Model.ShippingFee);
+        console.log('- IsFreeship:', @Model.IsFreeship.ToString().ToLower());
+        
+        // FORCE CORRECT DISPLAY based on actually selected radio button
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const selectedRadio = document.querySelector('.delivery-radio-new:checked');
+                const shippingContainer = document.querySelector('#shipping-fee-container');
+                
+                console.log('🔍 Selected radio:', selectedRadio);
+                console.log('🔍 Shipping container found:', !!shippingContainer);
+                
+                if (selectedRadio && shippingContainer) {
+                    const selectedDeliveryId = parseInt(selectedRadio.value);
+                    console.log('🔍 Actually selected delivery ID:', selectedDeliveryId);
+                    
+                    // Remove all classes first
+                    shippingContainer.classList.remove('force-hide', 'force-show');
+                    
+                    if (selectedDeliveryId === 2) {
+                        console.log('🚫 FORCING HIDE shipping fee for pickup method');
+                        shippingContainer.classList.add('force-hide');
+                    } else if (selectedDeliveryId === 1) {
+                        console.log('✅ SHOWING shipping fee for delivery method');
+                        shippingContainer.classList.add('force-show');
+                    }
+                } else {
+                    console.log('❌ Radio or container not found');
+                }
+            }, 100); // Small delay to ensure DOM is ready
+        });
+    </script>
 } 

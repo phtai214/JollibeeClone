@@ -154,55 +154,57 @@ namespace JollibeeClone.Controllers
         // NEW: Get all menu items for "Gà Giòn Vui Vẻ" category
         public JsonResult GetGaGionVuiVeItems()
         {
-            // Get CategoryID for "Gà Giòn Vui Vẻ"
-            var gaGionVuiVeCategory = _context.Categories
-                .FirstOrDefault(c => c.CategoryName.Contains("Gà Giòn Vui Vẻ") || 
-                                    c.CategoryName.Contains("ga gion vui ve"));
-            
-            if (gaGionVuiVeCategory == null)
+            try
             {
-                Console.WriteLine("⚠️ 'Gà Giòn Vui Vẻ' category not found!");
+                Console.WriteLine("🔍 GetGaGionVuiVeItems called");
+                
+                // Get CategoryID for "Gà Giòn Vui Vẻ"
+                var gaGionVuiVeCategory = _context.Categories
+                    .FirstOrDefault(c => c.CategoryName.Contains("Gà Giòn Vui Vẻ") || 
+                                        c.CategoryName.Contains("ga gion vui ve"));
+                
+                if (gaGionVuiVeCategory == null)
+                {
+                    Console.WriteLine("⚠️ 'Gà Giòn Vui Vẻ' category not found!");
+                    return Json(new List<object>());
+                }
+
+                Console.WriteLine($"📂 Found category: {gaGionVuiVeCategory.CategoryName} (ID: {gaGionVuiVeCategory.CategoryID})");
+
+                // New logic: Show all products in this category (combos + regular products)
+                // regardless of whether they are combo options or not
+                var allProducts = _context.Products
+                    .Include(p => p.Category)
+                    .Where(p => p.IsAvailable && p.CategoryID == gaGionVuiVeCategory.CategoryID)
+                    .Select(p => new {
+                        p.ProductID,
+                        p.ProductName,
+                        p.ShortDescription,
+                        p.Price,
+                        p.OriginalPrice,
+                        p.ImageUrl,
+                        p.ThumbnailUrl,
+                        p.IsConfigurable,
+                        CategoryName = p.Category != null ? p.Category.CategoryName : "Unknown"
+                    })
+                    .OrderBy(p => p.IsConfigurable ? 0 : 1) // Combos first, then regular products
+                    .ThenBy(p => p.ProductName)
+                    .ToList();
+
+                Console.WriteLine($"📦 Found {allProducts.Count} products in 'Gà Giòn Vui Vẻ' category:");
+                foreach (var product in allProducts)
+                {
+                    Console.WriteLine($"  - {product.ProductName} (ID: {product.ProductID}, Price: {product.Price}, IsConfigurable: {product.IsConfigurable})");
+                }
+
+                return Json(allProducts);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error in GetGaGionVuiVeItems: {ex.Message}");
+                Console.WriteLine($"❌ Stack trace: {ex.StackTrace}");
                 return Json(new List<object>());
             }
-
-            Console.WriteLine($"📂 Found category: {gaGionVuiVeCategory.CategoryName} (ID: {gaGionVuiVeCategory.CategoryID})");
-
-            // Get IDs of products used as options in combos
-            var comboOptionProductIds = _context.ProductConfigurationOptions
-                .Select(pco => pco.OptionProductID)
-                .Distinct()
-                .ToList();
-
-            Console.WriteLine($"🚫 Excluding {comboOptionProductIds.Count} combo option products: {string.Join(", ", comboOptionProductIds)}");
-
-            var allProducts = _context.Products
-                .Include(p => p.Category)
-                .Where(p => p.IsAvailable && 
-                           p.CategoryID == gaGionVuiVeCategory.CategoryID &&
-                           (p.IsConfigurable || !comboOptionProductIds.Contains(p.ProductID)))
-                .ToList()
-                .Select(p => new {
-                    p.ProductID,
-                    p.ProductName,
-                    p.ShortDescription,
-                    p.Price,
-                    p.OriginalPrice,
-                    p.ImageUrl,
-                    p.ThumbnailUrl,
-                    p.IsConfigurable,
-                    CategoryName = p.Category.CategoryName
-                })
-                .OrderBy(p => p.IsConfigurable ? 0 : 1)
-                .ThenBy(p => p.ProductName)
-                .ToList();
-
-            Console.WriteLine($"📦 Found {allProducts.Count} products in 'Gà Giòn Vui Vẻ' category:");
-            foreach (var product in allProducts)
-            {
-                Console.WriteLine($"  - {product.ProductName} (ID: {product.ProductID}, Category: {product.CategoryName}, IsConfigurable: {product.IsConfigurable})");
-            }
-
-            return Json(allProducts);
         }
 
         // NEW: Get all menu items for "Mì Ý Jolly" category
@@ -226,7 +228,7 @@ namespace JollibeeClone.Controllers
 
                 Console.WriteLine($"📂 Found category: {miYJollyCategory.CategoryName} (ID: {miYJollyCategory.CategoryID})");
 
-                // Simplified logic - just get all available products in this category
+                // Show all products in this category (combos + regular products)
                 var allProducts = _context.Products
                     .Include(p => p.Category)
                     .Where(p => p.IsAvailable && p.CategoryID == miYJollyCategory.CategoryID)
@@ -239,9 +241,10 @@ namespace JollibeeClone.Controllers
                         p.ImageUrl,
                         p.ThumbnailUrl,
                         p.IsConfigurable,
-                        CategoryName = p.Category.CategoryName
+                        CategoryName = p.Category != null ? p.Category.CategoryName : "Unknown"
                     })
-                    .OrderBy(p => p.ProductName)
+                    .OrderBy(p => p.IsConfigurable ? 0 : 1) // Combos first, then regular products
+                    .ThenBy(p => p.ProductName)
                     .ToList();
 
                 Console.WriteLine($"📦 Found {allProducts.Count} products in 'Mì Ý Jolly' category:");
@@ -281,7 +284,7 @@ namespace JollibeeClone.Controllers
 
                 Console.WriteLine($"📂 Found category: {gaSotCayCategory.CategoryName} (ID: {gaSotCayCategory.CategoryID})");
 
-                // Simplified logic - just get all available products in this category
+                // Show all products in this category (combos + regular products)
                 var allProducts = _context.Products
                     .Include(p => p.Category)
                     .Where(p => p.IsAvailable && p.CategoryID == gaSotCayCategory.CategoryID)
@@ -294,9 +297,10 @@ namespace JollibeeClone.Controllers
                         p.ImageUrl,
                         p.ThumbnailUrl,
                         p.IsConfigurable,
-                        CategoryName = p.Category.CategoryName
+                        CategoryName = p.Category != null ? p.Category.CategoryName : "Unknown"
                     })
-                    .OrderBy(p => p.ProductName)
+                    .OrderBy(p => p.IsConfigurable ? 0 : 1) // Combos first, then regular products
+                    .ThenBy(p => p.ProductName)
                     .ToList();
 
                 Console.WriteLine($"📦 Found {allProducts.Count} products in 'Gà Sốt Cay' category:");
@@ -338,7 +342,7 @@ namespace JollibeeClone.Controllers
 
                 Console.WriteLine($"📂 Found category: {burgerComCategory.CategoryName} (ID: {burgerComCategory.CategoryID})");
 
-                // Simplified logic - just get all available products in this category
+                // Show all products in this category (combos + regular products)
                 var allProducts = _context.Products
                     .Include(p => p.Category)
                     .Where(p => p.IsAvailable && p.CategoryID == burgerComCategory.CategoryID)
@@ -351,9 +355,10 @@ namespace JollibeeClone.Controllers
                         p.ImageUrl,
                         p.ThumbnailUrl,
                         p.IsConfigurable,
-                        CategoryName = p.Category.CategoryName
+                        CategoryName = p.Category != null ? p.Category.CategoryName : "Unknown"
                     })
-                    .OrderBy(p => p.ProductName)
+                    .OrderBy(p => p.IsConfigurable ? 0 : 1) // Combos first, then regular products
+                    .ThenBy(p => p.ProductName)
                     .ToList();
 
                 Console.WriteLine($"📦 Found {allProducts.Count} products in 'Burger/Cơm' category:");
@@ -629,25 +634,25 @@ namespace JollibeeClone.Controllers
                 .Where(p => p.ProductID == productId && p.IsConfigurable && p.IsAvailable)
                 .Select(p => new {
                     p.ProductID,
-                    p.ProductName,
-                    Groups = p.ProductConfigurationGroups.Select(g => new {
-                        g.ConfigGroupID,
-                        g.GroupName,
+                    productName = p.ProductName,  // Changed to camelCase
+                    groups = p.ProductConfigurationGroups.Select(g => new {  // Changed to camelCase
+                        configGroupID = g.ConfigGroupID,  // Changed to camelCase
+                        groupName = g.GroupName,  // Changed to camelCase
                         g.MinSelections,
                         g.MaxSelections,
-                        Options = g.ProductConfigurationOptions.Select(o => new {
-                            o.ConfigOptionID,
+                        options = g.ProductConfigurationOptions.Select(o => new {  // Changed to camelCase
+                            configOptionID = o.ConfigOptionID,  // Changed to camelCase
                             o.OptionProductID,
-                            o.PriceAdjustment,
-                            o.IsDefault,
+                            priceAdjustment = o.PriceAdjustment,  // Changed to camelCase
+                            isDefault = o.IsDefault,  // Changed to camelCase
                             o.DisplayOrder,
                             o.CustomImageUrl,
                             o.Quantity,
                             o.VariantID,
-                            ProductName = o.OptionProduct.ProductName,
-                            ProductImage = o.OptionProduct.ImageUrl,
-                            VariantName = o.Variant != null ? o.Variant.VariantName : null,
-                            VariantType = o.Variant != null ? o.Variant.VariantType : null
+                            productName = o.OptionProduct.ProductName,  // Changed to camelCase
+                            productImage = o.OptionProduct.ImageUrl,  // Changed to camelCase
+                            variantName = o.Variant != null ? o.Variant.VariantName : null,  // Changed to camelCase
+                            variantType = o.Variant != null ? o.Variant.VariantType : null  // Changed to camelCase
                         }).ToList()
                     }).ToList()
                 })

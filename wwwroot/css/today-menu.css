@@ -126,6 +126,7 @@
     overflow: hidden;
     transition: box-shadow 0.3s, transform 0.3s;
     box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    cursor: pointer; /* Make clickable */
 }
 .today-menu-item .top-img-wrapper img {
     transition: transform 0.4s cubic-bezier(.4,2,.6,.8), filter 0.3s;
@@ -161,4 +162,9 @@
 }
 .today-menu-item:hover .item-desc {
     color: #e31937;
-} 
+}
+/* Ensure button doesn't interfere with parent click */
+.today-menu-item .btn-order {
+    position: relative;
+    z-index: 10;
+}

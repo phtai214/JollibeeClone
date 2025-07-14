@@ -147,8 +147,8 @@
                     <span class="summary-value">@Model.Order.SubtotalAmount.ToString("N0")₫</span>
                 </div>
                 
-                @* Chỉ hiển thị phí ship khi là delivery (giao hàng), không hiển thị khi pickup *@
-                @if (Model.Order.DeliveryMethod?.MethodName?.Contains("giao hàng") == true)
+                @* Hiển thị phí ship - luôn hiển thị nếu có shipping fee hoặc là delivery *@
+                @if (Model.IsDelivery || Model.Order.ShippingFee > 0)
                 {
                     @if (Model.Order.ShippingFee > 0)
                     {

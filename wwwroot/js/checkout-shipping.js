@@ -11,18 +11,77 @@ function initializeCheckoutShipping() {
     handleFormValidation();
     setupScrollIndicator();
     
+    // FORCE check shipping display based on selected delivery method
+    forceCorrectShippingDisplay();
+    
     // Initialize shipping calculation on page load
     calculateShippingOnLoad();
     
     console.log('Checkout shipping initialized');
 }
 
+// FORCE correct shipping display immediately
+function forceCorrectShippingDisplay() {
+    const selectedRadio = document.querySelector('.delivery-radio-new:checked');
+    const shippingContainer = document.querySelector('#shipping-fee-container');
+    
+    if (selectedRadio && shippingContainer) {
+        const deliveryId = parseInt(selectedRadio.value);
+        console.log('🔧 FORCING correct display for delivery ID:', deliveryId);
+        
+        // Remove existing classes
+        shippingContainer.classList.remove('force-hide', 'force-show');
+        
+        if (deliveryId === 2) {
+            // Hẹn lấy tại cửa hàng - ẩn shipping fee hoàn toàn
+            shippingContainer.classList.add('force-hide');
+            shippingContainer.style.display = 'none';
+            console.log('🚫 Forced HIDE shipping fee for pickup');
+        } else if (deliveryId === 1) {
+            // Giao hàng tận nơi - hiện shipping fee
+            shippingContainer.classList.add('force-show');
+            shippingContainer.style.display = 'block';
+            console.log('✅ Forced SHOW shipping fee for delivery');
+        }
+    } else {
+        console.log('❌ Selected radio or shipping container not found');
+    }
+}
+
 // Calculate shipping on page load
 function calculateShippingOnLoad() {
     const selectedDeliveryMethod = document.querySelector('.delivery-radio-new:checked');
+    const shippingFeeContainer = document.querySelector('#shipping-fee-container');
+    
     if (selectedDeliveryMethod) {
         const deliveryMethodId = parseInt(selectedDeliveryMethod.value);
+        const methodName = selectedDeliveryMethod.nextElementSibling.textContent.toLowerCase();
+        
+        console.log('🔄 Initial shipping calculation for method:', methodName, 'ID:', deliveryMethodId);
+        
+        // CHÍNH XÁC: Logic đơn giản dựa trên ID
+        if (shippingFeeContainer) {
+            if (deliveryMethodId === 2) {
+                // Pickup method - ẩn hoàn toàn
+                shippingFeeContainer.classList.remove('force-show');
+                shippingFeeContainer.classList.add('force-hide');
+                shippingFeeContainer.style.display = 'none';
+                console.log('📦 Hidden shipping fee for pickup method');
+            } else if (deliveryMethodId === 1) {
+                // Delivery method - hiển thị
+                shippingFeeContainer.classList.remove('force-hide');
+                shippingFeeContainer.classList.add('force-show');
+                shippingFeeContainer.style.display = 'block';
+                console.log('🚚 Shown shipping fee for delivery method');
+            }
+        }
+        
+        // Tính toán phí giao hàng
         updateShippingCalculation(deliveryMethodId);
+        
+        console.log('✅ Initial shipping setup complete');
+    } else {
+        console.log('❌ No delivery method selected on page load');
     }
 }
 
@@ -30,26 +89,49 @@ function calculateShippingOnLoad() {
 function handleDeliveryMethodChange() {
     const deliveryRadios = document.querySelectorAll('.delivery-radio-new');
     const storePickupSection = document.querySelector('.store-pickup-section');
+    const shippingFeeContainer = document.querySelector('#shipping-fee-container');
     
     deliveryRadios.forEach(radio => {
         radio.addEventListener('change', function() {
             if (this.checked) {
-                const methodName = this.nextElementSibling.textContent.toLowerCase();
                 const deliveryMethodId = parseInt(this.value);
+                const methodName = this.nextElementSibling.textContent.toLowerCase();
                 
-                // Show store pickup section if pickup method is selected
-                if (methodName.includes('lấy tại') || methodName.includes('pickup') || methodName.includes('cửa hàng')) {
+                console.log('🔄 Delivery method changed to ID:', deliveryMethodId, 'Method:', methodName);
+                
+                // Remove existing classes first
+                if (shippingFeeContainer) {
+                    shippingFeeContainer.classList.remove('force-hide', 'force-show');
+                }
+                
+                if (deliveryMethodId === 2) {
+                    // Hẹn lấy tại cửa hàng (ID = 2)
+                    console.log('📦 Pickup method selected - hiding shipping fee');
                     storePickupSection.style.display = 'block';
                     makeStoreFieldsRequired(true);
-                } else {
+                    
+                    // Ẩn phí giao hàng hoàn toàn
+                    if (shippingFeeContainer) {
+                        shippingFeeContainer.classList.add('force-hide');
+                        shippingFeeContainer.style.display = 'none';
+                    }
+                } else if (deliveryMethodId === 1) {
+                    // Giao hàng tận nơi (ID = 1) 
+                    console.log('🚚 Delivery method selected - showing shipping fee');
                     storePickupSection.style.display = 'none';
                     makeStoreFieldsRequired(false);
+                    
+                    // Hiển thị phí giao hàng
+                    if (shippingFeeContainer) {
+                        shippingFeeContainer.classList.add('force-show');
+                        shippingFeeContainer.style.display = 'block';
+                    }
                 }
                 
                 // Calculate shipping for new delivery method
                 updateShippingCalculation(deliveryMethodId);
                 
-                console.log('Delivery method changed:', methodName, 'ID:', deliveryMethodId);
+                console.log('✅ Shipping fee container classes:', shippingFeeContainer ? shippingFeeContainer.className : 'not found');
             }
         });
     });
@@ -99,15 +181,61 @@ async function updateShippingCalculation(deliveryMethodId) {
 
 // Update shipping UI with calculation results
 function updateShippingUI(result, deliveryMethodId) {
+    console.log('🎨 Updating shipping UI for delivery method:', deliveryMethodId, 'Result:', result);
+    
     // Update delivery method description with shipping fee
     const methodLabel = document.querySelector(`label[for="delivery_${deliveryMethodId}"] .delivery-description`);
     if (methodLabel) {
         if (result.shippingFee === 0) {
-            methodLabel.textContent = result.isFreeship ? '(Miễn phí)' : '(0 đ)';
+            methodLabel.textContent = result.isFreeship ? '(Miễn phí)' : '(0₫)';
             methodLabel.style.color = result.isFreeship ? '#28a745' : '#6c757d';
         } else {
             methodLabel.textContent = `(+${formatCurrency(result.shippingFee)})`;
             methodLabel.style.color = '#dc3545';
+        }
+    }
+    
+    // Cập nhật phí giao hàng trong order summary
+    const shippingFeeContainer = document.querySelector('#shipping-fee-container');
+    const dynamicShippingRow = document.querySelector('#dynamic-shipping-row');
+    const dynamicShippingAmount = document.querySelector('#dynamic-shipping-amount');
+    
+    if (shippingFeeContainer) {
+        // CHÍNH XÁC: Chỉ hiển thị phí giao hàng cho delivery method ID = 1 (Giao hàng tận nơi)
+        if (deliveryMethodId === 1) {
+            console.log('🚚 Showing shipping fee for delivery method');
+            
+            // Remove hide class and add show class
+            shippingFeeContainer.classList.remove('force-hide');
+            shippingFeeContainer.classList.add('force-show');
+            shippingFeeContainer.style.display = 'block';
+            
+            if (dynamicShippingRow && dynamicShippingAmount) {
+                if (result.shippingFee > 0) {
+                    dynamicShippingAmount.textContent = formatCurrency(result.shippingFee);
+                    dynamicShippingAmount.className = 'shipping-amount';
+                    dynamicShippingRow.style.display = 'flex';
+                } else if (result.isFreeship) {
+                    dynamicShippingAmount.textContent = 'Miễn phí';
+                    dynamicShippingAmount.className = 'shipping-amount free';
+                    dynamicShippingRow.style.display = 'flex';
+                } else {
+                    dynamicShippingAmount.textContent = '0₫';
+                    dynamicShippingAmount.className = 'shipping-amount';
+                    dynamicShippingRow.style.display = 'flex';
+                }
+            }
+        } else if (deliveryMethodId === 2) {
+            console.log('📦 Hiding shipping fee for pickup method');
+            
+            // HOÀN TOÀN ẨN phí giao hàng cho pickup methods (ID = 2)
+            shippingFeeContainer.classList.remove('force-show');
+            shippingFeeContainer.classList.add('force-hide');
+            shippingFeeContainer.style.display = 'none';
+            
+            if (dynamicShippingRow) {
+                dynamicShippingRow.style.display = 'none';
+            }
         }
     }
     

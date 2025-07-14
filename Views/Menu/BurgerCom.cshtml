@@ -3,6 +3,8 @@
 }
 
 @section Styles {
+    <link rel="stylesheet" href="~/css/menu-common.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/menu-card-common.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/burger-com.css" asp-append-version="true" />
 }
 
@@ -89,10 +91,18 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-        <button type="button" class="btn btn-danger" id="addToCartBtn">
-          <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
-        </button>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <div class="total-price-display">
+            <span class="text-muted">Tổng tiền:</span>
+            <span class="fw-bold text-danger fs-4" id="comboTotalPrice">0đ</span>
+          </div>
+          <div>
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Đóng</button>
+            <button type="button" class="btn btn-danger" id="addToCartBtn">
+              <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -107,12 +117,12 @@
                 console.log('🍔 Rendering product:', item);
                 
                 const isCombo = item.isConfigurable;
-                const buttonClass = isCombo ? 'btn-order' : 'btn-order-simple';
+                const buttonClass = isCombo ? 'btn btn-order' : 'btn btn-order-simple';
                 
-                let buttonAttributes = `data-product-id="${item.productID}"`;
-                if (!isCombo) {
-                    buttonAttributes += ` data-product-name="${item.productName}" data-product-price="${item.price}"`;
-                }
+                // Thay đổi cách xử lý button attributes để sử dụng Bootstrap modal
+                const buttonAttributes = isCombo 
+                    ? `data-product-id="${item.productID}" data-bs-toggle="modal" data-bs-target="#orderOptionsModal"` 
+                    : `data-product-id="${item.productID}" data-product-name="${item.productName}" data-product-price="${item.price}"`;
                 
                 return `
                     <div class="col-md-6 col-lg-4">
@@ -187,14 +197,6 @@
                 </div>
               </div>`;
             
-            // Tổng tiền
-            html += `<div class="mb-3">
-                <div class="d-flex justify-content-between">
-                  <span><strong>Tổng tiền:</strong></span>
-                  <span id="comboTotalPrice" class="text-danger fw-bold">0đ</span>
-                </div>
-              </div>`;
-            
             form.innerHTML = html;
             
             // Calculate initial price
@@ -204,28 +206,33 @@
         // Update combo price calculation
         function updateComboPrice() {
             if (!window.currentCombo) {
-                console.log('⚠️ No combo data available for price calculation');
+                console.warn('⚠️ No current combo data');
                 return;
             }
             
-            const combo = window.currentCombo;
-            let basePrice = combo.basePrice || 0;
+            const basePrice = window.currentCombo.basePrice || 0;
+            console.log('💰 Calculating combo price:');
+            console.log('💰 Current combo:', window.currentCombo);
+            console.log('💰 Base price:', basePrice);
             
-            console.log('💰 Starting price calculation with basePrice:', basePrice);
+            if (basePrice === 0) {
+                console.warn('⚠️ No base price found for combo:', window.currentCombo);
+            }
+            let totalPrice = basePrice;
             
-            // Calculate adjustments from all selected options
+            // Add price adjustments from selected options
+            const selectedRadios = document.querySelectorAll('.option-radio:checked');
             let totalAdjustments = 0;
-            const selectedOptions = document.querySelectorAll('.option-radio:checked');
-            
-            selectedOptions.forEach(option => {
-                const adjustment = parseFloat(option.dataset.price) || 0;
-                totalAdjustments += adjustment;
-                console.log('💰 Option adjustment:', adjustment, 'from', option.closest('label').textContent.trim());
+            selectedRadios.forEach(radio => {
+                const priceAdjustment = parseFloat(radio.getAttribute('data-price')) || 0;
+                totalAdjustments += priceAdjustment;
+                totalPrice += priceAdjustment;
+                console.log('💰 Option adjustment:', priceAdjustment, 'from radio:', radio);
             });
             
             // Multiply by quantity
             const quantity = parseInt(document.getElementById('orderQty').value) || 1;
-            const totalPrice = (basePrice + totalAdjustments) * quantity;
+            totalPrice *= quantity;
             
             console.log('💰 Final calculation: basePrice=' + basePrice + ' + adjustments=' + totalAdjustments + ' × quantity=' + quantity + ' = ' + totalPrice);
             
@@ -319,39 +326,51 @@
             }
         });
 
-        // Add to cart button handler
+        // Add to cart functionality
         document.getElementById('addToCartBtn').addEventListener('click', async function() {
+            // Check if we're in editing mode (cart edit) or adding new item
+            const isEditingMode = window.jollibeeCart && window.jollibeeCart.editingCartItemId;
+            
+            if (isEditingMode) {
+                // Call cart's save method for editing
+                await window.jollibeeCart.saveItemChanges();
+                return;
+            }
+            
+            // Regular add to cart flow
             if (!currentProductId) {
-                alert('Lỗi: Không xác định được sản phẩm');
+                alert('Vui lòng chọn sản phẩm');
                 return;
             }
 
-            // Disable button temporarily
+            // Get quantity
+            const quantity = parseInt(document.getElementById('orderQty').value) || 1;
+            
+            // Get selected options
+            const selectedOptions = [];
+            const form = document.getElementById('orderOptionsForm');
+            const radioGroups = form.querySelectorAll('input[type="radio"]:checked');
+            
+            radioGroups.forEach(radio => {
+                const optionData = radio.id.match(/group(\d+)-option(\d+)/);
+                if (optionData) {
+                    const configGroupID = parseInt(optionData[1]);
+                    const configOptionID = parseInt(optionData[2]);
+                    selectedOptions.push({
+                        ConfigGroupID: configGroupID,
+                        ConfigOptionID: configOptionID,
+                        OptionProductID: 0, // Will be populated by backend
+                        VariantID: null // Will be populated by backend
+                    });
+                }
+            });
+
+            // Disable button to prevent double-click
             this.disabled = true;
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang thêm...';
 
             try {
-                const quantity = parseInt(document.getElementById('orderQty').value) || 1;
-                const selectedOptions = [];
-                
-                // Get all selected options
-                const checkedRadios = document.querySelectorAll('.option-radio:checked');
-                checkedRadios.forEach(radio => {
-                    const groupId = radio.name.replace('group', '');
-                    const optionId = radio.id.split('-option')[1];
-                    selectedOptions.push({
-                        groupId: parseInt(groupId),
-                        optionId: parseInt(optionId)
-                    });
-                });
-                
-                console.log('🛒 Adding combo to cart:', {
-                    productId: currentProductId,
-                    quantity,
-                    selectedOptions
-                });
-                
-                // Use the cart service to add combo
+                // Add to cart using global cart instance
                 const success = await window.jollibeeCart.addToCart(currentProductId, quantity, selectedOptions);
                 
                 if (success) {

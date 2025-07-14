@@ -181,7 +181,7 @@ body {
 .btn-order, .btn-order-simple {
     background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #b91c1c 100%);
     color: #ffffff;
-    border-radius: 35px;
+    border-radius: 5px;
     padding: 14px 40px;
     font-weight: 700;
     border: none;
@@ -190,7 +190,7 @@ body {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: block;
     margin: 0 auto;
-    min-width: 160px;
+    width: 60px;
     text-transform: uppercase;
     letter-spacing: 1px;
     position: relative;

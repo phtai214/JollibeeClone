@@ -61,7 +61,7 @@ namespace JollibeeClone.Controllers
 
         // POST: /Cart/AddToCart
         [HttpPost]
-        public async Task<IActionResult> AddToCart([FromBody] AddToCartRequest request)
+        public async Task<IActionResult> AddToCart([FromBody] AddToCartRequest? request)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace JollibeeClone.Controllers
                 Console.WriteLine($"🛒 Session auth in AddToCart - IsLoggedIn: {isUserLoggedIn}, UserID: {userIdFromSession}");
                 Console.WriteLine($"🛒 Selected options count: {request?.SelectedOptions?.Count ?? 0}");
                 
-                if (!ModelState.IsValid)
+                if (request == null || !ModelState.IsValid)
                 {
                     Console.WriteLine("❌ ModelState is invalid");
                     return Json(new { success = false, message = "Dữ liệu không hợp lệ" });
@@ -102,7 +102,7 @@ namespace JollibeeClone.Controllers
                 var configurationSnapshot = new List<object>();
 
                 // Xử lý configuration options cho combo
-                if (product.IsConfigurable && request.SelectedOptions.Any())
+                if (product.IsConfigurable && request.SelectedOptions?.Any() == true)
                 {
                     foreach (var selectedOption in request.SelectedOptions)
                     {
@@ -230,13 +230,13 @@ namespace JollibeeClone.Controllers
 
         // POST: /Cart/UpdateQuantity
         [HttpPost]
-        public async Task<IActionResult> UpdateQuantity([FromBody] UpdateCartItemRequest request)
+        public async Task<IActionResult> UpdateQuantity([FromBody] UpdateCartItemRequest? request)
         {
             try
             {
                 Console.WriteLine($"🔄 UpdateQuantity called - CartItemID: {request?.CartItemID}, Quantity: {request?.Quantity}");
                 
-                if (!ModelState.IsValid)
+                if (request == null || !ModelState.IsValid)
                 {
                     var errorResponse = JsonConvert.SerializeObject(new { success = false, message = "Dữ liệu không hợp lệ" });
                     return Content(errorResponse, "application/json");
@@ -285,13 +285,13 @@ namespace JollibeeClone.Controllers
 
         // POST: /Cart/RemoveItem
         [HttpPost]
-        public async Task<IActionResult> RemoveItem([FromBody] RemoveCartItemRequest request)
+        public async Task<IActionResult> RemoveItem([FromBody] RemoveCartItemRequest? request)
         {
             try
             {
                 Console.WriteLine($"🗑️ RemoveItem called - CartItemID: {request?.CartItemID}");
                 
-                if (!ModelState.IsValid)
+                if (request == null || !ModelState.IsValid)
                 {
                     var errorResponse = JsonConvert.SerializeObject(new { success = false, message = "Dữ liệu không hợp lệ" });
                     return Content(errorResponse, "application/json");
@@ -383,13 +383,13 @@ namespace JollibeeClone.Controllers
 
         // POST: /Cart/UpdateItemConfiguration
         [HttpPost]
-        public async Task<IActionResult> UpdateItemConfiguration([FromBody] UpdateCartItemConfigurationRequest request)
+        public async Task<IActionResult> UpdateItemConfiguration([FromBody] UpdateCartItemConfigurationRequest? request)
         {
             try
             {
                 Console.WriteLine($"✏️ UpdateItemConfiguration called - CartItemID: {request?.CartItemID}, Quantity: {request?.Quantity}");
                 
-                if (!ModelState.IsValid)
+                if (request == null || !ModelState.IsValid)
                 {
                     var errorResponse = JsonConvert.SerializeObject(new { success = false, message = "Dữ liệu không hợp lệ" });
                     return Content(errorResponse, "application/json");
@@ -415,7 +415,7 @@ namespace JollibeeClone.Controllers
                 var configurationData = new List<dynamic>();
                 decimal totalPriceAdjustment = 0;
 
-                foreach (var selectedOption in request.SelectedOptions)
+                foreach (var selectedOption in request.SelectedOptions ?? new List<SelectedConfigurationOption>())
                 {
                     // Get configuration option details
                     var configOption = await _context.ProductConfigurationOptions
@@ -838,7 +838,7 @@ namespace JollibeeClone.Controllers
 
                 // Check minimum order value
                 const decimal MIN_ORDER_VALUE = 60000m;
-                var subtotalAmount = await MapCartItemsToViewModelAsync(cartItems);
+                var subtotalAmount = MapCartItemsToViewModelAsync(cartItems);
                 var currentSubtotal = subtotalAmount.Sum(ci => ci.TotalPrice);
                 
                 if (currentSubtotal < MIN_ORDER_VALUE)
@@ -907,7 +907,7 @@ namespace JollibeeClone.Controllers
                     .ToListAsync();
 
                 // Map cart items to view model
-                viewModel.CartItems = await MapCartItemsToViewModelAsync(cartItems);
+                viewModel.CartItems = MapCartItemsToViewModelAsync(cartItems);
 
                 // Calculate totals
                 viewModel.SubtotalAmount = viewModel.CartItems.Sum(ci => ci.TotalPrice);
@@ -1210,7 +1210,7 @@ namespace JollibeeClone.Controllers
 
                     if (cartItems.Any())
                     {
-                        model.CartItems = await MapCartItemsToViewModelAsync(cartItems);
+                        model.CartItems = MapCartItemsToViewModelAsync(cartItems);
                         model.SubtotalAmount = model.CartItems.Sum(ci => ci.TotalPrice);
                         model.DiscountAmount = 0;
 
@@ -1324,7 +1324,7 @@ namespace JollibeeClone.Controllers
 
                 if (cartItems.Any())
                 {
-                    viewModel.CartItems = await MapCartItemsToViewModelAsync(cartItems);
+                    viewModel.CartItems = MapCartItemsToViewModelAsync(cartItems);
                     Console.WriteLine($"🔍 Reloaded {viewModel.CartItems.Count} cart items with full configuration data");
                     
                     // Check minimum order value
@@ -1571,6 +1571,27 @@ namespace JollibeeClone.Controllers
                     await _context.SaveChangesAsync();
                     Console.WriteLine($"🛒 Order items saved successfully");
 
+                    // CREATE PAYMENT RECORD
+                    Console.WriteLine($"💳 Creating payment record for order {order.OrderID}");
+                    
+                    // Generate transaction code for payment
+                    var transactionCode = GenerateTransactionCode(order.OrderCode);
+                    
+                    var payment = new Payments
+                    {
+                        OrderID = order.OrderID,
+                        PaymentDate = GetVietnamLocalTime(),
+                        Amount = order.TotalAmount,
+                        PaymentMethodID = order.PaymentMethodID,
+                        TransactionCode = transactionCode,
+                        PaymentStatus = DeterminePaymentStatus(order.PaymentMethodID),
+                        Notes = $"Thanh toán cho đơn hàng {order.OrderCode}"
+                    };
+
+                    _context.Payments.Add(payment);
+                    await _context.SaveChangesAsync();
+                    Console.WriteLine($"💳 Payment record created with ID: {payment.PaymentID}, Status: {payment.PaymentStatus}");
+
                     // Mark promotion as used if applicable
                     if (model.AppliedPromotionID.HasValue && model.UserID.HasValue)
                     {
@@ -1740,8 +1761,11 @@ namespace JollibeeClone.Controllers
 
                 // Calculate estimated delivery time
                 var estimatedDeliveryTime = "";
-                var isDelivery = order.DeliveryMethod?.MethodName?.Contains("giao hàng") == true || 
-                                order.DeliveryMethod?.MethodName?.Contains("ship") == true;
+                // Cải thiện logic xác định delivery method
+                var isDelivery = order.DeliveryMethod?.MethodName?.ToLower().Contains("giao") == true || 
+                                order.DeliveryMethod?.MethodName?.ToLower().Contains("ship") == true ||
+                                order.DeliveryMethod?.MethodName?.ToLower().Contains("delivery") == true ||
+                                order.DeliveryMethodID == 1; // Assuming ID 1 is delivery method
                 var isPickup = !isDelivery;
 
                 if (isPickup && order.PickupDate.HasValue)
@@ -1767,7 +1791,17 @@ namespace JollibeeClone.Controllers
                     IsPickup = isPickup
                 };
 
+                // Debug information
                 Console.WriteLine($"✅ Order success page loaded for order {order.OrderCode}");
+                Console.WriteLine($"🔍 Order summary for display:");
+                Console.WriteLine($"  - SubtotalAmount: {order.SubtotalAmount:N0}₫");
+                Console.WriteLine($"  - ShippingFee: {order.ShippingFee:N0}₫");
+                Console.WriteLine($"  - DiscountAmount: {order.DiscountAmount:N0}₫");
+                Console.WriteLine($"  - TotalAmount: {order.TotalAmount:N0}₫");
+                Console.WriteLine($"  - DeliveryMethod: {order.DeliveryMethod?.MethodName}");
+                Console.WriteLine($"  - IsDelivery: {isDelivery}");
+                Console.WriteLine($"  - IsPickup: {isPickup}");
+                
                 return View(viewModel);
             }
             catch (Exception ex)
@@ -1778,7 +1812,7 @@ namespace JollibeeClone.Controllers
             }
         }
 
-        private async Task<List<CheckoutCartItemViewModel>> MapCartItemsToViewModelAsync(List<CartItem> cartItems)
+        private List<CheckoutCartItemViewModel> MapCartItemsToViewModelAsync(List<CartItem> cartItems)
         {
             var result = new List<CheckoutCartItemViewModel>();
 
@@ -1788,8 +1822,8 @@ namespace JollibeeClone.Controllers
                 {
                     CartItemID = item.CartItemID,
                     ProductID = item.ProductID,
-                    ProductName = item.Product.ProductName,
-                    ProductImage = item.Product.ImageUrl,
+                    ProductName = item.Product?.ProductName ?? "Unknown Product",
+                    ProductImage = item.Product?.ImageUrl ?? "",
                     Quantity = item.Quantity,
                     UnitPrice = item.UnitPrice
                 };
@@ -2003,6 +2037,31 @@ namespace JollibeeClone.Controllers
 
             return orderCode;
         }
+
+        // Helper method to generate transaction code
+        private string GenerateTransactionCode(string orderCode)
+        {
+            // Example transaction code format: "TRANS-241210-00001"
+            var datePart = orderCode.Substring(0, 6); // YYMMDD
+            var sequencePart = orderCode.Substring(6, 5); // 5-digit sequence
+            
+            return $"TRANS-{datePart}-{sequencePart}";
+        }
+
+        // Helper method to determine payment status based on method ID
+        private string DeterminePaymentStatus(int paymentMethodID)
+        {
+            // Default to "Pending"
+            var status = "Pending";
+
+            // Example logic: set to "Completed" for certain payment methods
+            if (paymentMethodID == 1 || paymentMethodID == 2) // Assuming 1 and 2 are online payment methods
+            {
+                status = "Completed";
+            }
+
+            return status;
+        }
     }
 
     // Request/Response models for shipping calculation
@@ -2024,5 +2083,66 @@ namespace JollibeeClone.Controllers
         public bool IsFirstOrder { get; set; }
         public decimal RequiredAmount { get; set; }
         public bool IsMinimumOrder { get; set; }
+    }
+
+    // Request models for cart operations
+    public class AddToCartRequest
+    {
+        public int ProductID { get; set; }
+        public int Quantity { get; set; }
+        public List<SelectedConfigurationOption> SelectedOptions { get; set; } = new List<SelectedConfigurationOption>();
+    }
+
+    public class SelectedConfigurationOption
+    {
+        public int ConfigOptionID { get; set; }
+        public int Quantity { get; set; }
+    }
+
+    public class UpdateCartItemRequest
+    {
+        public int CartItemID { get; set; }
+        public int Quantity { get; set; }
+    }
+
+    public class RemoveCartItemRequest
+    {
+        public int CartItemID { get; set; }
+    }
+
+    public class UpdateCartItemConfigurationRequest
+    {
+        public int CartItemID { get; set; }
+        public int Quantity { get; set; }
+        public List<SelectedConfigurationOption> SelectedOptions { get; set; } = new List<SelectedConfigurationOption>();
+    }
+
+    // Apply voucher request/response models
+    public class ApplyVoucherRequest
+    {
+        public int? UserID { get; set; }
+        public string VoucherCode { get; set; } = "";
+        public decimal OrderAmount { get; set; }
+    }
+
+    public class ApplyVoucherResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; } = "";
+        public int? PromotionID { get; set; }
+        public string PromotionName { get; set; } = "";
+        public decimal DiscountAmount { get; set; }
+        public decimal NewTotalAmount { get; set; }
+    }
+
+    // Cart summary model
+    public class CartSummaryViewModel
+    {
+        public int TotalItems { get; set; }
+        public decimal SubTotal { get; set; }
+        public decimal TaxAmount { get; set; }
+        public decimal ShippingFee { get; set; }
+        public decimal DiscountAmount { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 }
