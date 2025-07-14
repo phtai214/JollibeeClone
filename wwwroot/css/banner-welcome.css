@@ -19,7 +19,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(141, 113, 117, 0.85) 0%, rgba(255,198,39,0.85) 100%);
+    background: linear-gradient(135deg, rgba(249, 146, 162, 0.85) 0%, rgba(255,198,39,0.85) 100%);
     z-index: 1;
 }
 
@@ -41,7 +41,7 @@
 .content_banner_home .title {
     font-size: 3.5rem;
     font-weight: bold;
-    color: #e31937;
+    color: #f71133;
     margin-bottom: 20px;
     text-shadow: 0 2px 8px rgba(0,0,0,0.2);
     letter-spacing: 2px;

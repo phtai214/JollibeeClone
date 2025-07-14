@@ -1,0 +1,567 @@
+/* Jollibee Footer Styles */
+.jolli-footer {
+    background: #e31937;
+    color: #fff;
+    padding: 50px 0 0;
+    margin-top: 0;
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+}
+
+.jolli-footer .container-fluid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-company-name {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #fff;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+.footer-info {
+    font-size: 14px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 15px;
+}
+
+.footer-info p {
+    margin-bottom: 6px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.footer-info strong {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Hotline Section - Column 3 */
+.footer-hotline-section {
+    margin-bottom: 20px;
+}
+
+.hotline-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+/* Footer Links */
+.footer-links-list ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.footer-links-list li {
+    margin-bottom: 8px;
+}
+
+.footer-link {
+    color: #fff !important;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.6;
+    transition: all 0.3s ease;
+    display: block;
+}
+
+.footer-link:hover {
+    color: #ffc627 !important;
+    text-decoration: none;
+    padding-left: 5px;
+}
+
+/* Section Titles */
+.footer-section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+}
+
+.footer-section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: #ffc627;
+    border-radius: 2px;
+}
+
+/* App Title */
+.footer-app-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1.3;
+}
+
+/* Social Links - Column 4 */
+.social-links {
+    margin-bottom: 20px;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+    padding: 6px 0;
+}
+
+.social-link:hover {
+    color: #ffc627;
+    transform: translateX(3px);
+}
+
+.social-link i {
+    width: 32px;
+    height: 32px;
+    background: #ffc627;
+    color: #e31937;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover i {
+    background: #fff;
+    color: #e31937;
+    transform: scale(1.05);
+}
+
+.social-link span {
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+.social-link:hover span {
+    color: #ffc627;
+}
+
+/* Certification Image */
+.certification-img {
+    max-width: 120px;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.certification-img:hover {
+    transform: scale(1.03);
+}
+
+/* App Download */
+.app-download-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.app-store-img {
+    height: 45px;
+    width: auto;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.app-link:hover .app-store-img {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    background: #d11633;
+    padding: 20px 0;
+    margin-top: 50px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+}
+
+.footer-bottom .container-fluid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.copyright-text {
+    color: rgba(255, 255, 255, 0.901);
+    font-size: 14px;
+    margin: 0;
+    font-weight: 400;
+}
+
+/* Additional Footer Styles */
+.jolli-footer .footer-links a:not(:last-child):after { 
+    content: '|'; 
+    color: #fff; 
+    margin-left: 0.5rem; 
+}
+
+.jolli-footer .footer-info { 
+    line-height: 1.7; 
+}
+
+.jolli-footer .footer-apps img { 
+    border-radius: 12px; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); 
+}
+
+/* Company Logo Section - Column 1 */
+.footer-logo-section {
+    text-align: center;
+    padding: 0 10px;
+}
+
+.footer-logo-main {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+/* Company Info Section - Column 2 */
+.footer-company-section {
+    padding-right: 15px;
+}
+
+.footer-company-name {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #fff;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+/* Footer Column Spacing */
+.jolli-footer .col-lg-2 {
+    padding: 0 40px;
+}
+
+.jolli-footer .col-lg-3 {
+    padding: 0 40px;
+}
+
+.jolli-footer .col-lg-4 {
+    padding: 0 25px;
+    
+}
+
+/* Hover Effects */
+.jolli-footer .col-lg-2:hover,
+.jolli-footer .col-lg-3:hover, 
+.jolli-footer .col-lg-4:hover {
+    transform: translateY(-1px);
+    transition: transform 0.3s ease;
+}
+
+/* User Profile Button Styles */
+.user-profile-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-profile-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    background: #ffc627;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e31937;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.user-avatar-large {
+    width: 48px;
+    height: 48px;
+    background: #ffc627;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e31937;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* User Dropdown Menu Styles */
+.user-dropdown-menu {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    min-width: 280px;
+    padding: 0;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.user-dropdown-header {
+    border-bottom: 1px solid #e9ecef;
+    margin: 0;
+}
+
+.user-dropdown-menu .dropdown-item {
+    padding: 12px 20px;
+    font-size: 14px;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.user-dropdown-menu .dropdown-item:hover {
+    background: #f8f9fa;
+    color: #e31937;
+}
+
+.user-dropdown-menu .dropdown-item i {
+    width: 18px;
+    text-align: center;
+}
+
+.logout-btn:hover {
+    background: #f8f9fa !important;
+    color: #dc3545 !important;
+}
+
+.logout-btn:hover i {
+    color: #dc3545 !important;
+}
+
+.user-name {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Fallback for Font Awesome icons if they don't load */
+.social-link i.fab.fa-facebook-f::before {
+    content: "f" !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: bold !important;
+    width: 16px;    
+    height: 16px;
+    display: inline-block;
+    text-align: center;
+    line-height: 16px;
+}
+
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .jolli-footer {
+        padding: 40px 0 0;
+    }
+    
+    .jolli-footer .col-lg-2,
+    .jolli-footer .col-lg-3,
+    .jolli-footer .col-lg-4 {
+        padding: 0 20px;
+        margin-bottom: 35px;
+    }
+    
+    .footer-logo-main {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .hotline-number {
+        font-size: 34px;
+    }
+    
+    .footer-company-name {
+        font-size: 15px;
+    }
+    
+    .footer-section-title {
+        font-size: 14px;
+        text-align: center;
+    }
+    
+    .footer-section-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .jolli-footer .container-fluid { 
+        padding: 1rem !important; 
+    }
+    
+    .jolli-footer .row > div { 
+        text-align: center !important; 
+    }
+    
+    .jolli-footer .footer-links { 
+        flex-direction: column !important; 
+        gap: 0.5rem !important; 
+    }
+}
+
+@media (max-width: 768px) {
+    .jolli-footer {
+        padding: 30px 0 0;
+        text-align: center;
+    }
+    
+    .jolli-footer .col-lg-2,
+    .jolli-footer .col-lg-3,
+    .jolli-footer .col-lg-4 {
+        margin-bottom: 30px;
+    }
+    
+    .footer-info {
+        text-align: center;
+        margin-top: 15px;
+    }
+    
+    .footer-logo-main {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .footer-company-name {
+        font-size: 14px;
+        text-align: center;
+    }
+    
+    .hotline-number::before {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+    
+    .footer-hotline-section {
+        text-align: center;
+    }
+    
+    .app-download-links {
+        flex-direction: row;
+        justify-content: center;
+        gap: 12px;
+    }
+    
+    .certification-img {
+        max-width: 100px;
+    }
+    
+    .social-link {
+        justify-content: center;
+    }
+    
+    .footer-section-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .footer-app-title {
+        text-align: center;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .jolli-footer {
+        padding: 25px 0 0;
+    }
+    
+    .footer-company-name {
+        font-size: 13px;
+    }
+    
+    .footer-logo-main {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .footer-info {
+        font-size: 12px;
+    }
+    
+    .footer-info p {
+        margin-bottom: 6px;
+    }
+    
+    .footer-section-title {
+        font-size: 13px;
+    }
+    
+    .footer-app-title {
+        font-size: 11px;
+    }
+    
+    .social-link {
+        font-size: 13px;
+    }
+    
+    .social-link i {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+    
+    .app-store-img {
+        height: 38px;
+    }
+    
+    .certification-img {
+        max-width: 90px;
+    }
+    
+    .footer-link {
+        font-size: 12px;
+    }
+    
+    .user-name {
+        max-width: 80px;
+    }
+    
+    .jolli-footer .col-lg-2,
+    .jolli-footer .col-lg-3,
+    .jolli-footer .col-lg-4 {
+        padding: 0 15px;
+        margin-bottom: 25px;
+    }
+}

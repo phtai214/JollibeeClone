@@ -181,14 +181,14 @@
                 <strong>Yêu cầu:</strong> Bạn cần phải chọn ít nhất một sản phẩm Và một danh mục để áp dụng voucher.
             </p>
             
-            <!-- Products Selection -->
+            <!-- Products and Categories Selection -->
             <div class="row">
-                <div class="col-md-6">
-                    <h5>Chọn sản phẩm</h5>
-                    <div class="selection-container border p-3" style="height: 300px; overflow-y: auto;">
+                <div class="col-12">
+                    <h5><i class="fas fa-utensils me-2 text-jollibee-red"></i>Chọn sản phẩm</h5>
+                    <div class="selection-container border p-2 mb-4" style="height: 300px; overflow-y: auto; background-color: #fafafa;">
                         @foreach (var product in Model.AvailableProducts)
                         {
-                            <div class="form-check">
+                            <div class="form-check mb-2">
                                 <input class="form-check-input product-checkbox" type="checkbox" value="@product.ProductID" id="product_@product.ProductID">
                                 <label class="form-check-label" for="product_@product.ProductID">
                                     <strong>@product.ProductName</strong>
@@ -197,18 +197,24 @@
                             </div>
                         }
                     </div>
-                    <div class="mt-2">
-                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectAllProducts()">Chọn tất cả</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearAllProducts()">Bỏ chọn</button>
+                    <div class="mb-4">
+                        <button type="button" class="btn btn-sm btn-outline-primary me-2" onclick="selectAllProducts()">
+                            <i class="fas fa-check-double me-1"></i>Chọn tất cả sản phẩm
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearAllProducts()">
+                            <i class="fas fa-times me-1"></i>Bỏ chọn sản phẩm
+                        </button>
                     </div>
                 </div>
-                
-                <div class="col-md-6">
-                    <h5>Chọn danh mục</h5>
-                    <div class="selection-container border p-3" style="height: 300px; overflow-y: auto;">
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <h5><i class="fas fa-tags me-2 text-jollibee-red"></i>Chọn danh mục</h5>
+                    <div class="selection-container border p-2" style="height: 250px; overflow-y: auto; background-color: #fafafa;">
                         @foreach (var category in Model.AvailableCategories)
                         {
-                            <div class="form-check">
+                            <div class="form-check mb-2">
                                 <input class="form-check-input category-checkbox" type="checkbox" value="@category.CategoryID" id="category_@category.CategoryID">
                                 <label class="form-check-label" for="category_@category.CategoryID">
                                     <strong>@category.CategoryName</strong>
@@ -220,9 +226,13 @@
                             </div>
                         }
                     </div>
-                    <div class="mt-2">
-                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectAllCategories()">Chọn tất cả</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearAllCategories()">Bỏ chọn</button>
+                    <div class="mt-3">
+                        <button type="button" class="btn btn-sm btn-outline-primary me-2" onclick="selectAllCategories()">
+                            <i class="fas fa-check-double me-1"></i>Chọn tất cả danh mục
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearAllCategories()">
+                            <i class="fas fa-times me-1"></i>Bỏ chọn danh mục
+                        </button>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,128 @@
+@model JollibeeClone.ViewModels.UserOrderDetailViewModel
+@{
+    ViewData["Title"] = "Hóa đơn đơn hàng";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hóa đơn - @Model.OrderCode</title>
+    <link rel="stylesheet" href="~/css/print-invoice.css" asp-append-version="true" />
+    <link rel="icon" href="~/assets/images/logo_jollibee.png" type="image/x-icon">
+</head>
+<body>
+    <div class="invoice-container">
+        <!-- Header với logo -->
+        <div class="invoice-header">
+            <div class="brand-logo">
+                <img src="~/assets/images/logo_jollibee.png" alt="Jollibee" class="logo-image" />
+                Jollibee
+            </div>
+            
+            <div class="order-info-section">
+                <div class="left-info">
+                    <div class="order-title">ĐƠN HÀNG #@Model.OrderCode</div>
+                    <div class="order-date">@Model.OrderDate.ToString("dd/MM/yyyy")</div>
+                    <div class="order-note">Bạn sẽ không thể đánh giá được đơn hàng đã qua sau 72 giờ</div>
+                </div>
+                <div class="right-info">
+                    <div class="order-status">@Model.StatusName</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bảng sản phẩm -->
+        <div class="invoice-items">
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tạm tính</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <tr>
+                            <td>
+                                <div class="product-name">@item.ProductName</div>
+                                @if (item.HasConfiguration)
+                                {
+                                    <div class="product-configs">
+                                        @foreach (var config in item.ConfigurationOptions)
+                                        {
+                                            <div class="config-item">
+                                                <span class="config-label">@config.GroupName</span>
+                                                <div class="config-detail">@config.Quantity x @config.OptionName @config.FormattedPrice</div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </td>
+                            <td class="price">@item.FormattedUnitPrice</td>
+                            <td class="quantity">@item.Quantity</td>
+                            <td class="price">@item.FormattedSubtotal</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tổng kết -->
+        <div class="invoice-summary">
+            <div class="summary-row">
+                <span>Tạm tính</span>
+                <span>@Model.FormattedSubtotal</span>
+            </div>
+            <div class="summary-row">
+                <span>Phí giao hàng</span>
+                <span>@Model.FormattedShippingFee</span>
+            </div>
+            <div class="summary-row total">
+                <span>Tổng cộng</span>
+                <span>@Model.FormattedTotalAmount</span>
+            </div>
+        </div>
+
+        <!-- Thông tin đơn hàng -->
+        <div class="store-info">
+            <h4>Thông tin đơn hàng</h4>
+            <div class="info-grid">
+                <div class="info-section">
+                    <div class="info-label">Cửa hàng</div>
+                    <div class="info-value">@Model.StoreName</div>
+                </div>
+                <div class="info-section">
+                    <div class="info-label">Địa chỉ</div>
+                    <div class="info-value">@Model.DeliveryAddress</div>
+                </div>
+                <div class="info-section">
+                    <div class="info-label">Phương thức vận chuyển</div>
+                    <div class="info-value">@Model.DeliveryMethodName</div>
+                </div>
+                <div class="info-section">
+                    <div class="info-label">Phương thức thanh toán</div>
+                    <div class="info-value">@Model.PaymentMethodName</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="invoice-footer">
+            © 2020 Jollibee Viet Nam
+        </div>
+    </div>
+
+    <script>
+        // Auto print when page loads
+        window.onload = function() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

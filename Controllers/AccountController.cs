@@ -839,6 +839,129 @@ namespace JollibeeClone.Controllers
             }
         }
 
+        // GET: Account/PrintOrderInvoice/{id} - In hóa đơn đơn hàng
+        [HttpGet]
+        [UserAuthorize]
+        public async Task<IActionResult> PrintOrderInvoice(int id)
+        {
+            try
+            {
+                var userId = int.Parse(HttpContext.Session.GetString("UserId") ?? "0");
+                
+                if (userId == 0)
+                {
+                    Console.WriteLine($"❌ User not logged in, redirecting to login");
+                    return RedirectToAction("Login", "Account");
+                }
+
+                // Load order with all necessary details
+                var order = await _context.Orders
+                    .Include(o => o.User)
+                    .Include(o => o.OrderStatus)
+                    .Include(o => o.PaymentMethod)
+                    .Include(o => o.DeliveryMethod)
+                    .Include(o => o.Store)
+                    .Include(o => o.UserAddress)
+                    .Include(o => o.Promotion)
+                    .Include(o => o.OrderItems)
+                        .ThenInclude(oi => oi.Product)
+                    .FirstOrDefaultAsync(o => o.OrderID == id && o.UserID == userId);
+
+                if (order == null)
+                {
+                    Console.WriteLine($"❌ Order {id} not found for user {userId}");
+                    TempData["ErrorMessage"] = "Không tìm thấy đơn hàng.";
+                    return RedirectToAction("ProfileOrders");
+                }
+
+                // Map order items to view model
+                var orderItems = new List<UserOrderItemViewModel>();
+                foreach (var item in order.OrderItems)
+                {
+                    var orderItemViewModel = new UserOrderItemViewModel
+                    {
+                        OrderItemID = item.OrderItemID,
+                        ProductID = item.ProductID,
+                        ProductName = item.ProductNameSnapshot,
+                        ProductImage = item.Product?.ImageUrl,
+                        Quantity = item.Quantity,
+                        UnitPrice = item.UnitPrice,
+                        Subtotal = item.Subtotal,
+                        ConfigurationOptions = new List<OrderItemConfigurationViewModel>()
+                    };
+
+                    // Parse configuration if exists
+                    if (!string.IsNullOrEmpty(item.SelectedConfigurationSnapshot))
+                    {
+                        try
+                        {
+                            var configData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(item.SelectedConfigurationSnapshot);
+                            if (configData != null)
+                            {
+                                orderItemViewModel.ConfigurationOptions = configData.Select(config => new OrderItemConfigurationViewModel
+                                {
+                                    GroupName = (string)config.GroupName,
+                                    OptionName = (string)config.OptionProductName,
+                                    OptionImage = (string?)config.OptionProductImage,
+                                    Quantity = (int)config.Quantity,
+                                    PriceAdjustment = (decimal)config.PriceAdjustment,
+                                    VariantName = (string?)config.VariantName,
+                                    VariantType = (string?)config.VariantType
+                                }).ToList();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, "Error parsing order item configuration for OrderItemID: {OrderItemID}", item.OrderItemID);
+                        }
+                    }
+
+                    orderItems.Add(orderItemViewModel);
+                }
+
+                var viewModel = new UserOrderDetailViewModel
+                {
+                    OrderID = order.OrderID,
+                    OrderCode = order.OrderCode,
+                    OrderDate = order.OrderDate,
+                    CustomerFullName = order.CustomerFullName,
+                    CustomerPhoneNumber = order.CustomerPhoneNumber,
+                    CustomerEmail = order.CustomerEmail,
+                    StatusName = order.OrderStatus.StatusName,
+                    StatusDescription = order.OrderStatus.Description ?? "",
+                    StatusColor = GetStatusColor(order.OrderStatus.StatusName),
+                    StatusIcon = GetStatusIcon(order.OrderStatus.StatusName),
+                    DeliveryMethodName = order.DeliveryMethod?.MethodName ?? "",
+                    DeliveryAddress = order.UserAddress?.Address,
+                    StoreName = order.Store?.StoreName,
+                    StoreAddress = order.Store != null ? $"{order.Store.StreetAddress}, {order.Store.District}, {order.Store.City}" : null,
+                    PickupDate = order.PickupDate,
+                    PickupTimeSlot = order.PickupTimeSlot,
+                    PaymentMethodName = order.PaymentMethod.MethodName,
+                    SubtotalAmount = order.SubtotalAmount,
+                    ShippingFee = order.ShippingFee,
+                    DiscountAmount = order.DiscountAmount,
+                    TotalAmount = order.TotalAmount,
+                    OrderItems = orderItems,
+                    NotesByCustomer = order.NotesByCustomer,
+                    CanCancel = CanCancelOrder(order.OrderStatus.StatusName),
+                    CanReorder = order.OrderStatus.StatusName.ToLower() == "hoàn thành" || order.OrderStatus.StatusName.ToLower() == "đã hủy"
+                };
+
+                Console.WriteLine($"✅ Loading printable invoice for order {order.OrderCode}");
+                
+                return View("PrintInvoice", viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading printable invoice for order {OrderId}", id);
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi tải hóa đơn. Vui lòng thử lại.";
+                return RedirectToAction("ProfileOrders");
+            }
+        }
+
+        // ...existing code...
+
         // Helper methods
         private bool IsUserLoggedIn()
         {

@@ -166,6 +166,18 @@
             color: white;
         }
         
+        .btn-print-order {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+        }
+        
+        .btn-print-order:hover {
+            background: #e9ecef;
+            color: #495057;
+            text-decoration: none;
+        }
+        
         .btn-cancel-order {
             background: white;
             color: #dc3545;
@@ -336,6 +348,11 @@
                                                class="btn btn-order-action btn-view-detail">
                                                 @* <i class="fas fa-eye me-1"></i> *@
                                                 Xem chi tiết
+                                            </a>
+                                            <a href="@Url.Action("PrintOrderInvoice", "Account", new { id = order.OrderID })" 
+                                               class="btn btn-order-action btn-print-order">
+                                                <i class="fas fa-print me-1"></i>
+                                                In đơn hàng
                                             </a>
                                             @if (order.CanCancel)
                                             {

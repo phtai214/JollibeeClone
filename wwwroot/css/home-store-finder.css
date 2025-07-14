@@ -5,9 +5,10 @@
     padding: 60px 0;
     position: relative;
     overflow: hidden;
-   
-   
-    
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
 }
 
 .home-store-finder::before {
@@ -27,12 +28,12 @@
 }
 
 .store-finder-content {
-    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     text-align: center;
     position: relative;
     z-index: 2;
-    padding: 0 15px;
+    padding: 0 20px;
 }
 
 .store-finder-title {
@@ -183,9 +184,35 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1400px) {
+    .store-finder-content {
+        max-width: 90%;
+        padding: 0 30px;
+    }
+}
+
+@media (max-width: 992px) {
+    .home-store-finder {
+        padding: 50px 0;
+    }
+    
+    .store-finder-content {
+        padding: 0 25px;
+    }
+    
+    .store-finder-form {
+        max-width: 100%;
+        padding: 25px 20px;
+    }
+}
+
 @media (max-width: 768px) {
     .home-store-finder {
         padding: 40px 0;
+    }
+    
+    .store-finder-content {
+        padding: 0 20px;
     }
     
     .store-finder-title {
@@ -194,24 +221,8 @@
     }
     
     .store-finder-form {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 20px;
+        padding: 20px 15px;
         gap: 15px;
-    }
-    
-    .form-group {
-        min-width: auto;
-        max-width: none;
-    }
-    
-    .store-select {
-        padding: 12px 40px 12px 15px;
-    }
-    
-    .btn-search-stores {
-        padding: 12px 30px;
-        font-size: 1rem;
     }
 }
 
@@ -226,8 +237,8 @@
     }
     
     .store-finder-form {
-        padding: 15px;
-        border-radius: 15px;
+        padding: 15px 10px;
+        gap: 12px;
     }
 }
 
@@ -286,4 +297,4 @@
 
 .store-select option:hover {
     background: #f8f9fa;
-} 
+}

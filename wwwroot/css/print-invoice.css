@@ -1,0 +1,305 @@
+/* Print Invoice Styles - Match Jollibee Layout */
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.4;
+    color: #333;
+    background: #fff;
+    padding: 20px;
+}
+
+.invoice-container {
+    max-width: 850px;
+    margin: 0 auto;
+    background: white;
+    border: 1px solid #ddd;
+    /* box-shadow: 0 2px 10px rgba(0,0,0,0.1); */
+}
+
+/* Header Section */
+.invoice-header {
+    text-align: center;
+    padding: 30px 20px;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
+}
+
+.brand-logo {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #e31937;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.logo-image {
+    height: 50px;
+    width: auto;
+}
+
+.order-info-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: left;
+    gap: 20px;
+}
+
+.left-info {
+    flex: 1;
+}
+
+.right-info {
+    display: flex;
+    align-items: center;
+}
+
+.order-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #e31937;
+    margin-bottom: 10px;
+}
+
+.order-status {
+    display: inline-block;
+    background: #e31937;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.order-date {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.order-note {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+/* Items Section */
+.invoice-items {
+    padding: 0;
+}
+
+.items-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+}
+
+.items-table th {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: 2px solid #e9ecef;
+    font-size: 1rem;
+    color: #333;
+}
+
+.items-table th:nth-child(2),
+.items-table th:nth-child(3),
+.items-table th:nth-child(4) {
+    text-align: right;
+}
+
+.items-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: top;
+    font-size: 0.95rem;
+}
+
+.product-name {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.product-configs {
+    margin-top: 8px;
+}
+
+.config-item {
+    margin-bottom: 4px;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.config-label {
+    font-weight: 600;
+    color: #333;
+}
+
+.config-detail {
+    margin-left: 10px;
+    margin-top: 2px;
+}
+
+.quantity {
+    text-align: right;
+    font-weight: 600;
+}
+
+.price {
+    text-align: right;
+    font-weight: 600;
+}
+
+/* Summary Section */
+.invoice-summary {
+    padding: 20px;
+    background: #f8f9fa;
+    border-top: 2px solid #e9ecef;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    padding: 8px 0;
+}
+
+.summary-row.total {
+    border-top: 2px solid #e31937;
+    padding-top: 15px;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #e31937;
+}
+
+/* Store Info */
+.store-info {
+    padding: 25px 20px;
+    border-top: 1px solid #ddd;
+}
+
+.store-info h4 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: 600;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 30px;
+}
+
+.info-section {
+    margin-bottom: 10px;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.info-value {
+    color: #333;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Footer */
+.invoice-footer {
+    text-align: center;
+    padding: 20px;
+    background: #d11633;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Responsive for header */
+@media (max-width: 768px) {
+    .order-info-section {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .right-info {
+        justify-content: center;
+    }
+}
+
+/* Responsive for info grid */
+@media (max-width: 992px) {
+    .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        padding: 0 !important;
+        background: white !important;
+    }
+
+    .invoice-container {
+        border: none !important;
+        max-width: none !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .invoice-footer {
+        background: #e31937 !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .order-status {
+        background: #e31937 !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .logo-image {
+        height: 40px !important;
+        width: auto !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

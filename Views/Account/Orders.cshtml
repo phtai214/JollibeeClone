@@ -1,4 +1,4 @@
-@model UserOrderListViewModel
+@model JollibeeClone.ViewModels.UserOrderListViewModel
 @{
     ViewData["Title"] = "Đơn hàng của tôi";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -95,26 +95,35 @@
                         </div>
 
                         <div class="order-actions">
-                            <a href="@Url.Action("OrderDetail", new { id = order.OrderID })" 
-                               class="btn btn-primary">
-                                Xem chi tiết
-                            </a>
-                            
-                            @if (order.CanReorder)
-                            {
-                                <button class="btn btn-outline" onclick="reorderItems(@order.OrderID)">
-                                    <i class="fas fa-redo"></i>
-                                    Đặt lại
-                                </button>
-                            }
-                            
-                            @if (order.CanCancel)
-                            {
-                                <button class="btn btn-danger" onclick="cancelOrder(@order.OrderID)">
-                                    <i class="fas fa-times"></i>
-                                    Hủy đơn
-                                </button>
-                            }
+                            <div class="left-actions">
+                                <a href="@Url.Action("PrintOrderInvoice", "Account", new { id = order.OrderID })" 
+                                   class="btn btn-print" target="_blank">
+                                    <i class="fas fa-print"></i>
+                                    In đơn hàng
+                                </a>
+                            </div>
+                            <div class="right-actions">
+                                <a href="@Url.Action("OrderDetail", new { id = order.OrderID })" 
+                                   class="btn btn-primary">
+                                    Xem chi tiết
+                                </a>
+                                
+                                @if (order.CanReorder)
+                                {
+                                    <button class="btn btn-outline" onclick="reorderItems(@order.OrderID)">
+                                        <i class="fas fa-redo"></i>
+                                        Đặt lại
+                                    </button>
+                                }
+                                
+                                @if (order.CanCancel)
+                                {
+                                    <button class="btn btn-danger" onclick="cancelOrder(@order.OrderID)">
+                                        <i class="fas fa-times"></i>
+                                        Hủy đơn
+                                    </button>
+                                }
+                            </div>
                         </div>
                     </div>
                 }
@@ -171,6 +180,7 @@
         }
     </div>
 </div>
+
 
 @section Scripts {
     <script>

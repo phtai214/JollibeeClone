@@ -251,9 +251,21 @@
 /* Order Actions */
 .order-actions {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     gap: 10px;
     flex-wrap: wrap;
-    justify-content: flex-end;
+}
+
+.left-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.right-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .btn {
@@ -301,6 +313,20 @@
 
 .btn-danger:hover {
     background: #c82333;
+    transform: translateY(-1px);
+}
+
+.btn-print {
+    background: #7c858d;
+    color: white;
+    border: 1px solid #6c757d;
+    margin-top: 2px;
+}
+
+.btn-print:hover {
+    background: #5a6268;
+    color: white;
+    text-decoration: none;
     transform: translateY(-1px);
 }
 
@@ -472,4 +498,4 @@
 .order-card:nth-child(2) { animation-delay: 0.1s; }
 .order-card:nth-child(3) { animation-delay: 0.2s; }
 .order-card:nth-child(4) { animation-delay: 0.3s; }
-.order-card:nth-child(5) { animation-delay: 0.4s; } 
+.order-card:nth-child(5) { animation-delay: 0.4s; }
