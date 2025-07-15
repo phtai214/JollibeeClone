@@ -42,6 +42,56 @@
         background: #e31937 !important; 
         border-bottom: 6px solid #ffc627;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 1030 !important;
+        width: 100% !important;
+        transition: all 0.3s ease !important;
+      }
+      
+      /* Add padding to body to compensate for fixed navbar */
+      body {
+        padding-top: 100px !important;
+      }
+      
+      /* Adjust navbar height for better mobile experience */
+      .navbar {
+        min-height: 80px !important;
+      }
+      
+      /* Smooth scroll behavior when navbar height changes */
+      html {
+        scroll-behavior: smooth !important;
+      }
+      
+      /* Responsive adjustments for sticky navbar */
+      @@media (max-width: 992px) {
+        body {
+          padding-top: 90px !important;
+        }
+        .navbar {
+          min-height: 70px !important;
+        }
+      }
+      
+      @@media (max-width: 768px) {
+        body {
+          padding-top: 80px !important;
+        }
+        .navbar {
+          min-height: 60px !important;
+        }
+      }
+      
+      @@media (max-width: 576px) {
+        body {
+          padding-top: 70px !important;
+        }
+        .navbar {
+          min-height: 55px !important;
+        }
       }
       .nav-link, .navbar-brand, .btn-link { 
         color: #fff !important; 
@@ -226,7 +276,7 @@
                 {
                   <div class="dropdown">
                     <button class="btn auth-btn dropdown-toggle" type="button" id="authDropdownMobile" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="fas fa-user me-2"></i>ĐĂNG KÝ / ĐĂNG NHẬP
+                      <i class="fas fa-user me-2" style="color: black;"></i>ĐĂNG KÝ / ĐĂNG NHẬP
                     </button>
                     <ul class="dropdown-menu auth-dropdown-menu" aria-labelledby="authDropdownMobile">
                       <li><a class="dropdown-item" asp-controller="Account" asp-action="Login">
@@ -383,6 +433,7 @@
                         <div class="footer-certification mt-3">
                             <img src="/assets/images/bocongthuong.png" alt="Bộ Công Thương" class="certification-img">
                         </div>
+                        <hr class="hr-line">
                         <div class="footer-apps mt-3">
                             <h6 class="footer-app-title">TẢI ỨNG DỤNG ĐẶT HÀNG VỚI NHIỀU ƯU ĐÃI HƠN</h6>
                             <div class="app-download-links">
@@ -454,41 +505,63 @@
 
             /* User Dropdown Menu Styles */
             .user-dropdown-menu {
-                border: none;
-                border-radius: 12px;
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-                min-width: 280px;
-                padding: 0;
-                margin-top: 8px;
-                overflow: hidden;
+                background: #ffffff !important;
+                border: none !important;
+                border-radius: 12px !important;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+                min-width: 280px !important;
+                padding: 0 !important;
+                margin-top: 8px !important;
+                overflow: hidden !important;
+                z-index: 9999 !important;
             }
 
             .user-dropdown-header {
-                border-bottom: 1px solid #e9ecef;
-                margin: 0;
+                background: #ffffff !important;
+                border-bottom: 1px solid #e9ecef !important;
+                margin: 0 !important;
             }
 
             .user-dropdown-menu .dropdown-item {
-                padding: 12px 20px;
-                color: #495057;
-                font-weight: 500;
-                transition: all 0.2s ease;
-                border: none;
+                background: #ffffff !important;
+                padding: 12px 20px !important;
+                color: #495057 !important;
+                font-weight: 500 !important;
+                transition: all 0.2s ease !important;
+                border: none !important;
+                text-decoration: none !important;
             }
 
             .user-dropdown-menu .dropdown-item:hover {
-                background: #f8f9fa;
-                color: #e31937;
-                padding-left: 24px;
+                background: #f8f9fa !important;
+                color: #e31937 !important;
+                padding-left: 24px !important;
+                text-decoration: none !important;
+            }
+
+            .user-dropdown-menu .dropdown-item:focus {
+                background: #f8f9fa !important;
+                color: #e31937 !important;
+                text-decoration: none !important;
             }
 
             .user-dropdown-menu .dropdown-item i {
-                width: 20px;
-                font-size: 16px;
+                width: 20px !important;
+                font-size: 16px !important;
+                color: #6c757d !important;
+            }
+
+            .user-dropdown-menu .dropdown-item:hover i {
+                color: #e31937 !important;
+            }
+
+            .logout-btn {
+                background: #ffffff !important;
+                color: #495057 !important;
             }
 
             .logout-btn:hover {
-                background: #fee;
+                background: #fee !important;
                 color: #dc3545 !important;
             }
 
@@ -576,7 +649,13 @@
                     margin-left: 0;
                 }
             }
-        </style>
+            .hr-line {
+                height: 3px;
+                width: 280px;
+                background: white;
+                border: none;
+            }
+        </style>  
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -591,6 +670,35 @@
     @await RenderSectionAsync("Scripts", required: false)
     @* <div id="globalMenuDropdown" ...> ... </div> *@
     <script>
+    @* // Sticky Navbar Enhancement
+    document.addEventListener('DOMContentLoaded', function() {
+        const navbar = document.querySelector('.navbar');
+        let lastScrollTop = 0;
+        
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down - hide navbar
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                // Scrolling up - show navbar
+                navbar.style.transform = 'translateY(0)';
+            }
+            
+            // Add shadow when scrolled
+            if (scrollTop > 50) {
+                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
+                navbar.style.borderBottomWidth = '3px';
+            } else {
+                navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+                navbar.style.borderBottomWidth = '6px';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+    }); *@
+    
     function showGlobalDropdown(e) {
         e.preventDefault();
         var btn = document.getElementById('menuDropdownToggle');

@@ -1,7 +1,7 @@
 /* Jollibee Authentication Styles */
 .auth-container {
     min-height: 100vh;
-    background:  #ff2344;
+    background:  #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -25,7 +25,8 @@
 .auth-card {
     background: white;
     border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    /* border: 1px solid #f83232; */
+    box-shadow: 0 20px 60px rgba(244, 128, 128, 0.3); 
     overflow: hidden;
     width: 100%;
     max-width: 900px;

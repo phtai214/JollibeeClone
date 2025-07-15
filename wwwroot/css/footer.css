@@ -9,7 +9,7 @@
 }
 
 .jolli-footer .container-fluid {
-    max-width: 1200px;
+    max-width: 1290px;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -42,7 +42,7 @@
 
 /* Hotline Section - Column 3 */
 .footer-hotline-section {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .hotline-image {
@@ -79,7 +79,7 @@
 
 /* Section Titles */
 .footer-section-title {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     color: #fff;
     margin-bottom: 20px;
@@ -112,7 +112,8 @@
 
 /* Social Links - Column 4 */
 .social-links {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    padding: 0 2px;
 }
 
 .social-link {
@@ -128,7 +129,7 @@
 
 .social-link:hover {
     color: #ffc627;
-    transform: translateX(3px);
+    /* transform: translateX(3px); */
 }
 
 .social-link i {
@@ -162,10 +163,10 @@
 
 /* Certification Image */
 .certification-img {
-    max-width: 120px;
+    max-width: 150px;
     height: auto;
     border-radius: 6px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    /* box-shadow: 0 3px 10px rgba(0,0,0,0.2); */
     transition: transform 0.3s ease;
 }
 
@@ -176,21 +177,20 @@
 /* App Download */
 .app-download-links {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    flex-direction: row;
+    gap: 10px;
 }
 
 .app-store-img {
-    height: 45px;
+    height: 40px;
     width: auto;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    border-radius: 5px;
     transition: all 0.3s ease;
 }
 
 .app-link:hover .app-store-img {
     transform: scale(1.03);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    /* box-shadow: 0 5px 15px rgba(0,0,0,0.3); */
 }
 
 /* Footer Bottom */
@@ -325,38 +325,60 @@
 
 /* User Dropdown Menu Styles */
 .user-dropdown-menu {
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    min-width: 280px;
-    padding: 0;
-    margin-top: 8px;
-    overflow: hidden;
+    background: #ffffff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+    min-width: 280px !important;
+    padding: 0 !important;
+    margin-top: 8px !important;
+    overflow: hidden !important;
+    z-index: 9999 !important;
 }
 
 .user-dropdown-header {
-    border-bottom: 1px solid #e9ecef;
-    margin: 0;
+    background: #ffffff !important;
+    border-bottom: 1px solid #e9ecef !important;
+    margin: 0 !important;
 }
 
 .user-dropdown-menu .dropdown-item {
-    padding: 12px 20px;
-    font-size: 14px;
-    border: none;
-    background: none;
-    width: 100%;
-    text-align: left;
-    transition: all 0.2s ease;
+    background: #ffffff !important;
+    padding: 12px 20px !important;
+    font-size: 14px !important;
+    border: none !important;
+    width: 100% !important;
+    text-align: left !important;
+    transition: all 0.2s ease !important;
+    color: #495057 !important;
+    text-decoration: none !important;
 }
 
 .user-dropdown-menu .dropdown-item:hover {
-    background: #f8f9fa;
-    color: #e31937;
+    background: #f8f9fa !important;
+    color: #e31937 !important;
+    text-decoration: none !important;
+}
+
+.user-dropdown-menu .dropdown-item:focus {
+    background: #f8f9fa !important;
+    color: #e31937 !important;
+    text-decoration: none !important;
 }
 
 .user-dropdown-menu .dropdown-item i {
-    width: 18px;
-    text-align: center;
+    width: 18px !important;
+    text-align: center !important;
+    color: #6c757d !important;
+}
+
+.user-dropdown-menu .dropdown-item:hover i {
+    color: #e31937 !important;
+}
+
+.logout-btn {
+    background: #ffffff !important;
+    color: #495057 !important;
 }
 
 .logout-btn:hover {
@@ -451,6 +473,7 @@
     }
     
     .footer-info {
+        font-size: 16px;
         text-align: center;
         margin-top: 15px;
     }
@@ -498,7 +521,9 @@
     
     .footer-app-title {
         text-align: center;
-        font-size: 12px;
+        font-size: 16px;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 600;
     }
 }
 
@@ -551,7 +576,8 @@
     }
     
     .footer-link {
-        font-size: 12px;
+
+        font-size: 16px;
     }
     
     .user-name {

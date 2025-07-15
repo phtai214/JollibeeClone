@@ -206,51 +206,202 @@ function copyCouponCode(couponCode) {
         return;
     }
     
-    // Use modern clipboard API if available
+    console.log('Attempting to copy coupon code:', couponCode);
+    
+    // Try modern clipboard API first
     if (navigator.clipboard && window.isSecureContext) {
+        console.log('Using modern clipboard API');
         navigator.clipboard.writeText(couponCode).then(() => {
+            console.log('Modern clipboard API success');
             showToast(`Đã sao chép mã: ${couponCode}`, 'success');
-            
-            // Add visual feedback
-            const couponElements = document.querySelectorAll('.coupon-value');
-            couponElements.forEach(element => {
-                if (element.textContent.includes(couponCode)) {
-                    element.style.background = 'rgba(39, 174, 96, 0.1)';
-                    element.style.color = '#27ae60';
-                    
-                    setTimeout(() => {
-                        element.style.background = '';
-                        element.style.color = '';
-                    }, 2000);
-                }
-            });
-        }).catch(() => {
+            addVisualFeedback(couponCode);
+        }).catch((error) => {
+            console.log('Modern clipboard API failed:', error);
             fallbackCopyToClipboard(couponCode);
         });
     } else {
+        console.log('Modern clipboard API not available, using fallback');
         fallbackCopyToClipboard(couponCode);
     }
 }
 
+// Add visual feedback when copying
+function addVisualFeedback(couponCode) {
+    const couponElements = document.querySelectorAll('.coupon-value, .coupon-code, [data-coupon]');
+    couponElements.forEach(element => {
+        const elementText = element.textContent || element.getAttribute('data-coupon') || '';
+        if (elementText.includes(couponCode)) {
+            element.style.background = 'rgba(39, 174, 96, 0.1)';
+            element.style.color = '#27ae60';
+            element.style.transition = 'all 0.3s ease';
+            
+            setTimeout(() => {
+                element.style.background = '';
+                element.style.color = '';
+            }, 2000);
+        }
+    });
+}
+
 // Fallback copy method for older browsers
 function fallbackCopyToClipboard(text) {
+    console.log('Using fallback copy method for:', text);
+    
+    // Method 1: Try execCommand first
     const textArea = document.createElement('textarea');
     textArea.value = text;
+    
+    // Make the textarea invisible but not display:none
     textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    textArea.style.top = '-999999px';
+    textArea.style.left = '-9999px';
+    textArea.style.top = '-9999px';
+    textArea.style.width = '1px';
+    textArea.style.height = '1px';
+    textArea.style.padding = '0';
+    textArea.style.border = 'none';
+    textArea.style.outline = 'none';
+    textArea.style.boxShadow = 'none';
+    textArea.style.background = 'transparent';
+    textArea.setAttribute('readonly', '');
+    textArea.tabIndex = -1;
+    
     document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
     
     try {
-        document.execCommand('copy');
-        showToast(`Đã sao chép mã: ${text}`, 'success');
+        // Focus and select
+        textArea.focus();
+        textArea.setSelectionRange(0, text.length);
+        textArea.select();
+        
+        // Try to copy
+        const successful = document.execCommand('copy');
+        console.log('execCommand copy result:', successful);
+        
+        if (successful) {
+            showToast(`Đã sao chép mã: ${text}`, 'success');
+            addVisualFeedback(text);
+        } else {
+            throw new Error('execCommand failed');
+        }
     } catch (err) {
-        showToast('Không thể sao chép mã. Vui lòng sao chép thủ công.', 'error');
+        console.error('Fallback copy failed:', err);
+        
+        // Method 2: Manual copy instruction
+        showManualCopyDialog(text);
+    } finally {
+        document.body.removeChild(textArea);
+    }
+}
+
+// Show manual copy dialog when all else fails
+function showManualCopyDialog(text) {
+    // Create modal for manual copy
+    const modal = document.createElement('div');
+    modal.className = 'copy-modal';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        font-family: 'Roboto', sans-serif;
+    `;
+    
+    modal.innerHTML = `
+        <div style="
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        ">
+            <h3 style="color: #e31937; margin-bottom: 15px;">
+                <i class="fas fa-copy"></i> Sao chép mã giảm giá
+            </h3>
+            <p style="color: #666; margin-bottom: 20px;">
+                Vui lòng sao chép mã bên dưới:
+            </p>
+            <div style="
+                background: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                border: 2px dashed #e31937;
+            ">
+                <strong style="
+                    font-size: 18px;
+                    color: #e31937;
+                    letter-spacing: 2px;
+                    user-select: all;
+                ">${text}</strong>
+            </div>
+            <div>
+                <button onclick="this.closest('.copy-modal').remove()" style="
+                    background: #e31937;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    margin: 0 5px;
+                ">Đóng</button>
+                <button onclick="selectTextAndClose('${text}', this)" style="
+                    background: #ffc627;
+                    color: #e31937;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    margin: 0 5px;
+                    font-weight: bold;
+                ">Chọn để sao chép</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Close on backdrop click
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
+
+// Helper function for manual copy dialog
+function selectTextAndClose(text, button) {
+    const textElement = button.closest('.copy-modal').querySelector('strong');
+    if (textElement) {
+        // Select the text
+        const range = document.createRange();
+        range.selectNodeContents(textElement);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        
+        // Try one more time with execCommand
+        try {
+            document.execCommand('copy');
+            showToast(`Đã sao chép mã: ${text}`, 'success');
+        } catch (e) {
+            showToast('Văn bản đã được chọn. Nhấn Ctrl+C để sao chép', 'info');
+        }
     }
     
-    document.body.removeChild(textArea);
+    // Close modal after a delay
+    setTimeout(() => {
+        button.closest('.copy-modal').remove();
+    }, 1000);
 }
 
 // Initialize promotion actions
@@ -458,4 +609,5 @@ window.addEventListener('beforeunload', cleanupPromotions);
 window.copyCouponCode = copyCouponCode;
 window.sharePromotion = sharePromotion;
 window.initializePromotions = initializePromotions;
-window.clearSearch = clearSearch; 
+window.clearSearch = clearSearch;
+window.selectTextAndClose = selectTextAndClose; 

@@ -19,13 +19,15 @@ namespace JollibeeClone.Controllers
         private readonly IPromotionService _promotionService;
         private readonly OrderStatusHistoryService _statusHistoryService;
         private readonly ShippingService _shippingService;
+        private readonly EmailService _emailService;
         
-        public CartController(AppDbContext context, IPromotionService promotionService, OrderStatusHistoryService statusHistoryService, ShippingService shippingService)
+        public CartController(AppDbContext context, IPromotionService promotionService, OrderStatusHistoryService statusHistoryService, ShippingService shippingService, EmailService emailService)
         {
             _context = context;
             _promotionService = promotionService;
             _statusHistoryService = statusHistoryService;
             _shippingService = shippingService;
+            _emailService = emailService;
         }
 
         // GET: /Cart/GetCart
@@ -622,6 +624,170 @@ namespace JollibeeClone.Controllers
             {
                 var errorResponse = JsonConvert.SerializeObject(new { success = false, message = "Lỗi khi tải tổng kết giỏ hàng: " + ex.Message });
                 return Content(errorResponse, "application/json");
+            }
+        }
+
+        // GET: /Cart/TestEmail - FOR TESTING EMAIL FUNCTIONALITY
+        [HttpGet]
+        public async Task<IActionResult> TestEmail(string? email = null)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(email))
+                {
+                    return Json(new { 
+                        success = false, 
+                        message = "Please provide email parameter. Example: /Cart/TestEmail?email=test@gmail.com" 
+                    });
+                }
+
+                Console.WriteLine($"🧪 TestEmail called for: {email}");
+
+                // Create a sample order for testing
+                var testOrder = new Orders
+                {
+                    OrderID = 99999,
+                    OrderCode = "TEST" + DateTime.Now.ToString("yyyyMMddHHmmss"),
+                    CustomerFullName = "Nguyễn Văn Test",
+                    CustomerEmail = email,
+                    CustomerPhoneNumber = "0123456789",
+                    OrderDate = DateTime.Now,
+                    SubtotalAmount = 150000,
+                    ShippingFee = 20000,
+                    DiscountAmount = 10000,
+                    TotalAmount = 160000,
+                    NotesByCustomer = "Đây là đơn hàng test để kiểm tra email",
+                    DeliveryMethodID = 1,
+                    PaymentMethod = new PaymentMethods { MethodName = "Tiền mặt" },
+                    DeliveryMethod = new DeliveryMethods { MethodName = "Giao hàng tận nơi" },
+                    UserAddress = new UserAddress 
+                    { 
+                        Address = "123 Đường Test, Phường Test, Quận Test, TP.HCM",
+                        FullName = "Nguyễn Văn Test",
+                        PhoneNumber = "0123456789"
+                    }
+                };
+
+                // Create sample order items
+                var testOrderItems = new List<OrderItems>
+                {
+                    new OrderItems
+                    {
+                        OrderItemID = 1,
+                        ProductNameSnapshot = "Gà Rán Jollibee (2 miếng)",
+                        Quantity = 1,
+                        UnitPrice = 85000,
+                        Subtotal = 85000,
+                        SelectedConfigurationSnapshot = JsonConvert.SerializeObject(new List<dynamic>
+                        {
+                            new {
+                                GroupName = "Phần thịt",
+                                OptionID = 1,
+                                OptionProductID = 1,
+                                OptionProductName = "Đùi gà",
+                                OptionProductImage = "/images/chicken-thigh.jpg",
+                                PriceAdjustment = 0,
+                                Quantity = 1,
+                                VariantName = "Cay",
+                                VariantType = "Spice Level"
+                            },
+                            new {
+                                GroupName = "Phần thịt",
+                                OptionID = 2,
+                                OptionProductID = 2,
+                                OptionProductName = "Cánh gà",
+                                OptionProductImage = "/images/chicken-wing.jpg",
+                                PriceAdjustment = 0,
+                                Quantity = 1,
+                                VariantName = "Không cay",
+                                VariantType = "Spice Level"
+                            }
+                        }),
+                        Product = new Product { ProductName = "Gà Rán Jollibee (2 miếng)" }
+                    },
+                    new OrderItems
+                    {
+                        OrderItemID = 2,
+                        ProductNameSnapshot = "Burger Zinger",
+                        Quantity = 1,
+                        UnitPrice = 65000,
+                        Subtotal = 65000,
+                        SelectedConfigurationSnapshot = "",
+                        Product = new Product { ProductName = "Burger Zinger" }
+                    }
+                };
+
+                // Send test email
+                var emailSent = await _emailService.SendOrderConfirmationEmailAsync(testOrder, testOrderItems);
+                
+                Console.WriteLine($"🧪 Test email result: {(emailSent ? "✅ Success" : "❌ Failed")}");
+
+                return Json(new { 
+                    success = emailSent,
+                    message = emailSent ? 
+                        $"✅ Test email sent successfully to {email}" : 
+                        $"❌ Failed to send test email to {email}. Check console logs for details.",
+                    orderCode = testOrder.OrderCode,
+                    recipient = email
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error in TestEmail: {ex.Message}");
+                return Json(new { 
+                    success = false, 
+                    message = "Error: " + ex.Message 
+                });
+            }
+        }
+
+        // GET: /Cart/QuickTestEmail - SIMPLE EMAIL TEST
+        [HttpGet]
+        public async Task<IActionResult> QuickTestEmail()
+        {
+            try
+            {
+                Console.WriteLine("🧪 QuickTestEmail called");
+                
+                var testEmail = "taiph214@gmail.com";
+                
+                // Just test the EmailService with basic parameters
+                var emailSent = await _emailService.SendOrderConfirmationEmailAsync(
+                    new Orders 
+                    { 
+                        OrderCode = "QUICKTEST",
+                        CustomerFullName = "Test User",
+                        CustomerEmail = testEmail,
+                        CustomerPhoneNumber = "0123456789",
+                        OrderDate = DateTime.Now,
+                        SubtotalAmount = 100000,
+                        ShippingFee = 0,
+                        DiscountAmount = 0,
+                        TotalAmount = 100000
+                    },
+                    new List<OrderItems>
+                    {
+                        new OrderItems
+                        {
+                            ProductNameSnapshot = "Test Product",
+                            Quantity = 1,
+                            UnitPrice = 100000,
+                            Subtotal = 100000,
+                            SelectedConfigurationSnapshot = ""
+                        }
+                    }
+                );
+                
+                return Json(new { 
+                    success = emailSent,
+                    message = emailSent ? "✅ Email sent!" : "❌ Email failed!",
+                    recipient = testEmail
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ QuickTestEmail error: {ex.Message}");
+                return Json(new { success = false, message = ex.Message });
             }
         }
 
@@ -1616,6 +1782,73 @@ namespace JollibeeClone.Controllers
                     await transaction.CommitAsync();
                     Console.WriteLine($"✅ Order {orderCode} created successfully!");
 
+                    // Send confirmation email immediately (using existing transaction context)
+                    try
+                    {
+                        Console.WriteLine($"📧 Starting email send for order {orderCode}");
+                        Console.WriteLine($"📧 Customer email: '{order.CustomerEmail}'");
+                        Console.WriteLine($"📧 Email is null or empty: {string.IsNullOrEmpty(order.CustomerEmail)}");
+                        
+                        if (!string.IsNullOrEmpty(order.CustomerEmail))
+                        {
+                            Console.WriteLine($"📧 Getting full order data for email...");
+                            // Get full order with related data for email
+                            var fullOrder = await _context.Orders
+                                .Include(o => o.PaymentMethod)
+                                .Include(o => o.DeliveryMethod)
+                                .Include(o => o.Store)
+                                .Include(o => o.UserAddress)
+                                .FirstOrDefaultAsync(o => o.OrderID == order.OrderID);
+
+                            var fullOrderItems = await _context.OrderItems
+                                .Where(oi => oi.OrderID == order.OrderID)
+                                .Include(oi => oi.Product)
+                                .ToListAsync();
+
+                            Console.WriteLine($"📧 Retrieved order data - Order found: {fullOrder != null}, Items count: {fullOrderItems?.Count ?? 0}");
+
+                            if (fullOrder != null)
+                            {
+                                Console.WriteLine($"📧 Full order data:");
+                                Console.WriteLine($"    - OrderID: {fullOrder.OrderID}");
+                                Console.WriteLine($"    - OrderCode: {fullOrder.OrderCode}");
+                                Console.WriteLine($"    - CustomerEmail: '{fullOrder.CustomerEmail}'");
+                                Console.WriteLine($"    - CustomerFullName: '{fullOrder.CustomerFullName}'");
+                                Console.WriteLine($"    - PaymentMethod: {fullOrder.PaymentMethod?.MethodName ?? "NULL"}");
+                                Console.WriteLine($"    - DeliveryMethod: {fullOrder.DeliveryMethod?.MethodName ?? "NULL"}");
+                                Console.WriteLine($"    - Order items count: {fullOrderItems?.Count ?? 0}");
+                                
+                                Console.WriteLine($"📧 Attempting to send email to: {fullOrder.CustomerEmail}");
+                                var emailSent = await _emailService.SendOrderConfirmationEmailAsync(fullOrder, fullOrderItems);
+                                Console.WriteLine($"📧 Email confirmation result for order {orderCode}: {(emailSent ? "✅ SUCCESS" : "❌ FAILED")}");
+                                
+                                if (!emailSent)
+                                {
+                                    Console.WriteLine($"⚠️ Email failed to send but order creation continues");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"🎉 Email sent successfully to {fullOrder.CustomerEmail}!");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine($"❌ Could not retrieve full order data for email");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"⚠️ Skipping email - customer email is empty for order {orderCode}");
+                        }
+                    }
+                    catch (Exception emailEx)
+                    {
+                        Console.WriteLine($"❌ Email sending failed for order {orderCode} but order creation continues");
+                        Console.WriteLine($"❌ Email Exception: {emailEx.Message}");
+                        Console.WriteLine($"❌ Email Stack trace: {emailEx.StackTrace}");
+                        // Don't throw - let order creation succeed even if email fails
+                    }
+
                     // Store order ID in session for success page
                     HttpContext.Session.SetInt32("LastOrderID", order.OrderID);
                     
@@ -1624,59 +1857,20 @@ namespace JollibeeClone.Controllers
                 }
                 catch (Exception ex)
                 {
+                    // Rollback transaction
                     await transaction.RollbackAsync();
                     Console.WriteLine($"❌ Error creating order: {ex.Message}");
-                    throw;
+                    Console.WriteLine($"❌ Stack trace: {ex.StackTrace}");
+                    
+                    TempData["ErrorMessage"] = "Có lỗi xảy ra khi tạo đơn hàng: " + ex.Message;
+                    return RedirectToAction("Checkout");
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"❌ Error in ProcessCheckout: {ex.Message}");
-                TempData["ErrorMessage"] = "Có lỗi xảy ra khi xử lý đơn hàng.";
-                return View("Checkout", model);
-            }
-        }
-
-        // API: Apply voucher
-        [HttpPost]
-        public async Task<IActionResult> ApplyVoucher([FromBody] ApplyVoucherRequest request)
-        {
-            try
-            {
-                var result = await _promotionService.ValidatePromotionForUserAsync(
-                    request.UserID ?? 0, request.VoucherCode, request.OrderAmount);
-
-                if (result.IsValid && result.Promotion != null)
-                {
-                    var response = new ApplyVoucherResponse
-                    {
-                        Success = true,
-                        Message = "Voucher được áp dụng thành công",
-                        PromotionID = result.Promotion.PromotionID,
-                        PromotionName = result.Promotion.PromotionName,
-                        DiscountAmount = result.DiscountAmount,
-                        NewTotalAmount = request.OrderAmount - result.DiscountAmount
-                    };
-
-                    return Json(response);
-                }
-                else
-                {
-                    return Json(new ApplyVoucherResponse
-                    {
-                        Success = false,
-                        Message = result.ErrorMessage
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"❌ Error applying voucher: {ex.Message}");
-                return Json(new ApplyVoucherResponse
-                {
-                    Success = false,
-                    Message = "Có lỗi xảy ra khi áp dụng voucher"
-                });
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi xử lý đơn hàng: " + ex.Message;
+                return RedirectToAction("Checkout");
             }
         }
 

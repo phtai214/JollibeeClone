@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using JollibeeClone.Data;
 using JollibeeClone.Areas.Admin.Services;
+using JollibeeClone.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +48,9 @@ builder.Services.AddScoped<JollibeeClone.Services.OrderStatusHistoryService>();
 // Đăng ký ShippingService
 builder.Services.AddScoped<JollibeeClone.Services.ShippingService>();
 
+// Đăng ký EmailService
+builder.Services.AddScoped<JollibeeClone.Services.EmailService>();
+
 // Thêm các service khác
 builder.Services.AddControllersWithViews(options =>
 {
@@ -80,6 +84,7 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(optio
     options.MultipartHeadersCountLimit = 8192; // 8K headers
     options.MultipartHeadersLengthLimit = 262144; // 256KB headers length
 });
+
 
 var app = builder.Build();
 

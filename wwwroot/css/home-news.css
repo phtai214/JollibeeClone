@@ -227,22 +227,23 @@
 
 /* Jollibee Primary Button */
 .btn-jollibee-primary {
-    background: linear-gradient(135deg, var(--jollibee-red), var(--jollibee-orange));
+    background: var(--jollibee-red);
     color: white;
     border: none;
     border-radius: 10px;
-    padding: 15px 40px;
+    padding: 12px 45px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(227, 25, 55, 0.3);
+    margin-top: 10px;
 }
 
 .btn-jollibee-primary:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 25px rgba(227, 25, 55, 0.4);
-    color: white;
+    color: rgb(255, 20, 20);
 }
 
 .btn-jollibee-primary i {

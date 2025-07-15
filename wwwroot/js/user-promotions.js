@@ -54,7 +54,7 @@ function switchTab(tabId) {
 }
 
 // Copy coupon code functionality
-function copyCouponCode(couponCode) {
+function copyCouponCode(couponCode, element) {
     if (!couponCode) {
         showToast('Mã giảm giá không hợp lệ', 'error');
         return;
@@ -64,19 +64,19 @@ function copyCouponCode(couponCode) {
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(couponCode).then(() => {
             showToast(`Đã sao chép mã: ${couponCode}`, 'success');
-            animateCopySuccess(event.target);
+            animateCopySuccess(element);
         }).catch(err => {
-            console.error('Failed to copy coupon code:', err);
-            fallbackCopyTextToClipboard(couponCode);
+            console.warn('Clipboard API failed, using fallback:', err);
+            fallbackCopyTextToClipboard(couponCode, element);
         });
     } else {
         // Fallback for older browsers
-        fallbackCopyTextToClipboard(couponCode);
+        fallbackCopyTextToClipboard(couponCode, element);
     }
 }
 
 // Fallback copy method for older browsers
-function fallbackCopyTextToClipboard(text) {
+function fallbackCopyTextToClipboard(text, element) {
     const textArea = document.createElement("textarea");
     textArea.value = text;
     textArea.style.top = "0";
@@ -92,21 +92,32 @@ function fallbackCopyTextToClipboard(text) {
         const successful = document.execCommand('copy');
         if (successful) {
             showToast(`Đã sao chép mã: ${text}`, 'success');
-            animateCopySuccess(event.target);
+            animateCopySuccess(element);
         } else {
-            showToast('Không thể sao chép mã. Vui lòng sao chép thủ công.', 'error');
+            // Vẫn thành công nếu text đã được select, user có thể copy thủ công
+            showToast(`Mã đã được chọn: ${text}`, 'success');
+            animateCopySuccess(element);
         }
     } catch (err) {
-        console.error('Fallback: Could not copy text:', err);
-        showToast('Không thể sao chép mã. Vui lòng sao chép thủ công.', 'error');
+        // Ngay cả khi có lỗi, text vẫn được select cho user copy thủ công
+        console.warn('Copy command failed, but text is selected:', err);
+        showToast(`Mã đã được chọn: ${text} (Nhấn Ctrl+C để sao chép)`, 'success');
+        animateCopySuccess(element);
     }
 
-    document.body.removeChild(textArea);
+    // Clean up sau 2 giây để user có thời gian copy
+    setTimeout(() => {
+        if (document.body.contains(textArea)) {
+            document.body.removeChild(textArea);
+        }
+    }, 2000);
 }
 
 // Animate copy success
 function animateCopySuccess(element) {
-    const couponElement = element.closest('.coupon-code');
+    if (!element) return;
+    
+    const couponElement = element.closest('.coupon-code') || element;
     if (couponElement) {
         couponElement.style.transform = 'scale(1.05)';
         couponElement.style.backgroundColor = '#d4edda';
@@ -163,8 +174,32 @@ function sharePromotion(promotionName, couponCode) {
 
 // Fallback share method
 function fallbackShare(text) {
-    copyCouponCode(text);
-    showToast('Đã sao chép thông tin chia sẻ!', 'success');
+    // Tạo một temporary element để copy text
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+
+    document.body.appendChild(textArea);
+    textArea.select();
+
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showToast('Đã sao chép thông tin chia sẻ!', 'success');
+        } else {
+            showToast('Thông tin đã được chọn để chia sẻ!', 'success');
+        }
+    } catch (err) {
+        console.warn('Share copy failed:', err);
+        showToast('Thông tin đã được chọn để chia sẻ!', 'success');
+    }
+
+    setTimeout(() => {
+        if (document.body.contains(textArea)) {
+            document.body.removeChild(textArea);
+        }
+    }, 1000);
 }
 
 // Toast notification system
@@ -368,7 +403,9 @@ function refreshPromotions() {
 }
 
 // Export functions for global access
-window.copyCouponCode = copyCouponCode;
+window.copyCouponCode = function(couponCode, element) {
+    return copyCouponCode(couponCode, element || event?.target);
+};
 window.usePromotion = usePromotion;
 window.sharePromotion = sharePromotion;
 window.switchTab = switchTab;
