@@ -325,9 +325,7 @@ D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\ifjb
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\z6fvrffksv-61n19gt1b8.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\7yah0k0sgh-f4eaek9j71.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\uvqsed6f40-fnd45lr4sg.gz
-D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\atfzl13m8s-0zkxm1nr68.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\2p47uqp0v2-cryqrpyryj.gz
-D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\dxa0lxiivw-tlq8l7vvf4.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\jqedf3raak-ux78ug69g7.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\ep3w626c7d-uz14umno0d.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\b89g9pobsx-nbjmoekeky.gz
@@ -411,3 +409,5 @@ D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\refint\Jollibee
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\JollibeeClone.pdb
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\JollibeeClone.genruntimeconfig.cache
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\ref\JollibeeClone.dll
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\atfzl13m8s-a2ur9alj46.gz
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\dxa0lxiivw-5j017ktdoc.gz

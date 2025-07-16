@@ -112,6 +112,61 @@
   </div>
 </div>
 
+<style>
+    /* Combo price styling */
+    .price-container {
+        margin-bottom: 1.2rem;
+        position: relative;
+        transition: transform 0.2s ease;
+    }
+    
+    .menu-card:hover .price-container {
+        transform: scale(1.05);
+    }
+    
+    .original-price {
+        color: #999;
+        font-size: 1rem;
+        text-decoration: line-through;
+        margin-bottom: 0.3rem;
+        font-weight: 500;
+    }
+    
+    .current-price {
+        color: #ff9800;
+        font-size: 1.3rem;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        display: inline-block;
+        margin-right: 8px;
+    }
+    
+    .discount-badge {
+        display: inline-block;
+        background: #ffc107;
+        color: #333;
+        padding: 2px 6px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        vertical-align: middle;
+        margin-left: 4px;
+    }
+    
+    @@media (max-width: 768px) {
+        .original-price {
+            font-size: 0.9rem;
+        }
+        .current-price {
+            font-size: 1.2rem;
+        }
+        .discount-badge {
+            font-size: 0.75rem;
+            padding: 1px 4px;
+        }
+    }
+</style>
+
 @section Scripts {
     <script>
         // Main rendering function
@@ -128,6 +183,24 @@
                     ? `data-product-id="${item.productID}" data-bs-toggle="modal" data-bs-target="#orderOptionsModal"` 
                     : `data-product-id="${item.productID}" data-product-name="${item.productName}" data-product-price="${item.price}"`;
                 
+                // Sử dụng giá thật từ database
+                let priceHTML = '';
+                if (isCombo && item.originalPrice && item.originalPrice > item.price) {
+                    const currentPrice = item.price;
+                    const originalPrice = item.originalPrice;
+                    const discountPercent = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
+                    
+                    priceHTML = `
+                        <div class="price-container">
+                            <div class="original-price">${originalPrice.toLocaleString()} đ</div>
+                            <div class="current-price">${currentPrice.toLocaleString()} đ</div>
+                            <div class="discount-badge">-${discountPercent}%</div>
+                        </div>
+                    `;
+                } else {
+                    priceHTML = `<div class="menu-price">${item.price.toLocaleString()} đ</div>`;
+                }
+                
                 return `
                     <div class="col-md-6 col-lg-4">
                         <div class="menu-card">
@@ -136,9 +209,9 @@
                             <div class="menu-content">
                                 <h3>${item.productName}</h3>
                                 <div class="menu-info">${item.shortDescription || ''}</div>
-                                <div class="menu-price">${item.price.toLocaleString()} đ</div>
+                                ${priceHTML}
                                 <button class="${buttonClass}" ${buttonAttributes}>
-                                    ${isCombo ? 'Tùy Chọn' : 'Đặt Hàng'}
+                                    ${isCombo ? 'TÙY CHỌN' : 'ĐẶT HÀNG'}
                                 </button>
                             </div>
                         </div>
@@ -256,7 +329,9 @@
                         
                         // Store base product info for price calculation
                         const productCard = e.target.closest('.menu-card');
-                        const priceText = productCard.querySelector('.menu-price').textContent;
+                        // For combo products, get current price; for regular products, get menu price
+                        const priceElement = productCard.querySelector('.current-price') || productCard.querySelector('.menu-price');
+                        const priceText = priceElement.textContent;
                         const basePrice = parseInt(priceText.replace(/[^\d]/g, ''));
                         
                         // Store base price globally for updateTotalPrice function

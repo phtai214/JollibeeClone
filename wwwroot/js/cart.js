@@ -169,8 +169,7 @@ class JollibeeCart {
             const requestData = {
                 ProductID: productId,
                 Quantity: quantity,
-                SelectedOptions: selectedOptions,
-                SessionID: this.getSessionId()
+                SelectedOptions: selectedOptions
             };
 
             console.log('📱 Client: Adding to cart with data:', requestData);
@@ -742,14 +741,109 @@ class JollibeeCart {
         `;
     }
 
-    proceedToCheckout() {
+    async proceedToCheckout() {
         if (!this.cartData || !this.cartData.CartItems || this.cartData.CartItems.length === 0) {
             this.showNotification('error', 'Giỏ hàng trống');
             return;
         }
         
-        // Navigate to shipping page
-        window.location.href = '/Cart/Shipping';
+        // Check if user is logged in
+        const isLoggedIn = await this.checkUserAuthentication();
+        
+        if (isLoggedIn) {
+            // User is logged in, proceed to shipping
+            window.location.href = '/Cart/Shipping';
+        } else {
+            // User is not logged in, show login modal
+            this.showLoginModal();
+        }
+    }
+
+    async checkUserAuthentication() {
+        try {
+            const response = await fetch('/Account/CheckAuthenticationStatus', {
+                method: 'GET',
+                credentials: 'same-origin'
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                return data.isAuthenticated === true;
+            }
+            
+            return false;
+        } catch (error) {
+            console.error('❌ Error checking authentication:', error);
+            return false;
+        }
+    }
+
+    showLoginModal() {
+        // Close cart panel first
+        this.closeCart();
+        
+        // Show login requirement modal
+        const existingModal = document.getElementById('loginRequiredModal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+        
+        // Create login modal
+        const modal = document.createElement('div');
+        modal.className = 'modal fade';
+        modal.id = 'loginRequiredModal';
+        modal.setAttribute('tabindex', '-1');
+        modal.setAttribute('aria-labelledby', 'loginRequiredModalLabel');
+        modal.setAttribute('aria-hidden', 'true');
+        modal.innerHTML = `
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="loginRequiredModalLabel">
+                            <i class="fas fa-lock me-2"></i>Yêu cầu đăng nhập
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center py-4">
+                        <div class="mb-3">
+                            <i class="fas fa-user-lock text-danger" style="font-size: 3rem;"></i>
+                        </div>
+                        <h6 class="mb-3">Bạn cần đăng nhập để tiếp tục thanh toán</h6>
+                        <p class="text-muted mb-4">
+                            Để đảm bảo bảo mật và có được trải nghiệm tốt nhất, vui lòng đăng nhập vào tài khoản của bạn trước khi thanh toán.
+                        </p>
+                        <div class="d-grid gap-2">
+                            <a href="/Account/Login?returnUrl=%2FCart%2FShipping" class="btn btn-danger btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập ngay
+                            </a>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                <i class="fas fa-arrow-left me-2"></i>Tiếp tục mua sắm
+                            </button>
+                        </div>
+                        <hr class="my-3">
+                        <p class="mb-0">
+                            <small class="text-muted">
+                                Chưa có tài khoản? 
+                                <a href="/Account/Register" class="text-decoration-none">
+                                    <strong>Đăng ký tại đây</strong>
+                                </a>
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Show modal using Bootstrap
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+        
+        // Clean up modal when hidden
+        modal.addEventListener('hidden.bs.modal', () => {
+            modal.remove();
+        });
     }
 
     formatCurrency(amount) {

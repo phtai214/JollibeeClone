@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anonymous Cart Debug Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .debug-console {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+        }
+        
+        .debug-log {
+            margin: 0.25rem 0;
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+        }
+        
+        .debug-log.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .debug-log.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .debug-log.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .debug-log.warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4">
+                    <i class="fas fa-bug"></i> Anonymous Cart Debug Tool
+                </h1>
+                
+                <div class="test-section">
+                    <h3><i class="fas fa-info-circle"></i> Session Information</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-info mb-3" onclick="checkSession()">
+                                <i class="fas fa-search"></i> Check Session
+                            </button>
+                            <div id="sessionInfo" class="debug-console" style="min-height: 100px;"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-primary mb-3" onclick="debugAnonymousCart()">
+                                <i class="fas fa-shopping-cart"></i> Debug Anonymous Cart
+                            </button>
+                            <div id="cartDebugInfo" class="debug-console" style="min-height: 100px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="test-section">
+                    <h3><i class="fas fa-plus-circle"></i> Cart Operations Test</h3>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5>Add Test Product</h5>
+                            <div class="mb-3">
+                                <label for="testProductId" class="form-label">Product ID:</label>
+                                <input type="number" id="testProductId" class="form-control" value="1">
+                            </div>
+                            <div class="mb-3">
+                                <label for="testQuantity" class="form-label">Quantity:</label>
+                                <input type="number" id="testQuantity" class="form-control" value="1">
+                            </div>
+                            <button class="btn btn-success" onclick="testAddToCart()">
+                                <i class="fas fa-plus"></i> Add to Cart
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>Get Cart</h5>
+                            <button class="btn btn-info mb-3" onclick="testGetCart()">
+                                <i class="fas fa-shopping-cart"></i> Get Cart
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>Clear Tests</h5>
+                            <button class="btn btn-warning mb-3" onclick="clearLogs()">
+                                <i class="fas fa-eraser"></i> Clear Logs
+                            </button>
+                            <button class="btn btn-danger" onclick="clearCart()">
+                                <i class="fas fa-trash"></i> Clear Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="test-section">
+                    <h3><i class="fas fa-terminal"></i> Debug Console</h3>
+                    <div id="debugConsole" class="debug-console" style="min-height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const console = document.getElementById('debugConsole');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `debug-log ${type}`;
+            logEntry.innerHTML = `[${timestamp}] ${message}`;
+            console.appendChild(logEntry);
+            console.scrollTop = console.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('debugConsole').innerHTML = '';
+            document.getElementById('sessionInfo').innerHTML = '';
+            document.getElementById('cartDebugInfo').innerHTML = '';
+        }
+
+        async function checkSession() {
+            try {
+                log('🔍 Checking session information...', 'info');
+                
+                const response = await fetch('/Cart/CheckSession');
+                const result = await response.json();
+                
+                const sessionDiv = document.getElementById('sessionInfo');
+                sessionDiv.innerHTML = `
+                    <div class="debug-log info">Session ID: ${result.sessionId}</div>
+                    <div class="debug-log info">Is Logged In: ${result.isUserLoggedIn}</div>
+                    <div class="debug-log info">User ID: ${result.userId || 'NULL'}</div>
+                    <div class="debug-log info">Session Keys: [${result.sessionKeys.join(', ')}]</div>
+                    <div class="debug-log info">Timestamp: ${result.timestamp}</div>
+                `;
+                
+                log(`✅ Session: ${result.sessionId}, Logged: ${result.isUserLoggedIn}, User: ${result.userId || 'NULL'}`, 'success');
+            } catch (error) {
+                log(`❌ Error checking session: ${error.message}`, 'error');
+            }
+        }
+
+        async function debugAnonymousCart() {
+            try {
+                log('🔍 Debugging anonymous cart...', 'info');
+                
+                const response = await fetch('/Cart/DebugAnonymousCart');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const cartDiv = document.getElementById('cartDebugInfo');
+                    cartDiv.innerHTML = `
+                        <div class="debug-log info">Session ID: ${result.sessionId}</div>
+                        <div class="debug-log info">Is Authenticated: ${result.isAuthenticated}</div>
+                        <div class="debug-log info">User ID: ${result.userId || 'NULL'}</div>
+                        <div class="debug-log info">Session Carts: ${result.sessionCarts.length}</div>
+                        <div class="debug-log info">Current Cart ID: ${result.currentCartId}</div>
+                        <div class="debug-log info">Current Cart Items: ${result.currentCartItemsCount}</div>
+                    `;
+                    
+                    result.sessionCarts.forEach((cart, index) => {
+                        cartDiv.innerHTML += `
+                            <div class="debug-log success">Cart ${index + 1}: ${cart.CartID} (${cart.ItemsCount} items)</div>
+                        `;
+                    });
+                    
+                    log(`✅ Found ${result.sessionCarts.length} carts for session ${result.sessionId}`, 'success');
+                    log(`🛒 Current cart: ${result.currentCartId} with ${result.currentCartItemsCount} items`, 'success');
+                } else {
+                    log(`❌ Error debugging cart: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Error debugging anonymous cart: ${error.message}`, 'error');
+            }
+        }
+
+        async function testAddToCart() {
+            try {
+                const productId = parseInt(document.getElementById('testProductId').value);
+                const quantity = parseInt(document.getElementById('testQuantity').value);
+                
+                log(`🛒 Adding Product ${productId} x${quantity} to cart...`, 'info');
+                
+                const response = await fetch('/Cart/AddToCart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        ProductID: productId,
+                        Quantity: quantity,
+                        SelectedOptions: []
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    log(`✅ Successfully added to cart!`, 'success');
+                    log(`🛒 Cart now has ${result.data?.CartItems?.length || 0} items`, 'success');
+                    log(`💰 Total: ${result.data?.TotalAmount || 0}₫`, 'success');
+                } else {
+                    log(`❌ Error adding to cart: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Error in testAddToCart: ${error.message}`, 'error');
+            }
+        }
+
+        async function testGetCart() {
+            try {
+                log('🛒 Getting cart...', 'info');
+                
+                const response = await fetch('/Cart/GetCart');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const cart = result.data;
+                    log(`✅ Cart retrieved successfully!`, 'success');
+                    log(`🆔 Cart ID: ${cart.CartID}`, 'info');
+                    log(`👤 User ID: ${cart.UserID || 'NULL'}`, 'info');
+                    log(`🔐 Session ID: ${cart.SessionID || 'NULL'}`, 'info');
+                    log(`📦 Items: ${cart.CartItems?.length || 0}`, 'info');
+                    log(`💰 Total: ${cart.TotalAmount || 0}₫`, 'info');
+                    
+                    if (cart.CartItems && cart.CartItems.length > 0) {
+                        cart.CartItems.forEach((item, index) => {
+                            log(`  Item ${index + 1}: ${item.ProductName} x${item.Quantity} = ${item.TotalPrice}₫`, 'success');
+                        });
+                    } else {
+                        log(`⚠️ Cart is empty!`, 'warning');
+                    }
+                } else {
+                    log(`❌ Error getting cart: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Error in testGetCart: ${error.message}`, 'error');
+            }
+        }
+
+        async function clearCart() {
+            try {
+                log('🗑️ Clearing cart...', 'info');
+                
+                const response = await fetch('/Cart/ClearCart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    log(`✅ Cart cleared successfully!`, 'success');
+                } else {
+                    log(`❌ Error clearing cart: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Error clearing cart: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto load session info on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 Anonymous Cart Debug Tool loaded', 'success');
+            checkSession();
+        });
+    </script>
+</body>
+</html>

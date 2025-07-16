@@ -15,12 +15,14 @@ namespace JollibeeClone.Controllers
         private readonly AppDbContext _context;
         private readonly ILogger<AccountController> _logger;
         private readonly OrderStatusHistoryService _statusHistoryService;
+        private readonly ICartMergeService _cartMergeService;
 
-        public AccountController(AppDbContext context, ILogger<AccountController> logger, OrderStatusHistoryService statusHistoryService)
+        public AccountController(AppDbContext context, ILogger<AccountController> logger, OrderStatusHistoryService statusHistoryService, ICartMergeService cartMergeService)
         {
             _context = context;
             _logger = logger;
             _statusHistoryService = statusHistoryService;
+            _cartMergeService = cartMergeService;
         }
 
         // GET: Account/Register
@@ -98,6 +100,27 @@ namespace JollibeeClone.Controllers
                 await _context.SaveChangesAsync();
 
                 _logger.LogInformation("New user registered: {Email}", model.Email);
+
+                // CART MERGE: Merge anonymous cart to new user cart after successful registration
+                try
+                {
+                    var currentSessionId = HttpContext.Session.Id;
+                    var cartMergeSuccess = await _cartMergeService.MergeAnonymousCartToUserAsync(newUser.UserID, currentSessionId);
+                    if (cartMergeSuccess)
+                    {
+                        _logger.LogInformation("Cart merge successful for new user: {Email}", model.Email);
+                    }
+                    else
+                    {
+                        _logger.LogWarning("Cart merge failed for new user: {Email}", model.Email);
+                    }
+                }
+                catch (Exception cartEx)
+                {
+                    _logger.LogError(cartEx, "Error during cart merge for new user: {Email}", model.Email);
+                    // Don't fail registration if cart merge fails
+                }
+
                 TempData["SuccessMessage"] = "Đăng ký thành công! Vui lòng đăng nhập.";
                 
                 // Chuyển hướng đến trang đăng nhập
@@ -113,20 +136,27 @@ namespace JollibeeClone.Controllers
 
         // GET: Account/Login
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
-            // Nếu đã đăng nhập thì chuyển về trang chủ
+            // Nếu đã đăng nhập thì chuyển về trang chủ (hoặc returnUrl nếu có)
             if (IsUserLoggedIn())
             {
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
                 return RedirectToAction("Index", "Home");
             }
+            
+            // Store returnUrl in ViewBag for the login form
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
         // POST: Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(UserLoginViewModel model)
+        public async Task<IActionResult> Login(UserLoginViewModel model, string returnUrl = null)
         {
             try
             {
@@ -164,6 +194,10 @@ namespace JollibeeClone.Controllers
                     return View(model);
                 }
 
+                // Get current session ID before login to merge cart later
+                var currentSessionId = HttpContext.Session.Id;
+                _logger.LogInformation("Login - Current Session ID: {SessionId} for user: {Email}", currentSessionId, user.Email);
+
                 // Lưu thông tin đăng nhập vào session
                 HttpContext.Session.SetString("IsUserLoggedIn", "true");
                 HttpContext.Session.SetString("UserId", user.UserID.ToString());
@@ -181,8 +215,34 @@ namespace JollibeeClone.Controllers
                     });
                 }
 
+                // CART MERGE: Merge anonymous cart to user cart after successful login
+                try
+                {
+                    var cartMergeSuccess = await _cartMergeService.MergeAnonymousCartToUserAsync(user.UserID, currentSessionId);
+                    if (cartMergeSuccess)
+                    {
+                        _logger.LogInformation("Cart merge successful for user: {Email}", user.Email);
+                    }
+                    else
+                    {
+                        _logger.LogWarning("Cart merge failed for user: {Email}", user.Email);
+                    }
+                }
+                catch (Exception cartEx)
+                {
+                    _logger.LogError(cartEx, "Error during cart merge for user: {Email}", user.Email);
+                    // Don't fail login if cart merge fails
+                }
+
                 TempData["SuccessMessage"] = "Đăng nhập thành công!";
                 _logger.LogInformation("User logged in: {Email}", user.Email);
+
+                // Handle return URL for seamless UX
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                {
+                    _logger.LogInformation("Redirecting user to return URL: {ReturnUrl}", returnUrl);
+                    return Redirect(returnUrl);
+                }
 
                 // Chuyển hướng về trang chủ
                 return RedirectToAction("Index", "Home");
@@ -962,6 +1022,30 @@ namespace JollibeeClone.Controllers
 
         // ...existing code...
 
+        // API: Check authentication status for cart and AJAX calls
+        [HttpGet]
+        public IActionResult CheckAuthenticationStatus()
+        {
+            try
+            {
+                var isAuthenticated = IsUserLoggedIn();
+                var userId = HttpContext.Session.GetString("UserId");
+                var userName = HttpContext.Session.GetString("UserName");
+
+                return Json(new
+                {
+                    isAuthenticated = isAuthenticated,
+                    userId = isAuthenticated ? userId : null,
+                    userName = isAuthenticated ? userName : null
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error checking authentication status");
+                return Json(new { isAuthenticated = false });
+            }
+        }
+
         // Helper methods
         private bool IsUserLoggedIn()
         {
@@ -1616,6 +1700,51 @@ namespace JollibeeClone.Controllers
             {
                 _logger.LogError(ex, "Error cancelling order {OrderID}", id);
                 return Json(new { success = false, message = "Có lỗi xảy ra khi hủy đơn hàng." });
+            }
+        }
+
+        // API: Get Order Status (for real-time updates)
+        [HttpGet]
+        [UserAuthorize]
+        public async Task<IActionResult> GetOrderStatus(int orderId)
+        {
+            try
+            {
+                var userIdString = HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+                {
+                    return Json(new { success = false, message = "Unauthorized" });
+                }
+
+                var order = await _context.Orders
+                    .Include(o => o.OrderStatus)
+                    .FirstOrDefaultAsync(o => o.OrderID == orderId && o.UserID == userId);
+
+                if (order == null)
+                {
+                    return Json(new { success = false, message = "Order not found" });
+                }
+
+                // Create tracking events for the current status
+                var trackingEvents = await CreateTrackingEventsAsync(order);
+
+                return Json(new { 
+                    success = true, 
+                    data = new {
+                        statusName = order.OrderStatus.StatusName,
+                        statusDescription = order.OrderStatus.Description ?? "",
+                        statusColor = GetStatusColor(order.OrderStatus.StatusName),
+                        statusIcon = GetStatusIcon(order.OrderStatus.StatusName),
+                        trackingEvents = trackingEvents,
+                        canCancel = CanCancelOrder(order.OrderStatus.StatusName),
+                        canReorder = order.OrderStatus.StatusName == "Hoàn thành" || order.OrderStatus.StatusName == "Đã hủy"
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting order status for OrderID: {OrderID}", orderId);
+                return Json(new { success = false, message = "Internal server error" });
             }
         }
     }

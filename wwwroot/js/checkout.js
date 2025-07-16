@@ -79,7 +79,10 @@ class CheckoutManager {
         const messageDiv = document.getElementById('voucherMessage');
         const applyBtn = document.getElementById('applyVoucherBtn');
 
-        if (!voucherInput || !messageDiv) return;
+        if (!voucherInput || !messageDiv) {
+            console.error('❌ Required elements not found:', { voucherInput: !!voucherInput, messageDiv: !!messageDiv });
+            return;
+        }
 
         const voucherCode = voucherInput.value.trim();
         if (!voucherCode) {
@@ -87,25 +90,46 @@ class CheckoutManager {
             return;
         }
 
+        console.log('🎫 Applying voucher:', {
+            voucherCode: voucherCode,
+            orderAmount: this.currentSubtotal,
+            userId: this.getCurrentUserId()
+        });
+
         // Show loading state
-        applyBtn.disabled = true;
-        applyBtn.textContent = 'ĐANG XỬ LÝ...';
+        if (applyBtn) {
+            applyBtn.disabled = true;
+            applyBtn.textContent = 'ĐANG XỬ LÝ...';
+        }
 
         try {
+            const requestData = {
+                VoucherCode: voucherCode,
+                OrderAmount: this.currentSubtotal,
+                UserID: this.getCurrentUserId()
+            };
+
+            console.log('🎫 Sending request to /Cart/ApplyVoucher:', requestData);
+
             const response = await fetch('/Cart/ApplyVoucher', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'RequestVerificationToken': this.getAntiForgeryToken()
+                    'X-Requested-With': 'XMLHttpRequest'
                 },
-                body: JSON.stringify({
-                    VoucherCode: voucherCode,
-                    OrderAmount: this.currentSubtotal,
-                    UserID: this.getCurrentUserId()
-                })
+                body: JSON.stringify(requestData)
             });
 
+            console.log('🎫 Response status:', response.status, response.statusText);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('❌ Response error:', errorText);
+                throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+            }
+
             const result = await response.json();
+            console.log('🎫 API Response:', result);
 
             if (result.success) {
                 // Apply voucher successfully
@@ -139,8 +163,10 @@ class CheckoutManager {
             this.showVoucherMessage('Có lỗi xảy ra khi áp dụng voucher', 'error');
         } finally {
             // Reset button
-            applyBtn.disabled = false;
-            applyBtn.textContent = 'ÁP DỤNG';
+            if (applyBtn) {
+                applyBtn.disabled = false;
+                applyBtn.textContent = 'ÁP DỤNG';
+            }
         }
     }
 
@@ -274,8 +300,24 @@ class CheckoutManager {
     }
 
     getCurrentUserId() {
+        // Try multiple sources to get user ID
         const userIdField = document.querySelector('input[name="UserID"]');
-        return userIdField ? parseInt(userIdField.value) || null : null;
+        if (userIdField && userIdField.value) {
+            const userId = parseInt(userIdField.value);
+            console.log('🔍 Found UserID from hidden field:', userId);
+            return userId || null;
+        }
+        
+        // Try from data attribute
+        const userIdData = document.body.getAttribute('data-user-id');
+        if (userIdData) {
+            const userId = parseInt(userIdData);
+            console.log('🔍 Found UserID from data attribute:', userId);
+            return userId || null;
+        }
+        
+        console.log('⚠️ No UserID found - user may be anonymous');
+        return null;
     }
 }
 

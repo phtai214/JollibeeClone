@@ -47,9 +47,20 @@ namespace JollibeeClone.Controllers
                 var cartViewModel = await MapCartToViewModelAsync(cart);
                 Console.WriteLine($"🔍 Cart items count: {cartViewModel.CartItems?.Count ?? -1}");
                 Console.WriteLine($"🔍 Total amount: {cartViewModel.TotalAmount}");
+                Console.WriteLine($"🔍 Cart items null check: {cartViewModel.CartItems == null}");
+                
+                if (cartViewModel.CartItems?.Count == 0)
+                {
+                    Console.WriteLine("⚠️ Warning: Cart has no items in view model");
+                }
                 
                 // TEMPORARY FIX: Use Newtonsoft.Json explicitly
-                var jsonResponse = JsonConvert.SerializeObject(new { success = true, data = cartViewModel });
+                var response = new { success = true, data = cartViewModel };
+                var jsonResponse = JsonConvert.SerializeObject(response, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    DateFormatString = "dd/MM/yyyy HH:mm:ss"
+                });
                 Console.WriteLine($"🔧 GetCart using Newtonsoft.Json for response");
                 return Content(jsonResponse, "application/json");
             }
@@ -98,6 +109,20 @@ namespace JollibeeClone.Controllers
                 // Lấy hoặc tạo giỏ hàng
                 var cart = await GetOrCreateCartAsync();
                 Console.WriteLine($"🛒 Cart retrieved/created: {cart.CartID}");
+                
+                // IMPORTANT: Ensure cart is saved to database immediately for anonymous users
+                if (cart.UserID == null && !string.IsNullOrEmpty(cart.SessionID))
+                {
+                    // Verify cart exists in database
+                    var cartExists = await _context.Carts.AnyAsync(c => c.CartID == cart.CartID);
+                    if (!cartExists)
+                    {
+                        Console.WriteLine("⚠️ Cart not found in database, recreating...");
+                        _context.Carts.Add(cart);
+                        await _context.SaveChangesAsync();
+                        Console.WriteLine($"✅ Cart saved to database: {cart.CartID}");
+                    }
+                }
 
                 // Tính giá sản phẩm
                 decimal totalPrice = product.Price;
@@ -213,13 +238,21 @@ namespace JollibeeClone.Controllers
                 }
 
                 // TEMPORARY FIX: Use Newtonsoft.Json explicitly
-                var jsonResponse = JsonConvert.SerializeObject(new { 
+                var response = new { 
                     success = true, 
                     message = "Đã thêm vào giỏ hàng thành công!",
                     data = cartViewModel 
+                };
+                
+                Console.WriteLine($"🔧 Response data - CartItems count: {response.data?.CartItems?.Count ?? -1}");
+                Console.WriteLine($"🔧 Using Newtonsoft.Json for response");
+                
+                var jsonResponse = JsonConvert.SerializeObject(response, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    DateFormatString = "dd/MM/yyyy HH:mm:ss"
                 });
                 
-                Console.WriteLine($"🔧 Using Newtonsoft.Json for response");
                 return Content(jsonResponse, "application/json");
             }
             catch (Exception ex)
@@ -237,6 +270,7 @@ namespace JollibeeClone.Controllers
             try
             {
                 Console.WriteLine($"🔄 UpdateQuantity called - CartItemID: {request?.CartItemID}, Quantity: {request?.Quantity}");
+                Console.WriteLine($"🔄 Session ID: {HttpContext.Session.Id}");
                 
                 if (request == null || !ModelState.IsValid)
                 {
@@ -245,14 +279,35 @@ namespace JollibeeClone.Controllers
                 }
 
                 var cart = await GetOrCreateCartAsync();
-                Console.WriteLine($"🔄 Cart for update: ID={cart.CartID}");
+                Console.WriteLine($"🔄 Cart for update: ID={cart.CartID}, UserID={cart.UserID}, SessionID={cart.SessionID}");
+                
+                // DEBUG: Check if cartItem exists in ANY cart
+                var cartItemAnyCart = await _context.CartItems
+                    .Include(ci => ci.Cart)
+                    .FirstOrDefaultAsync(ci => ci.CartItemID == request.CartItemID);
+                
+                if (cartItemAnyCart != null)
+                {
+                    Console.WriteLine($"🔍 CartItem {request.CartItemID} exists in Cart {cartItemAnyCart.CartID} (UserID: {cartItemAnyCart.Cart.UserID}, SessionID: {cartItemAnyCart.Cart.SessionID})");
+                }
+                else
+                {
+                    Console.WriteLine($"❌ CartItem {request.CartItemID} does not exist in ANY cart");
+                }
                 
                 var cartItem = await _context.CartItems
                     .FirstOrDefaultAsync(ci => ci.CartItemID == request.CartItemID && ci.CartID == cart.CartID);
 
                 if (cartItem == null)
                 {
-                    Console.WriteLine($"❌ CartItem not found: CartItemID={request.CartItemID}");
+                    Console.WriteLine($"❌ CartItem not found: CartItemID={request.CartItemID}, Expected CartID={cart.CartID}");
+                    
+                    // Additional debug: Show all cart items for current cart
+                    var allCartItems = await _context.CartItems
+                        .Where(ci => ci.CartID == cart.CartID)
+                        .ToListAsync();
+                    Console.WriteLine($"🔍 Current cart has {allCartItems.Count} items: [{string.Join(", ", allCartItems.Select(ci => ci.CartItemID))}]");
+                    
                     var errorResponse = JsonConvert.SerializeObject(new { success = false, message = "Không tìm thấy sản phẩm trong giỏ hàng" });
                     return Content(errorResponse, "application/json");
                 }
@@ -881,11 +936,21 @@ namespace JollibeeClone.Controllers
             {
                 Console.WriteLine($"🔧 Session already exists: {HttpContext.Session.Id}");
             }
+            
+            // IMPORTANT: Ensure session is committed immediately for anonymous users
+            if (HttpContext.Session.GetString("IsUserLoggedIn") != "true")
+            {
+                // Set a flag to ensure session persistence
+                HttpContext.Session.SetString("SessionInitialized", "true");
+                await HttpContext.Session.CommitAsync();
+                Console.WriteLine($"🔧 Session committed for anonymous user: {HttpContext.Session.Id}");
+            }
         }
 
         private async Task<CartViewModel> MapCartToViewModelAsync(Cart cart)
         {
             Console.WriteLine($"🔍 MapCartToViewModelAsync - Cart ID: {cart.CartID}");
+            Console.WriteLine($"🔍 Cart UserID: {cart.UserID}, SessionID: {cart.SessionID}");
             
             var cartItems = await _context.CartItems
                 .Where(ci => ci.CartID == cart.CartID)
@@ -894,9 +959,23 @@ namespace JollibeeClone.Controllers
 
             Console.WriteLine($"🔍 Found {cartItems.Count} cart items in database");
             
+            if (cartItems.Count == 0)
+            {
+                Console.WriteLine("❌ No cart items found! This might be the issue.");
+                // Let's debug: check if cart exists in database
+                var cartExistsInDb = await _context.Carts.AnyAsync(c => c.CartID == cart.CartID);
+                Console.WriteLine($"🔍 Cart exists in DB: {cartExistsInDb}");
+                
+                // Check if there are any cart items for this cart
+                var allCartItemsForCart = await _context.CartItems
+                    .Where(ci => ci.CartID == cart.CartID)
+                    .ToListAsync();
+                Console.WriteLine($"🔍 Cart items without Product include: {allCartItemsForCart.Count}");
+            }
+            
             foreach (var item in cartItems)
             {
-                Console.WriteLine($"🔍 CartItem ID: {item.CartItemID}, ProductID: {item.ProductID}, Quantity: {item.Quantity}, ConfigSnapshot: {!string.IsNullOrEmpty(item.SelectedConfigurationSnapshot)}");
+                Console.WriteLine($"🔍 CartItem ID: {item.CartItemID}, ProductID: {item.ProductID}, Quantity: {item.Quantity}, Product: {item.Product?.ProductName ?? "NULL"}, ConfigSnapshot: {!string.IsNullOrEmpty(item.SelectedConfigurationSnapshot)}");
             }
 
             var cartItemViewModels = new List<CartItemViewModel>();
@@ -940,6 +1019,24 @@ namespace JollibeeClone.Controllers
                     {
                         // Log error but continue
                         Console.WriteLine($"Error parsing configuration: {ex.Message}");
+                    }
+                }
+
+                // Check if Product is null before mapping
+                if (item.Product == null)
+                {
+                    Console.WriteLine($"❌ Product is NULL for CartItem {item.CartItemID}, ProductID: {item.ProductID}");
+                    // Try to load product separately
+                    var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductID == item.ProductID);
+                    if (product != null)
+                    {
+                        item.Product = product;
+                        Console.WriteLine($"✅ Loaded Product separately: {product.ProductName}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"❌ Product not found in database for ProductID: {item.ProductID}");
+                        continue; // Skip this item
                     }
                 }
 
@@ -1149,14 +1246,6 @@ namespace JollibeeClone.Controllers
                 Console.WriteLine($"  - DeliveryAddress: '{model.DeliveryAddress}'");
                 Console.WriteLine($"  - StoreID: {model.StoreID}");
                 Console.WriteLine($"  - PickupDate: {model.PickupDate}");
-                if (model.PickupDate.HasValue)
-                {
-                    Console.WriteLine($"    📅 PickupDate Details:");
-                    Console.WriteLine($"    📅 Raw value: {model.PickupDate.Value}");
-                    Console.WriteLine($"    📅 Kind: {model.PickupDate.Value.Kind}");
-                    Console.WriteLine($"    📅 Display format: {model.PickupDate.Value.ToString("dd/MM/yyyy")}");
-                    Console.WriteLine($"    📅 ISO format: {model.PickupDate.Value.ToString("yyyy-MM-dd")}");
-                }
                 Console.WriteLine($"  - PickupTimeSlot: {model.PickupTimeSlot}");
                 Console.WriteLine($"  - NotesByCustomer: '{model.NotesByCustomer}'");
                 Console.WriteLine($"  - IsUserLoggedIn: {model.IsUserLoggedIn}");
@@ -2141,6 +2230,82 @@ namespace JollibeeClone.Controllers
             }
         }
 
+        // GET: /Cart/DebugAnonymousCart - FOR DEBUGGING ANONYMOUS CART ISSUES
+        [HttpGet]
+        public async Task<JsonResult> DebugAnonymousCart()
+        {
+            try
+            {
+                var sessionId = HttpContext.Session.Id;
+                var isAuthenticated = HttpContext.Session.GetString("IsUserLoggedIn") == "true";
+                var userId = HttpContext.Session.GetString("UserId");
+
+                Console.WriteLine($"🔍 DebugAnonymousCart - SessionID: {sessionId}");
+                Console.WriteLine($"🔍 IsAuthenticated: {isAuthenticated}");
+                Console.WriteLine($"🔍 UserID from session: {userId}");
+
+                // Find all carts related to this session
+                var sessionCarts = await _context.Carts
+                    .Include(c => c.CartItems)
+                    .ThenInclude(ci => ci.Product)
+                    .Where(c => c.SessionID == sessionId)
+                    .ToListAsync();
+
+                Console.WriteLine($"🔍 Found {sessionCarts.Count} carts for session {sessionId}");
+
+                var cartDetails = new List<object>();
+                foreach (var cart in sessionCarts)
+                {
+                    Console.WriteLine($"🔍 Cart {cart.CartID}: UserID={cart.UserID}, SessionID={cart.SessionID}, Items={cart.CartItems.Count}");
+                    
+                    var cartDetail = new
+                    {
+                        CartID = cart.CartID,
+                        UserID = cart.UserID,
+                        SessionID = cart.SessionID,
+                        CreatedDate = cart.CreatedDate,
+                        LastUpdatedDate = cart.LastUpdatedDate,
+                        ItemsCount = cart.CartItems.Count,
+                        Items = cart.CartItems.Select(ci => new
+                        {
+                            CartItemID = ci.CartItemID,
+                            ProductID = ci.ProductID,
+                            ProductName = ci.Product?.ProductName ?? "NULL",
+                            Quantity = ci.Quantity,
+                            UnitPrice = ci.UnitPrice,
+                            DateAdded = ci.DateAdded,
+                            HasConfiguration = !string.IsNullOrEmpty(ci.SelectedConfigurationSnapshot)
+                        }).ToList()
+                    };
+                    cartDetails.Add(cartDetail);
+                }
+
+                // Test GetOrCreateCartAsync
+                var testCart = await GetOrCreateCartAsync();
+                Console.WriteLine($"🔍 GetOrCreateCartAsync returned: {testCart.CartID}");
+
+                // Test MapCartToViewModelAsync
+                var testViewModel = await MapCartToViewModelAsync(testCart);
+                Console.WriteLine($"🔍 MapCartToViewModelAsync returned {testViewModel.CartItems.Count} items");
+
+                return Json(new { 
+                    success = true, 
+                    sessionId = sessionId,
+                    isAuthenticated = isAuthenticated,
+                    userId = userId,
+                    sessionCarts = cartDetails,
+                    currentCartId = testCart.CartID,
+                    currentCartItemsCount = testViewModel.CartItems.Count,
+                    currentCartItems = testViewModel.CartItems
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error in DebugAnonymousCart: {ex.Message}");
+                return Json(new { success = false, error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
+
         // Helper method to get Vietnam local time
         private DateTime GetVietnamLocalTime()
         {
@@ -2240,6 +2405,80 @@ namespace JollibeeClone.Controllers
             var sequencePart = orderCode.Substring(6, 5); // 5-digit sequence
             
             return $"TRANS-{datePart}-{sequencePart}";
+        }
+
+        // POST: /Cart/ApplyVoucher - Apply voucher to order
+        [HttpPost]
+        public async Task<IActionResult> ApplyVoucher([FromBody] ApplyVoucherRequest? request)
+        {
+            try
+            {
+                Console.WriteLine($"🎫 ApplyVoucher called - UserID: {request?.UserID}, VoucherCode: '{request?.VoucherCode}', OrderAmount: {request?.OrderAmount}");
+                
+                if (request == null || string.IsNullOrEmpty(request.VoucherCode))
+                {
+                    return Json(new ApplyVoucherResponse
+                    {
+                        Success = false,
+                        Message = "Mã voucher không hợp lệ"
+                    });
+                }
+
+                // Validate promotion for user
+                var validationResult = await _promotionService.ValidatePromotionForUserAsync(
+                    request.UserID ?? 0, 
+                    request.VoucherCode.Trim(), 
+                    request.OrderAmount);
+
+                if (!validationResult.IsValid)
+                {
+                    Console.WriteLine($"🎫 Voucher validation failed: {validationResult.ErrorMessage}");
+                    return Json(new ApplyVoucherResponse
+                    {
+                        Success = false,
+                        Message = validationResult.ErrorMessage
+                    });
+                }
+
+                if (validationResult.Promotion == null)
+                {
+                    Console.WriteLine($"🎫 No promotion found in validation result");
+                    return Json(new ApplyVoucherResponse
+                    {
+                        Success = false,
+                        Message = "Voucher không hợp lệ"
+                    });
+                }
+
+                var promotion = validationResult.Promotion;
+                var discountAmount = validationResult.DiscountAmount;
+
+                Console.WriteLine($"🎫 Voucher validation successful:");
+                Console.WriteLine($"  - Promotion: {promotion.PromotionName}");
+                Console.WriteLine($"  - Discount Amount: {discountAmount:N0}₫");
+                Console.WriteLine($"  - Discount Type: {promotion.DiscountType}");
+                Console.WriteLine($"  - Discount Value: {promotion.DiscountValue}");
+
+                return Json(new ApplyVoucherResponse
+                {
+                    Success = true,
+                    Message = $"Voucher '{promotion.PromotionName}' đã được áp dụng thành công!",
+                    PromotionID = promotion.PromotionID,
+                    PromotionName = promotion.PromotionName,
+                    DiscountAmount = discountAmount,
+                    NewTotalAmount = request.OrderAmount - discountAmount
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error in ApplyVoucher: {ex.Message}");
+                Console.WriteLine($"❌ Stack trace: {ex.StackTrace}");
+                return Json(new ApplyVoucherResponse
+                {
+                    Success = false,
+                    Message = "Có lỗi xảy ra khi áp dụng voucher: " + ex.Message
+                });
+            }
         }
 
         // Helper method to determine payment status based on method ID

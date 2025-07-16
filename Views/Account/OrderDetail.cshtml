@@ -1,4 +1,4 @@
-@model UserOrderDetailViewModel
+@model JollibeeClone.ViewModels.UserOrderDetailViewModel
 @{
     ViewData["Title"] = $"Chi tiết đơn hàng #{Model.OrderCode}";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -306,6 +306,171 @@
 
 @section Scripts {
     <script>
+        let pollInterval;
+        let currentOrderId = @Model.OrderID;
+        let lastStatusName = '@Model.StatusName';
+        
+        $(document).ready(function() {
+            // Bắt đầu polling trạng thái đơn hàng
+            startOrderStatusPolling();
+        });
+
+        function startOrderStatusPolling() {
+            // Polling mỗi 10 giây để kiểm tra trạng thái mới
+            pollInterval = setInterval(function() {
+                checkOrderStatus();
+            }, 1000); // 10 seconds
+
+            console.log('✅ Real-time order status polling started');
+        }
+
+        function stopOrderStatusPolling() {
+            if (pollInterval) {
+                clearInterval(pollInterval);
+                console.log('🛑 Order status polling stopped');
+            }
+        }
+
+        function checkOrderStatus() {
+            fetch(`/Account/GetOrderStatus?orderId=${currentOrderId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateOrderStatus(data.data);
+                    } else {
+                        console.error('Error checking order status:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking order status:', error);
+                });
+        }
+
+        function updateOrderStatus(statusData) {
+            // Kiểm tra xem có thay đổi trạng thái không
+            if (statusData.statusName !== lastStatusName) {
+                console.log(`🔄 Status changed from "${lastStatusName}" to "${statusData.statusName}"`);
+                
+                // Cập nhật trạng thái header
+                updateStatusBadge(statusData);
+                
+                // Cập nhật timeline
+                updateTimeline(statusData.trackingEvents);
+                
+                // Cập nhật nút hành động
+                updateActionButtons(statusData);
+                
+                // Hiển thị thông báo
+                showStatusChangeNotification(lastStatusName, statusData.statusName);
+                
+                // Cập nhật trạng thái hiện tại
+                lastStatusName = statusData.statusName;
+            }
+        }
+
+        function updateStatusBadge(statusData) {
+            const statusBadge = $('.status-badge.large');
+            statusBadge.css('background-color', statusData.statusColor);
+            statusBadge.html(`<i class="${statusData.statusIcon}"></i> ${statusData.statusName}`);
+            
+            // Thêm hiệu ứng pulse để thu hút sự chú ý
+            statusBadge.addClass('status-updated');
+            setTimeout(() => {
+                statusBadge.removeClass('status-updated');
+            }, 2000);
+        }
+
+        function updateTimeline(trackingEvents) {
+            const timeline = $('.timeline');
+            timeline.empty();
+            
+            trackingEvents.forEach(event => {
+                const timelineItem = $(`
+                    <div class="timeline-item ${event.isCompleted ? 'completed' : 'pending'}">
+                        <div class="timeline-marker">
+                            <i class="${event.eventIcon}" style="color: ${event.eventColor};"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h4>${event.eventTitle}</h4>
+                            <p>${event.eventDescription}</p>
+                            ${event.eventDate && event.eventDate !== '0001-01-01T00:00:00' ? 
+                                `<time>${new Date(event.eventDate).toLocaleDateString('vi-VN', {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric'
+                                })}</time>` : ''
+                            }
+                        </div>
+                    </div>
+                `);
+                timeline.append(timelineItem);
+            });
+        }
+
+        function updateActionButtons(statusData) {
+            const actionSection = $('.order-actions');
+            actionSection.empty();
+            
+            if (statusData.canReorder) {
+                actionSection.append(`
+                    <button class="btn btn-primary" onclick="reorderItems(${currentOrderId})">
+                        <i class="fas fa-redo"></i>
+                        Đặt lại đơn hàng này
+                    </button>
+                `);
+            }
+            
+            if (statusData.canCancel) {
+                actionSection.append(`
+                    <button class="btn btn-danger" onclick="cancelOrder(${currentOrderId})">
+                        <i class="fas fa-times"></i>
+                        Hủy đơn hàng
+                    </button>
+                `);
+            }
+
+            // Ẩn/hiện section nếu không có nút nào
+            const orderSection = actionSection.closest('.order-section');
+            if (actionSection.children().length === 0) {
+                orderSection.hide();
+            } else {
+                orderSection.show();
+            }
+        }
+
+         function showStatusChangeNotification(oldStatus, newStatus) {
+            // Tạo toast notification
+            const notification = $(`
+                <div class="status-notification" style="
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #28a745;
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 5px;
+                    z-index: 9999;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    animation: slideInRight 0.5s ease-out;
+                ">
+                    <i class="fas fa-check-circle"></i>
+                    <strong>Trạng thái đơn hàng đã cập nhật!</strong><br>
+                    <small>"${oldStatus}" → "${newStatus}"</small>
+                </div>
+            `);
+            
+            $('body').append(notification);
+            
+            // Tự động ẩn sau 5 giây
+            setTimeout(() => {
+                notification.fadeOut(500, function() {
+                    $(this).remove();
+                });
+            }, 1000);
+        } 
+
         function reorderItems(orderId) {
             if (confirm('Bạn có muốn đặt lại các sản phẩm trong đơn hàng này?')) {
                 // Implementation for reordering
@@ -326,7 +491,9 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        window.location.href = '@Url.Action("Orders")';
+                        // Cập nhật trạng thái ngay lập tức thay vì chuyển trang
+                        checkOrderStatus();
+                        showStatusChangeNotification(lastStatusName, 'Đã hủy');
                     } else {
                         alert(data.message || 'Có lỗi xảy ra khi hủy đơn hàng.');
                     }
@@ -337,5 +504,65 @@
                 });
             }
         }
+
+        // Dừng polling khi rời khỏi trang
+        $(window).on('beforeunload', function() {
+            stopOrderStatusPolling();
+        });
+
+        // Dừng polling khi tab không được focus (tùy chọn để tiết kiệm tài nguyên)
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                stopOrderStatusPolling();
+                console.log('🔇 Tab hidden - polling stopped');
+            } else {
+                startOrderStatusPolling();
+                console.log('🔊 Tab visible - polling resumed');
+            }
+        });
     </script>
+
+    <style>
+        /* Animation cho hiệu ứng status update */
+        .status-updated {
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        @@keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @@keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Hiệu ứng hover cho timeline items */
+        .timeline-item {
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item.completed {
+            animation: fadeInUp 0.5s ease-in-out;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 } 

@@ -49,6 +49,10 @@
 
                 <form asp-action="Login" method="post" id="loginForm">
                     @Html.AntiForgeryToken()
+                    @if (ViewBag.ReturnUrl != null)
+                    {
+                        <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+                    }
                     
                     <div class="form-group">
                         <label asp-for="EmailOrPhone" class="form-label">

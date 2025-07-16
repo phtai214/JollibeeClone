@@ -51,6 +51,9 @@ builder.Services.AddScoped<JollibeeClone.Services.ShippingService>();
 // Đăng ký EmailService
 builder.Services.AddScoped<JollibeeClone.Services.EmailService>();
 
+// Đăng ký CartMergeService
+builder.Services.AddScoped<JollibeeClone.Services.ICartMergeService, JollibeeClone.Services.CartMergeService>();
+
 // Thêm các service khác
 builder.Services.AddControllersWithViews(options =>
 {
