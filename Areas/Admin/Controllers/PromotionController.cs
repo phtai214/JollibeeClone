@@ -125,6 +125,8 @@ namespace JollibeeClone.Areas.Admin.Controllers
                         UsesCount = p.UsesCount,
                         MaxUsesPerUser = p.MaxUsesPerUser,
                         IsActive = p.IsActive,
+                        AutoVoucherGenerated = p.AutoVoucherGenerated,
+                        RewardThreshold = p.RewardThreshold,
                         ProductCount = p.PromotionProductScopes.Count,
                         CategoryCount = p.PromotionCategoryScopes.Count
                     }).ToList(),

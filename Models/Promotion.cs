@@ -43,6 +43,14 @@ namespace JollibeeClone.Models
 
         public bool IsActive { get; set; } = true;
 
+        // Auto voucher fields
+        [Display(Name = "Voucher tự động sinh")]
+        public bool AutoVoucherGenerated { get; set; } = false;
+
+        [Column(TypeName = "decimal(18,2)")]
+        [Display(Name = "Mốc chi tiêu để nhận voucher")]
+        public decimal? RewardThreshold { get; set; }
+
         // Navigation properties
         public virtual ICollection<PromotionProductScope> PromotionProductScopes { get; set; } = new List<PromotionProductScope>();
         public virtual ICollection<PromotionCategoryScope> PromotionCategoryScopes { get; set; } = new List<PromotionCategoryScope>();

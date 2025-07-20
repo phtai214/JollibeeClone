@@ -1,0 +1,380 @@
+/* Voucher Reward Modal CSS */
+
+/* Modal General Styles */
+.voucher-modal {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.voucher-header {
+    background: linear-gradient(135deg, #e31937 0%, #ff4757 100%);
+    color: white;
+    border: none;
+    padding: 20px 25px;
+    border-radius: 15px 15px 0 0;
+}
+
+.voucher-title {
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.voucher-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.voucher-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.voucher-body {
+    padding: 30px 25px;
+    background: #f8f9fa;
+}
+
+/* Success Modal Styles */
+.voucher-success {
+    text-align: center;
+}
+
+.voucher-icon-large {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.voucher-icon-large i {
+    color: #ffc627;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.voucher-message {
+    color: #e31937;
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.voucher-encouragement {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+
+/* Voucher Code Display */
+.voucher-code-display {
+    background: white;
+    border: 2px dashed #e31937;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.voucher-code-display label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.code-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.voucher-code {
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #e31937;
+    background: #fff;
+    padding: 10px 20px;
+    border: 2px solid #e31937;
+    border-radius: 8px;
+    letter-spacing: 2px;
+}
+
+/* Progress Modal Styles */
+.voucher-progress {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.progress-header h5 {
+    color: #e31937;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.progress-bar-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+}
+
+.voucher-progress-bar {
+    height: 25px;
+    border-radius: 15px;
+    background-color: #e9ecef;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.voucher-progress-bar .progress-bar {
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.6s ease;
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #333;
+    margin-top: 10px;
+}
+
+/* Thresholds List */
+.voucher-thresholds {
+    margin-top: 25px;
+}
+
+.voucher-thresholds h6 {
+    color: #e31937;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.thresholds-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.threshold-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.threshold-item.achieved {
+    background: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.threshold-item.current-target {
+    background: #fff3cd;
+    border-color: #ffeaa7;
+    border-width: 2px;
+}
+
+.threshold-icon {
+    font-size: 1.2rem;
+    width: 25px;
+    text-align: center;
+}
+
+.threshold-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.threshold-desc {
+    font-weight: 500;
+    color: #333;
+}
+
+/* Action Buttons */
+.voucher-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.voucher-claim-btn {
+    background: linear-gradient(135deg, #e31937 0%, #ff4757 100%);
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(227, 25, 55, 0.3);
+}
+
+.voucher-claim-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(227, 25, 55, 0.4);
+    background: linear-gradient(135deg, #d31737 0%, #ef3747 100%);
+}
+
+.voucher-claim-btn:disabled {
+    opacity: 0.7;
+    transform: none;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #e31937 0%, #ff4757 100%);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #d31737 0%, #ef3747 100%);
+    transform: translateY(-1px);
+    color: white;
+    text-decoration: none;
+}
+
+.btn-outline-secondary {
+    border: 2px solid #6c757d;
+    color: #6c757d;
+    background: transparent;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+    background: #6c757d;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Badge Styles */
+.badge {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-weight: 600;
+}
+
+.bg-warning {
+    background-color: #ffc627 !important;
+}
+
+.bg-success {
+    background-color: #28a745 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-lg {
+        max-width: 95%;
+        margin: 10px auto;
+    }
+    
+    .voucher-body {
+        padding: 20px 15px;
+    }
+    
+    .voucher-message {
+        font-size: 1.2rem;
+    }
+    
+    .voucher-code {
+        font-size: 1.2rem;
+        padding: 8px 15px;
+    }
+    
+    .voucher-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .voucher-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .threshold-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        text-align: left;
+    }
+    
+    .threshold-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        width: 100%;
+    }
+}
+
+/* Animation Effects */
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -100%, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.voucher-modal.show {
+    animation: slideInDown 0.5s ease;
+}
+
+/* Progress Bar Animation */
+@keyframes progressGrow {
+    from {
+        width: 0%;
+    }
+}
+
+.voucher-progress-bar .progress-bar {
+    animation: progressGrow 1s ease-out;
+}
+
+/* Hover Effects */
+.threshold-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.code-box button:hover {
+    background: #e31937;
+    color: white;
+    border-color: #e31937;
+} 

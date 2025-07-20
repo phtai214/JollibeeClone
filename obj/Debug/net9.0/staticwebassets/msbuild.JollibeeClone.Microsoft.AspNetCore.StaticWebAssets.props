@@ -2208,8 +2208,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>w4oj3kvsqw</Fingerprint>
-      <Integrity>8KPrPF46AcYbh/NGkM0ZsDsWkbL9MEgaTKP0+ZbMnH4=</Integrity>
+      <Fingerprint>2bmtnsdea5</Fingerprint>
+      <Integrity>0jIaLd2BN96+Gh4s8BxoLza+mKavx+csot/KDGhp2o0=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\cart.css'))</OriginalItemSpec>
@@ -2898,6 +2898,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\user-promotions.css'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\voucher-reward.css'))">
+      <SourceType>Package</SourceType>
+      <SourceId>JollibeeClone</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/JollibeeClone</BasePath>
+      <RelativePath>css/voucher-reward.css</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>kubdox1dp8</Fingerprint>
+      <Integrity>xPaOn/oL7n2ZX4KxezzkPh3Nm33uM54aQ71SzSZe+Tw=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\voucher-reward.css'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))">
       <SourceType>Package</SourceType>
       <SourceId>JollibeeClone</SourceId>
@@ -3252,8 +3270,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>a2ur9alj46</Fingerprint>
-      <Integrity>Dg4kfMl6GO7iIJ4ivwsbKO08ZmHVuBbKLy5zqj3atHM=</Integrity>
+      <Fingerprint>qdid8mmyka</Fingerprint>
+      <Integrity>Tp58fsPOnyYNIVRovylbMW+8nquPBdhO7EIV0R+W3gY=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\cart.js'))</OriginalItemSpec>

@@ -33,6 +33,7 @@ namespace JollibeeClone.Data
         public DbSet<Payments> Payments { get; set; }
         public DbSet<ContactSubmissions> ContactSubmissions { get; set; }
         public DbSet<UserPromotion> UserPromotions { get; set; }
+        public DbSet<UserRewardProgress> UserRewardProgresses { get; set; }
         public DbSet<News> News { get; set; }
         public DbSet<Service> Services { get; set; }
 
@@ -518,7 +519,30 @@ namespace JollibeeClone.Data
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
             });
 
+            // Configure UserRewardProgress entity
+            modelBuilder.Entity<UserRewardProgress>(entity =>
+            {
+                entity.HasKey(e => e.UserRewardProgressID);
+                entity.Property(e => e.UserRewardProgressID).UseIdentityColumn(1, 1);
+                entity.Property(e => e.RewardThreshold).HasColumnType("decimal(18,2)").IsRequired();
+                entity.Property(e => e.CurrentSpending).HasColumnType("decimal(18,2)").HasDefaultValue(0);
+                entity.Property(e => e.VoucherClaimed).HasDefaultValue(false);
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.LastUpdatedDate).HasDefaultValueSql("GETDATE()");
 
+                // Create unique index: one progress record per user per threshold
+                entity.HasIndex(e => new { e.UserID, e.RewardThreshold }).IsUnique();
+
+                entity.HasOne(e => e.User)
+                    .WithMany(u => u.UserRewardProgresses)
+                    .HasForeignKey(e => e.UserID)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.GeneratedPromotion)
+                    .WithMany()
+                    .HasForeignKey(e => e.GeneratedPromotionID)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
 
             // Seed initial data
             //SeedData(modelBuilder);

@@ -1002,6 +1002,12 @@
                         <div class="promotion-card-header">
                             <div class="status-indicator">
                                 <span class="status-badge @statusBadgeClass" id="status-@promotion.PromotionID">@statusText</span>
+                                @if (promotion.AutoVoucherGenerated)
+                                {
+                                    <span class="badge bg-info text-white ms-2" style="font-size: 0.7rem;">
+                                        <i class="fas fa-robot me-1"></i>Auto
+                                    </span>
+                                }
                                 @if (promotion.IsRunning)
                                 {
                                     <span class="status-dot ms-2">

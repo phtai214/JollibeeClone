@@ -48,6 +48,9 @@ builder.Services.AddScoped<JollibeeClone.Services.OrderStatusHistoryService>();
 // Đăng ký ShippingService
 builder.Services.AddScoped<JollibeeClone.Services.ShippingService>();
 
+// Đăng ký AutoVoucherService
+builder.Services.AddScoped<JollibeeClone.Services.AutoVoucherService>();
+
 // Đăng ký EmailService
 builder.Services.AddScoped<JollibeeClone.Services.EmailService>();
 

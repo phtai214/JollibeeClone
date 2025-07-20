@@ -542,6 +542,78 @@
     color: #fff;
 }
 
+/* Continue Shopping Button (Empty Cart & Error States) */
+.cart-continue-shopping-btn {
+    background: #fff;
+    color: #e31937;
+    border: 2px solid #e31937;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    min-width: 180px;
+    justify-content: center;
+}
+
+.cart-continue-shopping-btn:hover {
+    background: #e31937;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(227, 25, 55, 0.2);
+}
+
+.cart-continue-shopping-btn i {
+    font-size: 0.9rem;
+}
+
+/* Error Actions Container */
+.cart-error-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    margin-top: 24px;
+}
+
+.cart-error-actions .btn {
+    min-width: 140px;
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.cart-error-actions .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+/* Mobile Responsive for Continue Shopping Button */
+@media (max-width: 768px) {
+    .cart-continue-shopping-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        min-width: 160px;
+    }
+    
+    .cart-error-actions {
+        gap: 10px;
+    }
+    
+    .cart-error-actions .btn {
+        min-width: 120px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}
+
 /* Promotion Info */
 .cart-promotion-info {
     background: linear-gradient(135deg, #fff3e0 0%, #ffeb3b 20%);
@@ -565,8 +637,6 @@
     color: #e65100;
     font-weight: 500;
 }
-
-
 
 /* Loading Animation */
 .cart-loading {

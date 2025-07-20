@@ -117,6 +117,10 @@ class JollibeeCart {
         // Continue shopping
         document.getElementById('cartContinueBtn').addEventListener('click', () => {
             this.closeCart();
+            // Điều hướng về trang menu nếu không ở trang menu
+            if (!window.location.pathname.includes('/Menu/')) {
+                window.location.href = '/Menu/MonNgonPhaiThu';
+            }
         });
 
         // Checkout button
@@ -601,6 +605,9 @@ class JollibeeCart {
                 </div>
                 <h4>Giỏ hàng trống</h4>
                 <p>Hãy thêm sản phẩm vào giỏ hàng để bắt đầu mua sắm!</p>
+                <button class="cart-continue-shopping-btn" onclick="window.jollibeeCart.closeCart()">
+                    <i class="fas fa-arrow-left"></i> Tiếp tục mua sắm
+                </button>
             </div>
         `;
     }
@@ -736,7 +743,14 @@ class JollibeeCart {
                 </div>
                 <h4 style="color: #ff4757;">Có lỗi xảy ra</h4>
                 <p>${message}</p>
-                <button class="btn btn-primary" onclick="window.jollibeeCart.loadCart()">Thử lại</button>
+                <div class="cart-error-actions">
+                    <button class="btn btn-primary" onclick="window.jollibeeCart.loadCart()">
+                        <i class="fas fa-redo"></i> Thử lại
+                    </button>
+                    <button class="cart-continue-shopping-btn" onclick="window.jollibeeCart.closeCart()">
+                        <i class="fas fa-arrow-left"></i> Tiếp tục mua sắm
+                    </button>
+                </div>
             </div>
         `;
     }

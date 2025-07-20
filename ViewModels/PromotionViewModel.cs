@@ -143,6 +143,8 @@ namespace JollibeeClone.ViewModels
         public int UsesCount { get; set; }
         public int? MaxUsesPerUser { get; set; }
         public bool IsActive { get; set; }
+        public bool AutoVoucherGenerated { get; set; } = false;
+        public decimal? RewardThreshold { get; set; }
         public int ProductCount { get; set; }
         public int CategoryCount { get; set; }
         public bool IsExpired => EndDate < DateTime.Today;

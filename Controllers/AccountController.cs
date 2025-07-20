@@ -16,13 +16,15 @@ namespace JollibeeClone.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly OrderStatusHistoryService _statusHistoryService;
         private readonly ICartMergeService _cartMergeService;
+        private readonly AutoVoucherService _autoVoucherService;
 
-        public AccountController(AppDbContext context, ILogger<AccountController> logger, OrderStatusHistoryService statusHistoryService, ICartMergeService cartMergeService)
+        public AccountController(AppDbContext context, ILogger<AccountController> logger, OrderStatusHistoryService statusHistoryService, ICartMergeService cartMergeService, AutoVoucherService autoVoucherService)
         {
             _context = context;
             _logger = logger;
             _statusHistoryService = statusHistoryService;
             _cartMergeService = cartMergeService;
+            _autoVoucherService = autoVoucherService;
         }
 
         // GET: Account/Register
@@ -236,6 +238,23 @@ namespace JollibeeClone.Controllers
 
                 TempData["SuccessMessage"] = "Đăng nhập thành công!";
                 _logger.LogInformation("User logged in: {Email}", user.Email);
+
+                // VOUCHER REWARD: Kiểm tra và xử lý voucher reward cho user sau khi login
+                try
+                {
+                    var voucherReward = await _autoVoucherService.ProcessUserRewardAsync(user.UserID);
+                    if (voucherReward != null && (voucherReward.IsNewRewardAchieved || voucherReward.HasRewardEligible))
+                    {
+                        // Lưu thông tin voucher vào TempData để hiển thị modal
+                        TempData["VoucherRewardData"] = System.Text.Json.JsonSerializer.Serialize(voucherReward);
+                        _logger.LogInformation("Voucher reward data prepared for user: {Email}", user.Email);
+                    }
+                }
+                catch (Exception voucherEx)
+                {
+                    _logger.LogError(voucherEx, "Error processing voucher reward for user: {Email}", user.Email);
+                    // Don't fail login if voucher processing fails
+                }
 
                 // Handle return URL for seamless UX
                 if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
@@ -1068,6 +1087,40 @@ namespace JollibeeClone.Controllers
                 var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
                 var hashedPassword = Convert.ToBase64String(hashedBytes);
                 return hashedPassword == hash;
+            }
+        }
+
+        // API: Claim voucher khi user click nút "Nhận voucher"
+        [HttpPost]
+        [UserAuthorize]
+        public async Task<IActionResult> ClaimVoucher(int promotionId)
+        {
+            try
+            {
+                var userIdString = HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+                {
+                    return Json(new { success = false, message = "Phiên đăng nhập đã hết hạn." });
+                }
+
+                var success = await _autoVoucherService.ClaimVoucherAsync(userId, promotionId);
+                if (success)
+                {
+                    return Json(new { 
+                        success = true, 
+                        message = "Nhận voucher thành công! Voucher đã được thêm vào danh sách ưu đãi của bạn.",
+                        redirectUrl = Url.Action("Promotions", "Account")
+                    });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Không thể nhận voucher. Vui lòng thử lại." });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error claiming voucher {PromotionId}", promotionId);
+                return Json(new { success = false, message = "Có lỗi xảy ra khi nhận voucher." });
             }
         }
 

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using JollibeeClone.Models;
 using JollibeeClone.ViewModels;
 using JollibeeClone.Data;
+using System.Text.Json;
 
 namespace JollibeeClone.Controllers;
 
@@ -47,6 +48,22 @@ public class HomeController : Controller
             ViewBag.LatestNews = newsForView;
             ViewBag.TotalNewsInDB = totalCount;
             ViewBag.PublishedNewsInDB = publishedCount;
+
+            // Kiểm tra và hiển thị modal voucher reward nếu có
+            var voucherRewardDataJson = TempData["VoucherRewardData"]?.ToString();
+            if (!string.IsNullOrEmpty(voucherRewardDataJson))
+            {
+                try
+                {
+                    var voucherRewardData = JsonSerializer.Deserialize<VoucherRewardViewModel>(voucherRewardDataJson);
+                    ViewBag.VoucherRewardData = voucherRewardData;
+                    _logger.LogInformation("Voucher reward modal data prepared for display");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error deserializing voucher reward data");
+                }
+            }
             
             _logger.LogInformation($"Sending {newsForView.Count} news items to view");
             

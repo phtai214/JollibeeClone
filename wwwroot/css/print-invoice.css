@@ -190,6 +190,16 @@ body {
     color: #e31937;
 }
 
+.summary-row.discount {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.summary-row.discount .discount-amount {
+    color: #28a745;
+    font-weight: bold;
+}
+
 /* Store Info */
 .store-info {
     padding: 25px 20px;

@@ -1,10 +1,5 @@
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\appsettings.Development.json
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\appsettings.json
-D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\EmailTest\bin\Debug\net9.0\EmailTest.deps.json
-D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\EmailTest\bin\Debug\net9.0\EmailTest.runtimeconfig.json
-D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\EmailTest\obj\Debug\net9.0\EmailTest.sourcelink.json
-D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\EmailTest\obj\EmailTest.csproj.nuget.dgspec.json
-D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\EmailTest\obj\project.assets.json
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\global.json
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\JollibeeClone.staticwebassets.runtime.json
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\bin\Debug\net9.0\JollibeeClone.staticwebassets.endpoints.json
@@ -283,7 +278,6 @@ D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\6d98
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\hf3cv6ailn-cr3nkp3lsz.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\hk7os3xt4t-wtj4o77bmh.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\m7es41u4rl-k1drb9dgio.gz
-D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\imdn0s7htj-w4oj3kvsqw.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\ad6btsnk9o-xf3ha8xuox.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\lwdogvjpru-pxbijx69ti.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\2r7nqbv693-2cbpcam030.gz
@@ -409,5 +403,7 @@ D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\refint\Jollibee
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\JollibeeClone.pdb
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\JollibeeClone.genruntimeconfig.cache
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\ref\JollibeeClone.dll
-D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\atfzl13m8s-a2ur9alj46.gz
 D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\dxa0lxiivw-5j017ktdoc.gz
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\imdn0s7htj-2bmtnsdea5.gz
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\3z5dgiwxnn-kubdox1dp8.gz
+D:\4.HK3_2025\LapTrinhWeb_NC\DoAn\JollibeeClone\obj\Debug\net9.0\compressed\atfzl13m8s-qdid8mmyka.gz

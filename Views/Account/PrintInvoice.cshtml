@@ -83,6 +83,13 @@
                 <span>Phí giao hàng</span>
                 <span>@Model.FormattedShippingFee</span>
             </div>
+            @if (Model.DiscountAmount > 0)
+            {
+                <div class="summary-row discount">
+                    <span>Giảm giá (Voucher)</span>
+                    <span class="discount-amount">-@Model.FormattedDiscountAmount</span>
+                </div>
+            }
             <div class="summary-row total">
                 <span>Tổng cộng</span>
                 <span>@Model.FormattedTotalAmount</span>
