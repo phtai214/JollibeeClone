@@ -605,7 +605,7 @@ class JollibeeCart {
                 </div>
                 <h4>Giỏ hàng trống</h4>
                 <p>Hãy thêm sản phẩm vào giỏ hàng để bắt đầu mua sắm!</p>
-                <button class="cart-continue-shopping-btn" onclick="window.jollibeeCart.closeCart()">
+                <button class="cart-continue-shopping-btn" onclick="window.jollibeeCart.closeCart(); window.location.href='/Menu/MonNgonPhaiThu';">
                     <i class="fas fa-arrow-left"></i> Tiếp tục mua sắm
                 </button>
             </div>
@@ -747,7 +747,7 @@ class JollibeeCart {
                     <button class="btn btn-primary" onclick="window.jollibeeCart.loadCart()">
                         <i class="fas fa-redo"></i> Thử lại
                     </button>
-                    <button class="cart-continue-shopping-btn" onclick="window.jollibeeCart.closeCart()">
+                    <button class="cart-continue-shopping-btn" onclick="window.jollibeeCart.closeCart(); window.location.href='/Menu/MonNgonPhaiThu';">
                         <i class="fas fa-arrow-left"></i> Tiếp tục mua sắm
                     </button>
                 </div>
@@ -830,7 +830,7 @@ class JollibeeCart {
                             <a href="/Account/Login?returnUrl=%2FCart%2FShipping" class="btn btn-danger btn-lg">
                                 <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập ngay
                             </a>
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="window.location.href='/Menu/MonNgonPhaiThu';">
                                 <i class="fas fa-arrow-left me-2"></i>Tiếp tục mua sắm
                             </button>
                         </div>

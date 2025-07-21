@@ -186,6 +186,8 @@ namespace JollibeeClone.Areas.Admin.Controllers
                     UsesCount = promotion.UsesCount,
                     MaxUsesPerUser = promotion.MaxUsesPerUser,
                     IsActive = promotion.IsActive,
+                    AutoVoucherGenerated = promotion.AutoVoucherGenerated,
+                    RewardThreshold = promotion.RewardThreshold,
                     SelectedProducts = promotion.PromotionProductScopes.Select(pps => pps.Product).ToList(),
                     SelectedCategories = promotion.PromotionCategoryScopes.Select(pcs => pcs.Category).ToList()
                 };
@@ -373,6 +375,8 @@ namespace JollibeeClone.Areas.Admin.Controllers
                     UsesCount = promotion.UsesCount,
                     MaxUsesPerUser = promotion.MaxUsesPerUser,
                     IsActive = promotion.IsActive,
+                    AutoVoucherGenerated = promotion.AutoVoucherGenerated,
+                    RewardThreshold = promotion.RewardThreshold,
                     SelectedProductIds = promotion.PromotionProductScopes.Select(pps => pps.ProductID).ToList(),
                     SelectedCategoryIds = promotion.PromotionCategoryScopes.Select(pcs => pcs.CategoryID).ToList()
                 };
@@ -559,6 +563,8 @@ namespace JollibeeClone.Areas.Admin.Controllers
                     UsesCount = promotion.UsesCount,
                     MaxUsesPerUser = promotion.MaxUsesPerUser,
                     IsActive = promotion.IsActive,
+                    AutoVoucherGenerated = promotion.AutoVoucherGenerated,
+                    RewardThreshold = promotion.RewardThreshold,
                     SelectedProducts = promotion.PromotionProductScopes.Select(pps => pps.Product).ToList(),
                     SelectedCategories = promotion.PromotionCategoryScopes.Select(pcs => pcs.Category).ToList()
                 };
@@ -1293,7 +1299,7 @@ namespace JollibeeClone.Areas.Admin.Controllers
             }
         }
 
-        // API: Get available vouchers for user
+        // API: Get available vouchers for user (cập nhật để hiển thị thông tin auto voucher)
         [HttpGet]
         [Route("Admin/Promotion/AvailableForUser/{userId}")]
         public async Task<IActionResult> GetAvailableVouchersForUser(int userId)
@@ -1317,7 +1323,10 @@ namespace JollibeeClone.Areas.Admin.Controllers
                     endDate = p.EndDate,
                     maxUses = p.MaxUses,
                     usesCount = p.UsesCount,
-                    remainingUses = p.MaxUses.HasValue ? p.MaxUses.Value - p.UsesCount : (int?)null
+                    remainingUses = p.MaxUses.HasValue ? p.MaxUses.Value - p.UsesCount : (int?)null,
+                    isAutoVoucher = p.AutoVoucherGenerated,
+                    rewardThreshold = p.RewardThreshold,
+                    voucherType = p.AutoVoucherGenerated == true ? "Auto Reward" : "Regular"
                 }).ToList();
 
                 return Json(new { success = true, vouchers = result });
@@ -1326,6 +1335,85 @@ namespace JollibeeClone.Areas.Admin.Controllers
             {
                 _logger.LogError(ex, "Error getting available vouchers for user: {UserId}", userId);
                 return Json(new { success = false, message = "Có lỗi xảy ra khi lấy danh sách voucher" });
+            }
+        }
+
+        // API: Get user voucher eligibility info (mới)
+        [HttpGet]
+        [Route("Admin/Promotion/UserEligibility/{userId}")]
+        public async Task<IActionResult> GetUserVoucherEligibility(int userId)
+        {
+            try
+            {
+                _logger.LogInformation("Getting voucher eligibility for user: {UserId}", userId);
+
+                // Lấy thông tin auto voucher của user
+                var autoVoucherProgress = await _context.UserRewardProgresses
+                    .Include(p => p.GeneratedPromotion)
+                    .Where(p => p.UserID == userId)
+                    .Select(p => new
+                    {
+                        p.UserRewardProgressID,
+                        p.RewardThreshold,
+                        p.CurrentSpending,
+                        p.VoucherClaimed,
+                        p.VoucherClaimedDate,
+                        GeneratedVoucher = p.GeneratedPromotion != null ? new
+                        {
+                            p.GeneratedPromotion.PromotionID,
+                            p.GeneratedPromotion.PromotionName,
+                            p.GeneratedPromotion.CouponCode,
+                            p.GeneratedPromotion.DiscountValue,
+                            p.GeneratedPromotion.IsActive,
+                            p.GeneratedPromotion.EndDate,
+                            HasBeenUsed = p.GeneratedPromotion.UserPromotions.Any(up => up.UserID == userId)
+                        } : null
+                    })
+                    .ToListAsync();
+
+                // Lấy lịch sử sử dụng voucher
+                var usageHistory = await _context.UserPromotions
+                    .Include(up => up.Promotion)
+                    .Where(up => up.UserID == userId)
+                    .Select(up => new
+                    {
+                        up.UserPromotionID,
+                        up.UsedDate,
+                        up.DiscountAmount,
+                        up.OrderID,
+                        Promotion = new
+                        {
+                            up.Promotion.PromotionID,
+                            up.Promotion.PromotionName,
+                            up.Promotion.CouponCode,
+                            up.Promotion.DiscountType,
+                            up.Promotion.DiscountValue,
+                            IsAutoVoucher = up.Promotion.AutoVoucherGenerated,
+                            RewardThreshold = up.Promotion.RewardThreshold
+                        }
+                    })
+                    .OrderByDescending(up => up.UsedDate)
+                    .ToListAsync();
+
+                return Json(new
+                {
+                    success = true,
+                    userId = userId,
+                    autoVoucherProgress = autoVoucherProgress,
+                    usageHistory = usageHistory,
+                    summary = new
+                    {
+                        totalAutoVouchersGenerated = autoVoucherProgress.Count(p => p.GeneratedVoucher != null),
+                        totalAutoVouchersUsed = autoVoucherProgress.Count(p => p.GeneratedVoucher?.HasBeenUsed == true),
+                        totalRegularVouchersUsed = usageHistory.Count(h => h.Promotion.IsAutoVoucher != true),
+                        totalVouchersUsed = usageHistory.Count
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting voucher eligibility for user: {UserId}", userId);
+                return Json(new { success = false, message = "Có lỗi xảy ra khi lấy thông tin voucher" });
             }
         }
 
@@ -1428,6 +1516,68 @@ namespace JollibeeClone.Areas.Admin.Controllers
             {
                 _logger.LogError(ex, "Error getting usage statistics for promotion: {PromotionId}", promotionId);
                 return Json(new { success = false, message = "Có lỗi xảy ra khi lấy thống kê sử dụng" });
+            }
+        }
+
+        // API: Get eligible users for auto voucher (mới)
+        [HttpGet]
+        [Route("Admin/Promotion/EligibleUsers/{promotionId}")]
+        public async Task<IActionResult> GetEligibleUsers(int promotionId)
+        {
+            try
+            {
+                _logger.LogInformation("Getting eligible users for auto promotion: {PromotionId}", promotionId);
+
+                // Kiểm tra xem đây có phải auto voucher không
+                var promotion = await _context.Promotions
+                    .FirstOrDefaultAsync(p => p.PromotionID == promotionId);
+
+                if (promotion == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy voucher" });
+                }
+
+                if (!promotion.AutoVoucherGenerated)
+                {
+                    return Json(new { success = false, message = "Voucher này không phải auto voucher" });
+                }
+
+                // Lấy danh sách users có quyền sử dụng auto voucher này
+                var eligibleUsers = await _context.UserRewardProgresses
+                    .Include(p => p.User)
+                    .Include(p => p.GeneratedPromotion)
+                    .Where(p => p.GeneratedPromotionID == promotionId && p.VoucherClaimed == true)
+                    .Select(p => new
+                    {
+                        userId = p.UserID,
+                        fullName = p.User.FullName,
+                        email = p.User.Email,
+                        rewardThreshold = p.RewardThreshold,
+                        currentSpending = p.CurrentSpending,
+                        voucherClaimed = p.VoucherClaimed,
+                        voucherClaimedDate = p.VoucherClaimedDate,
+                        createdDate = p.CreatedDate,
+                        hasUsedVoucher = p.GeneratedPromotion != null && 
+                                        p.GeneratedPromotion.UserPromotions.Any(up => up.UserID == p.UserID)
+                    })
+                    .OrderByDescending(p => p.voucherClaimedDate ?? p.createdDate)
+                    .ToListAsync();
+
+                return Json(new { 
+                    success = true, 
+                    eligibleUsers = eligibleUsers,
+                    summary = new {
+                        totalEligible = eligibleUsers.Count,
+                        totalClaimed = eligibleUsers.Count(u => u.voucherClaimed),
+                        totalUsed = eligibleUsers.Count(u => u.hasUsedVoucher),
+                        rewardThreshold = promotion.RewardThreshold
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting eligible users for promotion: {PromotionId}", promotionId);
+                return Json(new { success = false, message = "Có lỗi xảy ra khi lấy danh sách user có quyền" });
             }
         }
     }

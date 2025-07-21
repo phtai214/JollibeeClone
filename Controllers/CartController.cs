@@ -1847,19 +1847,29 @@ namespace JollibeeClone.Controllers
                     await _context.SaveChangesAsync();
                     Console.WriteLine($"💳 Payment record created with ID: {payment.PaymentID}, Status: {payment.PaymentStatus}");
 
-                    // Mark promotion as used if applicable
-                    if (model.AppliedPromotionID.HasValue && model.UserID.HasValue)
+                    // ⚠️ APPLY VOUCHER SECURELY using PromotionService
+                    if (model.AppliedPromotionID.HasValue && model.UserID.HasValue && model.DiscountAmount > 0)
                     {
-                        var userPromotion = new UserPromotion
+                        try
                         {
-                            UserID = model.UserID.Value,
-                            PromotionID = model.AppliedPromotionID.Value,
-                            OrderID = order.OrderID,
-                            UsedDate = DateTime.Now
-                        };
-                        _context.UserPromotions.Add(userPromotion);
-                        await _context.SaveChangesAsync();
-                        Console.WriteLine($"🛒 Promotion {model.AppliedPromotionID} marked as used");
+                            Console.WriteLine($"🎫 Applying voucher {model.AppliedPromotionID} for user {model.UserID} with discount {model.DiscountAmount:C}");
+                            
+                            // Use PromotionService to apply voucher securely
+                            var userPromotion = await _promotionService.ApplyPromotionAsync(
+                                model.UserID.Value, 
+                                model.AppliedPromotionID.Value, 
+                                order.OrderID, 
+                                model.DiscountAmount);
+
+                            Console.WriteLine($"✅ Voucher applied successfully - UserPromotionID: {userPromotion.UserPromotionID}");
+                        }
+                        catch (Exception voucherEx)
+                        {
+                                                         Console.WriteLine($"❌ Error applying voucher {model.AppliedPromotionID} for user {model.UserID} in order {order.OrderID}: {voucherEx.Message}");
+                            
+                            // Don't fail the order, just log the error
+                            Console.WriteLine($"❌ Warning: Failed to apply voucher but order was created successfully");
+                        }
                     }
 
                     // Clear cart after successful order creation

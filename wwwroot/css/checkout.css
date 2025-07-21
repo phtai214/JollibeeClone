@@ -853,7 +853,33 @@
     color: #dc3545;
 }
 
+/* MoMo Logo Image Styling */
+.momo-logo-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
 
+.momo-logo-img:hover {
+    transform: scale(1.05);
+}
+
+/* VNPAY Logo Image Styling */
+.vnpay-logo-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.vnpay-logo-img:hover {
+    transform: scale(1.05);
+}
 
 /* Shipping fee row styling */
 

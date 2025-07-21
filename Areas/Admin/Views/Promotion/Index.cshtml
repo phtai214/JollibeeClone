@@ -1004,8 +1004,20 @@
                                 <span class="status-badge @statusBadgeClass" id="status-@promotion.PromotionID">@statusText</span>
                                 @if (promotion.AutoVoucherGenerated)
                                 {
-                                    <span class="badge bg-info text-white ms-2" style="font-size: 0.7rem;">
-                                        <i class="fas fa-robot me-1"></i>Auto
+                                    <span class="badge bg-warning text-dark ms-2" style="font-size: 0.7rem;">
+                                        <i class="fas fa-magic me-1"></i>Auto Reward
+                                    </span>
+                                    @if (promotion.RewardThreshold.HasValue)
+                                    {
+                                        <span class="badge bg-info text-white ms-1" style="font-size: 0.65rem;">
+                                            <i class="fas fa-bullseye me-1"></i>@(promotion.RewardThreshold.Value.ToString("N0"))₫
+                                        </span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success text-white ms-2" style="font-size: 0.7rem;">
+                                        <i class="fas fa-hand-holding-heart me-1"></i>Regular
                                     </span>
                                 }
                                 @if (promotion.IsRunning)
@@ -1031,6 +1043,22 @@
                             @if (!string.IsNullOrEmpty(promotion.Description))
                             {
                                 <p class="promotion-description">@promotion.Description</p>
+                            }
+                            
+                            @* Auto Voucher Special Info *@
+                            @if (promotion.AutoVoucherGenerated && promotion.RewardThreshold.HasValue)
+                            {
+                                <div class="alert alert-warning py-2 px-3 mb-2" style="font-size: 0.85rem;">
+                                    <i class="fas fa-gift me-2 text-warning"></i>
+                                    <strong>Voucher tự động</strong> dành cho khách hàng đạt mốc chi tiêu <strong>@(promotion.RewardThreshold.Value.ToString("N0"))₫</strong>
+                                </div>
+                            }
+                            else if (!promotion.AutoVoucherGenerated)
+                            {
+                                <div class="alert alert-success py-2 px-3 mb-2" style="font-size: 0.85rem;">
+                                    <i class="fas fa-users me-2 text-success"></i>
+                                    <strong>Voucher công khai</strong> - Tất cả khách hàng có thể sử dụng
+                                </div>
                             }
                         </div>
 

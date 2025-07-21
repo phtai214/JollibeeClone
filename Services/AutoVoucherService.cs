@@ -181,31 +181,32 @@ namespace JollibeeClone.Services
         {
             try
             {
-                // Kiểm tra xem đã có voucher auto cho mốc này chưa
-                var existingVoucher = await _context.Promotions
-                    .FirstOrDefaultAsync(p => p.AutoVoucherGenerated == true 
-                                           && p.RewardThreshold == threshold
-                                           && p.UserPromotions.Any(up => up.UserID == userId));
+                // BƯỚC 1: Kiểm tra xem user đã có voucher cho mốc này chưa (theo UserRewardProgress)
+                var existingProgress = await _context.UserRewardProgresses
+                    .Include(p => p.GeneratedPromotion)
+                    .FirstOrDefaultAsync(p => p.UserID == userId 
+                                           && p.RewardThreshold == threshold 
+                                           && p.GeneratedPromotionID.HasValue);
 
-                if (existingVoucher != null)
+                if (existingProgress?.GeneratedPromotion != null)
                 {
-                    _logger.LogInformation($"Auto voucher already exists for user {userId} at threshold {threshold}");
-                    return existingVoucher;
+                    _logger.LogInformation($"Auto voucher already exists for user {userId} at threshold {threshold}: {existingProgress.GeneratedPromotion.CouponCode}");
+                    return existingProgress.GeneratedPromotion;
                 }
 
-                // Tạo voucher mới
-                var couponCode = GenerateUniqueCouponCode();
+                // BƯỚC 2: Tạo voucher USER-SPECIFIC mới
+                var couponCode = GenerateUserSpecificCouponCode(userId);
                 var voucher = new Promotion
                 {
-                    PromotionName = $"Voucher Tích Lũy {percentage}%",
-                    Description = $"Voucher tự động dành cho khách hàng đạt mốc chi tiêu {threshold:N0}₫ trong tuần",
+                    PromotionName = $"Voucher Tích Lũy {percentage}% - User#{userId}",
+                    Description = $"Voucher tự động dành riêng cho User#{userId} đạt mốc chi tiêu {threshold:N0}₫ trong tuần",
                     CouponCode = couponCode,
                     DiscountType = "Percentage",
                     DiscountValue = percentage,
                     MinOrderValue = 0, // Không giới hạn đơn hàng tối thiểu
                     StartDate = DateTime.Now,
                     EndDate = DateTime.Now.AddDays(30), // Voucher có hiệu lực 30 ngày
-                    MaxUses = null, // Không giới hạn tổng số lần sử dụng
+                    MaxUses = 1, // CHỈ 1 LƯỢT SỬ DỤNG DUY NHẤT
                     MaxUsesPerUser = 1, // Mỗi user chỉ dùng 1 lần
                     UsesCount = 0,
                     IsActive = true,
@@ -216,7 +217,7 @@ namespace JollibeeClone.Services
                 _context.Promotions.Add(voucher);
                 await _context.SaveChangesAsync();
 
-                _logger.LogInformation($"Generated auto voucher {couponCode} for user {userId} at threshold {threshold}");
+                _logger.LogInformation($"Generated user-specific auto voucher {couponCode} for user {userId} at threshold {threshold}");
                 return voucher;
             }
             catch (Exception ex)
@@ -224,6 +225,18 @@ namespace JollibeeClone.Services
                 _logger.LogError(ex, $"Error generating auto voucher for user {userId} at threshold {threshold}");
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Sinh mã coupon duy nhất cho user cụ thể
+        /// </summary>
+        private string GenerateUserSpecificCouponCode(int userId)
+        {
+            var prefix = "AUTO";
+            var userPart = userId.ToString("D4"); // 4 digits with leading zeros
+            var timestamp = DateTime.Now.ToString("yyyyMMddHHmm");
+            var random = new Random().Next(100, 999);
+            return $"{prefix}{userPart}{timestamp}{random}";
         }
 
         /// <summary>
@@ -265,17 +278,6 @@ namespace JollibeeClone.Services
             {
                 _logger.LogError(ex, $"Error updating reward progress for user {userId} at threshold {threshold}");
             }
-        }
-
-        /// <summary>
-        /// Sinh mã coupon duy nhất
-        /// </summary>
-        private string GenerateUniqueCouponCode()
-        {
-            var prefix = "AUTO";
-            var timestamp = DateTime.Now.ToString("yyyyMMdd");
-            var random = new Random().Next(1000, 9999);
-            return $"{prefix}{timestamp}{random}";
         }
 
         /// <summary>

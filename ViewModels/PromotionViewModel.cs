@@ -60,6 +60,13 @@ namespace JollibeeClone.ViewModels
         [Display(Name = "Trạng thái hoạt động")]
         public bool IsActive { get; set; } = true;
 
+        // Auto voucher properties
+        [Display(Name = "Voucher tự động sinh")]
+        public bool AutoVoucherGenerated { get; set; } = false;
+
+        [Display(Name = "Mốc chi tiêu để nhận voucher")]
+        public decimal? RewardThreshold { get; set; }
+
         // For managing product and category scopes
         public List<int> SelectedProductIds { get; set; } = new List<int>();
         public List<int> SelectedCategoryIds { get; set; } = new List<int>();

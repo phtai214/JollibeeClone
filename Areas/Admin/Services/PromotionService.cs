@@ -54,6 +54,28 @@ namespace JollibeeClone.Areas.Admin.Services
                     };
                 }
 
+                // ⚠️ VALIDATION ĐẶC BIỆT CHO AUTO VOUCHER
+                if (promotion.AutoVoucherGenerated == true)
+                {
+                    // Kiểm tra user có quyền sử dụng auto voucher này không
+                    var hasEligibility = await _context.UserRewardProgresses
+                        .AnyAsync(p => p.UserID == userId && 
+                                      p.GeneratedPromotionID == promotion.PromotionID &&
+                                      p.VoucherClaimed == true);
+
+                    if (!hasEligibility)
+                    {
+                        return new PromotionValidationResult
+                        {
+                            IsValid = false,
+                            ErrorMessage = "Bạn không có quyền sử dụng voucher này. Chỉ những khách hàng đạt mốc chi tiêu mới được sử dụng."
+                        };
+                    }
+
+                    _logger.LogInformation("Auto voucher eligibility confirmed for user {UserId}, promotion {PromotionId}", 
+                        userId, promotion.PromotionID);
+                }
+
                 // Kiểm tra thời gian
                 var now = DateTime.Now;
                 if (now < promotion.StartDate)
@@ -107,6 +129,9 @@ namespace JollibeeClone.Areas.Admin.Services
 
                 // Tính toán số tiền giảm giá
                 var discountAmount = CalculateDiscountAmount(promotion, orderAmount);
+
+                _logger.LogInformation("Promotion validation successful for user {UserId}, promotion {PromotionId}, discount: {DiscountAmount}", 
+                    userId, promotion.PromotionID, discountAmount);
 
                 return new PromotionValidationResult
                 {
@@ -211,16 +236,41 @@ namespace JollibeeClone.Areas.Admin.Services
                     .Select(up => up.PromotionID)
                     .ToListAsync();
 
-                var availablePromotions = await _context.Promotions
+                // PHẦN 1: Lấy regular promotions (không phải auto voucher)
+                var regularPromotions = await _context.Promotions
                     .Where(p => p.IsActive && 
                                 p.StartDate <= now && 
                                 p.EndDate >= now &&
                                 !usedPromotionIds.Contains(p.PromotionID) &&
-                                (!p.MaxUses.HasValue || p.UsesCount < p.MaxUses.Value))
-                    .OrderBy(p => p.MinOrderValue ?? 0)
+                                (!p.MaxUses.HasValue || p.UsesCount < p.MaxUses.Value) &&
+                                (p.AutoVoucherGenerated != true)) // Chỉ lấy regular voucher
                     .ToListAsync();
 
-                return availablePromotions;
+                // PHẦN 2: Lấy auto vouchers MÀ USER CÓ QUYỀN SỬ DỤNG
+                var userAutoVouchers = await _context.UserRewardProgresses
+                    .Include(p => p.GeneratedPromotion)
+                    .Where(p => p.UserID == userId && 
+                                p.VoucherClaimed == true && 
+                                p.GeneratedPromotionID.HasValue &&
+                                p.GeneratedPromotion != null &&
+                                p.GeneratedPromotion.IsActive &&
+                                p.GeneratedPromotion.StartDate <= now &&
+                                p.GeneratedPromotion.EndDate >= now &&
+                                !usedPromotionIds.Contains(p.GeneratedPromotionID.Value) &&
+                                (!p.GeneratedPromotion.MaxUses.HasValue || p.GeneratedPromotion.UsesCount < p.GeneratedPromotion.MaxUses.Value))
+                    .Select(p => p.GeneratedPromotion!)
+                    .ToListAsync();
+
+                // Kết hợp 2 danh sách
+                var allAvailablePromotions = new List<Promotion>();
+                allAvailablePromotions.AddRange(regularPromotions);
+                allAvailablePromotions.AddRange(userAutoVouchers);
+
+                _logger.LogInformation($"Available promotions for user {userId}: {regularPromotions.Count} regular + {userAutoVouchers.Count} auto = {allAvailablePromotions.Count} total");
+
+                return allAvailablePromotions
+                    .OrderBy(p => p.MinOrderValue ?? 0)
+                    .ToList();
             }
             catch (Exception ex)
             {

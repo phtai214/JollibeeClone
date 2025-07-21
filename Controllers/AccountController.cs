@@ -5,6 +5,7 @@ using JollibeeClone.Models;
 using JollibeeClone.ViewModels;
 using JollibeeClone.Attributes;
 using JollibeeClone.Services;
+using JollibeeClone.Areas.Admin.Services;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -17,14 +18,16 @@ namespace JollibeeClone.Controllers
         private readonly OrderStatusHistoryService _statusHistoryService;
         private readonly ICartMergeService _cartMergeService;
         private readonly AutoVoucherService _autoVoucherService;
+        private readonly IPromotionService _promotionService;
 
-        public AccountController(AppDbContext context, ILogger<AccountController> logger, OrderStatusHistoryService statusHistoryService, ICartMergeService cartMergeService, AutoVoucherService autoVoucherService)
+        public AccountController(AppDbContext context, ILogger<AccountController> logger, OrderStatusHistoryService statusHistoryService, ICartMergeService cartMergeService, AutoVoucherService autoVoucherService, IPromotionService promotionService)
         {
             _context = context;
             _logger = logger;
             _statusHistoryService = statusHistoryService;
             _cartMergeService = cartMergeService;
             _autoVoucherService = autoVoucherService;
+            _promotionService = promotionService;
         }
 
         // GET: Account/Register
@@ -849,28 +852,28 @@ namespace JollibeeClone.Controllers
             {
                 var userId = int.Parse(HttpContext.Session.GetString("UserId"));
                 
-                // Lấy tất cả promotion active
-                var availablePromotions = await _context.Promotions
-                    .Where(p => p.IsActive && 
-                               p.StartDate <= DateTime.Now && 
-                               p.EndDate >= DateTime.Now &&
-                               (p.MaxUses == null || p.UsesCount < p.MaxUses))
-                    .Select(p => new {
-                        p.PromotionID,
-                        p.PromotionName,
-                        p.Description,
-                        p.CouponCode,
-                        p.DiscountType,
-                        p.DiscountValue,
-                        MinOrderValue = (decimal?)p.MinOrderValue,
-                        p.StartDate,
-                        p.EndDate,
-                        MaxUses = (int?)p.MaxUses,
-                        p.UsesCount,
-                        MaxUsesPerUser = (int?)p.MaxUsesPerUser,
-                        UserUsageCount = p.UserPromotions.Count(up => up.UserID == userId)
-                    })
-                    .ToListAsync();
+                // ✅ SỬ DỤNG PromotionService ĐỂ LẤY VOUCHER AN TOÀN
+                var availablePromotions = await _promotionService.GetAvailablePromotionsForUserAsync(userId);
+                
+                // Map to display format
+                var eligiblePromotions = availablePromotions.Select(p => new {
+                    p.PromotionID,
+                    p.PromotionName,
+                    p.Description,
+                    p.CouponCode,
+                    p.DiscountType,
+                    p.DiscountValue,
+                    MinOrderValue = (decimal?)p.MinOrderValue,
+                    p.StartDate,
+                    p.EndDate,
+                    MaxUses = (int?)p.MaxUses,
+                    p.UsesCount,
+                    MaxUsesPerUser = (int?)p.MaxUsesPerUser,
+                    IsAutoVoucher = p.AutoVoucherGenerated,
+                    RewardThreshold = p.RewardThreshold,
+                    VoucherType = p.AutoVoucherGenerated == true ? "Auto Reward" : "Regular",
+                    UserUsageCount = 0 // Will be calculated separately if needed
+                }).ToList();
 
                 // Lấy lịch sử sử dụng promotion của user
                 var usedPromotions = await _context.UserPromotions
@@ -887,21 +890,23 @@ namespace JollibeeClone.Controllers
                         PromotionName = up.Promotion.PromotionName,
                         CouponCode = up.Promotion.CouponCode,
                         DiscountType = up.Promotion.DiscountType,
-                        DiscountValue = up.Promotion.DiscountValue
+                        DiscountValue = up.Promotion.DiscountValue,
+                        IsAutoVoucher = up.Promotion.AutoVoucherGenerated,
+                        VoucherType = up.Promotion.AutoVoucherGenerated == true ? "Auto Reward" : "Regular"
                     })
                     .ToListAsync();
-
-                // Filter promotions user có thể sử dụng
-                var eligiblePromotions = availablePromotions
-                    .Where(p => p.MaxUsesPerUser == null || p.UserUsageCount < p.MaxUsesPerUser)
-                    .ToList();
 
                 var viewModel = new {
                     AvailablePromotions = eligiblePromotions,
                     UsedPromotions = usedPromotions,
                     TotalAvailable = eligiblePromotions.Count,
-                    TotalUsed = usedPromotions.Count
+                    TotalUsed = usedPromotions.Count,
+                    TotalAutoVouchers = eligiblePromotions.Count(p => p.IsAutoVoucher),
+                    TotalRegularVouchers = eligiblePromotions.Count(p => !p.IsAutoVoucher)
                 };
+
+                _logger.LogInformation("User {UserId} promotions loaded: {Available} available ({Auto} auto, {Regular} regular), {Used} used", 
+                    userId, eligiblePromotions.Count, viewModel.TotalAutoVouchers, viewModel.TotalRegularVouchers, usedPromotions.Count);
 
                 return View(viewModel);
             }

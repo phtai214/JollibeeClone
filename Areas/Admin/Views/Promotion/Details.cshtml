@@ -250,6 +250,28 @@
                             <td>@Model.PromotionID</td>
                         </tr>
                         <tr>
+                            <td><strong>Loại voucher:</strong></td>
+                            <td>
+                                @if (Model.AutoVoucherGenerated)
+                                {
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="fas fa-magic me-1"></i>Auto Reward
+                                    </span>
+                                    @if (Model.RewardThreshold.HasValue)
+                                    {
+                                        <br><small class="text-muted">Mốc: @(Model.RewardThreshold.Value.ToString("N0"))₫</small>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-hand-holding-heart me-1"></i>Regular
+                                    </span>
+                                    <br><small class="text-muted">Công khai cho tất cả</small>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
                             <td><strong>Loại giảm giá:</strong></td>
                             <td>@Model.DiscountType</td>
                         </tr>
@@ -266,6 +288,40 @@
             </div>
         </div>
     </div>
+
+    <!-- Auto Voucher Eligibility (Only for Auto Vouchers) -->
+    @if (Model.AutoVoucherGenerated)
+    {
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="promotion-form">
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-shield-alt me-2"></i>
+                            Quyền sử dụng Auto Voucher
+                            <span class="badge bg-warning text-dark ms-2">Chỉ user đạt mốc</span>
+                        </h3>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Lưu ý:</strong> Voucher tự động này chỉ dành cho những khách hàng đã đạt mốc chi tiêu 
+                            <strong>@(Model.RewardThreshold?.ToString("N0") ?? "N/A")₫</strong> trong 7 ngày gần nhất.
+                        </div>
+
+                        <!-- Eligible Users Container -->
+                        <div id="eligible-users-container">
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Đang tải...</span>
+                                </div>
+                                <p class="mt-2 text-muted">Đang tải danh sách user có quyền...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 
     <!-- User Usage Statistics -->
     <div class="row mt-4">
@@ -728,6 +784,189 @@
                 });
         }
 
+        // Load eligible users for auto voucher
+        function loadEligibleUsers() {
+            const container = document.getElementById('eligible-users-container');
+            if (!container) return;
+            
+            console.log('Loading eligible users for auto promotion:', @Model.PromotionID);
+            
+            const url = '/Admin/Promotion/EligibleUsers/' + @Model.PromotionID;
+            console.log('API URL:', url);
+            
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Eligible users data:', data);
+                    if (data.success) {
+                        renderEligibleUsers(data.eligibleUsers);
+                    } else {
+                        showEligibleUsersError(data.message || 'Không có dữ liệu');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading eligible users:', error);
+                    showEligibleUsersError('Có lỗi xảy ra khi tải dữ liệu: ' + error.message);
+                });
+        }
+
+        // Render eligible users table
+        function renderEligibleUsers(eligibleUsers) {
+            const container = document.getElementById('eligible-users-container');
+            
+            if (!eligibleUsers || eligibleUsers.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-user-shield fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Chưa có user nào đạt mốc để sử dụng voucher này</h5>
+                        <p class="text-muted">Khi có khách hàng đạt mốc chi tiêu, thông tin sẽ hiển thị ở đây.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let tableHtml = `
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th><i class="fas fa-user me-1"></i>Khách hàng</th>
+                                <th><i class="fas fa-envelope me-1"></i>Email</th>
+                                <th><i class="fas fa-bullseye me-1"></i>Mốc đạt được</th>
+                                <th><i class="fas fa-money-bill-wave me-1"></i>Chi tiêu</th>
+                                <th><i class="fas fa-calendar me-1"></i>Ngày đạt mốc</th>
+                                <th><i class="fas fa-check-circle me-1"></i>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            eligibleUsers.forEach((user, index) => {
+                const achievedDate = new Date(user.voucherClaimedDate || user.createdDate);
+                const isToday = achievedDate.toDateString() === new Date().toDateString();
+                const rowClass = isToday ? 'table-secondary' : '';
+                
+                tableHtml += `
+                    <tr class="${rowClass}">
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="user-avatar me-2">
+                                    <i class="fas fa-user-circle fa-2x text-success"></i>
+                                </div>
+                                <div>
+                                    <strong>${user.fullName}</strong>
+                                    ${isToday ? '<span class="badge bg-warning text-dark ms-2">Hôm nay</span>' : ''}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="mailto:${user.email}" class="text-decoration-none">
+                                ${user.email}
+                            </a>
+                        </td>
+                        <td>
+                            <span class="badge bg-info text-white">
+                                <i class="fas fa-bullseye me-1"></i>
+                                ${formatCurrency(user.rewardThreshold)}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="text-success fw-bold">
+                                ${formatCurrency(user.currentSpending)}
+                            </span>
+                        </td>
+                        <td>
+                            <div>
+                                <strong>${formatDate(achievedDate)}</strong>
+                                <br><small class="text-muted">${formatTime(achievedDate)}</small>
+                            </div>
+                        </td>
+                        <td>
+                            ${user.voucherClaimed ? 
+                                `<span class="badge bg-success">
+                                    <i class="fas fa-check me-1"></i>Đã nhận voucher
+                                </span>` : 
+                                `<span class="badge bg-warning text-dark">
+                                    <i class="fas fa-clock me-1"></i>Chưa nhận
+                                </span>`
+                            }
+                            ${user.hasUsedVoucher ? 
+                                `<br><span class="badge bg-primary mt-1">
+                                    <i class="fas fa-shopping-cart me-1"></i>Đã sử dụng
+                                </span>` : ''
+                            }
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableHtml += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            // Add summary
+            const totalEligible = eligibleUsers.length;
+            const totalClaimed = eligibleUsers.filter(u => u.voucherClaimed).length;
+            const totalUsed = eligibleUsers.filter(u => u.hasUsedVoucher).length;
+
+            const summaryHtml = `
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <div class="card text-center bg-light">
+                            <div class="card-body py-2">
+                                <h6 class="card-title text-info mb-1">${totalEligible}</h6>
+                                <p class="card-text small text-muted">Đạt mốc</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center bg-light">
+                            <div class="card-body py-2">
+                                <h6 class="card-title text-success mb-1">${totalClaimed}</h6>
+                                <p class="card-text small text-muted">Đã nhận voucher</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center bg-light">
+                            <div class="card-body py-2">
+                                <h6 class="card-title text-primary mb-1">${totalUsed}</h6>
+                                <p class="card-text small text-muted">Đã sử dụng</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center bg-light">
+                            <div class="card-body py-2">
+                                <h6 class="card-title text-warning mb-1">${((totalUsed / totalEligible) * 100).toFixed(1)}%</h6>
+                                <p class="card-text small text-muted">Tỷ lệ sử dụng</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = summaryHtml + tableHtml;
+        }
+
+        // Show error for eligible users
+        function showEligibleUsersError(message) {
+            const container = document.getElementById('eligible-users-container');
+            container.innerHTML = `
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    ${message}
+                </div>
+            `;
+        }
+
         // Refresh usage statistics
         function refreshUsageStats() {
             const container = document.getElementById('usage-stats-container');
@@ -919,6 +1158,14 @@
             @if (!string.IsNullOrEmpty(Model.CouponCode))
             {
                 <text>$('[onclick*="copyToClipboard"]').attr('title', 'Sao chép mã (Ctrl+C)');</text>
+            }
+            
+            // Load usage statistics and eligible users
+            loadUsageStatistics();
+            
+            @if (Model.AutoVoucherGenerated)
+            {
+                <text>loadEligibleUsers();</text>
             }
         });
     </script>
