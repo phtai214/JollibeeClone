@@ -20,14 +20,16 @@ namespace JollibeeClone.Controllers
         private readonly OrderStatusHistoryService _statusHistoryService;
         private readonly ShippingService _shippingService;
         private readonly EmailService _emailService;
+        private readonly VNPayService _vnPayService;
         
-        public CartController(AppDbContext context, IPromotionService promotionService, OrderStatusHistoryService statusHistoryService, ShippingService shippingService, EmailService emailService)
+        public CartController(AppDbContext context, IPromotionService promotionService, OrderStatusHistoryService statusHistoryService, ShippingService shippingService, EmailService emailService, VNPayService vnPayService)
         {
             _context = context;
             _promotionService = promotionService;
             _statusHistoryService = statusHistoryService;
             _shippingService = shippingService;
             _emailService = emailService;
+            _vnPayService = vnPayService;
         }
 
         // GET: /Cart/GetCart
@@ -1729,6 +1731,7 @@ namespace JollibeeClone.Controllers
                 try
                 {
                     Console.WriteLine($"🛒 ProcessCheckout - Creating order for customer: {model.CustomerFullName}");
+                    Console.WriteLine($"💳 Payment Method ID: {model.PaymentMethodID}");
                     
                     // Get current cart
                     var cart = await GetOrCreateCartAsync();
@@ -1768,6 +1771,21 @@ namespace JollibeeClone.Controllers
                     Console.WriteLine($"  - Total: {model.TotalAmount:N0}₫");
                     Console.WriteLine($"  - Message: {finalShippingCalculation.Message}");
 
+                    // ALL orders start with "Chờ xác nhận" regardless of payment method
+                    int initialOrderStatusId = 1; // "Chờ xác nhận"
+                    string orderStatusNote = "Đơn hàng được tạo";
+                    
+                    if (model.PaymentMethodID == 2) // VNPAY
+                    {
+                        // VNPay orders also start with "Chờ xác nhận" - user will pay, then status updates to "Đã xác nhận"
+                        orderStatusNote = "Đơn hàng được tạo với thanh toán VNPay";
+                        Console.WriteLine($"💳 VNPay order - Initial status: {initialOrderStatusId} (Chờ xác nhận)");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"💰 Cash/Other payment - Initial status: {initialOrderStatusId} (Chờ xác nhận)");
+                    }
+
                     // Create order
                     var order = new Orders
                     {
@@ -1786,7 +1804,7 @@ namespace JollibeeClone.Controllers
                         ShippingFee = model.ShippingFee,
                         DiscountAmount = model.DiscountAmount,
                         TotalAmount = model.TotalAmount,
-                        OrderStatusID = 1, // Chờ xác nhận
+                        OrderStatusID = initialOrderStatusId,
                         PaymentMethodID = model.PaymentMethodID,
                         PromotionID = model.AppliedPromotionID,
                         NotesByCustomer = model.NotesByCustomer
@@ -1800,9 +1818,9 @@ namespace JollibeeClone.Controllers
                     // Ghi lại lịch sử trạng thái đầu tiên cho đơn hàng mới
                     await _statusHistoryService.LogStatusChangeAsync(
                         orderId: order.OrderID,
-                        statusId: 1, // "Chờ xác nhận"
+                        statusId: initialOrderStatusId,
                         updatedBy: "System",
-                        note: "Đơn hàng được tạo"
+                        note: orderStatusNote
                     );
 
                     // Create order items from cart items
@@ -1865,7 +1883,7 @@ namespace JollibeeClone.Controllers
                         }
                         catch (Exception voucherEx)
                         {
-                                                         Console.WriteLine($"❌ Error applying voucher {model.AppliedPromotionID} for user {model.UserID} in order {order.OrderID}: {voucherEx.Message}");
+                            Console.WriteLine($"❌ Error applying voucher {model.AppliedPromotionID} for user {model.UserID} in order {order.OrderID}: {voucherEx.Message}");
                             
                             // Don't fail the order, just log the error
                             Console.WriteLine($"❌ Warning: Failed to apply voucher but order was created successfully");
@@ -1881,78 +1899,85 @@ namespace JollibeeClone.Controllers
                     await transaction.CommitAsync();
                     Console.WriteLine($"✅ Order {orderCode} created successfully!");
 
-                    // Send confirmation email immediately (using existing transaction context)
-                    try
+                    // 🔄 HANDLE PAYMENT METHOD ROUTING
+                    if (model.PaymentMethodID == 2) // VNPAY
                     {
-                        Console.WriteLine($"📧 Starting email send for order {orderCode}");
-                        Console.WriteLine($"📧 Customer email: '{order.CustomerEmail}'");
-                        Console.WriteLine($"📧 Email is null or empty: {string.IsNullOrEmpty(order.CustomerEmail)}");
+                        Console.WriteLine($"💳 VNPay payment selected - redirecting to VNPay gateway");
                         
-                        if (!string.IsNullOrEmpty(order.CustomerEmail))
+                        // Create VNPay payment request  
+                        var vnPayRequest = new VNPayRequestModel
                         {
-                            Console.WriteLine($"📧 Getting full order data for email...");
-                            // Get full order with related data for email
-                            var fullOrder = await _context.Orders
-                                .Include(o => o.PaymentMethod)
-                                .Include(o => o.DeliveryMethod)
-                                .Include(o => o.Store)
-                                .Include(o => o.UserAddress)
-                                .FirstOrDefaultAsync(o => o.OrderID == order.OrderID);
+                            OrderCode = order.OrderCode,
+                            OrderDescription = $"Thanh toán đơn hàng {order.OrderCode} - {order.CustomerFullName}",
+                            Amount = order.TotalAmount,
+                            CreatedDate = order.OrderDate,
+                            IpAddress = GetClientIpAddress()
+                        };
 
-                            var fullOrderItems = await _context.OrderItems
-                                .Where(oi => oi.OrderID == order.OrderID)
-                                .Include(oi => oi.Product)
-                                .ToListAsync();
+                        // Generate VNPay payment URL
+                        var paymentUrl = _vnPayService.CreatePaymentUrl(vnPayRequest);
+                        Console.WriteLine($"💳 VNPay payment URL generated: {paymentUrl.Substring(0, Math.Min(100, paymentUrl.Length))}...");
 
-                            Console.WriteLine($"📧 Retrieved order data - Order found: {fullOrder != null}, Items count: {fullOrderItems?.Count ?? 0}");
-
-                            if (fullOrder != null)
+                        // Store order ID in session for processing page
+                        HttpContext.Session.SetInt32("LastOrderID", order.OrderID);
+                        
+                        // Redirect to VNPay
+                        return Redirect(paymentUrl);
+                    }
+                    else
+                    {
+                        // For cash payment or other methods, send email and redirect to success
+                        Console.WriteLine($"💳 Cash payment - processing normally");
+                        
+                        // Send confirmation email immediately
+                        try
+                        {
+                            Console.WriteLine($"📧 Starting email send for order {orderCode}");
+                            Console.WriteLine($"📧 Customer email: '{order.CustomerEmail}'");
+                            
+                            if (!string.IsNullOrEmpty(order.CustomerEmail))
                             {
-                                Console.WriteLine($"📧 Full order data:");
-                                Console.WriteLine($"    - OrderID: {fullOrder.OrderID}");
-                                Console.WriteLine($"    - OrderCode: {fullOrder.OrderCode}");
-                                Console.WriteLine($"    - CustomerEmail: '{fullOrder.CustomerEmail}'");
-                                Console.WriteLine($"    - CustomerFullName: '{fullOrder.CustomerFullName}'");
-                                Console.WriteLine($"    - PaymentMethod: {fullOrder.PaymentMethod?.MethodName ?? "NULL"}");
-                                Console.WriteLine($"    - DeliveryMethod: {fullOrder.DeliveryMethod?.MethodName ?? "NULL"}");
-                                Console.WriteLine($"    - Order items count: {fullOrderItems?.Count ?? 0}");
-                                
-                                Console.WriteLine($"📧 Attempting to send email to: {fullOrder.CustomerEmail}");
-                                var emailSent = await _emailService.SendOrderConfirmationEmailAsync(fullOrder, fullOrderItems);
-                                Console.WriteLine($"📧 Email confirmation result for order {orderCode}: {(emailSent ? "✅ SUCCESS" : "❌ FAILED")}");
-                                
-                                if (!emailSent)
+                                Console.WriteLine($"📧 Getting full order data for email...");
+                                // Get full order with related data for email
+                                var fullOrder = await _context.Orders
+                                    .Include(o => o.PaymentMethod)
+                                    .Include(o => o.DeliveryMethod)
+                                    .Include(o => o.Store)
+                                    .Include(o => o.UserAddress)
+                                    .FirstOrDefaultAsync(o => o.OrderID == order.OrderID);
+
+                                var fullOrderItems = await _context.OrderItems
+                                    .Where(oi => oi.OrderID == order.OrderID)
+                                    .Include(oi => oi.Product)
+                                    .ToListAsync();
+
+                                Console.WriteLine($"📧 Retrieved order data - Order found: {fullOrder != null}, Items count: {fullOrderItems?.Count ?? 0}");
+
+                                if (fullOrder != null)
                                 {
-                                    Console.WriteLine($"⚠️ Email failed to send but order creation continues");
-                                }
-                                else
-                                {
-                                    Console.WriteLine($"🎉 Email sent successfully to {fullOrder.CustomerEmail}!");
+                                    Console.WriteLine($"📧 Attempting to send email to: {fullOrder.CustomerEmail}");
+                                    var emailSent = await _emailService.SendOrderConfirmationEmailAsync(fullOrder, fullOrderItems);
+                                    Console.WriteLine($"📧 Email confirmation result for order {orderCode}: {(emailSent ? "✅ SUCCESS" : "❌ FAILED")}");
                                 }
                             }
                             else
                             {
-                                Console.WriteLine($"❌ Could not retrieve full order data for email");
+                                Console.WriteLine($"⚠️ Skipping email - customer email is empty for order {orderCode}");
                             }
                         }
-                        else
+                        catch (Exception emailEx)
                         {
-                            Console.WriteLine($"⚠️ Skipping email - customer email is empty for order {orderCode}");
+                            Console.WriteLine($"❌ Email sending failed for order {orderCode} but order creation continues");
+                            Console.WriteLine($"❌ Email Exception: {emailEx.Message}");
+                            // Don't throw - let order creation succeed even if email fails
                         }
-                    }
-                    catch (Exception emailEx)
-                    {
-                        Console.WriteLine($"❌ Email sending failed for order {orderCode} but order creation continues");
-                        Console.WriteLine($"❌ Email Exception: {emailEx.Message}");
-                        Console.WriteLine($"❌ Email Stack trace: {emailEx.StackTrace}");
-                        // Don't throw - let order creation succeed even if email fails
-                    }
 
-                    // Store order ID in session for success page
-                    HttpContext.Session.SetInt32("LastOrderID", order.OrderID);
-                    
-                    TempData["SuccessMessage"] = $"Đơn hàng {orderCode} đã được đặt thành công!";
-                    return RedirectToAction("OrderSuccess", new { orderId = order.OrderID });
+                        // Store order ID in session for success page
+                        HttpContext.Session.SetInt32("LastOrderID", order.OrderID);
+                        
+                        TempData["SuccessMessage"] = $"Đơn hàng {orderCode} đã được đặt thành công!";
+                        return RedirectToAction("OrderSuccess", new { orderId = order.OrderID });
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -2494,16 +2519,48 @@ namespace JollibeeClone.Controllers
         // Helper method to determine payment status based on method ID
         private string DeterminePaymentStatus(int paymentMethodID)
         {
-            // Default to "Pending"
-            var status = "Pending";
-
-            // Example logic: set to "Completed" for certain payment methods
-            if (paymentMethodID == 1 || paymentMethodID == 2) // Assuming 1 and 2 are online payment methods
+            // For VNPay, start with "Pending" until payment is confirmed
+            if (paymentMethodID == 2) // VNPAY
             {
-                status = "Completed";
+                return "Pending";
             }
+            
+            // For cash or other methods, mark as "Completed"
+            return "Completed";
+        }
 
-            return status;
+        // Helper method to get client IP address
+        private string GetClientIpAddress()
+        {
+            try
+            {
+                var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+                
+                // Check for forwarded IP (if behind proxy/load balancer)
+                if (Request.Headers.ContainsKey("X-Forwarded-For"))
+                {
+                    var forwardedIps = Request.Headers["X-Forwarded-For"].ToString();
+                    if (!string.IsNullOrEmpty(forwardedIps))
+                    {
+                        // Take the first IP from the forwarded list
+                        ipAddress = forwardedIps.Split(',')[0].Trim();
+                    }
+                }
+                
+                // If still null or empty, use localhost as fallback
+                if (string.IsNullOrEmpty(ipAddress) || ipAddress == "::1")
+                {
+                    ipAddress = "127.0.0.1";
+                }
+                
+                Console.WriteLine($"🔍 Client IP Address: {ipAddress}");
+                return ipAddress;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error getting client IP: {ex.Message}");
+                return "127.0.0.1"; // Fallback IP
+            }
         }
     }
 

@@ -54,6 +54,9 @@ builder.Services.AddScoped<JollibeeClone.Services.AutoVoucherService>();
 // Đăng ký EmailService
 builder.Services.AddScoped<JollibeeClone.Services.EmailService>();
 
+// Đăng ký VNPayService
+builder.Services.AddScoped<JollibeeClone.Services.VNPayService>();
+
 // Đăng ký CartMergeService
 builder.Services.AddScoped<JollibeeClone.Services.ICartMergeService, JollibeeClone.Services.CartMergeService>();
 

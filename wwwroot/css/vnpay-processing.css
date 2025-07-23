@@ -1,0 +1,351 @@
+/* VNPay Processing Page Styles */
+.vnpay-processing-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.processing-content {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.processing-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #00BCD4, #2196F3, #00BCD4);
+    background-size: 200% 100%;
+    animation: gradientShift 2s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 0%; }
+    50% { background-position: 100% 0%; }
+}
+
+/* Header */
+.processing-header {
+    margin-bottom: 40px;
+}
+
+.vnpay-logo {
+    margin-bottom: 20px;
+}
+
+.vnpay-logo-img {
+    height: 60px;
+    width: auto;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.processing-header h1 {
+    color: #2c3e50;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+}
+
+.order-info {
+    color: #666;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.order-info strong {
+    color: #2196F3;
+    font-weight: 600;
+}
+
+/* Processing Animation */
+.processing-animation {
+    margin: 40px 0;
+    position: relative;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #2196F3;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.loading-dots span {
+    width: 8px;
+    height: 8px;
+    background: #bbb;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.loading-dots span.active {
+    background: #2196F3;
+    transform: scale(1.3);
+}
+
+/* Processing Steps */
+.processing-steps {
+    margin: 40px 0;
+    text-align: left;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.step.completed {
+    background: #e8f5e8;
+    border-left: 4px solid #4caf50;
+}
+
+.step.active {
+    background: #e3f2fd;
+    border-left: 4px solid #2196F3;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.step:not(.completed):not(.active) {
+    background: #f8f9fa;
+    border-left: 4px solid #ddd;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.step.completed .step-icon {
+    background: #4caf50;
+    color: white;
+}
+
+.step.active .step-icon {
+    background: #2196F3;
+    color: white;
+}
+
+.step:not(.completed):not(.active) .step-icon {
+    background: #ddd;
+    color: #666;
+}
+
+.step-text h4 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.step-text p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Processing Info */
+.processing-info {
+    margin: 40px 0;
+    text-align: left;
+}
+
+.info-box {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.info-box h3 {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-box h3 i {
+    color: #2196F3;
+}
+
+.info-box ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.info-box li {
+    margin-bottom: 8px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.security-info {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.security-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.security-badge i {
+    color: #4caf50;
+}
+
+/* Processing Actions */
+.processing-actions {
+    margin-top: 40px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 140px;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: #2196F3;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #1976d2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.btn-outline {
+    background: transparent;
+    color: #666;
+    border: 2px solid #ddd;
+}
+
+.btn-outline:hover {
+    background: #f8f9fa;
+    border-color: #bbb;
+    color: #333;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .vnpay-processing-container {
+        padding: 10px;
+    }
+    
+    .processing-content {
+        padding: 30px 20px;
+    }
+    
+    .processing-header h1 {
+        font-size: 1.6rem;
+    }
+    
+    .security-info {
+        gap: 10px;
+    }
+    
+    .security-badge {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .processing-actions {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .step {
+        padding: 12px;
+    }
+    
+    .step-icon {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .step-text h4 {
+        font-size: 0.9rem;
+    }
+    
+    .step-text p {
+        font-size: 0.8rem;
+    }
+} 

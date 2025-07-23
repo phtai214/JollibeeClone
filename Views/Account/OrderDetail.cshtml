@@ -316,10 +316,10 @@
         });
 
         function startOrderStatusPolling() {
-            // Polling mỗi 10 giây để kiểm tra trạng thái mới
+            // Polling mỗi 0.5 giây để kiểm tra trạng thái mới
             pollInterval = setInterval(function() {
                 checkOrderStatus();
-            }, 1000); // 10 seconds
+            }, 500); // 0.5 seconds
 
             console.log('✅ Real-time order status polling started');
         }

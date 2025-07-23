@@ -2262,8 +2262,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>2cbpcam030</Fingerprint>
-      <Integrity>XqYxF0uGFVCtAtOM5jZ9c84dFYyZzj+A7B/ZI4mR0UE=</Integrity>
+      <Fingerprint>4nm3imtabb</Fingerprint>
+      <Integrity>YE+EcyQaQ3owwguz2Qi9uodNlX21bNI72gw+Z0nqUnQ=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\checkout.css'))</OriginalItemSpec>
@@ -2916,6 +2916,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\user-promotions.css'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\vnpay-processing.css'))">
+      <SourceType>Package</SourceType>
+      <SourceId>JollibeeClone</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/JollibeeClone</BasePath>
+      <RelativePath>css/vnpay-processing.css</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>mssn1ij1hb</Fingerprint>
+      <Integrity>enU8dpXaw+mBLPeS6Rsh7yX4MmfgM2RTnfBp3CHSHes=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\vnpay-processing.css'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\voucher-reward.css'))">
       <SourceType>Package</SourceType>
       <SourceId>JollibeeClone</SourceId>
@@ -3288,8 +3306,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>8e07dxtchw</Fingerprint>
-      <Integrity>wB6Sr+AbHVApc0IH4+0hm9jnZWkmjKaXvv4IXnHo4MY=</Integrity>
+      <Fingerprint>1lzh0ho7ll</Fingerprint>
+      <Integrity>ZfIn4fSnqUZAALCRy1JZxnvzIWqOHS3EFY1uA9DFFAE=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\cart.js'))</OriginalItemSpec>

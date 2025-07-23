@@ -814,7 +814,7 @@ class JollibeeCart {
                 <div class="modal-content">
                     <div class="modal-header bg-danger text-white">
                         <h5 class="modal-title" id="loginRequiredModalLabel">
-                            <i class="fas fa-lock me-2"></i>Yêu cầu đăng nhập
+                            <i class=""></i> Yêu cầu đăng nhập
                         </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -828,7 +828,7 @@ class JollibeeCart {
                         </p>
                         <div class="d-grid gap-2">
                             <a href="/Account/Login?returnUrl=%2FCart%2FShipping" class="btn btn-danger btn-lg">
-                                <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập ngay
+                                <i class=""></i> Đăng nhập
                             </a>
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="window.location.href='/Menu/MonNgonPhaiThu';">
                                 <i class="fas fa-arrow-left me-2"></i>Tiếp tục mua sắm
