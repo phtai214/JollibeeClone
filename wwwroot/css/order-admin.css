@@ -44,7 +44,7 @@
     
     .table tbody tr:hover {
         background-color: #f8f9fa;
-        transition: all 0.2s ease;
+        /* transition: all 0.2s ease; */
     }
     
     .badge {

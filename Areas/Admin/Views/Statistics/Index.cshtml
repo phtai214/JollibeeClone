@@ -39,6 +39,14 @@
                 Xuất báo cáo Excel
             </button>
         </form>
+        <button type="button" class="export-btn" id="createTestDataBtn" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+            <i class="fas fa-plus"></i>
+            Tạo dữ liệu test
+        </button>
+        <button type="button" class="export-btn" id="checkDataBtn" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);">
+            <i class="fas fa-search"></i>
+            Kiểm tra dữ liệu
+        </button>
     </div>
 
     <!-- Stats Overview -->
@@ -94,6 +102,20 @@
             </div>
             <h2 class="stat-card-value" id="paidOrders">0</h2>
             <div class="stat-card-trend" id="paidOrdersTrend">
+                <i class="fas fa-arrow-up"></i>
+                <span>Đang tải...</span>
+            </div>
+        </div>
+
+        <div class="stat-card cancelled-orders">
+            <div class="stat-card-header">
+                <h6 class="stat-card-title">Đơn hàng đã hủy</h6>
+                <div class="stat-card-icon">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+            </div>
+            <h2 class="stat-card-value" id="cancelledOrders">0</h2>
+            <div class="stat-card-trend" id="cancelledOrdersTrend">
                 <i class="fas fa-arrow-up"></i>
                 <span>Đang tải...</span>
             </div>
@@ -159,17 +181,26 @@
                 const response = await fetch(`@Url.Action("GetStatisticsOverview", "Statistics")?dateRange=${dateRange}`);
                 const data = await response.json();
 
+                // Debug: Log API response
+                console.log('📊 Statistics API Response:', data);
+                console.log('🔢 Cancelled Orders from API:', data.cancelledOrders);
+
                 // Cập nhật các số liệu tổng quan
                 document.getElementById('totalRevenue').textContent = data.totalRevenue + ' VNĐ';
                 document.getElementById('paidRevenue').textContent = data.paidRevenue + ' VNĐ';
                 document.getElementById('totalOrders').textContent = data.totalOrders;
                 document.getElementById('paidOrders').textContent = data.paidOrders;
+                document.getElementById('cancelledOrders').textContent = data.cancelledOrders;
+
+                // Debug: Log what's being set in UI
+                console.log('🎯 UI Update - Cancelled Orders set to:', data.cancelledOrders);
 
                 // Cập nhật trend
                 updateTrend('revenueTrend', data.revenueChange);
                 updateTrend('ordersTrend', data.ordersChange);
                 updateTrend('paidTrend', data.paidRevenueChange); // Dùng trend riêng cho đã thanh toán
                 updateTrend('paidOrdersTrend', data.paidOrdersChange); // Dùng trend riêng cho đơn đã thanh toán
+                updateTrend('cancelledOrdersTrend', data.cancelledOrdersChange); // Dùng trend riêng cho đơn đã hủy
 
             } catch (error) {
                 console.error('Lỗi khi tải dữ liệu tổng quan:', error);
@@ -326,6 +357,11 @@
                 const response = await fetch(`@Url.Action("GetOrderStatusData", "Statistics")?dateRange=${dateRange}`);
                 const data = await response.json();
 
+                // Debug: Log chart data
+                console.log('📈 Order Status Chart Data:', data);
+                console.log('📋 Status Labels:', data.labels);
+                console.log('🔢 Status Data:', data.data);
+
                 const ctx2 = document.getElementById('orderStatusChart').getContext('2d');
                 if (orderStatusChart) {
                     orderStatusChart.destroy();
@@ -465,6 +501,58 @@
             if (this.value === 'custom') {
                 // Có thể thêm date picker tùy chỉnh ở đây
                 console.log('Custom date range selected');
+            }
+        });
+
+        // Test data creation button
+        document.getElementById('createTestDataBtn').addEventListener('click', async function() {
+            try {
+                const response = await fetch('@Url.Action("CreateTestCancelledOrders", "Statistics")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                    }
+                });
+                
+                const result = await response.json();
+                alert(result.message);
+                
+                if (result.success) {
+                    // Reload statistics after creating test data
+                    loadStatisticsData(currentDateRange);
+                }
+            } catch (error) {
+                console.error('Error creating test data:', error);
+                alert('Lỗi khi tạo dữ liệu test');
+            }
+        });
+
+        // Check data button
+        document.getElementById('checkDataBtn').addEventListener('click', async function() {
+            try {
+                const response = await fetch('@Url.Action("CheckCurrentData", "Statistics")');
+                const result = await response.json();
+                
+                if (result.success) {
+                    let message = `📊 Thống kê dữ liệu hiện tại:\n\n`;
+                    message += `• Tổng đơn hàng: ${result.totalOrders}\n`;
+                    message += `• Đơn đã hủy: ${result.cancelledOrders}\n`;
+                    message += `• Đơn hoàn thành: ${result.completedOrders}\n\n`;
+                    message += `📋 Chi tiết theo trạng thái:\n`;
+                    
+                    result.statusBreakdown.forEach(item => {
+                        message += `• ${item.Status}: ${item.Count} đơn\n`;
+                    });
+                    
+                    alert(message);
+                    console.log('Current data:', result);
+                } else {
+                    alert('Lỗi: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error checking data:', error);
+                alert('Lỗi khi kiểm tra dữ liệu');
             }
         });
     </script>

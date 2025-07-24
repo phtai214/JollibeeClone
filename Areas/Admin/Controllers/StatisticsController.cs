@@ -56,6 +56,12 @@ namespace JollibeeClone.Areas.Admin.Controllers
                     && o.OrderStatusID == 6) // Hoàn thành = đã thanh toán thành công
                 .CountAsync();
 
+            // Đơn hàng đã hủy: Chỉ tính các đơn hàng có trạng thái "Đã hủy" (OrderStatusID = 7)
+            var cancelledOrders = await _context.Orders
+                .Where(o => o.OrderDate >= startDate && o.OrderDate <= endDate 
+                    && o.OrderStatusID == 7) // Đã hủy
+                .CountAsync();
+
             // Tính phần trăm thay đổi so với kỳ trước
             var previousPeriod = GetDateRange(dateRange, true);
             var prevTotalRevenue = await _context.Orders
@@ -76,10 +82,17 @@ namespace JollibeeClone.Areas.Admin.Controllers
                     && o.OrderStatusID == 6) // Hoàn thành = đã thanh toán thành công
                 .CountAsync();
 
+            var prevCancelledOrders = await _context.Orders
+                .Where(o => o.OrderDate >= previousPeriod.StartDate && o.OrderDate <= previousPeriod.EndDate
+                    && o.OrderStatusID == 7) // Đã hủy
+                .CountAsync();
+
             var revenueChange = prevTotalRevenue > 0 ? ((totalRevenue - prevTotalRevenue) / prevTotalRevenue * 100) : 0;
             var paidRevenueChange = prevPaidRevenue > 0 ? ((paidRevenue - prevPaidRevenue) / prevPaidRevenue * 100) : 0;
             var ordersChange = prevTotalOrders > 0 ? ((totalOrders - prevTotalOrders) / (decimal)prevTotalOrders * 100) : 0;
             var paidOrdersChange = prevPaidOrders > 0 ? ((paidOrders - prevPaidOrders) / (decimal)prevPaidOrders * 100) : 0;
+            var cancelledOrdersChange = prevCancelledOrders > 0 ? ((cancelledOrders - prevCancelledOrders) / (decimal)prevCancelledOrders * 100) : 
+                                      (cancelledOrders > 0 ? 100 : 0); // Nếu không có đơn hủy trước đó nhưng có bây giờ thì tăng 100%
 
             var result = new
             {
@@ -87,10 +100,12 @@ namespace JollibeeClone.Areas.Admin.Controllers
                 paidRevenue = paidRevenue.ToString("N0"),
                 totalOrders = totalOrders,
                 paidOrders = paidOrders,
+                cancelledOrders = cancelledOrders,
                 revenueChange = Math.Round(revenueChange, 1),
                 paidRevenueChange = Math.Round(paidRevenueChange, 1),
                 ordersChange = Math.Round(ordersChange, 1),
-                paidOrdersChange = Math.Round(paidOrdersChange, 1)
+                paidOrdersChange = Math.Round(paidOrdersChange, 1),
+                cancelledOrdersChange = Math.Round(cancelledOrdersChange, 1)
             };
 
             return Json(result);
@@ -246,6 +261,11 @@ namespace JollibeeClone.Areas.Admin.Controllers
                     && o.OrderStatusID == 6) // Hoàn thành = đã thanh toán thành công
                 .CountAsync();
 
+            var cancelledOrders = await _context.Orders
+                .Where(o => o.OrderDate >= dateFilter.StartDate && o.OrderDate <= dateFilter.EndDate 
+                    && o.OrderStatusID == 7) // Đã hủy
+                .CountAsync();
+
             worksheet.Cell(4, 1).Value = "TỔNG QUAN";
             worksheet.Cell(4, 1).Style.Font.Bold = true;
             worksheet.Cell(4, 1).Style.Fill.BackgroundColor = XLColor.LightGray;
@@ -258,30 +278,32 @@ namespace JollibeeClone.Areas.Admin.Controllers
             worksheet.Cell(7, 2).Value = totalOrders;
             worksheet.Cell(8, 1).Value = "Đơn đã thanh toán:";
             worksheet.Cell(8, 2).Value = paidOrders;
+            worksheet.Cell(9, 1).Value = "Đơn hàng đã hủy:";
+            worksheet.Cell(9, 2).Value = cancelledOrders;
 
             // Chi tiết theo ngày
-            worksheet.Cell(10, 1).Value = "CHI TIẾT THEO NGÀY";
-            worksheet.Cell(10, 1).Style.Font.Bold = true;
-            worksheet.Cell(10, 1).Style.Fill.BackgroundColor = XLColor.LightGray;
+            worksheet.Cell(11, 1).Value = "CHI TIẾT THEO NGÀY";
+            worksheet.Cell(11, 1).Style.Font.Bold = true;
+            worksheet.Cell(11, 1).Style.Fill.BackgroundColor = XLColor.LightGray;
 
             // Headers
             var headers = new[] { "Ngày", "Doanh thu", "Số đơn", "Sản phẩm bán chạy", "Đã bán" };
             for (int i = 0; i < headers.Length; i++)
             {
-                worksheet.Cell(11, i + 1).Value = headers[i];
-                worksheet.Cell(11, i + 1).Style.Font.Bold = true;
-                worksheet.Cell(11, i + 1).Style.Fill.BackgroundColor = XLColor.LightBlue;
+                worksheet.Cell(12, i + 1).Value = headers[i];
+                worksheet.Cell(12, i + 1).Style.Font.Bold = true;
+                worksheet.Cell(12, i + 1).Style.Fill.BackgroundColor = XLColor.LightBlue;
             }
 
             // Data
             for (int i = 0; i < reportData.Count; i++)
             {
                 var data = reportData[i];
-                worksheet.Cell(12 + i, 1).Value = data.Date;
-                worksheet.Cell(12 + i, 2).Value = data.Revenue;
-                worksheet.Cell(12 + i, 3).Value = data.OrderCount;
-                worksheet.Cell(12 + i, 4).Value = data.BestSellingProduct;
-                worksheet.Cell(12 + i, 5).Value = data.ProductSold;
+                worksheet.Cell(13 + i, 1).Value = data.Date;
+                worksheet.Cell(13 + i, 2).Value = data.Revenue;
+                worksheet.Cell(13 + i, 3).Value = data.OrderCount;
+                worksheet.Cell(13 + i, 4).Value = data.BestSellingProduct;
+                worksheet.Cell(13 + i, 5).Value = data.ProductSold;
             }
 
             // Auto-fit columns
@@ -413,6 +435,86 @@ namespace JollibeeClone.Areas.Admin.Controllers
             public int OrderCount { get; set; }
             public string BestSellingProduct { get; set; } = "";
             public int ProductSold { get; set; }
+        }
+
+        // Test action to create sample cancelled orders
+        [HttpPost]
+        public async Task<IActionResult> CreateTestCancelledOrders()
+        {
+            try
+            {
+                // Check if we already have cancelled orders
+                var existingCancelledOrders = await _context.Orders
+                    .Where(o => o.OrderStatusID == 7)
+                    .CountAsync();
+
+                if (existingCancelledOrders > 0)
+                {
+                    return Json(new { success = true, message = $"Already have {existingCancelledOrders} cancelled orders" });
+                }
+
+                // Create some test cancelled orders for the last 7 days
+                var testOrders = new List<Orders>();
+                for (int i = 1; i <= 5; i++)
+                {
+                    var order = new Orders
+                    {
+                        OrderCode = $"CANCEL-{DateTime.Now:yyyyMMdd}-{i:D3}",
+                        CustomerFullName = $"Test Cancelled User {i}",
+                        CustomerEmail = $"testcancel{i}@test.com",
+                        CustomerPhoneNumber = $"012345678{i}",
+                        OrderDate = DateTime.Now.AddDays(-i),
+                        SubtotalAmount = 100000 + (i * 50000),
+                        ShippingFee = 20000,
+                        DiscountAmount = 0,
+                        TotalAmount = 120000 + (i * 50000),
+                        OrderStatusID = 7, // Đã hủy
+                        PaymentMethodID = 1, // Tiền mặt
+                        DeliveryMethodID = 1, // Giao hàng
+                        NotesByCustomer = "Test order - will be cancelled"
+                    };
+                    testOrders.Add(order);
+                }
+
+                _context.Orders.AddRange(testOrders);
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true, message = $"Created {testOrders.Count} test cancelled orders" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Error: {ex.Message}" });
+            }
+        }
+
+        // Debug action to check current data
+        [HttpGet]
+        public async Task<IActionResult> CheckCurrentData()
+        {
+            try
+            {
+                var totalOrders = await _context.Orders.CountAsync();
+                var cancelledOrders = await _context.Orders.Where(o => o.OrderStatusID == 7).CountAsync();
+                var completedOrders = await _context.Orders.Where(o => o.OrderStatusID == 6).CountAsync();
+                
+                var statusBreakdown = await _context.Orders
+                    .Include(o => o.OrderStatus)
+                    .GroupBy(o => o.OrderStatus.StatusName)
+                    .Select(g => new { Status = g.Key, Count = g.Count() })
+                    .ToListAsync();
+
+                return Json(new { 
+                    success = true, 
+                    totalOrders,
+                    cancelledOrders,
+                    completedOrders,
+                    statusBreakdown
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
     }
 } 

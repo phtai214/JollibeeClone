@@ -97,9 +97,29 @@
 /* Stats Overview Cards */
 .stats-overview {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 20px;
     margin-bottom: 30px;
+}
+
+/* Responsive grid for 5 cards */
+@media (min-width: 1200px) {
+    .stats-overview {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-overview {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-overview {
+        grid-template-columns: 1fr;
+    }
 }
 
 .stat-card {
@@ -143,6 +163,10 @@
     background: linear-gradient(90deg, var(--jollibee-yellow) 0%, #ffc107 100%);
 }
 
+.stat-card.cancelled-orders::before {
+    background: linear-gradient(90deg, #dc3545 0%, #e74c3c 100%);
+}
+
 .stat-card-header {
     display: flex;
     justify-content: space-between;
@@ -151,7 +175,7 @@
 }
 
 .stat-card-title {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 600;
     color: #6c757d;
     text-transform: uppercase;
@@ -160,13 +184,14 @@
 }
 
 .stat-card-icon {
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 35px;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    margin-left: -5px;
+    font-size: 1rem;
     color: var(--jollibee-white);
 }
 
@@ -187,11 +212,16 @@
     color: var(--jollibee-dark);
 }
 
+.stat-card.cancelled-orders .stat-card-icon {
+    background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
+}
+
 .stat-card-value {
-    font-size: 2rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--jollibee-dark);
     margin: 0;
+    margin-top: -5px;
     line-height: 1.2;
 }
 
