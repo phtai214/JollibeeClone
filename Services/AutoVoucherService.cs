@@ -37,7 +37,7 @@ namespace JollibeeClone.Services
 
             try
             {
-                // Status "Completed" thường có ID = 6, nhưng để chắc chắn ta tìm theo tên
+                // Status "Completed" thường có ID = 6, nhưng để chắc chắn tìm theo tên
                 var completedStatusId = await _context.OrderStatuses
                     .Where(s => s.StatusName.ToLower().Contains("completed") || s.StatusName.ToLower().Contains("hoàn thành"))
                     .Select(s => s.OrderStatusID)
